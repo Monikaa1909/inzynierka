@@ -1,5 +1,6 @@
 <script setup>
 import * as yup from 'yup'
+import { useTrainer } from '../stores/trainer'
 import { login as useLogin } from '~/composables'
 
 const { meta } = useForm({
@@ -12,15 +13,19 @@ const { meta } = useForm({
 const { value: login, errorMessage: loginError } = useField('login')
 const { value: password, errorMessage: passwordError } = useField('password')
 
+const router = useRouter()
+const trainer = useTrainer()
 const submit = async() => {
   const token = await useLogin(login.value, password.value)
-
-  console.log(token)
+  trainer.value.token = token
+  return router.push('/')
 }
 </script>
 
 <template>
   <div>
+    {{ trainer.token ?? 'brak' }}
+
     <form @submit.stop.prevent="submit">
       <label class="block">
         Login
