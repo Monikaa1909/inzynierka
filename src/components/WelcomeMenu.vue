@@ -12,27 +12,27 @@ const toggleLocales = () => {
     <div class="buttonFrame">
       <button class="navButton buttonFont" @click="toggleLocales">
         <div class="centerRow">
-          <img src="public/settings%20icon.svg" class="icon">
+          <img src="/settings-icon.svg" class="icon">
           <p> {{ t('button.functions') }} </p>
         </div>
       </button>
       <button class="navButton buttonFont" @click="toggleLocales">
         <div class="centerRow">
-          <img src="public/settings%20icon.svg" class="icon">
+          <img src="/settings-icon.svg" class="icon">
           <p> {{ t('button.contact') }} </p>
         </div>
       </button>
       <button class="navButton buttonFont" @click="toggleLocales">
         <div class="centerRow">
-          <img src="public/settings%20icon.svg" class="icon">
+          <img src="/settings-icon.svg" class="icon">
           <p>{{ t('button.set-language') }}</p>
         </div>
       </button>
     </div>
-    <div class="centerRow gap-8" id="mainInfo">
-      <img src="public/logo.png" id="mainLogo">
+    <div id="mainInfo" class="centerRow gap-8">
+      <img id="mainLogo" src="/logo.png">
       <div class="centerColumn">
-        <img src="public/name.png" id="mainName">
+        <img id="mainName" src="/name.png">
         <div class="info">
           Aplikacja
           wspomagająca
