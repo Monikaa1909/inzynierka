@@ -1,4 +1,6 @@
 @import './markdown.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
+
 
 html,
 body,
@@ -6,6 +8,7 @@ main,
 #app {
   height: 100%;
   width: 100%;
+  min-width: 900px;
   margin: 0;
   padding: 0;
 }
@@ -14,17 +17,117 @@ html.dark {
   background: #121212;
 }
 
-#nprogress {
-  pointer-events: none;
+.logging {
+  background-image: url("public/background.png");
+  /*background-repeat: repeat;*/
+  /*background-color: black;*/
 }
 
-#nprogress .bar {
-  background: rgb(13,148,136);
-  opacity: 0.75;
-  position: fixed;
-  z-index: 1031;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
+.welcome {
+  background-color: #143547;
+}
+
+.column {
+  float: left;
+  height: 100%;
+  width: 50%;
+  min-width: 450px;
+  /*max-height: 600px;*/
+}
+
+.centerColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.centerRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  gap: 5px;
+  align-content: center;
+}
+
+
+.button {
+  background: #143547;
+  box-shadow: -2px -2px 16px rgba(0, 0, 0, 0.25), inset -2px -2px 16px rgba(0, 0, 0, 0.25);
+  width: 430px;
+  height: 70px;
+}
+
+.buttonFont {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  color: #FFFFFF;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.label {
+  color: #143547;
+  text-shadow: 8px 8px 4px rgba(0, 0, 0, 0.25);
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 200;
+  font-size: 40px;
+  line-height: 47px;
+}
+
+.navButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 220px;
+  height: 80px;
+  background: #143547;
+  /*background: darkmagenta;*/
+}
+
+.buttonFrame {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  position: relative;
+  /*background: #1c6b48;*/
+}
+
+.icon {
+  height: 24px;
+}
+
+#mainInfo {
+  /*background: #6394bf;*/
+  margin-top: 100px;
+  margin-left: 20px;
+}
+
+#mainLogo {
+  height: 300px;
+}
+
+#mainName {
+  width: 300px;
+  alignment: left;
+}
+
+.info {
+  margin-left: 50px;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 200;
+  font-size: 36px;
+  line-height: 47px;
+  color: #FFFFFF;
+  text-shadow: 8px 8px 4px rgba(0, 0, 0, 0.25);
 }

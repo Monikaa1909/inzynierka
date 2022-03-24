@@ -4,11 +4,21 @@ button:
   go: GO
   home: Home
   toggle_dark: Toggle dark mode
-  toggle_langs: Change languages
+  set-language: Language
+  functions: Functions
+  contact: Contact
 intro:
+  start: Start using the application!
   desc: Opinionated Vite Starter Template
   dynamic-route: Demo of dynamic route
   hi: Hi, {name}!
   aka: Also known as
   whats-your-name: What's your name?
+login:
+  sign-in: Sign In
+  register: Register
+  trainer: Trainer
+  academy: Academy
+  parent: Parent
+  choose-account-type: Select an account type
 not-found: Not found

@@ -53,5 +53,5 @@ const submit = async() => {
 
 <route lang="yaml">
 meta:
-  layout: home
+  layout: welcome
 </route>

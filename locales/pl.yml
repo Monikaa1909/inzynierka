@@ -4,11 +4,21 @@ button:
   go: WEJDŹ
   home: Strona główna
   toggle_dark: Ustaw tryb nocny
-  toggle_langs: Zmień język
+  set-language: Język
+  functions: Funkcje
+  contact: Kontakt
 intro:
+  start: Rozpocznij korzystanie z aplikacji!
   desc: Opiniowany szablon startowy Vite
   dynamic-route: Demonstracja dynamicznego route
   hi: Cześć, {name}!
   aka: Znany też jako
   whats-your-name: Jak masz na imię?
+login:
+  sign-in: Zaloguj się
+  register: Zarejestruj się
+  trainer: Trener
+  academy: Akademia
+  parent: Rodzic
+  choose-account-type: Wybierz typ konta
 not-found: Nie znaleziono
