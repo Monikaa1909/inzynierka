@@ -22,10 +22,10 @@ export async function onRequestPost({ request, env }) {
   }
 
   const hashedPassword = sha256(password).toString(cryptoJs.enc.Hex)
-  const token = jwt.sign({
+  const token = await jwt.sign({
     username,
     exp: Math.floor(Date.now() / 1000) + (2 * (60 * 60)),
-  }, env.TOKEN_KEY)
+  }, env.TOKEN_KEY ?? 'Swoosh-Pushiness-Affected-Sanitizer-Entwine-Enrich')
 
   user = {
     password: hashedPassword,
@@ -33,7 +33,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   await Promise.all([
-    store.put(id, user),
+    store.put(id, JSON.stringify(user)),
     store.put(`tokens:${token}`, id),
   ])
 
@@ -41,6 +41,6 @@ export async function onRequestPost({ request, env }) {
   return new Response(JSON.stringify({
     success: true,
     token,
-    user,
+    user: { username, ...user },
   }))
 }

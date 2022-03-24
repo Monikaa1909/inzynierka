@@ -13,15 +13,15 @@ export async function onRequestPost({ request, env }) {
   const { token } = await request.json()
 
   try {
-    if (jwt.verify(token, env.TOKEN_KEY)) {
+    if (await jwt.verify(token, env.TOKEN_KEY ?? 'Swoosh-Pushiness-Affected-Sanitizer-Entwine-Enrich')) {
       const id = await store.get(`tokens:${token}`)
       if (id) {
-        const user = await store.get(id)
+        const user = JSON.parse(await store.get(id))
 
         delete user.password
         return new Response(JSON.stringify({
           success: true,
-          user,
+          user: { username: id.slice(5), ...user },
         }))
       }
     }

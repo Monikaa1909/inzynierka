@@ -4,7 +4,7 @@
   "scripts": {
     "build": "vite-ssg build",
     "dev:plain": "vite --port 3333 --open",
-    "dev": "wrangler pages dev --kv TRAINERS -- vite --port 3333",
+    "dev": "wrangler pages dev --kv TRAINERS --proxy 3333 -- vite --port 3333",
     "lint": "eslint .",
     "preview": "vite preview",
     "preview-https": "serve dist",
@@ -61,6 +61,6 @@
     "vite-ssg-sitemap": "^0.2.0",
     "vitest": "^0.7.0",
     "vue-tsc": "^0.33.2",
-    "wrangler": "^0.0.19"
+    "wrangler": "^0.0.23"
   }
 }
