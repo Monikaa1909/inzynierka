@@ -4,7 +4,7 @@
   "scripts": {
     "build": "vite-ssg build",
     "dev:plain": "vite --port 3333 --open",
-    "dev": "wrangler pages dev -- vite --port 3333",
+    "dev": "wrangler pages dev --kv TRAINERS -- vite --port 3333",
     "lint": "eslint .",
     "preview": "vite preview",
     "preview-https": "serve dist",
@@ -14,9 +14,11 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@tsndr/cloudflare-worker-jwt": "^1.1.6",
     "@vueuse/core": "^8.1.1",
     "@vueuse/head": "^0.7.5",
     "@vueuse/integrations": "^8.1.1",
+    "crypto-js": "^4.1.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.12",
     "prism-theme-vars": "^0.2.2",
