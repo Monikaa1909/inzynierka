@@ -12,7 +12,7 @@ const { t } = useI18n()
 <template>
   <div class="centerColumn">
     <p class="label mb-8">{{ t('login.choose-account-type') }}:</p>
-    <router-link class="button centerColumn buttonFont" to="/loginTrainer">
+    <router-link class=" rounded-3xl button centerColumn buttonFont lg:(p-2 m-2 text-red-400)" to="/loginTrainer">
       {{ t('login.academy') }}
     </router-link>
     <router-link class="button centerColumn buttonFont" to="/loginParent">

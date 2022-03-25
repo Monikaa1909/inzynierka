@@ -15,7 +15,7 @@ const { t } = useI18n()
       {{ t('intro.start') }}
     </router-link>
   </div>
-  <div v-else class="centerColumn">
+  <div v-else class="h-full">
     <router-link class="button centerColumn buttonFont " to="/login">
       {{ t('login.sign-in') }}
     </router-link>
