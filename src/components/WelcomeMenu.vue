@@ -36,3 +36,8 @@ const toggleLocales = () => {
     </div>
   </div>
 </template>
+<style scoped>
+.bg-logo {
+  background-image: url("/logo.png");
+} 
+</style>
