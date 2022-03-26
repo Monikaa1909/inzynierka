@@ -4,9 +4,9 @@ button:
   go: GO
   home: Home
   toggle_dark: Toggle dark mode
-  set-language: Language
-  functions: Functions
-  contact: Contact
+  set-language: LANGUAGE
+  functions: FUNCTIONS
+  contact: CONTACT
 intro:
   start: Start using the application!
   desc: Opinionated Vite Starter Template
@@ -14,11 +14,12 @@ intro:
   hi: Hi, {name}!
   aka: Also known as
   whats-your-name: What's your name?
+  slogan: ENCOURAGING SLOGAN
 login:
-  sign-in: Sign In
-  register: Register
-  trainer: Trainer
-  academy: Academy
-  parent: Parent
+  sign-in: SIGN IN
+  register: REGISTER
+  trainer: TRAINER
+  academy: ACADEMY
+  parent: PARENT
   choose-account-type: Select an account type
 not-found: Not found

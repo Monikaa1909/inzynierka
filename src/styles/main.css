@@ -1,18 +1,19 @@
 @import './markdown.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@900&family=Roboto:wght@100;300&display=swap');
-
 html,
 body,
 main,
-#app {
+#app
+{
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
+}
+* {
   font-family: 'Roboto', sans-serif;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
   font-weight: 200;
 }
 .bg-balls {
@@ -21,78 +22,6 @@ main,
 .bg-logo{
   background-image: url("public/logo.png");
 }
-
-/*.button {*/
-/*  background: #143547;*/
-/*  box-shadow: -2px -2px 16px rgba(0, 0, 0, 0.25), inset -2px -2px 16px rgba(0, 0, 0, 0.25);*/
-/*  width: 430px;*/
-/*  height: 70px;*/
-/*}*/
-
-/*.label {*/
-/*  color: #143547;*/
-/*  text-shadow: 8px 8px 4px rgba(0, 0, 0, 0.25);*/
-/*  font-family: 'Roboto', sans-serif;*/
-/*  font-style: normal;*/
-/*  font-weight: 200;*/
-/*  font-size: 40px;*/
-/*  line-height: 47px;*/
-/*}*/
-
-
-/*#welcomeButtons {*/
-/*  display: flex;*/
-/*  flex-direction: row;*/
-/*  position: relative;*/
-/*  !*flex: 0 1 auto;*!*/
-/*}*/
-
-#welcomeButtons button {
-  height: 60px;
-  flex: 1 1 auto;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 2px;
-
-  font-style: normal;
-  font-weight: 400;
-  color: #FFFFFF;
-}
-
-.icon {
-  height: 24px;
-  margin-right: 2px;
-}
-
-
-/*#mainInfo {*/
-/*  !*background: #6394bf;*!*/
-/*  margin-top: 100px;*/
-/*  margin-left: 20px;*/
-/*}*/
-
-/*#mainLogo {*/
-/*  height: 300px;*/
-/*}*/
-
-/*#mainName {*/
-/*  width: 300px;*/
-/*  alignment: left;*/
-/*}*/
-
-/*.info {*/
-/*  margin-left: 50px;*/
-/*  font-family: 'Roboto', sans-serif;*/
-/*  font-style: normal;*/
-/*  font-weight: 200;*/
-/*  font-size: 36px;*/
-/*  line-height: 47px;*/
-/*  color: #FFFFFF;*/
-/*  text-shadow: 8px 8px 4px rgba(0, 0, 0, 0.25);*/
-/*}*/
 .font-M-PLUS-Rounded{
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
