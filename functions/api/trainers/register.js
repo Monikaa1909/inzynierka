@@ -29,7 +29,7 @@ export async function onRequestPost({ request, env }) {
 
   user = {
     password: hashedPassword,
-    // TODO [$62417ad5860a3a064ae65769]: Add name and other stuff from `request.json()`
+    // TODO [#1]: Add name and other stuff from `request.json()`
   }
 
   await Promise.all([
