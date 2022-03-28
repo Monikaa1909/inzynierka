@@ -12,7 +12,7 @@ const { t } = useI18n()
       <div class="flex-grow-0 flex-shrink basis-auto px-2 flex flex-col self-center ">
 
         <!-- TODO [#3]: i18n -->
-        <p class="flex-grow flex-shrink text-3xl text-#FFFFFF basis-auto px-3 sm:(text-3xl)">Aplikacja</p>
+        <p class="flex-grow flex-shrink text-3xl text-#FFFFFF basis-auto px-3 sm:(text-3xl)">{{ t('aplikacja') }}</p>
         <p class="flex-grow flex-shrink text-3xl text-#FFFFFF basis-auto px-3 sm:(text-3xl)">wspomagająca</p>
         <p class="flex-grow flex-shrink text-3xl text-#FFFFFF basis-auto px-3 sm:(text-3xl)">zarządzanie</p>
         <p class="flex-grow flex-shrink text-3xl text-#FFFFFF basis-auto px-3 sm:(text-3xl)">akademią</p>
