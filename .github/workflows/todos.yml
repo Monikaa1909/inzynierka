@@ -12,6 +12,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
+      - name: Commit report
+          run: |
+            git config --global user.email 'Monikaa1909@users.noreply.github.com'
 
       - uses: wvffle/todo-actions@master
         with:
