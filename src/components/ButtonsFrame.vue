@@ -17,7 +17,7 @@ const toggleLocales = () => {
     <div :key="btn.btnType" v-for="btn in buttons" class="flex-grow flex-shrink-1 basis-auto">
       <button @click="toggleLocales" class="w-full m-0.5 py-2 font-normal text-#FFFFFF flex flex-row justify-center items-center sm:(py-1)">
 
-        <!-- TODO: add <slot /> -->
+        <!-- TODO [$62417ad5860a3a064ae6576a]: add <slot /> -->
 <!--        <p>{{btn.btnName}}</p>-->
         <p v-if="btn.btnType === 'Function'"> {{t('button.functions')}} </p>
         <p v-else-if="btn.btnType === 'Contact'"> {{t('button.contact')}} </p>
