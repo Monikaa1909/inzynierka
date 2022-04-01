@@ -1,12 +1,9 @@
 button:
-  about: O nas
-  back: Wróć
-  go: WEJDŹ
-  home: Strona główna
-  toggle_dark: Ustaw tryb nocny
   set-language: JĘZYK
   functions: FUNKCJE
   contact: KONTAKT
+  teams: DRUŻYNY
+  calendar: KALENDARZ
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   desc: Opiniowany szablon startowy Vite

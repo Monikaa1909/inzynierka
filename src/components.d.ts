@@ -9,6 +9,7 @@ declare module 'vue' {
     Footer: typeof import('./components/Footer.vue')['default']
     NavMenu: typeof import('./components/NavMenu.vue')['default']
     README: typeof import('./components/README.md')['default']
+    SingleButton: typeof import('./components/SingleButton.vue')['default']
     WelcomeMenu: typeof import('./components/WelcomeMenu.vue')['default']
   }
 }

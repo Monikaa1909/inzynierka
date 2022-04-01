@@ -18,9 +18,6 @@ main,
 .bg-balls {
   background-image: url("../assets/background.png");
 }
-/*.bg-logo{*/
-/*  background-image: url("public/logo.png");*/
-/*}*/
 .font-M-PLUS-Rounded{
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
