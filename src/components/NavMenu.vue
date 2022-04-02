@@ -27,11 +27,11 @@ const logout = async() => {
 
 <template>
   <div class="flex flex-col sm:(flex-row)">
-    <div class="flex-grow-0 flex-shrink basis-auto flex flex-row self-center">
+    <div class="flex-grow-0 min-w-220px flex-shrink basis-auto flex flex-row self-center">
       <img src="../assets/logo.png " class="px-2 py-2 flex-grow-0 flex-shrink basis-auto h-80px w-auto self-center">
       <img src="../assets/name.png" class="px-2 flex-grow-0 flex-shrink basis-auto h-60px self-center">
     </div>
-    <div class="flex-grow-1 flex-shrink flex-auto flex flex-col m-2 text-xl md:(flex-row)">
+    <div class="flex-grow-1 flex-shrink flex-auto flex flex-col m-2 text-xl lg:(flex-row)">
       <SingleButton>
         <template v-slot:icon><img src="../assets/team-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.teams')}}</template>
@@ -44,13 +44,19 @@ const logout = async() => {
         <template v-slot:icon><img src="../assets/object-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.objects')}}</template>
       </SingleButton>
+      <SingleButton>
+        <template v-slot:icon><img src="../assets/object-icon.png" class="h-24px mr-2"></template>
+        <template v-slot:buttonName>{{t('button.objects')}}</template>
+      </SingleButton>
     </div>
     <div class="flex-grow-0 flex-shrink basis-auto flex flex-row self-center">
       <div class="px-2 py-0.5 flex-grow-1 flex-shrink basis-auto w-auto self-center justify-items-center flex flex-col">
         <p class="px-2  flex-grow-1 flex-shrink basis-auto w-auto justify-items-center text-lg font-medium color-white">Jan Kowalski</p>
         <div class="flex-grow-1 flex-shrink basis-auto flex flex-row">
           <p class="px-2  flex-grow-1 flex-shrink basis-auto w-auto justify-items-center text-base font-medium color-#32B3A3">Trener</p>
-          <img src="../assets/settings-icon.svg" class="px-2 py-0.5 flex-grow-0 flex-shrink basis-auto h-24px w-auto" >
+          <button>
+            <img src="../assets/settings-icon.svg" class="px-2 py-0.5 flex-grow-0 flex-shrink basis-auto h-24px w-auto" >
+          </button>
         </div>
       </div>
       <img src="../assets/default-trainer.jpg" alt="Avatar" class="px-2 py-0.5 flex-grow-0 flex-shrink basis-auto h-80px w-auto self-center rounded-1/2" >

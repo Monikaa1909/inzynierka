@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full h-full sm:(flex-row)">
+  <div class="flex flex-col w-full min-h-full sm:(flex-row)">
     <div class="flex-grow-0 flex-shrink basis-auto bg-#143547 flex flex-col">
       <welcome-menu/>
     </div>
