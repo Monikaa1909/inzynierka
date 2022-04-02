@@ -4,6 +4,7 @@ button:
   contact: CONTACT
   teams: TEAMS
   calendar: CALEANDER
+  objects: OBJECTS
 intro:
   start: Start using the application!
   desc: Opinionated Vite Starter Template

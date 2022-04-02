@@ -9,7 +9,7 @@ const toggleLocales = () => {
 
 <template>
   <div class="h-full flex flex-col">
-    <buttons-frame>
+    <div class="flex-grow-0 flex-shrink flex-auto flex flex-col m-2 text-xl sm:(flex-row)">
       <SingleButton>
         <template v-slot:buttonName>{{t('button.functions')}}</template>
       </SingleButton>
@@ -19,7 +19,7 @@ const toggleLocales = () => {
       <SingleButton @click="toggleLocales">
         <template v-slot:buttonName>{{t('button.set-language')}}</template>
       </SingleButton>
-    </buttons-frame>
+    </div>
     <div class="flex-grow flex-shrink flex-auto flex flex-col my-4 mx-8 sm:(flex-row my-20)">
       <div class="justify-items-center self-center">
         <img src="../assets/logo.png " class="px-2 flex-grow-0 flex-shrink-1 basis-auto max-w-300px">

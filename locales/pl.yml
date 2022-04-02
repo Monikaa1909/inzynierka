@@ -4,6 +4,7 @@ button:
   contact: KONTAKT
   teams: DRUŻYNY
   calendar: KALENDARZ
+  objects: OBIEKTY
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   desc: Opiniowany szablon startowy Vite
