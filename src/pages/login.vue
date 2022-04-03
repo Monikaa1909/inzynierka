@@ -10,15 +10,15 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="flex flex-col text-xl my-16 mx-4">
+  <div class="flex flex-col h-full justify-center">
     <div class="text-center mb-4">{{ t('login.choose-account-type') }}:</div>
-    <router-link class="bg-#143547 color-#FFFFFF w-300px m-2 p-2 shadow-lg text-center" to="/loginTrainer">
+    <router-link class="bg-#143547 color-#FFFFFF self-center w-300px m-2 p-2 shadow-lg text-center" to="/loginTrainer">
       {{ t('login.academy') }}
     </router-link>
-    <router-link class="bg-#143547 color-#FFFFFF w-300px m-2 p-2 shadow-lg text-center" to="/loginParent">
+    <router-link class="bg-#143547 color-#FFFFFF self-center w-300px m-2 p-2 shadow-lg text-center" to="/loginParent">
       {{ t('login.trainer') }}
     </router-link>
-    <router-link class="bg-#143547 color-#FFFFFF w-300px m-2 p-2 shadow-lg text-center" to="/loginAcademy">
+    <router-link class="bg-#143547 color-#FFFFFF self-center w-300px m-2 p-2 shadow-lg text-center" to="/loginAcademy">
       {{ t('login.parent') }}
     </router-link>
   </div>
