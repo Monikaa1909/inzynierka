@@ -26,12 +26,12 @@ const logout = async() => {
 </script>
 
 <template>
-  <div class="flex flex-col sm:(flex-row)">
-    <div class="flex-grow-0 min-w-220px flex-shrink basis-auto flex flex-row self-center">
-      <img src="../assets/logo.png " class="px-2 py-2 flex-grow-0 flex-shrink basis-auto h-80px w-auto self-center">
-      <img src="../assets/name.png" class="px-2 flex-grow-0 flex-shrink basis-auto h-60px self-center">
+  <div class="flex flex-col md:(flex-row flex-wrap justify-center)">
+    <div class="flex flex-row self-center bg-blue-400">
+      <img src="../assets/logo.png " class="px-2 py-2 h-80px self-center">
+      <img src="../assets/name.png" class="px-2 h-60px self-center">
     </div>
-    <div class="flex-grow-1 flex-shrink flex-auto flex flex-col m-2 text-xl lg:(flex-row)">
+    <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
       <SingleButton>
         <template v-slot:icon><img src="../assets/team-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.teams')}}</template>
@@ -49,17 +49,17 @@ const logout = async() => {
         <template v-slot:buttonName>{{t('button.objects')}}</template>
       </SingleButton>
     </div>
-    <div class="flex-grow-0 flex-shrink basis-auto flex flex-row self-center">
-      <div class="px-2 py-0.5 flex-grow-1 flex-shrink basis-auto w-auto self-center justify-items-center flex flex-col">
-        <p class="px-2  flex-grow-1 flex-shrink basis-auto w-auto justify-items-center text-lg font-medium color-white">Jan Kowalski</p>
-        <div class="flex-grow-1 flex-shrink basis-auto flex flex-row">
-          <p class="px-2  flex-grow-1 flex-shrink basis-auto w-auto justify-items-center text-base font-medium color-#32B3A3">Trener</p>
+    <div class="flex flex-row justify-end self-center bg-blue-400">
+      <div class="px-2 py-0.5 self-center justify-items-center flex flex-col">
+        <p class="px-2 justify-items-center text-lg font-medium color-white">Jan Kowalski</p>
+        <div class="flex flex-row">
+          <p class="px-2 justify-items-center text-base font-medium color-#32B3A3">Trener</p>
           <button>
-            <img src="../assets/settings-icon.svg" class="px-2 py-0.5 flex-grow-0 flex-shrink basis-auto h-24px w-auto" >
+            <img src="../assets/settings-icon.svg" class="px-2 py-0.5 h-24px" >
           </button>
         </div>
       </div>
-      <img src="../assets/default-trainer.jpg" alt="Avatar" class="px-2 py-0.5 flex-grow-0 flex-shrink basis-auto h-80px w-auto self-center rounded-1/2" >
+      <img src="../assets/default-trainer.jpg" alt="Avatar" class="px-2 py-0.5 h-80px w-auto self-center rounded-1/2" >
     </div>
   </div>
 <!--    <div class="container mx-auto flex">-->

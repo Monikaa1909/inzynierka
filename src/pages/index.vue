@@ -11,11 +11,11 @@ const { t } = useI18n()
 
 <template>
   <div v-if="parent.token != null || trainer.token != null || academy.token != null" class="flex flex-col h-full justify-center">
-    <router-link class="text-center" to="/start">
+    <router-link class="text-center p-4" to="/start">
       {{ t('intro.start') }}
     </router-link>
   </div>
-  <div v-else class="flex flex-col h-full justify-center">
+  <div v-else class="flex flex-col h-full justify-center p-4">
     <router-link class="bg-#143547 color-#FFFFFF self-center w-300px m-2 p-2 shadow-lg text-center" to="/login">
       {{ t('login.sign-in') }}
     </router-link>

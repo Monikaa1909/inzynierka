@@ -8,7 +8,7 @@ const toggleLocales = () => {
 </script>
 
 <template>
-  <div class="h-full flex flex-col p-2">
+  <div class="h-full flex flex-col p-2 ">
     <div class="flex flex-col justify-around sm:(flex-row flex-wrap)">
       <SingleButton>
         <template v-slot:buttonName>{{t('button.functions')}}</template>

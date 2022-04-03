@@ -1,6 +1,10 @@
 <template>
-  <div class="flex flex-col w-full h-full bg-green-400/30">
-    <nav-menu class="bg-#143547 flex-grow-0 flex-shrink basis-auto"/>
-    <router-view class="flex-grow flex-shrink basis-auto bg-balls flex justify-center items-center" />
+  <div class="flex flex-col h-full">
+    <div class="bg-#143547 flex-initial">
+      <nav-menu />
+    </div>
+    <div class="bg-balls flex-auto">
+      <router-view />
+    </div>
   </div>
 </template>
