@@ -26,12 +26,12 @@ const logout = async() => {
 </script>
 
 <template>
-  <div class="flex flex-col md:(flex-row flex-wrap justify-center)">
-    <div class="flex flex-row self-center bg-blue-400">
+  <div class="flex flex-col md:(flex-row justify-between)">
+    <div class="flex flex-row flex-shrink-0 self-center">
       <img src="../assets/logo.png " class="px-2 py-2 h-80px self-center">
       <img src="../assets/name.png" class="px-2 h-60px self-center">
     </div>
-    <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
+    <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap justify-center)">
       <SingleButton>
         <template v-slot:icon><img src="../assets/team-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.teams')}}</template>
@@ -49,7 +49,7 @@ const logout = async() => {
         <template v-slot:buttonName>{{t('button.objects')}}</template>
       </SingleButton>
     </div>
-    <div class="flex flex-row justify-end self-center bg-blue-400">
+    <div class="flex flex-row self-center flex-shrink-0">
       <div class="px-2 py-0.5 self-center justify-items-center flex flex-col">
         <p class="px-2 justify-items-center text-lg font-medium color-white">Jan Kowalski</p>
         <div class="flex flex-row">
