@@ -20,15 +20,17 @@ const toggleLocales = () => {
         <template v-slot:buttonName>{{t('button.set-language')}}</template>
       </SingleButton>
     </div>
-    <div class="flex-auto flex flex-col sm:(flex-row flex-wrap) py-8 px-4 gap-8 self-center">
-      <img src="../assets/logo.png " class="self-center flex-auto max-w-300px">
-      <div class="flex-auto flex flex-col self-center">
+    <div class="flex-auto flex flex-col sm:(flex-row flex-wrap) py-8 px-4 gap-8 self-center justify-around">
+      <img src="../assets/logo.png " class="self-center max-w-300px">
+      <div class="flex flex-col self-center">
         <img src="../assets/name.png " class="max-w-250px">
-        <p class="text-3xl text-#FFFFFF ">Aplikacja</p>
-        <p class="text-3xl text-#FFFFFF ">wspomagająca</p>
-        <p class="text-3xl text-#FFFFFF ">zarządzanie</p>
-        <p class="text-3xl text-#FFFFFF ">akademią</p>
-        <p class="text-3xl text-#FFFFFF">piłkarską</p>
+        <p class="text-3xl text-#FFFFFF ">
+          {{ t('intro.description.first') }} <br>
+          {{ t('intro.description.second') }} <br>
+          {{ t('intro.description.third') }} <br>
+          {{ t('intro.description.fourth') }} <br>
+          {{ t('intro.description.fifth') }}
+        </p>
       </div>
     </div>
     <div class="text-center color-#32B3A3 m-4 justify-end text-2xl">{{ t('intro.slogan') }}</div>
