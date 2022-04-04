@@ -1,17 +1,21 @@
 button:
+  about: About
+  back: Back
+  go: GO
+  home: Home
+  toggle_dark: Toggle dark mode
   set-language: LANGUAGE
   functions: FUNCTIONS
   contact: CONTACT
-  teams: TEAMS
-  calendar: CALEANDER
-  objects: OBJECTS
 intro:
   start: Start using the application!
-  desc: Opinionated Vite Starter Template
-  dynamic-route: Demo of dynamic route
-  hi: Hi, {name}!
-  aka: Also known as
-  whats-your-name: What's your name?
+  aplikacja: Application
+  description:
+    first: Football
+    second: academy
+    third: managment
+    fourth: support
+    fifth: system
   slogan: ENCOURAGING SLOGAN
 login:
   sign-in: SIGN IN
