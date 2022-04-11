@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import * as yup from 'yup'
 import { useTrainer } from '../stores/trainer'
 import { login as useLogin } from '~/composables'
@@ -19,7 +19,7 @@ const trainer = useTrainer()
 const { t } = useI18n()
 const submit = async() => {
   // TODO: tu coś nie działa i tu czegoś nie kumam
-  const token = await useLogin(login.value, password.value)
+  const token = await useLogin('trainers', login.value, password.value)
   trainer.value.token = token
   if (token != null)
     return router.push('/start')

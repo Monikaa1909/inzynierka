@@ -1,7 +1,7 @@
 import { useAxios } from '@vueuse/integrations/useAxios'
 
-export const login = async(username, password) => {
-  const { data, isFinished } = useAxios('/api/trainer/login', {
+export const login = async(type, username, password) => {
+  const { data, isFinished } = useAxios(`/api/${type}/login`, {
     method: 'post',
     data: {
       username,
