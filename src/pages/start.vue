@@ -13,4 +13,6 @@ const parent = useParent()
 <route lang="yaml">
 meta:
   layout: home
+  authorized:
+    - trainer
 </route>
