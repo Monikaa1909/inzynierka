@@ -19,7 +19,7 @@ const trainer = useTrainer()
 const { t } = useI18n()
 const submit = async() => {
   // TODO: tu coś nie działa i tu czegoś nie kumam
-  const token = await useLogin('trainers', login.value, password.value)
+  const token = await useLogin('trainer', login.value, password.value)
   trainer.value.token = token
   if (token != null)
     return router.push('/start')

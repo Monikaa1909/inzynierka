@@ -23,7 +23,7 @@ export const install: UserModule = async({ router }) => {
     // eslint-disable-next-line no-unreachable-loop
     for (const loginType of to.meta.authorized ?? []) {
       const store = useStoreByType(loginType)
-      if (store?.token) {
+      if (store.value?.token) {
         // TODO: Sprawdzic czy uzytkownik jest zalogowany
         //       Uzywajac endpointu /api/<type>/auth
         return true
