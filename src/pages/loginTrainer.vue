@@ -15,7 +15,10 @@ const { value: password, errorMessage: passwordError } = useField('password')
 
 const router = useRouter()
 const trainer = useTrainer()
+
+const { t } = useI18n()
 const submit = async() => {
+  // TODO: tu coś nie działa i tu czegoś nie kumam
   const token = await useLogin(login.value, password.value)
   trainer.value.token = token
   if (token != null)
@@ -26,29 +29,52 @@ const submit = async() => {
 </script>
 
 <template>
-  <div>
-    {{ trainer.token ?? 'brak' }}
-
-    <form @submit.stop.prevent="submit">
-      <label class="block">
-        Login
-        <input v-model="login" class="border rounded-md block mb-2">
-        <span class="text-red-400 text-xs">
-          {{ loginError }}
-        </span>
-      </label>
-
-      <label class="block">
-        Haslo
-        <input v-model="password" type="password" class="border rounded-md block mb-2">
-        <span class="text-red-400 text-xs">
-          {{ passwordError }}
-        </span>
-      </label>
-
-      <input type="submit" :disabled="!meta.dirty" value="Zaloguj" class="px-4 py-2 rounded bg-blue-400">
+  <div class="flex h-full justify-center p-4">
+<!--        {{ trainer.token ?? 'brak' }}-->
+    <form @submit.stop.prevent="submit" class="flex flex-col self-center justify-between">
+      <div class="flex flex-row justify-between gap-4 m-2">
+        <p class="self-center">{{ t('login.login') }}:</p>
+        <div class="flex flex-col">
+          <input v-model="login" class="border-1 border-#143547 self-center p-2 shadow-lg focus:(outline-none border-2)">
+          <span class="text-red-400 text-xs">
+            {{ loginError }}
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-row justify-between gap-4 m-2">
+        <p class="self-center">{{ t('login.password') }}:</p>
+        <div class="flex flex-col">
+          <input v-model="password" class="border-1 border-#143547 self-center p-2 shadow-lg focus:(outline-none border-2)">
+          <span class="text-red-400 text-xs">
+            {{ passwordError }}
+          </span>
+        </div>
+      </div>
+      <input type="submit" :disabled="!meta.dirty" value="Zaloguj" class="bg-#143547 color-#FFFFFF self-center m-2 py-2 px-8 shadow-lg text-center">
     </form>
   </div>
+<!--  <div class="h-full bg-green-400/30 justify-center p-4">-->
+<!--    {{ trainer.token ?? 'brak' }}-->
+<!--    <form @submit.stop.prevent="submit" class="bg-blue-400 self-center">-->
+<!--      <label class="block">-->
+<!--        Login-->
+<!--        <input v-model="login" class="border rounded-md block mb-2">-->
+<!--        <span class="text-red-400 text-xs">-->
+<!--          {{ loginError }}-->
+<!--        </span>-->
+<!--      </label>-->
+
+<!--      <label class="block">-->
+<!--        Haslo-->
+<!--        <input v-model="password" type="password" class="border rounded-md block mb-2">-->
+<!--        <span class="text-red-400 text-xs">-->
+<!--          {{ passwordError }}-->
+<!--        </span>-->
+<!--      </label>-->
+
+<!--      <input type="submit" :disabled="!meta.dirty" value="Zaloguj" class="px-4 py-2 rounded bg-blue-400">-->
+<!--    </form>-->
+<!--  </div>-->
 </template>
 
 <route lang="yaml">

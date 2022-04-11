@@ -7,6 +7,9 @@ button:
   set-language: JĘZYK
   functions: FUNKCJE
   contact: KONTAKT
+  teams: DRUŻYNY
+  calendar: KALENDARZ
+  objects: OBIEKTY
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -23,4 +26,6 @@ login:
   academy: AKADEMIA
   parent: RODZIC
   choose-account-type: Wybierz typ konta
+  login: Login
+  password: Hasło
 not-found: Nie znaleziono

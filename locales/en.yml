@@ -7,6 +7,9 @@ button:
   set-language: LANGUAGE
   functions: FUNCTIONS
   contact: CONTACT
+  teams: TEAMS
+  calendar: CALENDAR
+  objects: OBJECTS
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -24,4 +27,6 @@ login:
   academy: ACADEMY
   parent: PARENT
   choose-account-type: Select an account type
+  login: Login
+  password: Password
 not-found: Not found
