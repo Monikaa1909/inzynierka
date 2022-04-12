@@ -16,6 +16,10 @@ const academy = useAcademy()
 
 const router = useRouter()
 
+const goTeams = () => {
+  return router.push('/teams')
+}
+
 const logout = async() => {
   parent.value.token = null
   academy.value.token = null
@@ -31,8 +35,8 @@ const logout = async() => {
       <img src="../assets/logo.png " class="px-2 py-2 h-80px self-center">
       <img src="../assets/name.png" class="px-2 h-60px self-center">
     </div>
-    <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap justify-center)">
-      <SingleButton>
+    <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
+      <SingleButton @click="goTeams">
         <template v-slot:icon><img src="../assets/team-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.teams')}}</template>
       </SingleButton>

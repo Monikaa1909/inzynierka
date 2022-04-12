@@ -4,12 +4,14 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BackgroundFrame: typeof import('./components/BackgroundFrame.vue')['default']
     ButtonsFrame: typeof import('./components/ButtonsFrame.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     NavMenu: typeof import('./components/NavMenu.vue')['default']
     README: typeof import('./components/README.md')['default']
     SingleButton: typeof import('./components/SingleButton.vue')['default']
+    SingleTeam: typeof import('./components/SingleTeam.vue')['default']
     WelcomeMenu: typeof import('./components/WelcomeMenu.vue')['default']
   }
 }
