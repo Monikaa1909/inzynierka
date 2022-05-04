@@ -5,6 +5,7 @@ button:
   home: Home
   toggle_dark: Toggle dark mode
   set-language: LANGUAGE
+  change-language: Change language
   functions: FUNCTIONS
   contact: CONTACT
   teams: TEAMS
@@ -22,6 +23,7 @@ intro:
   slogan: ENCOURAGING SLOGAN
 login:
   sign-in: SIGN IN
+  log-out: Log out
   register: REGISTER
   trainer: TRAINER
   academy: ACADEMY
@@ -29,4 +31,13 @@ login:
   choose-account-type: Select an account type
   login: Login
   password: Password
+account:
+  trainer: Trainer
+  academy: Academy
+  parent: Parent
+single-team:
+  name: Name
+  years: Years
+  number-of-players: Number of players
+  the-average-age: The average age
 not-found: Not found

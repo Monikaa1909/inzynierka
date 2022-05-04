@@ -2,7 +2,7 @@
 
 </script>
 <template>
-  <div class="bg-#FFFFFF/50 h-full w-full shadow-xl p-40px">
+  <div class="bg-#FFFFFF/60 h-full w-full frame-shadow p-4">
     <slot></slot>
   </div>
 </template>

@@ -5,6 +5,7 @@ button:
   home: Strona główna
   toggle_dark: Ustaw tryb nocny
   set-language: JĘZYK
+  change-language: Zmień język
   functions: FUNKCJE
   contact: KONTAKT
   teams: DRUŻYNY
@@ -21,6 +22,7 @@ intro:
   slogan: ZACHĘCAJĄCE HASŁO
 login:
   sign-in: ZALOGUJ SIĘ
+  log-out: Wyloguj się
   register: ZAREJESTRUJ SIĘ
   trainer: TRENER
   academy: AKADEMIA
@@ -28,4 +30,13 @@ login:
   choose-account-type: Wybierz typ konta
   login: Login
   password: Hasło
+account:
+  trainer: Trener
+  academy: Akademia
+  parent: Rodzic
+single-team:
+  name: Nazwa
+  years: Rocznik
+  number-of-players: Ilość zawodników
+  the-average-age: Średnia wieku
 not-found: Nie znaleziono

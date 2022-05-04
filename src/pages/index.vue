@@ -11,7 +11,7 @@ const { t } = useI18n()
 
 <template>
   <div v-if="parent.token != null || trainer.token != null || academy.token != null" class="flex flex-col h-full justify-center">
-    <router-link class="text-center p-4" to="/start">
+    <router-link class="text-center p-4 text-2xl" to="/start">
       {{ t('intro.start') }}
     </router-link>
   </div>
