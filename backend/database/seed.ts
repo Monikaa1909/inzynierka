@@ -1,10 +1,6 @@
-import mongoose from 'mongoose'
-import { Player } from './models'
+import models from './models'
 
 export const seedDatabase = async () => {
-    await mongoose.connection.db.dropDatabase()
-    
-    
     const players = [
         {
             firstName: 'Kasper',
@@ -13,7 +9,7 @@ export const seedDatabase = async () => {
     ]
     
     for (const player of players) {
-        await new Player(player).save()
+        await new models.Player(player).save()
     }
 
     return { ok: true }
