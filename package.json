@@ -10,7 +10,8 @@
     "test": "vitest",
     "test:e2e": "cypress open",
     "test:unit": "vitest",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "db:seed": "curl -X POST `gp url 3333`/api/db:seed"
   },
   "dependencies": {
     "@vueuse/core": "^8.1.1",
@@ -62,5 +63,8 @@
     "vite-ssg-sitemap": "^0.2.0",
     "vitest": "^0.7.0",
     "vue-tsc": "^0.33.2"
+  },
+  "mdSeed": {
+    "seedersFolder": "backend/database/seeders"
   }
 }
