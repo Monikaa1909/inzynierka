@@ -5,7 +5,7 @@ import { Player } from '../database/models'
 const router = express.Router()
 export default router
 
-router.get('/db:seed', async (req, res) => {
+router.post('/db:seed', async (req, res) => {
     return seedDatabase()
 })
 
