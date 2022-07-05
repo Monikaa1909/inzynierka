@@ -1,0 +1,14 @@
+
+tasks:
+  - name: Mongodb
+    command: mkdir -p /workspace/data && mongod --dbpath /workspace/data
+    
+  - name: App
+    init: yarn install
+    command: yarn dev
+
+ports:
+  - port: 3333 
+    visibility: public
+    onOpen: open-browser
+
