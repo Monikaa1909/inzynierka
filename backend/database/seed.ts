@@ -4,7 +4,15 @@ export const seedDatabase = async () => {
     const players = [
         {
             firstName: 'Kasper',
-            lastName: 'Seweryn'
+            lastName: 'Seweryn',
+            birthdayDate: Date.now(),
+            nationality: 'Poland'
+        },
+        {
+            firstName: 'Robert',
+            lastName: 'Lewandowski',
+            birthdayDate: Date.now(),
+            nationality: 'Poland'
         }
     ]
     
