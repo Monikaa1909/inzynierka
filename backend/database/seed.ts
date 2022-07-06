@@ -20,5 +20,18 @@ export const seedDatabase = async () => {
         await new models.Player(player).save()
     }
 
+    const teams = [
+        {
+            name: 'młodzik'
+        },
+        {
+            name: 'junior młodszy'
+        }
+    ]
+
+    for (const team of teams) {
+        await new models.Team(team).save()
+    }
+
     return { ok: true }
 }
