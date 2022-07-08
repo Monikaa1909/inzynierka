@@ -11,7 +11,7 @@ router.post('/db:seed', async (req, res) => {
 
 
 router.get('/players', async (req, res) => {
-    const players = await models.Player.find()
+    const players = await models.Player.find().populate('team')
     res.send(players)
 })
 
@@ -19,17 +19,6 @@ router.get('/player/:id', async (req, res) => {
     const player = await models.Player.find({ _id: req.params.id })
     res.send(player)
 })
-
-// let i = 0
-// router.post('/player/createDummy', async (req, res) => {
-//     const player = new models.Player({
-//         firstName: 'Player',
-//         lastName: i++
-//     })
-
-//     await player.save()
-//     res.send(player)
-// })
 
 router.delete('/player/:id', async (req, res) => {
     const player = await models.Player.findOneAndDelete({ _id: req.params.id })
