@@ -1,16 +1,17 @@
 import { Schema } from 'mongoose'
 
 export default new Schema({
-  firstName: String,
-  lastName: String,
-  birthdayDate: Date,
-  nationality: String,
+  type: {
+    type: String
+  },
+  date: Date,
   team: {
     type: Schema.Types.ObjectId,
     ref: "Team"
   },
-  parent: {
+  object: {
     type: Schema.Types.ObjectId,
-    ref: "Parent"
+    ref: "Object"
   }
+  // TODO: dodać listę obecności
 })

@@ -11,7 +11,7 @@ router.post('/db:seed', async (req, res) => {
 
 
 router.get('/players', async (req, res) => {
-    const players = await models.Player.find().populate('team')
+    const players = await models.Player.find().populate('team').populate('parent')
     res.send(players)
 })
 

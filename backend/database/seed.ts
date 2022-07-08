@@ -15,6 +15,11 @@ export const seedDatabase = async () => {
         name: 'junior młodszy'
     })
 
+    const parent1 = await models.Parent.create({
+        firstName: 'Mariusz',
+        lastName: 'Gruszka'
+    })
+
     const player1 = await models.Player.create({
         firstName: 'Jan',
         lastName: 'Kowalski',
@@ -41,14 +46,15 @@ export const seedDatabase = async () => {
         lastName: 'Gruszka',
         birthdayDate: Date.now(),
         nationality: 'Polska',
-        team: team2
+        team: team2,
+        parent: parent1
     })
 
     const trainer1 = await models.Trainer.create({
         firstName: 'Wojciech',
         lastName: 'Agrest',
         birthdayDate: Date.now(),
-        nationality: 'Polska'
+        nationality: 'Polska',
     })
 
     const teamTrainer1 = await models.TeamTrainer.create({
