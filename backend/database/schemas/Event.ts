@@ -13,5 +13,5 @@ export default new Schema({
     type: Schema.Types.ObjectId,
     ref: "Object"
   }
-  // TODO: dodać listę obecności
+  // TODO [$62c82db8e38cdf06643f4b5d]: dodać listę obecności
 })
