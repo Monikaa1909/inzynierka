@@ -1,10 +1,12 @@
 import { Schema } from 'mongoose'
 
 export default new Schema({
-  date: Date,
-  trainer: {
+  date: {      
+    type: Date
+  },
+  team: {
     type: Schema.Types.ObjectId,
-    ref: "Trainer"
+    ref: "Team"
   },
   sportsFacility: {
     type: Schema.Types.ObjectId,

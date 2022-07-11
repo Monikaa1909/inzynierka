@@ -5,7 +5,7 @@ export default new Schema({
         type: Schema.Types.ObjectId,
         ref: "Player"    
     },
-    event: {
+    match: {
         type: Schema.Types.ObjectId,
         ref: "Match"  
     },

@@ -28,12 +28,11 @@ export default new Schema({
     default: 'Your opposite team'
   },
   date: {
-    type: Date,
-    // required: [true, 'Date of event is required']
+    type: Date
   },
-  trainer: {
+  team: {
     type: Schema.Types.ObjectId,
-    ref: "Trainer",
+    ref: "Team",
   },
   sportsFacility: {
     type: Schema.Types.ObjectId,
