@@ -29,7 +29,7 @@ export default new Schema({
   },
   date: {
     type: Date,
-    required: [true, 'Date of event is required']
+    // required: [true, 'Date of event is required']
   },
   trainer: {
     type: Schema.Types.ObjectId,
