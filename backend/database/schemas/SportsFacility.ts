@@ -9,6 +9,6 @@ export default new Schema({
     type: Schema.Types.ObjectId,
     ref: "Academy"
   },
-  // TODO: validation for address
+  // TODO [$62cc505d623fc106a0d40856]: validation for address
   address: String
 })
