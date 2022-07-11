@@ -1,4 +1,5 @@
 import models from './models'
+import Player from './schemas/Player'
 
 export const seedDatabase = async () => {
     // for (const player of players) {

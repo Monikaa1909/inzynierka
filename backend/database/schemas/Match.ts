@@ -1,17 +1,22 @@
 import { Schema } from 'mongoose'
 
 export default new Schema({
-  type: {
-    type: String
+  goalsConceded: {
+    type: Number,
+    default: 0
   },
+  goalsScored: {
+    type: Number,
+    default: 0
+  },
+  opponent: String,
   date: Date,
-  team: {
+  trainer: {
     type: Schema.Types.ObjectId,
-    ref: "Team"
+    ref: "Trainer"
   },
   object: {
     type: Schema.Types.ObjectId,
     ref: "Object"
   }
-  // TODO [#6]: dodać listę obecności
 })
