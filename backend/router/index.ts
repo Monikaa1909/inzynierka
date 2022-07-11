@@ -39,3 +39,8 @@ router.delete('/team/:id', async (req, res) => {
     const team = await models.Team.findOneAndDelete({ _id: req.params.id })
     res.send(team)
 })
+
+router.get('/matches', async (req, res) => {
+    const matches = await models.Match.find()
+    res.send(matches)
+})

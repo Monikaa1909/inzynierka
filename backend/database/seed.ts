@@ -63,5 +63,12 @@ export const seedDatabase = async () => {
         trainer:trainer1
     })
 
+    const match = await models.Match.create({
+        type: 'Match',
+        goalsConceded: 2.3
+    })
+
+    console.log(match)
+    
     return { ok: true }
 }
