@@ -14,20 +14,23 @@ export default new Schema({
     default: 0,
     get: (v:any) => Math.round(v),
     set: (v:any) => Math.round(v),
-    min: [0, 'Must be at least 0, got {VALUE}'],
+    min: [0, 'Number of goals conceded must be at least 0, got {VALUE}'],
   },
   goalsScored: {
     type: Number,
     default: 0,
     get: (v:any) => Math.round(v),
     set: (v:any) => Math.round(v),
-    min: [0, 'Must be at least 0, got {VALUE}'],
+    min: [0, 'Number of goals scored must be at least 0, got {VALUE}'],
   },
   opponent: {
     type: String,
     default: 'Your opposite team'
   },
-  date: Date,
+  date: {
+    type: Date,
+    required: [true, 'Date of event is required']
+  },
   trainer: {
     type: Schema.Types.ObjectId,
     ref: "Trainer",

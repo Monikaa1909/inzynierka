@@ -1,5 +1,4 @@
 import models from './models'
-import Player from './schemas/Player'
 
 export const seedDatabase = async () => {
     // for (const player of players) {
@@ -63,12 +62,29 @@ export const seedDatabase = async () => {
         trainer:trainer1
     })
 
-    const match = await models.Match.create({
+    const match1 = await models.Match.create({
         type: 'Match',
         goalsConceded: 2.3
     })
+    const match2 = await models.Match.create({
+        type: 'Match',
+        goalsConceded: 4
+    })
+    const match3 = await models.Match.create({
+        type: 'Mecz',
+        goalsConceded: 1
+    })
 
-    console.log(match)
-    
+    const matchStatistic1 = await models.MatchStatistic.create({
+        player: player1,
+        match: match1,
+        goalsScored: 1
+    })
+    const matchStatistic2 = await models.MatchStatistic.create({
+        player: player1,
+        match: match2,
+        goalsScored: 3
+    })
+
     return { ok: true }
 }
