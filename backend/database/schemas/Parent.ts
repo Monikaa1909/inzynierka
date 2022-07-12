@@ -9,7 +9,12 @@ export default new Schema({
     type: String,
     required: true
   },
-  // TODO [#7]: validation for phoneNumber and email
-  phoneNumber: String,
-  email: String
+  phoneNumber: {
+    type: String,
+    match:[/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/, 'The phone number is invalid']
+  },
+  email: {
+    type: String,
+    match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'The e-mail address is invalid']
+  }
 })

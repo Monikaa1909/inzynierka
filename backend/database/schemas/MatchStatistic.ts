@@ -3,11 +3,13 @@ import { Schema } from 'mongoose'
 export default new Schema({
     player: {
         type: Schema.Types.ObjectId,
-        ref: "Player"    
+        ref: "Player",
+        required: true    
     },
     match: {
         type: Schema.Types.ObjectId,
-        ref: "Match"  
+        ref: "Match",
+        required: true  
     },
     goalsScored: {
         type: Number,

@@ -3,11 +3,13 @@ import { Schema } from 'mongoose'
 export default new Schema({
     player: {
         type: Schema.Types.ObjectId,
-        ref: "Player"    
+        ref: "Player",
+        required: true  
     },
     training: {
         type: Schema.Types.ObjectId,
-        ref: "Training"  
+        ref: "Training",
+        required: true  
     },
     attendance: {
         type: Boolean,

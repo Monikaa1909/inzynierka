@@ -7,8 +7,11 @@ export default new Schema({
   },
   academy: {
     type: Schema.Types.ObjectId,
-    ref: "Academy"
+    ref: "Academy",
+    required: true
   },
-  // TODO [#8]: validation for address
-  address: String
+  address: {
+    type: Schema.Types.ObjectId,
+    ref: "Address",
+  }
 })

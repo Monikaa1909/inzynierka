@@ -6,7 +6,8 @@ export default new Schema({
   },
   team: {
     type: Schema.Types.ObjectId,
-    ref: "Team"
+    ref: "Team",
+    required: true
   },
   sportsFacility: {
     type: Schema.Types.ObjectId,

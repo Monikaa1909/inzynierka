@@ -19,7 +19,8 @@ export default new Schema({
   },
   academy: {
     type: Schema.Types.ObjectId,
-    ref: "Academy"
+    ref: "Academy",
+    required: true
   },
   parent: {
     type: Schema.Types.ObjectId,
