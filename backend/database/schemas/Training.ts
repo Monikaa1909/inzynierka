@@ -7,7 +7,7 @@ export default new Schema({
   team: {
     type: Schema.Types.ObjectId,
     ref: "Team",
-    required: true
+    required: [true, 'Missing informations - each training or tournament must have a host (team)']
   },
   sportsFacility: {
     type: Schema.Types.ObjectId,

@@ -3,11 +3,11 @@ import { Schema } from 'mongoose'
 export default new Schema({
   firstName: {
     type: String,
-    required: true
+    required: [true, 'Missing informations - firstname is required']
   },
   lastName: {
     type: String,
-    required: true
+    required: [true, 'Missing informations - lastname is required']
   },
   phoneNumber: {
     type: String,

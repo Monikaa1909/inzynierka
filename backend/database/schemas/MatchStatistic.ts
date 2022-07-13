@@ -4,12 +4,12 @@ export default new Schema({
     player: {
         type: Schema.Types.ObjectId,
         ref: "Player",
-        required: true    
+        required: [true, 'Missing informations - each match statistic item must have a strictly defined player']    
     },
     match: {
         type: Schema.Types.ObjectId,
         ref: "Match",
-        required: true  
+        required: [true, 'Missing informations - each match statistic item must have a strictly defined match']  
     },
     goalsScored: {
         type: Number,

@@ -42,106 +42,150 @@ export const seedDatabase = async () => {
     });
 
     // PARENTS ---------------------------------------------------------------------------------
-    const parent1 = await models.Parent.create({
+    const parent1 = new models.Parent({ 
         firstName: 'Mariusz',
         lastName: 'Gruszka',
         email: 'mGruszka@gmail.com'
-    })
-    const parent2 = await models.Parent.create({
+    });
+    parent1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    
+    const parent2 = new models.Parent({ 
         firstName: 'Jerzy',
         lastName: 'Kowalski',
-        email: 'kowalj123@gmail.com'
-    })
+        email: 'kowalj123@gmail.com',
+        phoneNumber: '125 653 444'
+    });
+    parent2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
     // PLAYERS --------------------------------------------------------------------------------
-    const player1 = await models.Player.create({
+    const player1 = new models.Player({ 
         firstName: 'Jan',
         lastName: 'Kowalski',
-        birthdayDate: Date.now(),
+        birthdayDate: '2010-12-09',
         nationality: 'Polska',
         parent: parent2,
-        academy: team1
-    })
-    const player2 = await models.Player.create({
+        academy: academy1
+    });
+    player1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const player2 = new models.Player({ 
         firstName: 'Henryk',
         lastName: 'Kapustka',
-        birthdayDate: Date.now(),
+        birthdayDate: '2011-11-09',
         nationality: 'Polska',
-        academy: team1
-    })
-    const player3 = await models.Player.create({
-        firstName: 'Eryk',
-        lastName: 'Malech',
-        birthdayDate: Date.now(),
-        nationality: 'Litwa',
-        academy: team1
-    })
-    const player4 = await models.Player.create({
+        academy: academy1
+    });
+    player2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const player3 = new models.Player({ 
+        firstName: 'Henryk',
+        lastName: 'Kapustka',
+        birthdayDate: '2011-01-19',
+        nationality: 'Polska',
+        academy: academy1
+    });
+    player3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    
+    const player4 = new models.Player({ 
         firstName: 'Wojciech',
         lastName: 'Gruszka',
-        birthdayDate: Date.now(),
+        birthdayDate: '2010-01-19',
         nationality: 'Polska',
         academy: academy1,
         parent: parent1
-    })
-
-    const playerTeam1 = await models.PlayerTeam.create({
-        team: team1,
-        player: player1
-    })
-
-    const trainer1 = await models.Trainer.create({
-        firstName: 'Wojciech',
-        lastName: 'Agrest',
-        birthdayDate: Date.now(),
-        nationality: 'Polska',
-    })
-
-    const teamTrainer1 = await models.TeamTrainer.create({
-        team: team1,
-        trainer:trainer1
-    })
-
-    const match1 = new models.Match({ type: 'Match', team: team1,goalsConceded: 3 });
-    match1.save(function (err) {
+    });
+    player4.save(function (err) {
         if (err) return console.log(err.message);
     });
-    // const match1 = await models.Match.create({
-    //     type: 'Match',
-    //     goalsConceded: 2.3
-    // })
-    // const match2 = await models.Match.create({
-    //     type: 'Match',
-    //     goalsConceded: 4
-    // })
-    // const match3 = await models.Match.create({
-    //     type: 'Mecz',
-    //     goalsConceded: 1
-    // })
 
-    // const matchStatistic1 = await models.MatchStatistic.create({
-    //     player: player1,
-    //     match: match1,
-    //     goalsScored: 1
-    // })
-    // const matchStatistic2 = await models.MatchStatistic.create({
-    //     player: player1,
-    //     match: match2,
-    //     goalsScored: 3
-    // })
+    // PLAYERTEAMS ---------------------------------------------------------------------------
+    const playerTeam1 = new models.PlayerTeam({ 
+        team: team1,
+        player: player1
+    });
+    playerTeam1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    
+    // TRAINERS -----------------------------------------------------------------------------
+    const trainer1 = new models.Trainer({ 
+        firstName: 'Wojciech',
+        lastName: 'Agrest',
+        birthdayDate: '1978-01-29',
+        nationality: 'Polska',
+        academy: academy1
+    });
+    trainer1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
-    const address1 = await models.Address.create({
+    // TEAMTRAINERS -------------------------------------------------------------------------
+    const teamTrainer1 = new models.TeamTrainer({ 
+        team: team1,
+        trainer:trainer1
+    });
+    teamTrainer1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    // ADDRESS ----------------------------------------------------------------------------
+    const address1 = new models.Address({ 
         street: 'Słoneczna',
         houseNumber: 1,
         city: 'Białystok',
         postalCode: '15-323'
-    })
+    });
+    address1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
-    const sportsFacility1 = await models.SportsFacility.create({
+    // SPORTSFACILITIES ----------------------------------------------------------------------------
+    const sportsFacility1 = new models.SportsFacility({ 
         name: "Stadion Miejski w Białymstoku",
         academy: academy1,
         address: address1
-    })
+    });
+    sportsFacility1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    // MATCHES ----------------------------------------------------------------------------
+    const match1 = new models.Match({ 
+        type: 'Match', 
+        team: team1,
+        goalsConceded: 3
+    });
+    match1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    // MATCHES ----------------------------------------------------------------------------
+    const matchStatistic1 = new models.MatchStatistic({ 
+        player: player1,
+        match: match1,
+        goalsScored: 1
+    });
+    matchStatistic1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const matchStatistic2 = new models.MatchStatistic({ 
+        player: player2,
+        match: match1,
+        goalsScored: 3
+    });
+    matchStatistic2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
     return { ok: true }
 }

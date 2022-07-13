@@ -1,14 +1,14 @@
 import { Schema } from 'mongoose'
 
 export default new Schema({
-    trener: {
+    trainer: {
         type: Schema.Types.ObjectId,
         ref: "Trainer",
-        required: true   
+        required: [true, 'Missing informations - select the trainer to which you want to add the selected training']   
     },
     training: {
         type: Schema.Types.ObjectId,
         ref: "Training",
-        required: true
+        required: [true, 'Missing informations - select the training to which you want to add the selected trainer']
     }
 })
