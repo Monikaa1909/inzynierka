@@ -5,21 +5,39 @@ button:
   home: Strona główna
   toggle_dark: Ustaw tryb nocny
   set-language: JĘZYK
+  change-language: Zmień język
   functions: FUNKCJE
   contact: KONTAKT
+  teams: DRUŻYNY
+  players: ZAWODNICY
+  calendar: KALENDARZ
+  objects: OBIEKTY
 intro:
   start: Rozpocznij korzystanie z aplikacji!
-  desc: Opiniowany szablon startowy Vite
-  dynamic-route: Demonstracja dynamicznego route
-  hi: Cześć, {name}!
-  aka: Znany też jako
-  whats-your-name: Jak masz na imię?
+  description:
+    first: Aplikacja
+    second: wspomagająca
+    third: zarządzanie
+    fourth: akademią
+    fifth: piłkarską
   slogan: ZACHĘCAJĄCE HASŁO
 login:
   sign-in: ZALOGUJ SIĘ
+  log-out: Wyloguj się
   register: ZAREJESTRUJ SIĘ
   trainer: TRENER
   academy: AKADEMIA
   parent: RODZIC
   choose-account-type: Wybierz typ konta
+  login: Login
+  password: Hasło
+account:
+  trainer: Trener
+  academy: Akademia
+  parent: Rodzic
+single-team:
+  name: Nazwa
+  years: Rocznik
+  number-of-players: Ilość zawodników
+  the-average-age: Średnia wieku
 not-found: Nie znaleziono

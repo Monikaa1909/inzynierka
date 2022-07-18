@@ -10,6 +10,21 @@ const { t } = useI18n()
 </script>
 
 <template>
+  <div v-if="parent.token != null || trainer.token != null || academy.token != null" class="flex flex-col h-full justify-center">
+    <router-link class="text-center p-4 text-2xl" to="/start">
+      {{ t('intro.start') }}
+    </router-link>
+  </div>
+  <div v-else class="flex flex-col h-full justify-center p-4">
+    <router-link class="bg-#143547 color-#FFFFFF self-center w-300px m-2 p-2 shadow-lg text-center" to="/login">
+      {{ t('login.sign-in') }}
+    </router-link>
+    <p class="bg-#143547 color-#FFFFFF w-300px self-center m-2 p-2 shadow-lg text-center">
+      {{ t('login.register') }}
+    </p>
+  </div>
+</template>
+<!-- <template>
   <div v-if="parent.token != null || trainer.token != null || academy.token != null">
     <router-link class="text-center mb-4" to="/start">
       {{ t('intro.start') }}
@@ -23,7 +38,7 @@ const { t } = useI18n()
       {{ t('login.register') }}
     </p>
   </div>
-</template>
+</template> -->
 
 <route lang="yaml">
 meta:

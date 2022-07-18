@@ -1,4 +1,14 @@
 <script setup>
+
+</script>
+
+<template>
+  <div class="flex-grow-0 flex-shrink flex-auto flex flex-col m-2 sm:(flex-row)">
+    <slot></slot>
+  </div>
+</template>
+
+<!-- <script setup>
 const { t, availableLocales, locale } = useI18n()
 
 const buttons = ref([
@@ -17,8 +27,7 @@ const toggleLocales = () => {
     <div :key="btn.btnType" v-for="btn in buttons" class="flex-grow flex-shrink-1 basis-auto">
       <button @click="toggleLocales" class="w-full m-0.5 py-2 font-normal text-#FFFFFF flex flex-row justify-center items-center sm:(py-1)">
 
-        <!-- TODO [#2]: add <slot /> -->
-<!--        <p>{{btn.btnName}}</p>-->
+
         <p v-if="btn.btnType === 'Function'"> {{t('button.functions')}} </p>
         <p v-else-if="btn.btnType === 'Contact'"> {{t('button.contact')}} </p>
         <p v-else-if="btn.btnType === 'Set-language'">{{ t('button.set-language') }}</p>
@@ -26,4 +35,4 @@ const toggleLocales = () => {
       </button>
     </div>
   </div>
-</template>
+</template> -->
