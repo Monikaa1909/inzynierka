@@ -45,6 +45,11 @@ router.get('/matches', async (req, res) => {
     res.send(matches)
 })
 
+router.get('/parents', async (req, res) => {
+    const parents = await models.Parent.find()
+    res.send(parents)
+})
+
 router.get('/sportsFacilities', async (req, res) => {
     const sportsFacilities = await models.SportsFacility.find().populate('academy').populate('address')
     res.send(sportsFacilities)

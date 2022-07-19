@@ -41,23 +41,41 @@ export const seedDatabase = async () => {
         if (err) return console.log(err.message);
     });
 
-    // PARENTS ---------------------------------------------------------------------------------
+    // PARENTS ---------------------------------------------------------------------------------  
     const parent1 = new models.Parent({ 
-        firstName: 'Mariusz',
-        lastName: 'Gruszka',
-        email: 'mGruszka@gmail.com'
-    });
-    parent1.save(function (err) {
-        if (err) return console.log(err.message);
-    });
-    
-    const parent2 = new models.Parent({ 
         firstName: 'Jerzy',
         lastName: 'Kowalski',
         email: 'kowalj123@gmail.com',
         phoneNumber: '125 653 444'
     });
+    parent1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const parent2 = new models.Parent({ 
+        firstName: 'Jan',
+        lastName: 'Kapustka',
+        email: 'kapucha123@gmail.com',
+        phoneNumber: '125 653 444'
+    });
     parent2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const parent3 = new models.Parent({ 
+        firstName: 'Antoni',
+        lastName: 'Wierzba'
+    });
+    parent3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const parent4 = new models.Parent({ 
+        firstName: 'Mariusz',
+        lastName: 'Gruszka',
+        email: 'mGruszka@gmail.com'
+    });
+    parent4.save(function (err) {
         if (err) return console.log(err.message);
     });
 
@@ -67,7 +85,7 @@ export const seedDatabase = async () => {
         lastName: 'Kowalski',
         birthdayDate: '2010-12-09',
         nationality: 'Polska',
-        parent: parent2,
+        parent: parent1,
         academy: academy1
     });
     player1.save(function (err) {
@@ -79,6 +97,7 @@ export const seedDatabase = async () => {
         lastName: 'Kapustka',
         birthdayDate: '2011-11-09',
         nationality: 'Polska',
+        parent: parent2,
         academy: academy1
     });
     player2.save(function (err) {
@@ -87,9 +106,10 @@ export const seedDatabase = async () => {
 
     const player3 = new models.Player({ 
         firstName: 'Henryk',
-        lastName: 'Kapustka',
-        birthdayDate: '2011-01-19',
+        lastName: 'Wierzba',
+        birthdayDate: '2010-01-19',
         nationality: 'Polska',
+        parent: parent3,
         academy: academy1
     });
     player3.save(function (err) {
@@ -102,7 +122,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
         academy: academy1,
-        parent: parent1
+        parent: parent4
     });
     player4.save(function (err) {
         if (err) return console.log(err.message);
