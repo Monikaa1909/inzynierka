@@ -1,7 +1,4 @@
-<script setup>
-import { useTrainer } from '~/stores/trainer'
-import { useParent } from '~/stores/parent'
-import { useAcademy } from '~/stores/academy'
+<script setup lang="ts">
 
 const { t, availableLocales, locale } = useI18n()
 
@@ -10,14 +7,10 @@ const toggleLocales = () => {
   locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
 }
 
-const trainer = useTrainer()
-const parent = useParent()
-const academy = useAcademy()
 
 const router = useRouter()
 
 const isHidden = ref(true)
-const name = ref('mcdsc')
 
 const settingsMenu = () => {
   isHidden.value = !isHidden.value
@@ -32,10 +25,11 @@ const goPlayers = () => {
   return router.push('/players')
 }
 
+const goObjects = () => {
+  return router.push('/objects')
+}
+
 const logout = async() => {
-  parent.value.token = null
-  academy.value.token = null
-  trainer.value.token = null
   return router.push('/login')
 }
 
@@ -60,7 +54,7 @@ const logout = async() => {
         <template v-slot:icon><img src="../assets/calendar-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.calendar')}}</template>
       </SingleButton>
-      <SingleButton>
+      <SingleButton @click="goObjects">
         <template v-slot:icon><img src="../assets/object-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.objects')}}</template>
       </SingleButton>
@@ -82,7 +76,7 @@ const logout = async() => {
                 <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}</p>
               </button>
             </div>
-            <button class="p-1 w-full">
+            <button @click="logout" class="p-1 w-full">
               <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
             </button>
           </div>

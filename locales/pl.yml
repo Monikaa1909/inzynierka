@@ -45,4 +45,9 @@ single-player:
   last-name: Nazwisko
   birthday-date: Data urodzenia
   nationality: Narodowość
+single-object:
+  name: Nazwa
+  street: Ulica i numer
+  postal-code: Kod pocztowy
+  city: Miejscowość
 not-found: Nie znaleziono

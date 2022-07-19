@@ -46,4 +46,9 @@ single-player:
   last-name: Last name
   birthday-date: Birthday date
   nationality: Nationality
+single-object:
+  name: Name
+  street: Street and number
+  postal-code: Postal code
+  city: City
 not-found: Not found
