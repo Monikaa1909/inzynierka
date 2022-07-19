@@ -12,6 +12,7 @@ button:
   players: ZAWODNICY
   calendar: KALENDARZ
   objects: OBIEKTY
+  your-profile: Twój profil
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:

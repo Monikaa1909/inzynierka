@@ -12,6 +12,7 @@ button:
   players: PLAYERS
   calendar: CALENDAR
   objects: OBJECTS
+  your-profile: Your profile
 intro:
   start: Start using the application!
   aplikacja: Application

@@ -29,6 +29,10 @@ const goObjects = () => {
   return router.push('/objects')
 }
 
+const goYourProfile = () => {
+  return router.push('/yourProfile')
+}
+
 const logout = async() => {
   return router.push('/login')
 }
@@ -72,6 +76,9 @@ const logout = async() => {
           <!-- Dropdown menu -->
           <div id="dropdownNavbar" :class=" [isHidden ? 'hidden' : '']" class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44">
             <div>
+              <button @click="goYourProfile" class="p-1 w-full">
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.your-profile') }}</p>
+              </button>
               <button @click="toggleLocales" class="p-1 w-full">
                 <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}</p>
               </button>

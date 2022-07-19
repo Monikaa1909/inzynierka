@@ -1,5 +1,5 @@
-<script setup>
-const { t } = useI18n()
+<script setup lang="ts">
+  const { t } = useI18n()
 </script>
 <template>
   <div class="min-h-100px min-w-1/4 bg-white frame-shadow flex flex-col p-2 sm:(flex-row flex-wrap)">

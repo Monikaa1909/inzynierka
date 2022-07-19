@@ -15,6 +15,7 @@ declare module 'vue' {
     SinglePlayer: typeof import('./components/SinglePlayer.vue')['default']
     SingleTeam: typeof import('./components/SingleTeam.vue')['default']
     WelcomeMenu: typeof import('./components/WelcomeMenu.vue')['default']
+    YourProfile: typeof import('./components/YourProfile.vue')['default']
   }
 }
 
