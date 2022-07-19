@@ -41,4 +41,9 @@ single-team:
   years: Years
   number-of-players: Number of players
   the-average-age: The average age
+single-player:
+  first-name: First name
+  last-name: Last name
+  birthday-date: Birthday date
+  nationality: Nationality
 not-found: Not found

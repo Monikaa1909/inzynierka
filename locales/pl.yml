@@ -40,4 +40,9 @@ single-team:
   years: Rocznik
   number-of-players: Ilość zawodników
   the-average-age: Średnia wieku
+single-player:
+  first-name: Imię
+  last-name: Nazwisko
+  birthday-date: Data urodzenia
+  nationality: Narodowość
 not-found: Nie znaleziono

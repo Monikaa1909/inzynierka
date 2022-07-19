@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const teams = [
+const players = [
   {
     name: 'team1',
     years: 'years1',
@@ -51,20 +51,20 @@ const teams = [
   <BackgroundFrame>
     <template v-slot>
       <div class="h-full w-full flex flex-col justify-around place-items-center gap-8 sm:(flex-row flex-wrap)">
-        <SingleTeam v-for="team in teams" v-bind:key="team.name">
-          <template v-slot:name>
-            {{team.name}}
+        <SinglePlayer v-for="player in players" v-bind:key="player.name">
+          <template v-slot:firstName>
+            {{player.name}}
           </template>
-          <template v-slot:years>
-            {{team.years}}
+          <template v-slot:lastName>
+            {{player.years}}
           </template>
-          <template v-slot:numberOfPlayers>
-            {{team.numberOfPlayers}}
+          <template v-slot:birthdayDate>
+            {{player.numberOfPlayers}}
           </template>
-          <template v-slot:averageAge>
-            {{team.averageAge}}
+          <template v-slot:nationality>
+            {{player.averageAge}}
           </template>
-        </SingleTeam>
+        </SinglePlayer>
       </div>
     </template>
   </BackgroundFrame>
