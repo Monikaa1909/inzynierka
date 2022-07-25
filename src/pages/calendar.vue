@@ -1,4 +1,14 @@
 <script setup lang="ts">
+
+const { t } = useI18n()
+
+const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+
+const startDate = new Date(2022,1,1)
+
+console.log(days[startDate.getDay()])
+
 const matches = [
   {
     oponent: 'oponent1',
@@ -17,13 +27,13 @@ const matches = [
     <template v-slot>
       <div class="h-full w-full border flex flex-col justify-center place-items-center gap-2">
         <div class="w-full border flex flex-col justify-center place-items-center gap-2 md:(flex-row)">
-          <div class="flex flex-auto border min-w-full md:(min-w-auto)">sad1</div>
-          <div class="flex flex-auto border min-w-full md:(min-w-auto)">sad2</div>
-          <div class="flex flex-auto border min-w-full md:(min-w-auto)">sad3</div>
-          <div class="flex flex-auto border min-w-full md:(min-w-auto)">sad4</div>
-          <div class="flex flex-auto border min-w-full md:(min-w-auto)">sad5</div>
-          <div class="flex flex-auto border min-w-full md:(min-w-auto)">sad6</div>
-          <div class="flex flex-auto border min-w-full md:(min-w-auto)">sad7</div>
+          <div class="flex flex-auto border min-w-full md:(min-w-auto)">{{ t('days-of-week.monday') }}</div>
+          <div class="flex flex-auto border min-w-full md:(min-w-auto)">{{ t('days-of-week.tuesday') }}</div>
+          <div class="flex flex-auto border min-w-full md:(min-w-auto)">{{ t('days-of-week.wednesday') }}</div>
+          <div class="flex flex-auto border min-w-full md:(min-w-auto)">{{ t('days-of-week.thursday') }}</div>
+          <div class="flex flex-auto border min-w-full md:(min-w-auto)">{{ t('days-of-week.friday') }}</div>
+          <div class="flex flex-auto border min-w-full md:(min-w-auto)">{{ t('days-of-week.saturday') }}</div>
+          <div class="flex flex-auto border min-w-full md:(min-w-auto)">{{ t('days-of-week.sunday') }}</div>
         </div>
         <div class="w-full border flex flex-col justify-center place-items-center gap-2 md:(flex-row)">
           <div class="flex border">sad9</div>

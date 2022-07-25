@@ -51,4 +51,12 @@ single-object:
   street: Ulica i numer
   postal-code: Kod pocztowy
   city: Miejscowość
+days-of-week:
+  monday: PONIEDZIAŁEK
+  tuesday: WTOREK
+  wednesday: ŚRODA
+  thursday: CZWARTEK
+  friday: PIĄTEK
+  saturday: SOBOTA
+  sunday: NIEDZIELA
 not-found: Nie znaleziono

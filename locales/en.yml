@@ -52,4 +52,12 @@ single-object:
   street: Street and number
   postal-code: Postal code
   city: City
+days-of-week:
+  monday: MONDAY
+  tuesday: TUSEDAY
+  wednesday: WEDNESDAY
+  thursday: THURSDAY
+  friday: FRIDAY
+  saturday: SATURDAY
+  sunday: SUNDAY
 not-found: Not found
