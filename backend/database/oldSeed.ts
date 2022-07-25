@@ -8,33 +8,10 @@ export const seedDatabase = async () => {
         if (err) return console.log(err.message);
     });
 
-    // TRAINERS -----------------------------------------------------------------------------
-    const trainer1 = new models.Trainer({ 
-        firstName: 'Wojciech',
-        lastName: 'Agrest',
-        birthdayDate: '1978-01-29',
-        nationality: 'Polska',
-        academy: academy1
-    });
-    trainer1.save(function (err) {
-        if (err) return console.log(err.message);
-    });
-
-    const trainer2 = new models.Trainer({ 
-        firstName: 'Wojciech',
-        lastName: 'Agrest',
-        birthdayDate: '1978-01-29',
-        nationality: 'Polska',
-        academy: academy1
-    });
-    trainer2.save(function (err) {
-        if (err) return console.log(err.message);
-    });
-
     // TEAMS -------------------------------------------------------------------------------------
     const team1 = new models.Team({ 
         name: 'młodzik',
-        trainer: trainer1
+        academy: academy1
     });
     team1.save(function (err) {
         if (err) return console.log(err.message);
@@ -42,7 +19,7 @@ export const seedDatabase = async () => {
 
     const team2 = new models.Team({ 
         name: 'trampkarz',
-        trainer: trainer1
+        academy: academy1
     });
     team2.save(function (err) {
         if (err) return console.log(err.message);
@@ -50,7 +27,7 @@ export const seedDatabase = async () => {
     
     const team3 = new models.Team({ 
         name: 'junior młodszy',
-        trainer: trainer2
+        academy: academy1
     });
     team3.save(function (err) {
         if (err) return console.log(err.message);
@@ -58,7 +35,7 @@ export const seedDatabase = async () => {
 
     const team4 = new models.Team({ 
         name: 'junior starszy',
-        trainer: trainer2 
+        academy: academy1 
     });
     team4.save(function (err) {
         if (err) return console.log(err.message);
@@ -109,7 +86,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-12-09',
         nationality: 'Polska',
         parent: parent1,
-        team: team1
+        academy: academy1
     });
     player1.save(function (err) {
         if (err) return console.log(err.message);
@@ -121,7 +98,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2011-11-09',
         nationality: 'Polska',
         parent: parent2,
-        team: team1
+        academy: academy1
     });
     player2.save(function (err) {
         if (err) return console.log(err.message);
@@ -133,7 +110,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
         parent: parent3,
-        team: team1
+        academy: academy1
     });
     player3.save(function (err) {
         if (err) return console.log(err.message);
@@ -144,10 +121,40 @@ export const seedDatabase = async () => {
         lastName: 'Gruszka',
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
-        team: team1,
+        academy: academy1,
         parent: parent4
     });
     player4.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    // PLAYERTEAMS ---------------------------------------------------------------------------
+    const playerTeam1 = new models.PlayerTeam({ 
+        team: team1,
+        player: player1
+    });
+    playerTeam1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    
+    // TRAINERS -----------------------------------------------------------------------------
+    const trainer1 = new models.Trainer({ 
+        firstName: 'Wojciech',
+        lastName: 'Agrest',
+        birthdayDate: '1978-01-29',
+        nationality: 'Polska',
+        academy: academy1
+    });
+    trainer1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    // TEAMTRAINERS -------------------------------------------------------------------------
+    const teamTrainer1 = new models.TeamTrainer({ 
+        team: team1,
+        trainer:trainer1
+    });
+    teamTrainer1.save(function (err) {
         if (err) return console.log(err.message);
     });
 
@@ -182,7 +189,7 @@ export const seedDatabase = async () => {
         if (err) return console.log(err.message);
     });
 
-    // MATCHESSTATISTIC ----------------------------------------------------------------------------
+    // MATCHES ----------------------------------------------------------------------------
     const matchStatistic1 = new models.MatchStatistic({ 
         player: player1,
         match: match1,

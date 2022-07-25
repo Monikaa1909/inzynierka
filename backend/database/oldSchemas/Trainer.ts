@@ -17,13 +17,16 @@ export default new Schema({
     type: String,
     required: [true, 'Missing informations - nationality is required']
   },
-  team: {
+  academy: {
     type: Schema.Types.ObjectId,
-    ref: "Team",
-    required: [true, 'Missing informations - each player must belong to the team']
+    required: [true, 'Missing informations - each player must belong to the academy']
   },
-  parent: {
-    type: Schema.Types.ObjectId,
-    ref: "Parent"
+  phoneNumber: {
+    type: String,
+    match:[/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/, 'The phone number is invalid']
+  },
+  email: {
+    type: String,
+    match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'The e-mail address is invalid']
   }
 })

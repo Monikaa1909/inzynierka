@@ -17,10 +17,10 @@ export default new Schema({
     type: String,
     required: [true, 'Missing informations - nationality is required']
   },
-  team: {
+  academy: {
     type: Schema.Types.ObjectId,
-    ref: "Team",
-    required: [true, 'Missing informations - each player must belong to the team']
+    ref: "Academy",
+    required: [true, 'Missing informations - each player must belong to the academy']
   },
   parent: {
     type: Schema.Types.ObjectId,

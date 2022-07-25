@@ -5,9 +5,9 @@ export default new Schema({
     type: String,
     required: [true, 'Missing informations - each team must have a name']
   },
-  trainer: {
+  academy: {
     type: Schema.Types.ObjectId,
-    ref: "Trainer",
-    required: [true, 'Missing informations - each team must belong to the trainer']
+    ref: "Academy",
+    required: [true, 'Missing informations - each team must belong to the academy']
   },
 })
