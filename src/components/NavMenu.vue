@@ -25,6 +25,10 @@ const goPlayers = () => {
   return router.push('/players')
 }
 
+const goCalendar = () => {
+  return router.push('/calendar')
+}
+
 const goObjects = () => {
   return router.push('/objects')
 }
@@ -54,7 +58,7 @@ const logout = async() => {
         <template v-slot:icon><img src="../assets/player-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.players')}}</template>
       </SingleButton>
-      <SingleButton>
+      <SingleButton @click="goCalendar">
         <template v-slot:icon><img src="../assets/calendar-icon.png" class="h-24px mr-2"></template>
         <template v-slot:buttonName>{{t('button.calendar')}}</template>
       </SingleButton>
