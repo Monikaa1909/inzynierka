@@ -23,27 +23,19 @@
       <div class="flex flex-col flex-auto place-content-around">
         <div class="flex flex-row">
           <p class="justify-self-start font-medium mr-2">{{ t('single-team.name') }}: </p>
-          <p class="flex-auto">
-            <slot name="name">...</slot>
-          </p>
+          <slot name="name">...</slot>
         </div>
         <div class="flex flex-row">
           <p class="justify-self-start font-medium mr-2">{{ t('single-team.years') }}: </p>
-          <p class="flex-auto">
-            <slot name="years" >...</slot>
-          </p>
+          <slot name="years" >...</slot>
         </div>
         <div class="flex flex-row">
           <p class="justify-self-start font-medium mr-2">{{ t('single-team.number-of-players') }}: </p>
-          <p class="flex-auto">
-            <slot name="numberOfPlayers" >...</slot>
-          </p>
+          <slot name="numberOfPlayers" >...</slot>
         </div>
         <div class="flex flex-row">
           <p class="justify-self-start font-medium mr-2">{{ t('single-team.the-average-age') }}: </p>
-          <p class="flex-auto">
-            <slot name="averageAge" >...</slot>
-          </p>
+          <slot name="averageAge" >...</slot>
         </div>
       </div>
     </div>

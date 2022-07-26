@@ -40,6 +40,7 @@ account:
 single-team:
   name: Name
   years: Years
+  trainer: Trainer
   number-of-players: Number of players
   the-average-age: The average age
 single-player:

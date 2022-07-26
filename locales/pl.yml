@@ -39,6 +39,7 @@ account:
 single-team:
   name: Nazwa
   years: Rocznik
+  trainer: Trener
   number-of-players: Ilość zawodników
   the-average-age: Średnia wieku
 single-player:

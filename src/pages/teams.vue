@@ -63,6 +63,9 @@ const goEditTeam = (teamId: any) => {
             {{team.name}}
           </template>
           <template v-slot:years>
+            {{team.years}} - {{team.years}}
+          </template>
+          <template v-slot:years2>
             {{team.years}}
           </template>
           <template v-slot:numberOfPlayers>
