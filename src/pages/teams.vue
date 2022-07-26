@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+const router = useRouter()
+
 const teams = [
   {
     name: 'team1',
@@ -45,13 +47,18 @@ const teams = [
   },
 ]
 
+const goEditTeam = (teamId: any) => {
+  console.log(teamId)
+  return router.push(`/team/${teamId}`)
+}
+
 </script>
 
 <template>
   <BackgroundFrame>
     <template v-slot>
       <div class="h-full w-full flex flex-col justify-around place-items-center gap-8 sm:(flex-row flex-wrap)">
-        <SingleTeam v-for="team in teams" v-bind:key="team.name">
+        <SingleTeam @edit-team-event="goEditTeam" :team-id="team.name" v-for="team in teams" v-bind:key="team.name">
           <template v-slot:name>
             {{team.name}}
           </template>

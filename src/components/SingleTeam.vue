@@ -1,10 +1,15 @@
 <script setup lang="ts">
   const { t } = useI18n()
+
+  defineProps({
+    teamId: String
+  })
+
 </script>
 <template>
   <div class="min-h-100px min-w-1/4 bg-white frame-shadow flex flex-col p-4">
     <div class="h-full w-full flex flex-row justify-end gap-2">
-      <button>
+      <button @click="$emit('editTeamEvent', teamId)" >
         <img src="../assets/edit-icon.png" class="h-24px">
       </button>
       <button>
