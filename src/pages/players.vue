@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+const router = useRouter()
+
 const players = [
   {
     name: 'team1',
@@ -45,13 +47,17 @@ const players = [
   },
 ]
 
+const goEditPlayers = (playerId: any) => {
+  return router.push(`/player/${playerId}`)
+}
+
 </script>
 
 <template>
   <BackgroundFrame>
     <template v-slot>
       <div class="h-full w-full flex flex-col justify-around place-items-center gap-8 sm:(flex-row flex-wrap)">
-        <SinglePlayer v-for="player in players" v-bind:key="player.name">
+        <SinglePlayer @edit-player-event="goEditPlayers" :player-id="player.name" v-for="player in players" v-bind:key="player.name">
           <template v-slot:firstName>
             {{player.name}}
           </template>

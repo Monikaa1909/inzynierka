@@ -7,6 +7,7 @@ declare module 'vue' {
     BackgroundFrame: typeof import('./components/BackgroundFrame.vue')['default']
     ButtonsFrame: typeof import('./components/ButtonsFrame.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
+    EditSinglePlayer: typeof import('./components/EditSinglePlayer.vue')['default']
     EditSingleTeam: typeof import('./components/EditSingleTeam.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     NavMenu: typeof import('./components/NavMenu.vue')['default']
