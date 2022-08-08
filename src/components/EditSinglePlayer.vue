@@ -7,7 +7,7 @@
   }
 </script>
 <template>
-  <div class="min-h-100px min-w-1/4 bg-white frame-shadow flex flex-col gap-2 p-8">
+  <div class="min-h-100px min-w-1/4 bg-white frame-shadow flex flex-col gap-4 p-8">
     <div class="h-full w-full flex flex-col justify-center gap-4 sm:(flex-row flex-wrap) items-center">
       <div class="flex justify-center">
         <img src="../assets/player-icon2.png" class="h-150px">
