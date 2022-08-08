@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 
 </script>
 <template>
-  <button class="py-2 text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">
+  <button class="bg-#143547 py-2 text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">
     <slot name="icon"></slot>
     <slot name="buttonName">Click me!</slot>
   </button>

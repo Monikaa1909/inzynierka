@@ -13,6 +13,8 @@ button:
   calendar: CALENDAR
   objects: OBJECTS
   your-profile: Your profile
+  save: Save
+  cancel: Cancel
 intro:
   start: Start using the application!
   aplikacja: Application

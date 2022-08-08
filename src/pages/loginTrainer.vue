@@ -21,7 +21,7 @@ const { t } = useI18n()
       <div class="flex flex-row justify-between gap-4 m-2">
         <p class="self-center">{{ t('login.login') }}:</p>
         <div class="flex flex-col">
-          <input v-model="login" class="border-1 border-#143547 self-center p-2 shadow-lg focus:(outline-none border-2)">
+          <input v-model="login" class="border-1 border-#143547 self-center p-1 shadow-lg">
           <span class="text-red-400 text-xs">
             {{ loginError }}
           </span>
@@ -30,7 +30,7 @@ const { t } = useI18n()
       <div class="flex flex-row justify-between gap-4 m-2">
         <p class="self-center">{{ t('login.password') }}:</p>
         <div class="flex flex-col">
-          <input v-model="password" type="password" class="border-1 border-#143547 self-center p-2 shadow-lg focus:(outline-none border-2)">
+          <input v-model="password" type="password" class="border-1 border-#143547 self-center p-1 shadow-lg">
           <span class="text-red-400 text-xs">
             {{ passwordError }}
           </span>

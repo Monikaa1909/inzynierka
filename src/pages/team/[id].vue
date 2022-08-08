@@ -23,19 +23,23 @@
             <input v-model="team.name" placeholder="{{team.name}}" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg">
           </template>
           <template v-slot:years1>
-            <input v-model="team.years" placeholder="{{team.years}}" class="flex max-w-100px border-1 border-#143547 p-1 shadow-lg ">
+            <input v-model="team.years" placeholder="{{team.years}}" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg ">
           </template>
           <template v-slot:years2>
-            <input v-model="team.years" placeholder="{{team.years}}" class="flex max-w-100px border-1 border-#143547 p-1 shadow-lg ">
+            <input v-model="team.years" placeholder="{{team.years}}" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg ">
           </template>
           <template v-slot:trainer>
             <input v-model="team.trainer" placeholder="{{team.trainer}}" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg">
           </template>          
           <template v-slot:numberOfPlayers>
-            {{team.numberOfPlayers}}
+            <p class="flex flex-auto w-full p-1">
+              {{team.numberOfPlayers}}
+            </p>
           </template>
           <template v-slot:averageAge>
-            {{team.averageAge}}
+            <p class="flex flex-auto w-full p-1">
+              {{team.averageAge}}
+            </p>
           </template>
         </EditSingleTeam>
       </div>
