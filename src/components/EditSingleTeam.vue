@@ -1,6 +1,10 @@
 <script setup lang="ts">
   const { t } = useI18n()
+  const router = useRouter()
 
+  const cancel = () => {
+    return router.push('/teams')
+  }
 </script>
 <template>
   <div class="min-h-100px min-w-1/4 bg-white frame-shadow flex flex-col p-8">
@@ -38,7 +42,7 @@
           <SingleButton>
             <template v-slot:buttonName>{{t('button.save')}}</template>
           </SingleButton>
-          <SingleButton>
+          <SingleButton @click="cancel">
             <template v-slot:buttonName>{{t('button.cancel')}}</template>
           </SingleButton>
         </div>
