@@ -57,41 +57,37 @@ const goEditTeam = (teamId: any) => {
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <div
-        class="h-full w-full flex flex-col justify-around place-items-center gap-8 sm:(flex-row flex-wrap)"
-      >
-        <MiniWhiteFrame v-for="team in teams" v-bind:key="team.name">
-          <template v-slot:nav>
-            <button @click="goEditTeam(team.name)">
-              <img src="../assets/edit-icon.png" class="h-24px" />
-            </button>
-            <button>
-              <img src="../assets/delete-icon.png" class="h-24px" />
-            </button>
-          </template>
-          <template v-slot:icon>
-            <img src="../assets/team-icon2.png" class="h-150px" />
-          </template>
-          <template v-slot:attributes>
-            <SingleAttribute>
-              <template v-slot:attributeName>{{ t('single-team.name') }}:</template>
-              <template v-slot:attributeValue>{{ team.name }}</template>
-            </SingleAttribute>
-            <SingleAttribute>
-              <template v-slot:attributeName>{{ t('single-team.years') }}:</template>
-              <template v-slot:attributeValue>{{ team.years }} - {{ team.years }}</template>
-            </SingleAttribute>
-            <SingleAttribute>
-              <template v-slot:attributeName>{{ t('single-team.number-of-players') }}:</template>
-              <template v-slot:attributeValue>{{ team.numberOfPlayers }}</template>
-            </SingleAttribute>
-            <SingleAttribute>
-              <template v-slot:attributeName>{{ t('single-team.the-average-age') }}:</template>
-              <template v-slot:attributeValue>{{ team.averageAge }}</template>
-            </SingleAttribute>
-          </template>
-        </MiniWhiteFrame>
-      </div>
+      <MiniWhiteFrame v-for="team in teams" v-bind:key="team.name">
+        <template v-slot:nav>
+          <button @click="goEditTeam(team.name)">
+            <img src="../assets/edit-icon.png" class="h-24px" />
+          </button>
+          <button>
+            <img src="../assets/delete-icon.png" class="h-24px" />
+          </button>
+        </template>
+        <template v-slot:icon>
+          <img src="../assets/team-icon2.png" class="h-150px" />
+        </template>
+        <template v-slot:attributes>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-team.name') }}:</template>
+            <template v-slot:attributeValue>{{ team.name }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-team.years') }}:</template>
+            <template v-slot:attributeValue>{{ team.years }} - {{ team.years }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-team.number-of-players') }}:</template>
+            <template v-slot:attributeValue>{{ team.numberOfPlayers }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-team.the-average-age') }}:</template>
+            <template v-slot:attributeValue>{{ team.averageAge }}</template>
+          </SingleAttribute>
+        </template>
+      </MiniWhiteFrame>
     </template>
   </BackgroundFrame>
 </template>

@@ -3,9 +3,12 @@
 </script>
 <template>
   <div class="flex flex-row items-center gap-2 flex-wrap sm:(flex-nowrap)">
-    <p class="w-1/2 justify-self-start font-medium">
+    <p class="justify-self-start font-medium sm:(w-1/2)">
         <slot name="inputName"></slot>
     </p>
-    <slot name="inputValue"></slot>
+    <div class="sm:(w-1/2)">
+      <slot name="inputValue"></slot>
+    </div>
+    
   </div>
 </template>
