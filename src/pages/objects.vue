@@ -1,72 +1,85 @@
 <script setup lang="ts">
-import SingleObject from "../components/SingleObject.vue";
-
+const { t } = useI18n()
+const router = useRouter()
 const objects = [
   {
-    name: 'team1',
-    years: 'years1',
-    numberOfPlayers: 'players1',
-    averageAge: 'average age1',
-    players: [
-      {
-        name: 'Leo',
-        surname: 'Messi',
-      },
-    ],
+    name: 'Stadion Miejski w Białymstoku',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
   },
   {
-    name: 'team2',
-    years: 'years2',
-    numberOfPlayers: 'players2',
-    averageAge: 'average age2',
+    name: 'Stadion2',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
   },
   {
-    name: 'team3',
-    years: 'years3',
-    numberOfPlayers: 'players3',
-    averageAge: 'average age3',
+    name: 'Stadion3',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
   },
   {
-    name: 'team4',
-    years: 'years4',
-    numberOfPlayers: 'players4',
-    averageAge: 'average age4',
+    name: 'Stadion Miejski w Białymstoku',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
   },
   {
-    name: 'team5',
-    years: 'years5',
-    numberOfPlayers: 'players5',
-    averageAge: 'average age5',
+    name: 'Stadion Miejski w Białymstoku',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
   },
   {
-    name: 'team6',
-    years: 'years6',
-    numberOfPlayers: 'players6',
-    averageAge: 'average age6',
+    name: 'Stadion Miejski w Białymstoku',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
   },
 ]
+
+const goEditObject = (objectId: any) => {
+  return router.push(`/object/${objectId}`)
+}
 
 </script>
 
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <div class="h-full w-full flex flex-col justify-around place-items-center gap-8 sm:(flex-row flex-wrap)">
-        <SingleObject v-for="object in objects" v-bind:key="object.name">
-          <template v-slot:name>
-            {{object.name}}
-          </template>
-          <template v-slot:street>
-            {{object.years}}
-          </template>
-          <template v-slot:postalCode>
-            {{object.numberOfPlayers}}
-          </template>
-          <template v-slot:city>
-            {{object.averageAge}}
-          </template>
-        </SingleObject>
-      </div>
+      <MiniWhiteFrame v-for="object in objects" v-bind:key="object.name">
+        <template v-slot:nav>
+          <button @click="goEditObject(object.name)">
+            <img src="../assets/edit-icon.png" class="h-24px" />
+          </button>
+          <button>
+            <img src="../assets/delete-icon.png" class="h-24px" />
+          </button>
+        </template>
+        <template v-slot:icon>
+          <img src="../assets/object-icon2.png" class="h-150px" />
+        </template>
+        <template v-slot:attributes>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-object.name') }}:</template>
+            <template v-slot:attributeValue>{{ object.name }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-object.street') }}:</template>
+            <template v-slot:attributeValue>{{ object.street }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-object.postal-code') }}:</template>
+            <template v-slot:attributeValue>{{ object.postalCode }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-object.city') }}:</template>
+            <template v-slot:attributeValue>{{ object.city }}</template>
+          </SingleAttribute>
+        </template>
+      </MiniWhiteFrame>
     </template>
   </BackgroundFrame>
 </template>

@@ -47,7 +47,7 @@ const players = [
   },
 ]
 
-const goEditPlayers = (playerId: any) => {
+const goEditPlayer = (playerId: any) => {
   return router.push(`/player/${playerId}`)
 }
 
@@ -58,7 +58,7 @@ const goEditPlayers = (playerId: any) => {
     <template v-slot>
       <MiniWhiteFrame v-for="player in players" v-bind:key="player.name">
         <template v-slot:nav>
-          <button @click="goEditPlayers(player.name)">
+          <button @click="goEditPlayer(player.name)">
             <img src="../assets/edit-icon.png" class="h-24px" />
           </button>
           <button>
