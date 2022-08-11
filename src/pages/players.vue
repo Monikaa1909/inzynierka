@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+const { t } = useI18n()
 const router = useRouter()
 
 const players = [
@@ -56,22 +56,37 @@ const goEditPlayers = (playerId: any) => {
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <div class="h-full w-full flex flex-col justify-around place-items-center gap-8 sm:(flex-row flex-wrap)">
-        <SinglePlayer @edit-player-event="goEditPlayers" :player-id="player.name" v-for="player in players" v-bind:key="player.name">
-          <template v-slot:firstName>
-            {{player.name}}
-          </template>
-          <template v-slot:lastName>
-            {{player.years}}
-          </template>
-          <template v-slot:birthdayDate>
-            {{player.numberOfPlayers}}
-          </template>
-          <template v-slot:nationality>
-            {{player.averageAge}}
-          </template>
-        </SinglePlayer>
-      </div>
+      <MiniWhiteFrame v-for="player in players" v-bind:key="player.name">
+        <template v-slot:nav>
+          <button @click="goEditPlayers(player.name)">
+            <img src="../assets/edit-icon.png" class="h-24px" />
+          </button>
+          <button>
+            <img src="../assets/delete-icon.png" class="h-24px" />
+          </button>
+        </template>
+        <template v-slot:icon>
+          <img src="../assets/player-icon2.png" class="h-150px" />
+        </template>
+        <template v-slot:attributes>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
+            <template v-slot:attributeValue>{{ player.name }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
+            <template v-slot:attributeValue>{{ player.years }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.birthday-date') }}:</template>
+            <template v-slot:attributeValue>{{ player.numberOfPlayers }}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>
+            <template v-slot:attributeValue>{{ player.averageAge }}</template>
+          </SingleAttribute>
+        </template>
+      </MiniWhiteFrame>
     </template>
   </BackgroundFrame>
 </template>

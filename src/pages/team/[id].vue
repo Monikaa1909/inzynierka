@@ -1,9 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
-
-defineProps({
-  id: String
-})
+const router = useRouter()
 
 const team = {
   name: 'team1',
@@ -12,7 +9,7 @@ const team = {
   numberOfPlayers: 'players1',
   averageAge: 'average age1'
 }
-const router = useRouter()
+
 
 const cancel = () => {
   return router.push('/teams')

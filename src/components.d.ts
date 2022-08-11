@@ -7,7 +7,6 @@ declare module 'vue' {
     BackgroundFrame: typeof import('./components/BackgroundFrame.vue')['default']
     ButtonsFrame: typeof import('./components/ButtonsFrame.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
-    EditSinglePlayer: typeof import('./components/EditSinglePlayer.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     MiniWhiteFrame: typeof import('./components/MiniWhiteFrame.vue')['default']
     NavMenu: typeof import('./components/NavMenu.vue')['default']
@@ -16,7 +15,6 @@ declare module 'vue' {
     SingleButton: typeof import('./components/SingleButton.vue')['default']
     SingleInput: typeof import('./components/SingleInput.vue')['default']
     SingleObject: typeof import('./components/SingleObject.vue')['default']
-    SinglePlayer: typeof import('./components/SinglePlayer.vue')['default']
     WelcomeMenu: typeof import('./components/WelcomeMenu.vue')['default']
     YourProfile: typeof import('./components/YourProfile.vue')['default']
   }
