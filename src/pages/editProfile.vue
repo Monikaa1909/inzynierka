@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 const { t } = useI18n()
 const router = useRouter()
 
 const cancel = () => {
   return router.push('/yourProfile')
 }
+
+
 
 var profile = {
   firstName: 'Jerzy',
@@ -23,7 +27,7 @@ var profile = {
           <img src="../assets/player-icon2.png" class="h-150px" />
         </template>
         <template v-slot:attributes>
-					<SingleInput>
+          <SingleInput>
             <template v-slot:inputName>{{ t('single-player.first-name') }}:</template>
             <template v-slot:inputValue>
               <input
@@ -46,11 +50,12 @@ var profile = {
           <SingleInput>
             <template v-slot:inputName>{{ t('single-player.birthday-date') }}:</template>
             <template v-slot:inputValue>
-              <input
+              <Datepicker v-model="profile.birthday" format="yyyy-MM-dd" :clearable="false" class="border-1 rounded-none"></Datepicker>
+              <!-- <input
                 v-model="profile.birthday"
                 placeholder="{{profile.birthday.getDay()}}.{{profile.birthday.getMonth()}}.{{profile.birthday.getFullYear()}}"
                 class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
-              />
+              /> -->
             </template>
           </SingleInput>
           <SingleInput>
@@ -64,7 +69,7 @@ var profile = {
             </template>
           </SingleInput>
         </template>
-				<template v-slot:footer>
+        <template v-slot:footer>
           <SingleButton>
             <template v-slot:buttonName>{{ t('button.save') }}</template>
           </SingleButton>
