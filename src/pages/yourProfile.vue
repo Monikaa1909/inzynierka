@@ -1,28 +1,53 @@
 <script setup lang="ts">
-import YourProfile from '~/components/YourProfile.vue';
+const { t } = useI18n()
+const router = useRouter()
 
+const goEditYourProfile = (userId: any) => {
+  return router.push('/editProfile')
+}
+
+var profile = {
+  firstName: 'Jerzy',
+  lastName: 'Brzęczek',
+  birthday: new Date(2010, 1, 12),
+  nationality: 'Poland',
+}
 </script>
 
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <div class="h-full w-full flex flex-col justify-around place-items-center gap-8 sm:(flex-row flex-wrap)">
-        
-        <YourProfile>
-          <template v-slot:firstName>
-            
-          </template>
-          <template v-slot:lastName>
-            
-          </template>
-          <template v-slot:birthdayDate>
-            
-          </template>
-          <template v-slot:nationality>
-            
-          </template>
-        </YourProfile>
-      </div>
+      <MiniWhiteFrame>
+        <template v-slot:nav>
+          <button @click="goEditYourProfile(profile.firstName)">
+            <img src="../assets/edit-icon.png" class="h-24px" />
+          </button>
+          <button>
+            <img src="../assets/delete-icon.png" class="h-24px" />
+          </button>
+        </template>
+        <template v-slot:icon>
+          <img src="../assets/player-icon2.png" class="h-150px" />
+        </template>
+        <template v-slot:attributes>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
+            <template v-slot:attributeValue>{{profile.firstName}}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
+            <template v-slot:attributeValue>{{profile.lastName}}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.birthday-date') }}:</template>
+            <template v-slot:attributeValue>{{profile.birthday.getDay()}}.{{profile.birthday.getMonth()}}.{{profile.birthday.getFullYear()}}</template>
+          </SingleAttribute>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>
+            <template v-slot:attributeValue>{{profile.nationality}}</template>
+          </SingleAttribute>
+        </template>
+      </MiniWhiteFrame>
     </template>
   </BackgroundFrame>
 </template>

@@ -14,7 +14,6 @@ declare module 'vue' {
     SingleAttribute: typeof import('./components/SingleAttribute.vue')['default']
     SingleButton: typeof import('./components/SingleButton.vue')['default']
     SingleInput: typeof import('./components/SingleInput.vue')['default']
-    SingleObject: typeof import('./components/SingleObject.vue')['default']
     WelcomeMenu: typeof import('./components/WelcomeMenu.vue')['default']
     YourProfile: typeof import('./components/YourProfile.vue')['default']
   }

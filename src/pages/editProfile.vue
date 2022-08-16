@@ -2,16 +2,17 @@
 const { t } = useI18n()
 const router = useRouter()
 
-const player = {
-  name: 'imie',
-  years: 'xdcs',
-  trainer: 'trainer1',
-  numberOfPlayers: 'players1',
-  averageAge: 'average age1'
-}
 const cancel = () => {
-  return router.push('/players')
+  return router.push('/yourProfile')
 }
+
+var profile = {
+  firstName: 'Jerzy',
+  lastName: 'Brzęczek',
+  birthday: new Date(2010, 1, 12),
+  nationality: 'Poland',
+}
+
 </script>
 
 <template>
@@ -19,15 +20,15 @@ const cancel = () => {
     <template v-slot>
       <MiniWhiteFrame>
         <template v-slot:icon>
-          <img src="../../assets/player-icon2.png" class="h-150px" />
+          <img src="../assets/player-icon2.png" class="h-150px" />
         </template>
         <template v-slot:attributes>
-          <SingleInput>
+					<SingleInput>
             <template v-slot:inputName>{{ t('single-player.first-name') }}:</template>
             <template v-slot:inputValue>
               <input
-                v-model="player.name"
-                placeholder="{{player.name}}"
+                v-model="profile.firstName"
+                placeholder="{{profile.firstName}}"
                 class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
               />
             </template>
@@ -36,8 +37,8 @@ const cancel = () => {
             <template v-slot:inputName>{{ t('single-player.last-name') }}:</template>
             <template v-slot:inputValue>
               <input
-                v-model="player.name"
-                placeholder="{{player.name}}"
+                v-model="profile.lastName"
+                placeholder="{{profile.lastName}}"
                 class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
               />
             </template>
@@ -46,8 +47,8 @@ const cancel = () => {
             <template v-slot:inputName>{{ t('single-player.birthday-date') }}:</template>
             <template v-slot:inputValue>
               <input
-                v-model="player.trainer"
-                placeholder="{{player.trainer}}"
+                v-model="profile.birthday"
+                placeholder="{{profile.birthday.getDay()}}.{{profile.birthday.getMonth()}}.{{profile.birthday.getFullYear()}}"
                 class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
               />
             </template>
@@ -56,14 +57,14 @@ const cancel = () => {
             <template v-slot:inputName>{{ t('single-player.nationality') }}:</template>
             <template v-slot:inputValue>
               <input
-                v-model="player.trainer"
-                placeholder="{{player.trainer}}"
+                v-model="profile.nationality"
+                placeholder="{{profile.nationality}}"
                 class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
               />
             </template>
           </SingleInput>
         </template>
-        <template v-slot:footer>
+				<template v-slot:footer>
           <SingleButton>
             <template v-slot:buttonName>{{ t('button.save') }}</template>
           </SingleButton>
