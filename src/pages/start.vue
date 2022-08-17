@@ -1,13 +1,15 @@
-<script setup>
-import { useTrainer } from '../stores/trainer'
-import { useParent } from '../stores/parent'
+<script setup lang="ts">
+import 'v-calendar/dist/style.css';
+import { SetupCalendar } from 'v-calendar';
+import { Calendar, DatePicker } from 'v-calendar';
 
-const trainer = useTrainer()
-const parent = useParent()
 </script>
 
 <template>
-  <div></div>
+  <div>
+<Calendar />
+  <DatePicker/>
+  </div>
 </template>
 
 <route lang="yaml">
