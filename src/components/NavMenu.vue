@@ -16,12 +16,15 @@ const settingsMenu = () => {
   isHidden.value = !isHidden.value
 }
 
+const goStart = () => {
+  return router.push('/start')
+}
+
 const goTeams = () => {
   return router.push('/teams')
 }
 
 const goPlayers = () => {
-  // return router.push(`/hi/${name.value}`)
   return router.push('/players')
 }
 
@@ -45,10 +48,10 @@ const logout = async() => {
 
 <template>
   <div class="flex flex-col md:(flex-row justify-between)">
-    <div class="flex flex-row flex-shrink-0 self-center">
+    <button @click="goStart" class="flex flex-row flex-shrink-0 self-center">
       <img src="../assets/logo.png " class="px-2 py-2 h-80px self-center">
       <img src="../assets/name.png" class="px-2 h-60px self-center">
-    </div>
+    </button>
     <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
       <SingleButton @click="goTeams">
         <template v-slot:icon><img src="../assets/team-icon.png" class="h-24px mr-2"></template>
