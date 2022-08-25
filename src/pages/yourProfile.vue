@@ -1,6 +1,10 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, availableLocales, locale } = useI18n()
+
 const router = useRouter()
+
+const locales = availableLocales
+locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const goEditYourProfile = (userId: any) => {
   return router.push('/editProfile')
@@ -12,6 +16,10 @@ var profile = {
   birthday: new Date(2010, 1, 12),
   nationality: 'Poland',
 }
+console.log(locale.value)
+const birthdayDate = computed(() => {
+  return profile.birthday.toLocaleDateString(locale.value)
+})
 </script>
 
 <template>
@@ -40,7 +48,8 @@ var profile = {
           </SingleAttribute>
           <SingleAttribute>
             <template v-slot:attributeName>{{ t('single-player.birthday-date') }}:</template>
-            <template v-slot:attributeValue>{{profile.birthday.getDay()}}.{{profile.birthday.getMonth()}}.{{profile.birthday.getFullYear()}}</template>
+            <template v-slot:attributeValue>{{birthdayDate}}</template>
+            <!-- <template v-slot:attributeValue>{{profile.birthday.getDay()}}.{{profile.birthday.getMonth()}}.{{profile.birthday.getFullYear()}}</template> -->
           </SingleAttribute>
           <SingleAttribute>
             <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>

@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import 'v-calendar/dist/style.css';
-// import { SetupCalendar } from 'v-calendar';
 import { Calendar } from 'v-calendar';
-const { t } = useI18n()
+const { t, availableLocales, locale } = useI18n()
 
-const matches = [
+const locales = availableLocales
+locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
+
+const attributes = [
   {
-    oponent: 'oponent1',
-    date: new Date(1995, 11, 17)
-  },
-  {
-    oponent: 'oponent2',
-    date: new Date(2001, 2, 1)
+    key: 'today',
+    highlight: {
+      color: '#143547',
+      fillMode: 'light',
+    },
+    dates: new Date(),
   },
 ]
 
@@ -20,7 +22,7 @@ const matches = [
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <Calendar is-expanded/>
+      <Calendar is-expanded :attributes="attributes" :locale="locale" />
     </template>
   </BackgroundFrame>
 </template>
