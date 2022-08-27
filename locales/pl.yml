@@ -62,4 +62,8 @@ days-of-week:
   friday: PIĄTEK
   saturday: SOBOTA
   sunday: NIEDZIELA
+events:
+  match: MECZ
+  tournament: TURNIEJ
+  training: TRENING
 not-found: Nie znaleziono

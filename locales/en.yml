@@ -63,4 +63,8 @@ days-of-week:
   friday: FRIDAY
   saturday: SATURDAY
   sunday: SUNDAY
+events:
+  match: MATCH
+  tournament: TOURNAMENT
+  training: TRAINING
 not-found: Not found
