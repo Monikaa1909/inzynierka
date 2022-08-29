@@ -174,7 +174,6 @@ export const seedDatabase = async () => {
 
     // MATCHES ----------------------------------------------------------------------------
     const match1 = new models.Match({ 
-        type: 'Match', 
         team: team1,
         goalsConceded: 3
     });

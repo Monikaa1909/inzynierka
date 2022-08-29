@@ -1,14 +1,6 @@
 import { Schema } from 'mongoose'
 
 export default new Schema({
-  type: {
-    type: String,
-    enum: {
-      values: ['Match', 'Tournament', 'Mecz', 'Turniej'],
-      message: '{VALUE} is an invalid event type.'
-    },
-    required: [true, 'Type of event is required']
-  },
   goalsConceded: {
     type: Number,
     default: 0,
