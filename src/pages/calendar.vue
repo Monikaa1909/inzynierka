@@ -95,6 +95,8 @@ for (let training of myTrainings) {
 }
 
 const attributes = ref<Array<any>>([])
+
+const tournamentsAttributes = ref<Array<any>>([])
 for (let tournament of tournaments.value) {
   const attribute = {
     popover: {
@@ -106,11 +108,13 @@ for (let tournament of tournaments.value) {
     },
     dates: { start: tournament.startDate, end: tournament.endDate },
   }
-  attributes.value.push(attribute)
+  tournamentsAttributes.value.push(attribute)
 }
 
+const matchesAttributes = ref<Array<any>>([])
 for (let match of matches.value) {
   const attribute = {
+    key: 'match',
     dates: match.date,
     popover: {
       label: computed(() => (t('events.match') + ' - ' + match.opponent))
@@ -120,18 +124,64 @@ for (let match of matches.value) {
       fillMode: 'solid',
     },
   }
-  attributes.value.push(attribute)
+  matchesAttributes.value.push(attribute)
 }
 
+const trainingAttributes = ref<Array<any>>([])
 for (let training of trainings.value) {
   const attribute = {
+    key: 'training',
     dates: training.date,
     popover: {
       label: computed(() => (t('events.training') + ' - ' + training.sportFaciility))
     },
-    dot: 'green',
+    dot: 'green'
   }
-  attributes.value.push(attribute)
+  trainingAttributes.value.push(attribute)
+}
+
+trainingAttributes.value.forEach(element => {
+  attributes.value.push(element)
+})
+matchesAttributes.value.forEach(element => {
+  attributes.value.push(element)
+})
+tournamentsAttributes.value.forEach(element => {
+  attributes.value.push(element)
+})
+
+const filter = (eventType: any) => {
+  while (attributes.value.length > 0) {
+    attributes.value.pop()
+  }
+
+  switch (eventType) {
+    case 'trainings':
+      trainingAttributes.value.forEach(element => {
+        attributes.value.push(element)
+      })
+      break
+    case 'matches':
+      matchesAttributes.value.forEach(element => {
+        attributes.value.push(element)
+      })
+      break
+    case 'tournaments':
+      tournamentsAttributes.value.forEach(element => {
+        attributes.value.push(element)
+      })
+      break
+    case 'all':
+      trainingAttributes.value.forEach(element => {
+        attributes.value.push(element)
+      })
+      matchesAttributes.value.forEach(element => {
+        attributes.value.push(element)
+      })
+      tournamentsAttributes.value.forEach(element => {
+        attributes.value.push(element)
+      })
+  }
 }
 
 </script>
@@ -139,7 +189,20 @@ for (let training of trainings.value) {
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick='goSpecificDay'></Calendar>
+      <div class="w-full border">przyciski</div>
+      <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick="goSpecificDay"></Calendar>
+      <div class="w-full flex flex-col justify-center gap-4 sm:(flex-row)">
+        <button
+          @click="filter('trainings')"
+          class="rounded-xl bg-#805AD5 w-full sm:(w-1/5)"
+        >treningi</button>
+        <button @click="filter('matches')" class="rounded-xl bg-#E9D8FD w-full sm:(w-1/5)">treningi</button>
+        <button
+          @click="filter('tournaments')"
+          class="rounded-xl bg-#32B3A3 w-full sm:(w-1/5)"
+        >treningi</button>
+        <button @click="filter('all')" class="rounded-xl bg-#32B3A3 w-full sm:(w-1/5)">treningi</button>
+      </div>
     </template>
   </BackgroundFrame>
 </template>

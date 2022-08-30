@@ -2,7 +2,7 @@
 
 </script>
 <template>
-  <div class="min-h-100px min-w-1/3 bg-white frame-shadow flex flex-col gap-4 p-4">
+  <div class="min-h-100px bg-white frame-shadow flex flex-col gap-4 p-4">
     <div
       class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)"
     >
