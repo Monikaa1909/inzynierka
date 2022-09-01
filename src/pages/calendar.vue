@@ -7,6 +7,12 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const isHidden = ref(true)
+
+const filterMenu = () => {
+  isHidden.value = !isHidden.value
+}
+
 const goSpecificDay = (day: any) => {
   return router.push(`/events/${day.id}`)
 }
@@ -94,7 +100,8 @@ for (let training of myTrainings) {
   trainings.value.push(training)
 }
 
-const attributes = ref<Array<any>>([])
+// const attributes = ref<Array<any>>([])
+const eventsType = ref('all')
 
 const tournamentsAttributes = ref<Array<any>>([])
 for (let tournament of tournaments.value) {
@@ -139,70 +146,111 @@ for (let training of trainings.value) {
   }
   trainingAttributes.value.push(attribute)
 }
-
-trainingAttributes.value.forEach(element => {
-  attributes.value.push(element)
-})
-matchesAttributes.value.forEach(element => {
-  attributes.value.push(element)
-})
-tournamentsAttributes.value.forEach(element => {
-  attributes.value.push(element)
-})
-
-const filter = (eventType: any) => {
-  while (attributes.value.length > 0) {
-    attributes.value.pop()
-  }
-
-  switch (eventType) {
+const attributes = computed(() => {
+  var newAttributes = <Array<any>>([])
+  switch (eventsType.value) {
     case 'trainings':
       trainingAttributes.value.forEach(element => {
-        attributes.value.push(element)
+        newAttributes.push(element)
       })
       break
     case 'matches':
       matchesAttributes.value.forEach(element => {
-        attributes.value.push(element)
+        newAttributes.push(element)
       })
       break
     case 'tournaments':
       tournamentsAttributes.value.forEach(element => {
-        attributes.value.push(element)
+        newAttributes.push(element)
       })
       break
     case 'all':
       trainingAttributes.value.forEach(element => {
-        attributes.value.push(element)
+        newAttributes.push(element)
       })
       matchesAttributes.value.forEach(element => {
-        attributes.value.push(element)
+        newAttributes.push(element)
       })
       tournamentsAttributes.value.forEach(element => {
-        attributes.value.push(element)
+        newAttributes.push(element)
       })
   }
-}
+  return newAttributes
+})
 
 </script>
 
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <div class="w-full border">przyciski</div>
-      <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick="goSpecificDay"></Calendar>
-      <div class="w-full flex flex-col justify-center gap-4 sm:(flex-row)">
+      <div class="w-full h-full p-4 flex flex-col justify-center place-items-center gap-8">
+        <div class="w-full flex flex-col">
+          <div
+            class="w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)"
+          >
+            <button @click="filterMenu" @focusout="filterMenu">
+              <img src="../assets/edit-icon.png" class="h-48px" />
+            </button>
+            <button>
+              <img src="../assets/delete-icon.png" class="h-48px" />
+            </button>
+          </div>
+          <div class="w-full flex justify-items-end justify-end">
+            <div
+              id="dropdownNavbar"
+              :class="[isHidden ? 'hidden' : '']"
+              class="z-10 bg-white absolute divide-y divide-gray-100 shadow items-center justify-end w-44"
+            >
+              <div>
+                <!-- <button class="p-1 w-full">
+                  <p
+                    class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left"
+                  >{{ t('button.your-profile') }}</p>
+                </button>
+                <button class="p-1 w-full">
+                  <p
+                    class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left"
+                  >{{ t('button.change-language') }}</p>
+                </button>-->
+                <button @click="eventsType = 'matches'" class="p-1 w-full">
+                  <p
+                    class="px-4 py-2 text-sm hover:bg-#805AD5 text-gray-700 text-left"
+                  >treningi</p>
+                </button>
+                <button @click="eventsType = 'tournaments'" class="p-1 w-full">
+                <p
+                    class="px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-left"
+                  >treningi</p>
+                </button>
+                <button @click="eventsType = 'trainings'" class="p-1 w-full">
+                <p
+                    class="px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-left"
+                  >treningi</p>
+                </button>
+                <button @click="eventsType = 'all'" class="p-1 w-full">
+                <p
+                    class="px-4 py-2 text-sm hover:bg-#143547 text-gray-700 hover:text-white text-left"
+                  >treningi</p>
+                  </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick="goSpecificDay"></Calendar>
+      </div>
+
+      <!-- <div class="w-full flex flex-col justify-center gap-4 sm:(flex-row)">
         <button
-          @click="filter('trainings')"
+          @click="eventsType = 'matches'"
           class="rounded-xl bg-#805AD5 w-full sm:(w-1/5)"
         >treningi</button>
-        <button @click="filter('matches')" class="rounded-xl bg-#E9D8FD w-full sm:(w-1/5)">treningi</button>
+        <button @click="eventsType = 'tournaments'" class="rounded-xl bg-#E9D8FD w-full sm:(w-1/5)">treningi</button>
         <button
-          @click="filter('tournaments')"
+          @click="eventsType = 'trainings'"
           class="rounded-xl bg-#32B3A3 w-full sm:(w-1/5)"
         >treningi</button>
-        <button @click="filter('all')" class="rounded-xl bg-#32B3A3 w-full sm:(w-1/5)">treningi</button>
-      </div>
+        <button @click="eventsType = 'all'" class="rounded-xl bg-#143547 w-full sm:(w-1/5)">treningi</button>
+      </div>-->
     </template>
   </BackgroundFrame>
 </template>
