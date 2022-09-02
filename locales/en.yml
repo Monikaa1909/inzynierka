@@ -15,6 +15,10 @@ button:
   your-profile: Your profile
   save: Save
   cancel: Cancel
+  trainings: Trainings
+  matches: Matches
+  tournaments: Tournaments
+  all: All
 intro:
   start: Start using the application!
   aplikacja: Application

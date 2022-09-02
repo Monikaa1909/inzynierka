@@ -15,6 +15,10 @@ button:
   your-profile: Twój profil
   save: Zapisz
   cancel: Anuluj
+  trainings: Treningi
+  matches: Mecze
+  tournaments: Turnieje
+  all: Pokaż wszystko
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:

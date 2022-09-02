@@ -11,7 +11,10 @@ const isHidden = ref(true)
 
 const filterMenu = () => {
   isHidden.value = !isHidden.value
+  // const filter_fld = document.getElementById('dropdownNavbar')
+  // filter_fld?.focus
 }
+
 
 const goSpecificDay = (day: any) => {
   return router.push(`/events/${day.id}`)
@@ -100,7 +103,6 @@ for (let training of myTrainings) {
   trainings.value.push(training)
 }
 
-// const attributes = ref<Array<any>>([])
 const eventsType = ref('all')
 
 const tournamentsAttributes = ref<Array<any>>([])
@@ -178,65 +180,57 @@ const attributes = computed(() => {
   return newAttributes
 })
 
+const filter = (newEwventsType: string) => {
+  eventsType.value = newEwventsType
+  isHidden.value = true
+}
+
 </script>
 
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <div class="w-full h-full p-4 flex flex-col justify-center place-items-center gap-8">
+      <div class="w-full h-full p-4 flex flex-col gap-8">
         <div class="w-full flex flex-col">
-          <div
-            class="w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)"
-          >
-            <button @click="filterMenu" @focusout="filterMenu">
-              <img src="../assets/edit-icon.png" class="h-48px" />
+          <div class="w-full flex flex-row justify-end gap-4 flex-wrap sm:(flex-nowrap)">
+            <button @click="filterMenu">
+              <img src="../assets/filter-icon.png" class="h-48px" />
             </button>
             <button>
-              <img src="../assets/delete-icon.png" class="h-48px" />
+              <img src="../assets/add-icon.png" class="h-48px" />
             </button>
           </div>
           <div class="w-full flex justify-items-end justify-end">
             <div
               id="dropdownNavbar"
+              @focusout="isHidden = true"
               :class="[isHidden ? 'hidden' : '']"
               class="z-10 bg-white absolute divide-y divide-gray-100 shadow items-center justify-end w-44"
             >
               <div>
-                <!-- <button class="p-1 w-full">
-                  <p
-                    class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left"
-                  >{{ t('button.your-profile') }}</p>
-                </button>
-                <button class="p-1 w-full">
-                  <p
-                    class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left"
-                  >{{ t('button.change-language') }}</p>
-                </button>-->
-                <button @click="eventsType = 'matches'" class="p-1 w-full">
+                <button @click="filter('matches')" class="p-1 w-full">
                   <p
                     class="px-4 py-2 text-sm hover:bg-#805AD5 text-gray-700 text-left"
-                  >treningi</p>
+                  >{{ t('button.matches') }}</p>
                 </button>
-                <button @click="eventsType = 'tournaments'" class="p-1 w-full">
-                <p
-                    class="px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-left"
-                  >treningi</p>
+                <button @click="filter('tournaments')" class="p-1 w-full">
+                  <p class="px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-left">treningi</p>
                 </button>
-                <button @click="eventsType = 'trainings'" class="p-1 w-full">
-                <p
-                    class="px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-left"
-                  >treningi</p>
+                <button @click="filter('trainings')" class="p-1 w-full">
+                  <p class="px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-left">treningi</p>
                 </button>
-                <button @click="eventsType = 'all'" class="p-1 w-full">
-                <p
+                <button @click="filter('all')" class="p-1 w-full">
+                  <p
                     class="px-4 py-2 text-sm hover:bg-#143547 text-gray-700 hover:text-white text-left"
                   >treningi</p>
-                  </button>
+                </button>
               </div>
             </div>
           </div>
         </div>
-        <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick="goSpecificDay"></Calendar>
+        <div @click="isHidden=true" class="w-full h-full flex items-center">
+          <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick="goSpecificDay"></Calendar>
+        </div>
       </div>
 
       <!-- <div class="w-full flex flex-col justify-center gap-4 sm:(flex-row)">
@@ -244,13 +238,16 @@ const attributes = computed(() => {
           @click="eventsType = 'matches'"
           class="rounded-xl bg-#805AD5 w-full sm:(w-1/5)"
         >treningi</button>
-        <button @click="eventsType = 'tournaments'" class="rounded-xl bg-#E9D8FD w-full sm:(w-1/5)">treningi</button>
+        <button
+          @click="eventsType = 'tournaments'"
+          class="rounded-xl bg-#E9D8FD w-full sm:(w-1/5)"
+        >treningi</button>
         <button
           @click="eventsType = 'trainings'"
           class="rounded-xl bg-#32B3A3 w-full sm:(w-1/5)"
         >treningi</button>
         <button @click="eventsType = 'all'" class="rounded-xl bg-#143547 w-full sm:(w-1/5)">treningi</button>
-      </div>-->
+      </div> -->
     </template>
   </BackgroundFrame>
 </template>

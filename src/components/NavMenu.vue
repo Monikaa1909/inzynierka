@@ -5,6 +5,7 @@ const { t, availableLocales, locale } = useI18n()
 const toggleLocales = () => {
   const locales = availableLocales
   locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
+  isHidden.value = true
 }
 
 
@@ -86,7 +87,7 @@ const logout = async () => {
             class="px-2 justify-items-center text-base font-medium color-#32B3A3"
           >{{ t('account.trainer') }}</p>
 
-          <button @click="settingsMenu" @focusout="settingsMenu">
+          <button @click="settingsMenu">
             <img src="../assets/settings-icon.svg" class="px-2 py-0.5 h-24px" />
           </button>
         </div>
