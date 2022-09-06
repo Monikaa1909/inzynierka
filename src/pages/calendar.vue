@@ -7,15 +7,6 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const isHidden = ref(true)
-
-const filterMenu = () => {
-  isHidden.value = !isHidden.value
-  // const filter_fld = document.getElementById('dropdownNavbar')
-  // filter_fld?.focus
-}
-
-
 const goSpecificDay = (day: any) => {
   return router.push(`/events/${day.id}`)
 }
@@ -25,7 +16,7 @@ const myMatches = [
     goalsConceded: 2,
     goalsScored: 0,
     opponent: 'Biebrza Goniądz',
-    date: new Date(2022, 7, 12),
+    date: new Date(2022, 8, 12),
     team: 'team1',
     sportFaciility: 'facility1'
   },
@@ -41,19 +32,19 @@ const myMatches = [
     goalsConceded: 2,
     goalsScored: 0,
     opponent: 'Promień Mońki',
-    date: new Date(2022, 7, 12),
+    date: new Date(2022, 8, 12),
     team: 'team1',
     sportFaciility: 'facility1'
   },
 ]
 const myTrainings = [
   {
-    date: new Date(2022, 7, 12),
+    date: new Date(2022, 8, 12),
     team: 'team1',
     sportFaciility: 'facility1'
   },
   {
-    date: new Date(2022, 7, 13),
+    date: new Date(2022, 8, 13),
     team: 'team2',
     sportFaciility: 'facility1'
   }
@@ -61,8 +52,8 @@ const myTrainings = [
 const myTournaments = [
   {
     name: 'Tymbark',
-    startDate: new Date(2022, 7, 12),
-    endDate: new Date(2022, 7, 15),
+    startDate: new Date(2022, 8, 12),
+    endDate: new Date(2022, 8, 15),
     team: 'team1',
     sportFaciility: 'facility1'
   },
@@ -180,10 +171,33 @@ const attributes = computed(() => {
   return newAttributes
 })
 
-const filter = (newEwventsType: string) => {
-  eventsType.value = newEwventsType
-  isHidden.value = true
+const isHidden = ref(true)
+
+const filterMenu = () => {
+  isHidden.value = !isHidden.value
 }
+
+const activeMatches = computed(() => {
+  if(eventsType.value === 'matches')
+    return 'bg-#805AD5'
+})
+
+const activeTournaments = computed(() => {
+  if(eventsType.value === 'tournaments')
+    return 'bg-#E9D8FD'
+})
+
+const activeTrainings = computed(() => {
+  if(eventsType.value === 'trainings')
+    return 'bg-#32B3A3'
+})
+
+const activeAll = computed(() => {
+  if(eventsType.value === 'all')
+    return 'bg-#143547 text-white '
+  else
+    return 'text-gray-700'
+})
 
 </script>
 
@@ -191,21 +205,36 @@ const filter = (newEwventsType: string) => {
   <BackgroundFrame>
     <template v-slot>
       <div class="w-full h-full p-4 flex flex-col gap-8">
-        <div class="w-full flex flex-col">
+        <div class="w-full flex flex-col gap-4">
           <div class="w-full flex flex-row justify-end gap-4 flex-wrap sm:(flex-nowrap)">
-            <button @click="filterMenu">
+            <button class="flex flex-row" @click="filterMenu">
               <img src="../assets/filter-icon.png" class="h-48px" />
+              <p class="h-full">Filtry</p>
             </button>
             <button>
               <img src="../assets/add-icon.png" class="h-48px" />
             </button>
           </div>
-          <div class="w-full flex justify-items-end justify-end">
+          <div v-if="!isHidden" class="w-full flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
+            <button @click="eventsType='matches'" class="p-1 w-full rounded-xl">
+              <p :class="activeMatches" class=" rounded-xl px-4 py-2 text-sm hover:bg-#805AD5 text-gray-700 text-center">{{ t('button.matches') }}</p>
+            </button>
+            <button @click="eventsType='tournaments'" class="p-1 w-full rounded-xl">
+              <p :class="activeTournaments" class=" rounded-xl px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-center">{{ t('button.tournaments') }}</p>
+            </button>
+            <button @click="eventsType='trainings'" class="p-1 w-full rounded-xl">
+              <p :class="activeTrainings" class="rounded-xl px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-center">{{ t('button.trainings') }}</p>
+            </button>
+            <button @click="eventsType='all'" class="p-1 w-full rounded-xl">
+              <p :class="activeAll" class="rounded-xl px-4 py-2 text-sm hover:bg-#143547 hover:text-white text-center">{{ t('button.all') }}</p>
+            </button>
+            <!-- </div> -->
+            <!-- <div class="border w-full flex">
             <div
               id="dropdownNavbar"
               @focusout="isHidden = true"
               :class="[isHidden ? 'hidden' : '']"
-              class="z-10 bg-white absolute divide-y divide-gray-100 shadow items-center justify-end w-44"
+              class="z-10 bg-white divide-x divide-gray-100 shadow items-center justify-end w-full"
             >
               <div>
                 <button @click="filter('matches')" class="p-1 w-full">
@@ -225,10 +254,10 @@ const filter = (newEwventsType: string) => {
                   >treningi</p>
                 </button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
-        <div @click="isHidden=true" class="w-full h-full flex items-center">
+        <div class="w-full h-full flex items-center">
           <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick="goSpecificDay"></Calendar>
         </div>
       </div>

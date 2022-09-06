@@ -18,30 +18,37 @@ const settingsMenu = () => {
 }
 
 const goStart = () => {
+  isHidden.value = true
   return router.push('/start')
 }
 
 const goTeams = () => {
+  isHidden.value = true
   return router.push('/teams')
 }
 
 const goPlayers = () => {
+  isHidden.value = true
   return router.push('/players')
 }
 
 const goCalendar = () => {
+  isHidden.value = true
   return router.push('/calendar')
 }
 
 const goObjects = () => {
+  isHidden.value = true
   return router.push('/objects')
 }
 
 const goYourProfile = () => {
+  isHidden.value = true
   return router.push('/yourProfile')
 }
 
 const logout = async () => {
+  isHidden.value = true
   return router.push('/login')
 }
 
@@ -86,7 +93,6 @@ const logout = async () => {
           <p
             class="px-2 justify-items-center text-base font-medium color-#32B3A3"
           >{{ t('account.trainer') }}</p>
-
           <button @click="settingsMenu">
             <img src="../assets/settings-icon.svg" class="px-2 py-0.5 h-24px" />
           </button>
