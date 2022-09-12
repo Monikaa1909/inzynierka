@@ -199,6 +199,10 @@ const activeAll = computed(() => {
     return 'text-gray-700'
 })
 
+const goAddEvent = (playerId: any) => {
+  return router.push(`/addEvent`)
+}
+
 </script>
 
 <template>
@@ -212,7 +216,7 @@ const activeAll = computed(() => {
               <p v-if="isHidden" class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.show-filters')}}</p>
               <p v-else class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.hide-filters')}}</p>
             </button>
-            <button class="flex flex-row gap-2">
+            <button @click="goAddEvent" class="flex flex-row gap-2">
               <img src="../assets/add-icon.png" class="h-48px" />
               <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-event')}}</p>
             </button>

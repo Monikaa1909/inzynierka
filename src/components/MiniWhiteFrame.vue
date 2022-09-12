@@ -3,9 +3,7 @@
 </script>
 <template>
   <div class="min-h-100px bg-white frame-shadow flex flex-col gap-4 p-4">
-    <div
-      class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)"
-    >
+    <div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
       <slot name="nav"></slot>
     </div>
     <div class="h-full w-full flex flex-col gap-2 sm:(flex-row flex-wrap)">
@@ -16,9 +14,7 @@
         <slot name="attributes"></slot>
       </div>
     </div>
-    <div
-      class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)"
-    >
+    <div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
       <slot name="footer"></slot>
     </div>
   </div>

@@ -2,11 +2,11 @@
 
 </script>
 <template>
-  <div class="flex flex-row items-center gap-2 flex-wrap sm:(flex-nowrap)">
-    <p class="justify-self-start font-medium sm:(w-1/2)">
+  <div class="flex flex-row w-full items-center gap-2 flex-wrap sm:(flex-nowrap)">
+    <p class="flex justify-self-start font-medium w-full sm:(w-full)">
         <slot name="inputName"></slot>
     </p>
-    <div class="sm:(w-1/2)">
+    <div class="flex w-full sm:(w-full min-w-200px)">
       <slot name="inputValue"></slot>
     </div>
     
