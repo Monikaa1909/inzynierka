@@ -2,13 +2,13 @@
 const { t } = useI18n()
 const router = useRouter()
 
-const team = {
+const team = ref({
   name: 'team1',
   years: 'years1',
   trainer: 'trainer1',
   numberOfPlayers: 'players1',
   averageAge: 'average age1'
-}
+})
 
 
 const cancel = () => {
@@ -27,39 +27,36 @@ const cancel = () => {
           <SingleInput>
             <template v-slot:inputName>{{ t('single-team.name') }}:</template>
             <template v-slot:inputValue>
-              <input
-                v-model="team.name"
-                placeholder="{{team.name}}"
-                class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
-              />
+              <input v-model="team.name" placeholder="{{team.name}}"
+                class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
             </template>
           </SingleInput>
           <SingleInput>
             <template v-slot:inputName>{{ t('single-team.years') }}:</template>
             <template v-slot:inputValue>
               <div class="flex w-full flex-row items-center gap-2">
-                <input
-                  v-model="team.years"
-                  placeholder="{{team.years}}"
-                  class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
-                />
+                <input v-model="team.years" placeholder="{{team.years}}"
+                  class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
                 <p>-</p>
-                <input
-                  v-model="team.years"
-                  placeholder="{{team.years}}"
-                  class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
-                />
+                <input v-model="team.years" placeholder="{{team.years}}"
+                  class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
               </div>
             </template>
           </SingleInput>
           <SingleInput>
             <template v-slot:inputName>{{ t('single-team.trainer') }}:</template>
             <template v-slot:inputValue>
-              <input
+              <!-- <input
                 v-model="team.trainer"
                 placeholder="{{team.trainer}}"
                 class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
-              />
+              /> -->
+              <select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="team.trainer">
+                
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+              </select>
             </template>
           </SingleInput>
           <SingleInput>

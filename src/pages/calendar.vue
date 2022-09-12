@@ -206,27 +206,37 @@ const activeAll = computed(() => {
     <template v-slot>
       <div class="w-full h-full p-4 flex flex-col gap-8">
         <div class="w-full flex flex-col gap-4">
-          <div class="w-full flex flex-row justify-end gap-4 flex-wrap sm:(flex-nowrap)">
-            <button class="flex flex-row" @click="filterMenu">
+          <div class="w-full flex flex-row justify-end gap-8 flex-wrap sm:(flex-nowrap)">
+            <button class="flex flex-row gap-2" @click="filterMenu">
               <img src="../assets/filter-icon.png" class="h-48px" />
-              <p class="h-full">Filtry</p>
+              <p v-if="isHidden" class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.show-filters')}}</p>
+              <p v-else class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.hide-filters')}}</p>
             </button>
-            <button>
+            <button class="flex flex-row gap-2">
               <img src="../assets/add-icon.png" class="h-48px" />
+              <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-event')}}</p>
             </button>
           </div>
-          <div v-if="!isHidden" class="w-full flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
+          <div :class="[isHidden ? 'invisible' : '']"
+            class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
             <button @click="eventsType='matches'" class="p-1 w-full rounded-xl">
-              <p :class="activeMatches" class=" rounded-xl px-4 py-2 text-sm hover:bg-#805AD5 text-gray-700 text-center">{{ t('button.matches') }}</p>
+              <p :class="activeMatches"
+                class=" rounded-xl px-4 py-2 text-sm hover:bg-#805AD5 text-gray-700 text-center">{{ t('button.matches')
+                }}</p>
             </button>
             <button @click="eventsType='tournaments'" class="p-1 w-full rounded-xl">
-              <p :class="activeTournaments" class=" rounded-xl px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-center">{{ t('button.tournaments') }}</p>
+              <p :class="activeTournaments"
+                class=" rounded-xl px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-center">{{
+                t('button.tournaments') }}</p>
             </button>
             <button @click="eventsType='trainings'" class="p-1 w-full rounded-xl">
-              <p :class="activeTrainings" class="rounded-xl px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-center">{{ t('button.trainings') }}</p>
+              <p :class="activeTrainings"
+                class="rounded-xl px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-center">{{ t('button.trainings')
+                }}</p>
             </button>
             <button @click="eventsType='all'" class="p-1 w-full rounded-xl">
-              <p :class="activeAll" class="rounded-xl px-4 py-2 text-sm hover:bg-#143547 hover:text-white text-center">{{ t('button.all') }}</p>
+              <p :class="activeAll" class="rounded-xl px-4 py-2 text-sm hover:bg-#143547 hover:text-white text-center">
+                {{ t('button.all') }}</p>
             </button>
             <!-- </div> -->
             <!-- <div class="border w-full flex">

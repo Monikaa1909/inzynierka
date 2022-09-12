@@ -19,6 +19,9 @@ button:
   matches: Matches
   tournaments: Tournaments
   all: All
+  show-filters: SHOW FILTERS
+  hide-filters: HIDE FILTERS
+  add-event: ADD EVENT
 intro:
   start: Start using the application!
   aplikacja: Application
