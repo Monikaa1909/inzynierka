@@ -7,10 +7,91 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const types = computed(() => {
+  return [t('events.type.training'), t('events.type.match'), t('events.type.tournament')]
+})
+
+const teams = [
+  {
+    name: 'team1',
+    years: 'years1',
+    numberOfPlayers: 'players1',
+    averageAge: 'average age1',
+    players: [
+      {
+        name: 'Leo',
+        surname: 'Messi',
+      },
+    ],
+  },
+  {
+    name: 'team2',
+    years: 'years2',
+    numberOfPlayers: 'players2',
+    averageAge: 'average age2',
+  },
+  {
+    name: 'team3',
+    years: 'years3',
+    numberOfPlayers: 'players3',
+    averageAge: 'average age3',
+  },
+  {
+    name: 'team4',
+    years: 'years4',
+    numberOfPlayers: 'players4',
+    averageAge: 'average age4',
+  },
+  {
+    name: 'team5',
+    years: 'years5',
+    numberOfPlayers: 'players5',
+    averageAge: 'average age5',
+  },
+  {
+    name: 'team6',
+    years: 'years6',
+    numberOfPlayers: 'players6',
+    averageAge: 'average age6',
+  },
+]
+
+const objects = [
+  {
+    name: 'Stadion Miejski w Białymstoku',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
+  },
+  {
+    name: 'Stadion2',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
+  },
+  {
+    name: 'Stadion3',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
+  },
+  {
+    name: 'Stadion Miejski w Białymstoku',
+	  street: 'Słoneczna 1',
+	  postalCode: '15-323',
+	  city: 'Białystok',
+  }
+]
+
 
 const event = ref({
-  type: 'training',
+  type: computed(() => {
+		return types.value[0]
+	}),
 	date: new Date(),
+	team: teams[0].name,
+	object: objects[0].name,
+	opponent: ' ',
   street: 'Słoneczna 1',
   postalCode: '15-323',
   city: 'Białystok',
@@ -28,26 +109,26 @@ const cancel = () => {
 				<template v-slot:icon>
 					<img src="../assets/calendar-icon2.png" class=" h-150px" />
 				</template>
+
 				<template v-slot:attributes>
+
 					<SingleInput>
 						<template v-slot:inputName>Typ:</template>
 						<template v-slot:inputValue>
 							<select v-model="event.type"
 								class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
-								<option value="training">Trening</option>
-								<option value="match">Mecz</option>
-								<option value="tournament">Turniej</option>
+								<option v-for="mytype in types" :value="mytype">{{mytype}}</option>
 							</select>
 						</template>
-
 					</SingleInput>
+
 					<SingleInput>
 						<template v-slot:inputName>Data:</template>
 						<template v-slot:inputValue>
 							<DatePicker v-model="event.date" mode="dateTime" :timezone="timezone" :clearable="false" 
 								class="inline-block h-full min-w-full" :locale="locale">
 								<template v-slot="{ inputValue, togglePopover }">
-									<div class="flex items-center min-w-200px">
+									<div class="flex items-center">
 										<button
 											class="p-2 bg-#143547 border border-#143547 hover:bg-#143547-200 text-white"
 											@click="togglePopover()">
@@ -65,10 +146,31 @@ const cancel = () => {
 							</DatePicker>
 						</template>
 					</SingleInput>
+
 					<SingleInput>
-						<template v-slot:inputName>{{ t('single-object.postal-code') }}:</template>
+						<template v-slot:inputName>Drużyna:</template>
 						<template v-slot:inputValue>
-							<input v-model="event.postalCode" placeholder="{{event.postalCode}}"
+							<select v-model="event.team"
+								class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
+								<option v-for="team in teams" :value="team.name">{{team.name}}</option>
+							</select>
+						</template>
+					</SingleInput>
+
+					<SingleInput>
+						<template v-slot:inputName>Obiekt:</template>
+						<template v-slot:inputValue>
+							<select v-model="event.object"
+								class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
+								<option v-for="object in objects" :value="object.name">{{object.name}}</option>
+							</select>
+						</template>
+					</SingleInput>
+
+					<SingleInput>
+						<template v-slot:inputName>Przeciwnik:</template>
+						<template v-slot:inputValue>
+							<input v-model="event.opponent" placeholder="{{event.opponent}}"
 								class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 						</template>
 					</SingleInput>

@@ -74,4 +74,8 @@ events:
   match: MATCH
   tournament: TOURNAMENT
   training: TRAINING
+  type:
+    match: Match
+    training: Training
+    tournament: Tournament
 not-found: Not found

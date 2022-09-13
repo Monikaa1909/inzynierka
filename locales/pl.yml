@@ -73,4 +73,8 @@ events:
   match: MECZ
   tournament: TURNIEJ
   training: TRENING
+  type:
+    match: Mecz
+    training: Trening
+    tournament: Turniej
 not-found: Nie znaleziono
