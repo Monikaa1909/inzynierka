@@ -49,7 +49,8 @@ const goEditObject = (objectId: any) => {
 <template>
   <BackgroundFrame>
     <template v-slot>
-      <MiniWhiteFrame class="w-3/7" v-for="object in objects" v-bind:key="object.name">
+      <div v-for="object in objects" v-bind:key="object.name" class="w-full sm:(w-3/7)">
+        <MiniWhiteFrame  >
         <template v-slot:nav>
           <button @click="goEditObject(object.name)">
             <img src="../assets/edit-icon.png" class="h-24px" />
@@ -80,6 +81,7 @@ const goEditObject = (objectId: any) => {
           </SingleAttribute>
         </template>
       </MiniWhiteFrame>
+      </div>
     </template>
   </BackgroundFrame>
 </template>

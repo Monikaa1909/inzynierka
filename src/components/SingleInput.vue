@@ -6,7 +6,7 @@
     <p class="flex justify-self-start font-medium w-full sm:(w-full)">
         <slot name="inputName"></slot>
     </p>
-    <div class="flex w-full sm:(w-full min-w-200px)">
+    <div class="flex w-full sm:(w-full min-w-210px)">
       <slot name="inputValue"></slot>
     </div>
     

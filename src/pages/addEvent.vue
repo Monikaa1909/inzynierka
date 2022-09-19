@@ -7,10 +7,6 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const types = computed(() => {
-  return [t('events.type.training'), t('events.type.match'), t('events.type.tournament')]
-})
-
 const teams = [
   {
     name: 'team1',
@@ -83,18 +79,23 @@ const objects = [
   }
 ]
 
-
 const event = ref({
-  type: computed(() => {
-		return types.value[0]
-	}),
+  type: "Training",
 	date: new Date(),
+	startDate: new Date(),
+	endDate: new Date(),
 	team: teams[0].name,
 	object: objects[0].name,
-	opponent: ' ',
-  street: 'Słoneczna 1',
-  postalCode: '15-323',
-  city: 'Białystok',
+	newObject: '',
+	ifNewObject: computed(() => {
+		if(event.value.object !== 'newobject') {
+			event.value.newObject = ' '
+			return false
+		}
+		else
+			return true
+	}),
+	opponent: '',
 })
 
 const cancel = () => { 
@@ -115,25 +116,73 @@ const cancel = () => {
 					<SingleInput>
 						<template v-slot:inputName>Typ:</template>
 						<template v-slot:inputValue>
-							<select v-model="event.type"
-								class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
-								<option v-for="mytype in types" :value="mytype">{{mytype}}</option>
+							<select v-model="event.type" class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
+								<option v-if="locale === 'en'" :value="'Training'">Training</option>
+								<option v-else-if="locale === 'pl'" :value="'Training'">Trening</option>
+								<option v-if="locale === 'en'" :value="'Tournament'">Tournament</option>
+								<option v-else-if="locale === 'pl'" :value="'Tournament'">Turniej</option>
+								<option v-if="locale === 'en'" :value="'Match'">Match</option>
+								<option v-else-if="locale === 'pl'" :value="'Match'">Mecz</option>
 							</select>
 						</template>
 					</SingleInput>
 
-					<SingleInput>
+					<SingleInput v-if="event.type !== 'Tournament'">
 						<template v-slot:inputName>Data:</template>
 						<template v-slot:inputValue>
-							<DatePicker v-model="event.date" mode="dateTime" :timezone="timezone" :clearable="false" 
+							<DatePicker v-model="event.date" mode="dateTime" :timezone="timezone" :clearable="false"
 								class="inline-block h-full min-w-full" :locale="locale">
 								<template v-slot="{ inputValue, togglePopover }">
 									<div class="flex items-center">
-										<button
-											class="p-2 bg-#143547 border border-#143547 hover:bg-#143547-200 text-white"
+										<button class="p-2 bg-#143547 border border-#143547 hover:bg-#143547-200 text-white"
 											@click="togglePopover()">
-											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-												class="w-4 h-4 fill-current">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-4 h-4 fill-current">
+												<path
+													d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
+											</svg>
+										</button>
+										<input :value="inputValue"
+											class="bg-white text-gray-700 w-full py-1 px-2 appearance-none border focus:outline-none focus:border-blue-500"
+											readonly />
+									</div>
+								</template>
+							</DatePicker>
+						</template>
+					</SingleInput>
+
+					<SingleInput v-if="event.type === 'Tournament'">
+						<template v-slot:inputName>Data rozpoczęcia:</template>
+						<template v-slot:inputValue>
+							<DatePicker v-model="event.startDate" mode="dateTime" :timezone="timezone" :clearable="false"
+								class="inline-block h-full min-w-full" :locale="locale">
+								<template v-slot="{ inputValue, togglePopover }">
+									<div class="flex items-center">
+										<button class="p-2 bg-#143547 border border-#143547 hover:bg-#143547-200 text-white"
+											@click="togglePopover()">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-4 h-4 fill-current">
+												<path
+													d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
+											</svg>
+										</button>
+										<input :value="inputValue"
+											class="bg-white text-gray-700 w-full py-1 px-2 appearance-none border focus:outline-none focus:border-blue-500"
+											readonly />
+									</div>
+								</template>
+							</DatePicker>
+						</template>
+					</SingleInput>
+
+					<SingleInput v-if="event.type === 'Tournament'">
+						<template v-slot:inputName>Data zakończenia:</template>
+						<template v-slot:inputValue>
+							<DatePicker v-model="event.startDate" mode="dateTime" :timezone="timezone" :clearable="false"
+								class="inline-block h-full min-w-full" :locale="locale">
+								<template v-slot="{ inputValue, togglePopover }">
+									<div class="flex items-center">
+										<button class="p-2 bg-#143547 border border-#143547 hover:bg-#143547-200 text-white"
+											@click="togglePopover()">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-4 h-4 fill-current">
 												<path
 													d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
 											</svg>
@@ -150,8 +199,7 @@ const cancel = () => {
 					<SingleInput>
 						<template v-slot:inputName>Drużyna:</template>
 						<template v-slot:inputValue>
-							<select v-model="event.team"
-								class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
+							<select v-model="event.team" class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
 								<option v-for="team in teams" :value="team.name">{{team.name}}</option>
 							</select>
 						</template>
@@ -160,24 +208,24 @@ const cancel = () => {
 					<SingleInput>
 						<template v-slot:inputName>Obiekt:</template>
 						<template v-slot:inputValue>
-							<select v-model="event.object"
-								class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
-								<option v-for="object in objects" :value="object.name">{{object.name}}</option>
-							</select>
+							<select v-model="event.object" class="flex flex-auto border-1 p-1 w-full border-#143547 shadow-lg">
+									<option v-for="object in objects" :value="object.name">{{object.name}}</option>
+									<option :value="'newobject'">Dodaj nowy...</option>
+								</select>
 						</template>
 					</SingleInput>
-
-					<SingleInput>
-						<template v-slot:inputName>Przeciwnik:</template>
+					<SingleInput v-if="event.object === 'newobject'">
+						<template v-slot:inputName>Nowy objekt:</template>
 						<template v-slot:inputValue>
-							<input v-model="event.opponent" placeholder="{{event.opponent}}"
+							<input v-model="event.newObject" 
 								class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 						</template>
 					</SingleInput>
-					<SingleInput>
-						<template v-slot:inputName>{{ t('single-object.city') }}:</template>
+
+					<SingleInput v-if="event.type === 'Match'">
+						<template v-slot:inputName>Przeciwnik:</template>
 						<template v-slot:inputValue>
-							<input v-model="event.city" placeholder="{{event.city}}"
+							<input v-model="event.opponent" placeholder="{{event.opponent}}"
 								class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 						</template>
 					</SingleInput>
