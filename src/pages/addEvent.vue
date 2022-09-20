@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import 'v-calendar/dist/style.css';
 import { DatePicker } from 'v-calendar';
+import BackgroundFrameCenter from '../components/BackgroundFrameCenter.vue';
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
@@ -104,7 +105,7 @@ const cancel = () => {
 </script>
     
 <template>
-	<BackgroundFrame>
+	<BackgroundFrameCenter>
 		<template v-slot>
 			<MiniWhiteFrame>
 				<template v-slot:icon>
@@ -209,16 +210,15 @@ const cancel = () => {
 						<template v-slot:inputName>Obiekt:</template>
 						<template v-slot:inputValue>
 							<select v-model="event.object" class="flex flex-auto border-1 p-1 w-full border-#143547 shadow-lg">
-									<option v-for="object in objects" :value="object.name">{{object.name}}</option>
-									<option :value="'newobject'">Dodaj nowy...</option>
-								</select>
+								<option v-for="object in objects" :value="object.name">{{object.name}}</option>
+								<option :value="'newobject'">Dodaj nowy...</option>
+							</select>
 						</template>
 					</SingleInput>
 					<SingleInput v-if="event.object === 'newobject'">
 						<template v-slot:inputName>Nowy objekt:</template>
 						<template v-slot:inputValue>
-							<input v-model="event.newObject" 
-								class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+							<input v-model="event.newObject" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 						</template>
 					</SingleInput>
 
@@ -241,7 +241,7 @@ const cancel = () => {
 				</template>
 			</MiniWhiteFrame>
 		</template>
-	</BackgroundFrame>
+	</BackgroundFrameCenter>
 </template>
     
     <route lang="yaml">

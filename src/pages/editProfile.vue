@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import 'v-calendar/dist/style.css';
 import { DatePicker } from 'v-calendar';
+import BackgroundFrameCenter from '~/components/BackgroundFrameCenter.vue';
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
@@ -24,7 +25,7 @@ var profile = {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrameCenter>
     <template v-slot>
       <MiniWhiteFrame>
         <template v-slot:icon>
@@ -108,7 +109,7 @@ var profile = {
         </template>
       </MiniWhiteFrame>
     </template>
-  </BackgroundFrame>
+  </BackgroundFrameCenter>
 </template>
 
 <route lang="yaml">

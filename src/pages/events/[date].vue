@@ -1,94 +1,153 @@
 <script setup lang="ts">
 const { t } = useI18n()
-const router = useRouter()
+// const router = useRouter()
 
-const players = [
+const myMatches = [
   {
-    name: 'team1',
-    years: 'years1',
-    numberOfPlayers: 'players1',
-    averageAge: 'average age1',
-    players: [
-      {
-        name: 'Leo',
-        surname: 'Messi',
-      },
-    ],
+    goalsConceded: 2,
+    goalsScored: 0,
+    opponent: 'Biebrza Goniądz',
+    date: new Date(2022, 8, 12),
+    team: 'team1',
+    sportFaciility: 'facility1'
   },
   {
-    name: 'team2',
-    years: 'years2',
-    numberOfPlayers: 'players2',
-    averageAge: 'average age2',
+    goalsConceded: 1,
+    goalsScored: 3,
+    opponent: 'BVB',
+    date: new Date(2022, 8, 12),
+    team: 'team1',
+    sportFaciility: 'facility2'
   },
   {
-    name: 'team3',
-    years: 'years3',
-    numberOfPlayers: 'players3',
-    averageAge: 'average age3',
+    goalsConceded: 2,
+    goalsScored: 0,
+    opponent: 'Promień Mońki',
+    date: new Date(2022, 8, 12),
+    team: 'team1',
+    sportFaciility: 'facility1'
+  },
+]
+const myTrainings = [
+  {
+    date: new Date(2022, 8, 12),
+    team: 'team1',
+    sportFaciility: 'facility1'
   },
   {
-    name: 'team4',
-    years: 'years4',
-    numberOfPlayers: 'players4',
-    averageAge: 'average age4',
-  },
+    date: new Date(2022, 8, 13),
+    team: 'team2',
+    sportFaciility: 'facility1'
+  }
+]
+const myTournaments = [
   {
-    name: 'team5',
-    years: 'years5',
-    numberOfPlayers: 'players5',
-    averageAge: 'average age5',
-  },
-  {
-    name: 'team6',
-    years: 'years6',
-    numberOfPlayers: 'players6',
-    averageAge: 'average age6',
+    name: 'Tymbark',
+    startDate: new Date(2022, 8, 12),
+    endDate: new Date(2022, 8, 15),
+    team: 'team1',
+    sportFaciility: 'facility1'
   },
 ]
 
-const goEditPlayer = (playerId: any) => {
-  return router.push(`/player/${playerId}`)
+interface Match {
+  goalsConceded: number,
+  goalsScored: number,
+  opponent: string,
+  date: Date,
+  team: string,
+  sportFaciility: string
 }
+const matches = ref<Array<Match>>([])
+for (let match of myMatches) {
+  matches.value.push(match)
+}
+
+interface Tournament {
+  name: String,
+  startDate: Date,
+  endDate: Date,
+  team: string,
+  sportFaciility: string
+}
+const tournaments = ref<Array<Tournament>>([])
+for (let tournament of myTournaments) {
+  tournaments.value.push(tournament)
+}
+
+interface Training {
+  date: Date,
+  team: string,
+  sportFaciility: string
+}
+const trainings = ref<Array<Training>>([])
+for (let training of myTrainings) {
+  trainings.value.push(training)
+}
+
+const events = ref<Array<any>>([])
+for (let tournament of tournaments.value) {
+  const event = {
+    type: 'Tournament',
+    dates: { start: tournament.startDate, end: tournament.endDate },
+  }
+  events.value.push(event)
+}
+
 
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrameCenter>
     <template v-slot>
-      <MiniWhiteFrame v-for="player in players" v-bind:key="player.name">
+      <MiniWhiteFrame v-for="event in events" v-bind:key="event.type">
         <template v-slot:nav>
-          <button @click="goEditPlayer(player.name)">
-            <img src="../assets/edit-icon.png" class="h-24px" />
+          <button @click="goEditPlayer(event.type)">
+            <img src="../../assets/edit-icon.png" class="h-24px" />
           </button>
           <button>
-            <img src="../assets/delete-icon.png" class="h-24px" />
+            <img src="../../assets/delete-icon.png" class="h-24px" />
           </button>
         </template>
         <template v-slot:icon>
-          <img src="../assets/player-icon2.png" class="h-150px" />
+          <img src="../../assets/player-icon2.png" class="h-150px" />
         </template>
         <template v-slot:attributes>
           <SingleAttribute>
             <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
-            <template v-slot:attributeValue>{{ player.name }}</template>
+            <template v-slot:attributeValue>{{ event.type }}</template>
           </SingleAttribute>
           <SingleAttribute>
             <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
-            <template v-slot:attributeValue>{{ player.years }}</template>
+            <template v-slot:attributeValue>{{ event.dates.start }}</template>
+          </SingleAttribute>
+        </template>
+      </MiniWhiteFrame>
+      <MiniWhiteFrame v-for="event in events" v-bind:key="event.type">
+        <template v-slot:nav>
+          <button @click="goEditPlayer(event.type)">
+            <img src="../../assets/edit-icon.png" class="h-24px" />
+          </button>
+          <button>
+            <img src="../../assets/delete-icon.png" class="h-24px" />
+          </button>
+        </template>
+        <template v-slot:icon>
+          <img src="../../assets/player-icon2.png" class="h-150px" />
+        </template>
+        <template v-slot:attributes>
+          <SingleAttribute>
+            <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
+            <template v-slot:attributeValue>{{ event.type }}</template>
           </SingleAttribute>
           <SingleAttribute>
-            <template v-slot:attributeName>{{ t('single-player.birthday-date') }}:</template>
-            <template v-slot:attributeValue>{{ player.numberOfPlayers }}</template>
-          </SingleAttribute>
-          <SingleAttribute>
-            <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>
-            <template v-slot:attributeValue>{{ player.averageAge }}</template>
+            <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
+            <template v-slot:attributeValue>{{ event.dates.start }}</template>
           </SingleAttribute>
         </template>
       </MiniWhiteFrame>
     </template>
-  </BackgroundFrame>
+  </BackgroundFrameCenter>
 </template>
 
 <route lang="yaml">

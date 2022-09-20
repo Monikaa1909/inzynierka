@@ -5,6 +5,8 @@
 declare module 'vue' {
   export interface GlobalComponents {
     BackgroundFrame: typeof import('./components/BackgroundFrame.vue')['default']
+    BackgroundFrameCenter: typeof import('./components/BackgroundFrameCenter.vue')['default']
+    BackgroundFrameGrid: typeof import('./components/BackgroundFrameGrid.vue')['default']
     ButtonsFrame: typeof import('./components/ButtonsFrame.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']

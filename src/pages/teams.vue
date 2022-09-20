@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BackgroundFrameGrid from '~/components/BackgroundFrameGrid.vue';
 const { t } = useI18n()
 const router = useRouter()
 
@@ -55,7 +56,7 @@ const goEditTeam = (teamId: any) => {
 </script>
 
 <template>
-  <BackgroundFrame class="lg:(grid-cols-3) md:(grid-cols-2)">
+  <BackgroundFrameGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
     <template v-slot>
       <MiniWhiteFrame v-for="team in teams" v-bind:key="team.name">
         <template v-slot:nav>
@@ -89,7 +90,7 @@ const goEditTeam = (teamId: any) => {
         </template>
       </MiniWhiteFrame>
     </template>
-  </BackgroundFrame>
+  </BackgroundFrameGrid>
 </template>
 
 <route lang="yaml">

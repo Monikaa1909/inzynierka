@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BackgroundFrameGrid from '~/components/BackgroundFrameGrid.vue';
 const { t } = useI18n()
 const router = useRouter()
 
@@ -16,7 +17,7 @@ const cancel = () => {
 </script>
 
 <template>
-	<BackgroundFrame>
+	<BackgroundFrameGrid>
 		<template v-slot>
 			<MiniWhiteFrame>
 				<template v-slot:icon>
@@ -74,7 +75,7 @@ const cancel = () => {
 				</template>
 			</MiniWhiteFrame>
 		</template>
-	</BackgroundFrame>
+	</BackgroundFrameGrid>
 </template>
 
 <route lang="yaml">

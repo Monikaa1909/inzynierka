@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BackgroundFrameGrid from '~/components/BackgroundFrameGrid.vue';
 const { t } = useI18n()
 const router = useRouter()
 const objects = [
@@ -41,7 +42,7 @@ const goEditObject = (objectId: any) => {
 </script>
 
 <template>
-  <BackgroundFrame class="lg:(grid-cols-2) md:(grid-cols-2)">
+  <BackgroundFrameGrid class="lg:(grid-cols-2) md:(grid-cols-2)">
     <template v-slot>
       <MiniWhiteFrame v-for="object in objects" v-bind:key="object.name">
         <template v-slot:nav>
@@ -75,7 +76,7 @@ const goEditObject = (objectId: any) => {
         </template>
       </MiniWhiteFrame>
     </template>
-  </BackgroundFrame>
+  </BackgroundFrameGrid>
 </template>
 
 <route lang="yaml">

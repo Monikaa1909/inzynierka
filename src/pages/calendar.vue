@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import 'v-calendar/dist/style.css';
 import { Calendar } from 'v-calendar';
+import BackgroundFrameCenter from '~/components/BackgroundFrameCenter.vue';
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
@@ -206,7 +207,7 @@ const goAddEvent = (playerId: any) => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrameCenter>
     <template v-slot>
       <div class="w-full h-full p-4 flex flex-col gap-8">
         <div class="w-full flex flex-col gap-4">
@@ -292,7 +293,7 @@ const goAddEvent = (playerId: any) => {
         <button @click="eventsType = 'all'" class="rounded-xl bg-#143547 w-full sm:(w-1/5)">treningi</button>
       </div> -->
     </template>
-  </BackgroundFrame>
+  </BackgroundFrameCenter>
 </template>
 
 <route lang="yaml">

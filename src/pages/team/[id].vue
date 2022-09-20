@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BackgroundFrameCenter from '~/components/BackgroundFrameCenter.vue';
 const { t } = useI18n()
 const router = useRouter()
 
@@ -17,7 +18,7 @@ const cancel = () => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrameCenter>
     <template v-slot>
       <MiniWhiteFrame>
         <template v-slot:icon>
@@ -78,7 +79,7 @@ const cancel = () => {
         </template>
       </MiniWhiteFrame>
     </template>
-  </BackgroundFrame>
+  </BackgroundFrameCenter>
 </template>
 
 <route lang="yaml">
