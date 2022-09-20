@@ -62,6 +62,16 @@ single-object:
   street: Street and number
   postal-code: Postal code
   city: City
+single-event:
+  type: Type
+  date: Date
+  team: Team
+  object: Object
+  opponent: Opponent
+  new-object: New object
+  start-date: Start date
+  end-date: End date
+  add-new: Add new...
 days-of-week:
   monday: MONDAY
   tuesday: TUSEDAY

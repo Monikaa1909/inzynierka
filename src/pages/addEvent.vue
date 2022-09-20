@@ -115,7 +115,7 @@ const cancel = () => {
 				<template v-slot:attributes>
 
 					<SingleInput>
-						<template v-slot:inputName>Typ:</template>
+						<template v-slot:inputName>{{ t('single-event.type')}}:</template>
 						<template v-slot:inputValue>
 							<select v-model="event.type" class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
 								<option v-if="locale === 'en'" :value="'Training'">Training</option>
@@ -129,7 +129,7 @@ const cancel = () => {
 					</SingleInput>
 
 					<SingleInput v-if="event.type !== 'Tournament'">
-						<template v-slot:inputName>Data:</template>
+						<template v-slot:inputName>{{ t('single-event.date')}}:</template>
 						<template v-slot:inputValue>
 							<DatePicker v-model="event.date" mode="dateTime" :timezone="timezone" :clearable="false"
 								class="inline-block h-full min-w-full" :locale="locale">
@@ -152,7 +152,7 @@ const cancel = () => {
 					</SingleInput>
 
 					<SingleInput v-if="event.type === 'Tournament'">
-						<template v-slot:inputName>Data rozpoczęcia:</template>
+						<template v-slot:inputName>{{ t('single-event.start-date')}}:</template>
 						<template v-slot:inputValue>
 							<DatePicker v-model="event.startDate" mode="dateTime" :timezone="timezone" :clearable="false"
 								class="inline-block h-full min-w-full" :locale="locale">
@@ -175,7 +175,7 @@ const cancel = () => {
 					</SingleInput>
 
 					<SingleInput v-if="event.type === 'Tournament'">
-						<template v-slot:inputName>Data zakończenia:</template>
+						<template v-slot:inputName>{{ t('single-event.end-date')}}:</template>
 						<template v-slot:inputValue>
 							<DatePicker v-model="event.startDate" mode="dateTime" :timezone="timezone" :clearable="false"
 								class="inline-block h-full min-w-full" :locale="locale">
@@ -198,7 +198,7 @@ const cancel = () => {
 					</SingleInput>
 
 					<SingleInput>
-						<template v-slot:inputName>Drużyna:</template>
+						<template v-slot:inputName>{{ t('single-event.team')}}:</template>
 						<template v-slot:inputValue>
 							<select v-model="event.team" class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
 								<option v-for="team in teams" :value="team.name">{{team.name}}</option>
@@ -207,25 +207,25 @@ const cancel = () => {
 					</SingleInput>
 
 					<SingleInput>
-						<template v-slot:inputName>Obiekt:</template>
+						<template v-slot:inputName>{{ t('single-event.object')}}:</template>
 						<template v-slot:inputValue>
 							<select v-model="event.object" class="flex flex-auto border-1 p-1 w-full border-#143547 shadow-lg">
 								<option v-for="object in objects" :value="object.name">{{object.name}}</option>
-								<option :value="'newobject'">Dodaj nowy...</option>
+								<option :value="'newobject'">{{ t('single-event.add-new')}}</option>
 							</select>
 						</template>
 					</SingleInput>
 					<SingleInput v-if="event.object === 'newobject'">
-						<template v-slot:inputName>Nowy objekt:</template>
+						<template v-slot:inputName>{{ t('single-event.new-object')}}:</template>
 						<template v-slot:inputValue>
 							<input v-model="event.newObject" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 						</template>
 					</SingleInput>
 
 					<SingleInput v-if="event.type === 'Match'">
-						<template v-slot:inputName>Przeciwnik:</template>
+						<template v-slot:inputName>{{ t('single-event.opponent')}}:</template>
 						<template v-slot:inputValue>
-							<input v-model="event.opponent" placeholder="{{event.opponent}}"
+							<input v-model="event.opponent"
 								class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 						</template>
 					</SingleInput>
