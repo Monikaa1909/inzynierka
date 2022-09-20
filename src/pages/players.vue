@@ -38,13 +38,7 @@ const players = [
     years: 'years5',
     numberOfPlayers: 'players5',
     averageAge: 'average age5',
-  },
-  {
-    name: 'team6',
-    years: 'years6',
-    numberOfPlayers: 'players6',
-    averageAge: 'average age6',
-  },
+  }
 ]
 
 const goEditPlayer = (playerId: any) => {
@@ -54,7 +48,7 @@ const goEditPlayer = (playerId: any) => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame class="lg:(grid-cols-3) md:(grid-cols-2)">
     <template v-slot>
       <MiniWhiteFrame v-for="player in players" v-bind:key="player.name">
         <template v-slot:nav>

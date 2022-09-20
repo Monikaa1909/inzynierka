@@ -31,13 +31,7 @@ const objects = [
 	  street: 'Słoneczna 1',
 	  postalCode: '15-323',
 	  city: 'Białystok',
-  },
-  {
-    name: 'Stadion Miejski w Białymstoku',
-	  street: 'Słoneczna 1',
-	  postalCode: '15-323',
-	  city: 'Białystok',
-  },
+  }
 ]
 
 const goEditObject = (objectId: any) => {
@@ -47,10 +41,9 @@ const goEditObject = (objectId: any) => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame class="lg:(grid-cols-2) md:(grid-cols-2)">
     <template v-slot>
-      <div v-for="object in objects" v-bind:key="object.name" class="w-full sm:(w-3/7)">
-        <MiniWhiteFrame  >
+      <MiniWhiteFrame v-for="object in objects" v-bind:key="object.name">
         <template v-slot:nav>
           <button @click="goEditObject(object.name)">
             <img src="../assets/edit-icon.png" class="h-24px" />
@@ -81,7 +74,6 @@ const goEditObject = (objectId: any) => {
           </SingleAttribute>
         </template>
       </MiniWhiteFrame>
-      </div>
     </template>
   </BackgroundFrame>
 </template>

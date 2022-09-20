@@ -55,7 +55,7 @@ const goEditTeam = (teamId: any) => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame class="lg:(grid-cols-3) md:(grid-cols-2)">
     <template v-slot>
       <MiniWhiteFrame v-for="team in teams" v-bind:key="team.name">
         <template v-slot:nav>

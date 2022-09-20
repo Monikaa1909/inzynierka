@@ -2,7 +2,7 @@
 
 </script>
 <template>
-  <div class="bg-#FFFFFF/60 h-full w-full frame-shadow p-4 flex flex-col justify-around place-items-center gap-8 sm:(flex-row flex-wrap)">
+  <div class="bg-#FFFFFF/60 frame-shadow p-4 h-full w-full grid grid-cols-1 gap-4">
     <slot></slot>
   </div>
 </template>
