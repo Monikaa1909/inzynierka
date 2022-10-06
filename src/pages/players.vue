@@ -1,44 +1,67 @@
 <script setup lang="ts">
-const { t } = useI18n()
+const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
+
+const locales = availableLocales
+locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const players = [
   {
-    name: 'team1',
-    years: 'years1',
-    numberOfPlayers: 'players1',
-    averageAge: 'average age1',
-    players: [
-      {
-        name: 'Leo',
-        surname: 'Messi',
-      },
-    ],
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    birthdayDate: new Date(1999, 8, 12),
+    nationality: 'Poland',
+    team: 'Biebrza Goniądz',
+    parent: 'Filip Gruszka',
   },
   {
-    name: 'team2',
-    years: 'years2',
-    numberOfPlayers: 'players2',
-    averageAge: 'average age2',
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    birthdayDate: new Date(1999, 8, 12),
+    nationality: 'Poland',
+    team: 'Biebrza Goniądz',
+    parent: 'Filip Gruszka',
   },
   {
-    name: 'team3',
-    years: 'years3',
-    numberOfPlayers: 'players3',
-    averageAge: 'average age3',
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    birthdayDate: new Date(1999, 8, 12),
+    nationality: 'Poland',
+    team: 'Biebrza Goniądz',
+    parent: 'Filip Gruszka',
   },
   {
-    name: 'team4',
-    years: 'years4',
-    numberOfPlayers: 'players4',
-    averageAge: 'average age4',
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    birthdayDate: new Date(1999, 8, 12),
+    nationality: 'Poland',
+    team: 'Biebrza Goniądz',
+    parent: 'Filip Gruszka',
   },
   {
-    name: 'team5',
-    years: 'years5',
-    numberOfPlayers: 'players5',
-    averageAge: 'average age5',
-  }
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    birthdayDate: new Date(1999, 8, 12),
+    nationality: 'Poland',
+    team: 'Biebrza Goniądz',
+    parent: 'Filip Gruszka',
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    birthdayDate: new Date(1999, 8, 12),
+    nationality: 'Poland',
+    team: 'Biebrza Goniądz',
+    parent: 'Filip Gruszka',
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    birthdayDate: new Date(1999, 8, 12),
+    nationality: 'Poland',
+    team: 'Biebrza Goniądz',
+    parent: 'Filip Gruszka',
+  },
 ]
 
 const goEditPlayer = (playerId: any) => {
@@ -58,9 +81,9 @@ const goEditPlayer = (playerId: any) => {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="player in players" v-bind:key="player.name">
+          <MiniWhiteFrame v-for="player in players" v-bind:key="player.firstName">
             <template v-slot:nav>
-              <button @click="goEditPlayer(player.name)">
+              <button @click="goEditPlayer(player.firstName)">
                 <img src="../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
@@ -73,19 +96,27 @@ const goEditPlayer = (playerId: any) => {
             <template v-slot:attributes>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
-                <template v-slot:attributeValue>{{ player.name }}</template>
+                <template v-slot:attributeValue>{{ player.firstName }}</template>
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
-                <template v-slot:attributeValue>{{ player.years }}</template>
+                <template v-slot:attributeValue>{{ player.lastName }}</template>
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.birthday-date') }}:</template>
-                <template v-slot:attributeValue>{{ player.numberOfPlayers }}</template>
+                <template v-slot:attributeValue>{{ player.birthdayDate.toLocaleDateString(locale) }}</template>
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>
-                <template v-slot:attributeValue>{{ player.averageAge }}</template>
+                <template v-slot:attributeValue>{{ player.nationality }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.team') }}:</template>
+                <template v-slot:attributeValue>{{ player.team }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.parent') }}:</template>
+                <template v-slot:attributeValue>{{ player.parent }}</template>
               </SingleAttribute>
             </template>
           </MiniWhiteFrame>

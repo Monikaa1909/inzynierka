@@ -5,45 +5,39 @@ const router = useRouter()
 const teams = [
   {
     name: 'team1',
-    years: 'years1',
-    numberOfPlayers: 'players1',
-    averageAge: 'average age1',
-    players: [
-      {
-        name: 'Leo',
-        surname: 'Messi',
-      },
-    ],
+    startYear: 'years1',
+    endYear: 'players1',
+    trainer: 'Jerzy Brzęczek'
   },
   {
-    name: 'team2',
-    years: 'years2',
-    numberOfPlayers: 'players2',
-    averageAge: 'average age2',
+    name: 'team1',
+    startYear: 'years1',
+    endYear: 'players1',
+    trainer: 'Jerzy Brzęczek'
   },
   {
-    name: 'team3',
-    years: 'years3',
-    numberOfPlayers: 'players3',
-    averageAge: 'average age3',
+    name: 'team1',
+    startYear: 'years1',
+    endYear: 'players1',
+    trainer: 'Jerzy Brzęczek'
   },
   {
-    name: 'team4',
-    years: 'years4',
-    numberOfPlayers: 'players4',
-    averageAge: 'average age4',
+    name: 'team1',
+    startYear: 'years1',
+    endYear: 'players1',
+    trainer: 'Jerzy Brzęczek'
   },
   {
-    name: 'team5',
-    years: 'years5',
-    numberOfPlayers: 'players5',
-    averageAge: 'average age5',
+    name: 'team1',
+    startYear: 'years1',
+    endYear: 'players1',
+    trainer: 'Jerzy Brzęczek'
   },
   {
-    name: 'team6',
-    years: 'years6',
-    numberOfPlayers: 'players6',
-    averageAge: 'average age6',
+    name: 'team1',
+    startYear: 'years1',
+    endYear: 'players1',
+    trainer: 'Jerzy Brzęczek'
   },
 ]
 
@@ -88,15 +82,11 @@ const goTeam = (teamId: any) => {
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-team.years') }}:</template>
-                <template v-slot:attributeValue>{{ team.years }} - {{ team.years }}</template>
+                <template v-slot:attributeValue>{{ team.startYear }} - {{ team.endYear }}</template>
               </SingleAttribute>
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-team.number-of-players') }}:</template>
-                <template v-slot:attributeValue>{{ team.numberOfPlayers }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-team.the-average-age') }}:</template>
-                <template v-slot:attributeValue>{{ team.averageAge }}</template>
+                <template v-slot:attributeName>{{ t('single-team.trainer') }}:</template>
+                <template v-slot:attributeValue>{{ team.trainer }}</template>
               </SingleAttribute>
             </template>
           </MiniWhiteFrame>

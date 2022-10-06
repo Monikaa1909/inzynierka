@@ -10,6 +10,7 @@ button:
   contact: CONTACT
   teams: TEAMS
   players: PLAYERS
+  trainers: TRAINERS
   calendar: CALENDAR
   objects: OBJECTS
   your-profile: Your profile
@@ -25,6 +26,7 @@ button:
   add-player: ADD NEW PLAYER
   add-team: ADD NEW TEAM
   add-object: ADD NEW OBJECT
+  add-trainer: ADD NEW TRAINER
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -53,18 +55,25 @@ single-team:
   name: Name
   years: Years
   trainer: Trainer
-  number-of-players: Number of players
-  the-average-age: The average age
 single-player:
   first-name: First name
   last-name: Last name
   birthday-date: Birthday date
   nationality: Nationality
+  team: Team
+  parent: Parent
 single-object:
   name: Name
   street: Street and number
   postal-code: Postal code
   city: City
+single-trainer:
+  first-name: First name
+  last-name: Last name
+  birthday-date: Birthday date
+  nationality: Nationality
+  phone-number: Phone number
+  email: E-mail
 single-event:
   type: Type
   date: Date

@@ -10,6 +10,7 @@ button:
   contact: KONTAKT
   teams: DRUŻYNY
   players: ZAWODNICY
+  trainers: TRENERZY
   calendar: KALENDARZ
   objects: OBIEKTY
   your-profile: Twój profil
@@ -25,6 +26,7 @@ button:
   add-player: DODAJ NOWEGO ZAWODNIKA
   add-team: DODAJ NOWĄ DRUŻYNĘ
   add-object: DODAJ NOWY OBIEKT
+  add-trainer: DODAJ NOWEGO TRENERA
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -52,18 +54,25 @@ single-team:
   name: Nazwa
   years: Rocznik
   trainer: Trener
-  number-of-players: Ilość zawodników
-  the-average-age: Średnia wieku
 single-player:
   first-name: Imię
   last-name: Nazwisko
   birthday-date: Data urodzenia
   nationality: Narodowość
+  team: Drużyna
+  parent: Rodzic
 single-object:
   name: Nazwa
   street: Ulica i numer
   postal-code: Kod pocztowy
   city: Miejscowość
+single-trainer:
+  first-name: Imię
+  last-name: Nazwisko
+  birthday-date: Data urodzenia
+  nationality: Narodowość
+  phone-number: Numer telefonu
+  email: E-mail
 single-event:
   type: Typ
   date: Data

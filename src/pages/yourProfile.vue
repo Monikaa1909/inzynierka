@@ -16,7 +16,7 @@ var profile = {
   birthday: new Date(2010, 1, 12),
   nationality: 'Poland',
 }
-console.log(locale.value)
+
 const birthdayDate = computed(() => {
   return profile.birthday.toLocaleDateString(locale.value)
 })
