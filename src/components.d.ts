@@ -4,12 +4,15 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BackgroundFrame: typeof import('./components/BackgroundFrame.vue')['default']
     BackgroundFrameCenter: typeof import('./components/BackgroundFrameCenter.vue')['default']
     BackgroundFrameGrid: typeof import('./components/BackgroundFrameGrid.vue')['default']
     ButtonsFrame: typeof import('./components/ButtonsFrame.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     MiniWhiteFrame: typeof import('./components/MiniWhiteFrame.vue')['default']
+    MyCenterElement: typeof import('./components/MyCenterElement.vue')['default']
+    MyGrid: typeof import('./components/MyGrid.vue')['default']
     NavMenu: typeof import('./components/NavMenu.vue')['default']
     README: typeof import('./components/README.md')['default']
     SingleAttribute: typeof import('./components/SingleAttribute.vue')['default']

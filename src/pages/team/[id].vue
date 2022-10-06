@@ -1,16 +1,44 @@
 <script setup lang="ts">
-import BackgroundFrameCenter from '~/components/BackgroundFrameCenter.vue';
 const { t } = useI18n()
 const router = useRouter()
 
 const team = ref({
   name: 'team1',
   years: 'years1',
-  trainer: 'trainer1',
+  trainer: 'Jerzy',
   numberOfPlayers: 'players1',
   averageAge: 'average age1'
 })
 
+const trainers = [
+  {
+    firstName: 'Jerzy',
+    lastName: 'Brzęczek',
+    birthdayDate: new Date(),
+    nationality: 'Poland',
+    academy: 'a',
+    phoneNumber: '123644334',
+    email: 'playefsdvf@gmail.com',
+  },
+  {
+    firstName: 'Pep',
+    lastName: 'Brzęczek',
+    birthdayDate: new Date(),
+    nationality: 'Poland',
+    academy: 'a',
+    phoneNumber: '123644334',
+    email: 'playefsdvf@gmail.com',
+  },
+  {
+    firstName: 'Czesław',
+    lastName: 'Michniewicz',
+    birthdayDate: new Date(),
+    nationality: 'Poland',
+    academy: 'a',
+    phoneNumber: '123644334',
+    email: 'playefsdvf@gmail.com',
+  },
+]
 
 const cancel = () => {
   return router.push('/teams')
@@ -18,7 +46,9 @@ const cancel = () => {
 </script>
 
 <template>
-  <BackgroundFrameCenter>
+  <BackgroundFrame>
+    <template v-slot:data>
+      <MyCenterElement>
     <template v-slot>
       <MiniWhiteFrame>
         <template v-slot:icon>
@@ -53,10 +83,7 @@ const cancel = () => {
                 class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
               /> -->
               <select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="team.trainer">
-                
-                <option>A</option>
-                <option>B</option>
-                <option>C</option>
+                <option v-for="trainer in trainers" :value="trainer.firstName">{{trainer.firstName}} {{trainer.lastName}}</option>
               </select>
             </template>
           </SingleInput>
@@ -79,7 +106,9 @@ const cancel = () => {
         </template>
       </MiniWhiteFrame>
     </template>
-  </BackgroundFrameCenter>
+  </MyCenterElement>
+    </template>
+  </BackgroundFrame>
 </template>
 
 <route lang="yaml">

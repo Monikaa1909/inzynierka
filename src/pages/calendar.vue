@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import 'v-calendar/dist/style.css';
 import { Calendar } from 'v-calendar';
-import BackgroundFrameCenter from '~/components/BackgroundFrameCenter.vue';
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
@@ -207,7 +206,9 @@ const goAddEvent = (playerId: any) => {
 </script>
 
 <template>
-  <BackgroundFrameCenter>
+  <BackgroundFrame>
+    <template v-slot:data>
+      <MyCenterElement>
     <template v-slot>
       <div class="w-full h-full p-4 flex flex-col gap-8">
         <div class="w-full flex flex-col gap-4">
@@ -243,57 +244,16 @@ const goAddEvent = (playerId: any) => {
               <p :class="activeAll" class="rounded-xl px-4 py-2 text-sm hover:bg-#143547 hover:text-white text-center">
                 {{ t('button.all') }}</p>
             </button>
-            <!-- </div> -->
-            <!-- <div class="border w-full flex">
-            <div
-              id="dropdownNavbar"
-              @focusout="isHidden = true"
-              :class="[isHidden ? 'hidden' : '']"
-              class="z-10 bg-white divide-x divide-gray-100 shadow items-center justify-end w-full"
-            >
-              <div>
-                <button @click="filter('matches')" class="p-1 w-full">
-                  <p
-                    class="px-4 py-2 text-sm hover:bg-#805AD5 text-gray-700 text-left"
-                  >{{ t('button.matches') }}</p>
-                </button>
-                <button @click="filter('tournaments')" class="p-1 w-full">
-                  <p class="px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-left">treningi</p>
-                </button>
-                <button @click="filter('trainings')" class="p-1 w-full">
-                  <p class="px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-left">treningi</p>
-                </button>
-                <button @click="filter('all')" class="p-1 w-full">
-                  <p
-                    class="px-4 py-2 text-sm hover:bg-#143547 text-gray-700 hover:text-white text-left"
-                  >treningi</p>
-                </button>
-              </div>
-            </div> -->
           </div>
         </div>
         <div class="w-full h-full flex items-center">
           <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick="goSpecificDay"></Calendar>
         </div>
       </div>
-
-      <!-- <div class="w-full flex flex-col justify-center gap-4 sm:(flex-row)">
-        <button
-          @click="eventsType = 'matches'"
-          class="rounded-xl bg-#805AD5 w-full sm:(w-1/5)"
-        >treningi</button>
-        <button
-          @click="eventsType = 'tournaments'"
-          class="rounded-xl bg-#E9D8FD w-full sm:(w-1/5)"
-        >treningi</button>
-        <button
-          @click="eventsType = 'trainings'"
-          class="rounded-xl bg-#32B3A3 w-full sm:(w-1/5)"
-        >treningi</button>
-        <button @click="eventsType = 'all'" class="rounded-xl bg-#143547 w-full sm:(w-1/5)">treningi</button>
-      </div> -->
     </template>
-  </BackgroundFrameCenter>
+  </MyCenterElement>
+    </template>
+  </BackgroundFrame>
 </template>
 
 <route lang="yaml">

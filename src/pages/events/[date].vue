@@ -98,56 +98,60 @@ for (let tournament of tournaments.value) {
 </script>
 
 <template>
-  <BackgroundFrameCenter>
-    <template v-slot>
-      <MiniWhiteFrame v-for="event in events" v-bind:key="event.type">
-        <template v-slot:nav>
-          <button @click="goEditPlayer(event.type)">
-            <img src="../../assets/edit-icon.png" class="h-24px" />
-          </button>
-          <button>
-            <img src="../../assets/delete-icon.png" class="h-24px" />
-          </button>
+  <BackgroundFrame>
+    <template v-slot:data>
+      <MyCenterElement>
+        <template v-slot>
+          <MiniWhiteFrame v-for="event in events" v-bind:key="event.type">
+            <template v-slot:nav>
+              <button @click="goEditPlayer(event.type)">
+                <img src="../../assets/edit-icon.png" class="h-24px" />
+              </button>
+              <button>
+                <img src="../../assets/delete-icon.png" class="h-24px" />
+              </button>
+            </template>
+            <template v-slot:icon>
+              <img src="../../assets/player-icon2.png" class="h-150px" />
+            </template>
+            <template v-slot:attributes>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
+                <template v-slot:attributeValue>{{ event.type }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
+                <template v-slot:attributeValue>{{ event.dates.start }}</template>
+              </SingleAttribute>
+            </template>
+          </MiniWhiteFrame>
+          <MiniWhiteFrame v-for="event in events" v-bind:key="event.type">
+            <template v-slot:nav>
+              <button @click="goEditPlayer(event.type)">
+                <img src="../../assets/edit-icon.png" class="h-24px" />
+              </button>
+              <button>
+                <img src="../../assets/delete-icon.png" class="h-24px" />
+              </button>
+            </template>
+            <template v-slot:icon>
+              <img src="../../assets/player-icon2.png" class="h-150px" />
+            </template>
+            <template v-slot:attributes>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
+                <template v-slot:attributeValue>{{ event.type }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
+                <template v-slot:attributeValue>{{ event.dates.start }}</template>
+              </SingleAttribute>
+            </template>
+          </MiniWhiteFrame>
         </template>
-        <template v-slot:icon>
-          <img src="../../assets/player-icon2.png" class="h-150px" />
-        </template>
-        <template v-slot:attributes>
-          <SingleAttribute>
-            <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
-            <template v-slot:attributeValue>{{ event.type }}</template>
-          </SingleAttribute>
-          <SingleAttribute>
-            <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
-            <template v-slot:attributeValue>{{ event.dates.start }}</template>
-          </SingleAttribute>
-        </template>
-      </MiniWhiteFrame>
-      <MiniWhiteFrame v-for="event in events" v-bind:key="event.type">
-        <template v-slot:nav>
-          <button @click="goEditPlayer(event.type)">
-            <img src="../../assets/edit-icon.png" class="h-24px" />
-          </button>
-          <button>
-            <img src="../../assets/delete-icon.png" class="h-24px" />
-          </button>
-        </template>
-        <template v-slot:icon>
-          <img src="../../assets/player-icon2.png" class="h-150px" />
-        </template>
-        <template v-slot:attributes>
-          <SingleAttribute>
-            <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
-            <template v-slot:attributeValue>{{ event.type }}</template>
-          </SingleAttribute>
-          <SingleAttribute>
-            <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
-            <template v-slot:attributeValue>{{ event.dates.start }}</template>
-          </SingleAttribute>
-        </template>
-      </MiniWhiteFrame>
+      </MyCenterElement>
     </template>
-  </BackgroundFrameCenter>
+  </BackgroundFrame>
 </template>
 
 <route lang="yaml">

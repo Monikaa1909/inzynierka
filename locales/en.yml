@@ -22,6 +22,9 @@ button:
   show-filters: SHOW FILTERS
   hide-filters: HIDE FILTERS
   add-event: ADD EVENT
+  add-player: ADD NEW PLAYER
+  add-team: ADD NEW TEAM
+  add-object: ADD NEW OBJECT
 intro:
   start: Start using the application!
   aplikacja: Application

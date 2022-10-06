@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import BackgroundFrameCenter from '~/components/BackgroundFrameCenter.vue';
 const { t, availableLocales, locale } = useI18n()
 
 const router = useRouter()
@@ -24,7 +23,9 @@ const birthdayDate = computed(() => {
 </script>
 
 <template>
-  <BackgroundFrameCenter>
+  <BackgroundFrame>
+    <template v-slot:data>
+      <MyCenterElement>
     <template v-slot>
       <MiniWhiteFrame>
         <template v-slot:nav>
@@ -59,7 +60,9 @@ const birthdayDate = computed(() => {
         </template>
       </MiniWhiteFrame>
     </template>
-  </BackgroundFrameCenter>
+  </MyCenterElement>
+    </template>
+  </BackgroundFrame>
 </template>
 
 <route lang="yaml">

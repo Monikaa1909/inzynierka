@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import BackgroundFrameCenter from '~/components/BackgroundFrameCenter.vue';
 const { t } = useI18n()
 const router = useRouter()
 
@@ -16,9 +15,11 @@ const cancel = () => {
 </script>
 
 <template>
-  <BackgroundFrameCenter>
-    <template v-slot>
-      <MiniWhiteFrame>
+  <BackgroundFrame>
+    <template v-slot:data>
+      <MyCenterElement>
+        <template v-slot>
+          <MiniWhiteFrame>
         <template v-slot:icon>
           <img src="../../assets/player-icon2.png" class="h-150px" />
         </template>
@@ -73,8 +74,10 @@ const cancel = () => {
           </SingleButton>
         </template>
       </MiniWhiteFrame>
+        </template>
+      </MyCenterElement>
     </template>
-  </BackgroundFrameCenter>
+  </BackgroundFrame>
 </template>
 
 <route lang="yaml">
