@@ -13,8 +13,41 @@ const player = {
   birthdayDate: new Date(1999, 8, 12),
   nationality: 'Poland',
   team: 'Biebrza Goniądz',
-  parent: 'Filip Gruszka',
+  parent: 'Filip',
 }
+
+const parents = [
+  {
+    firstName: 'Filip',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+]
 
 const cancel = () => {
   return router.push('/players')
@@ -84,8 +117,15 @@ const cancel = () => {
               <SingleInput>
                 <template v-slot:inputName>{{ t('single-player.parent') }}:</template>
                 <template v-slot:inputValue>
-                  <input v-model="player.parent" placeholder="{{player.parent}}"
-                    class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+                  <div class="flex flex-auto w-full flox-row justify-center items-center">
+                    <select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.parent">
+                      <option v-for="parent in parents" :value="parent.firstName">{{parent.firstName}}
+                        {{parent.lastName}}</option>
+                    </select>
+                    <button class="flex flex-auto border-#143547 h-full justify-center items-center px-1 bg-#143547">
+                      <img src="../../assets/edit-icon-white.png" class="h-24px" />
+                    </button>
+                  </div>
                 </template>
               </SingleInput>
             </template>

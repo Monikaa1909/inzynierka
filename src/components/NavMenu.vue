@@ -47,6 +47,11 @@ const goObjects = () => {
   return router.push('/objects')
 }
 
+const goParents = () => {
+  isHidden.value = true
+  return router.push('/parents')
+}
+
 const goYourProfile = () => {
   isHidden.value = true
   return router.push('/yourProfile')
@@ -89,6 +94,12 @@ const logout = async () => {
           <img src="../assets/trainer-icon.png" class="h-24px mr-2" />
         </template>
         <template v-slot:buttonName>{{ t('button.trainers') }}</template>
+      </SingleButton>
+      <SingleButton @click="goParents">
+        <template v-slot:icon>
+          <img src="../assets/parent-icon.png" class="h-24px mr-2" />
+        </template>
+        <template v-slot:buttonName>{{ t('button.parents') }}</template>
       </SingleButton>
       <SingleButton @click="goObjects">
         <template v-slot:icon>

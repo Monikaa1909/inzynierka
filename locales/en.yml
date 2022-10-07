@@ -13,6 +13,7 @@ button:
   trainers: TRAINERS
   calendar: CALENDAR
   objects: OBJECTS
+  parents: PARENTS
   your-profile: Your profile
   save: Save
   cancel: Cancel
@@ -27,6 +28,7 @@ button:
   add-team: ADD NEW TEAM
   add-object: ADD NEW OBJECT
   add-trainer: ADD NEW TRAINER
+  add-parent: ADD NEW PARENT
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -62,6 +64,11 @@ single-player:
   nationality: Nationality
   team: Team
   parent: Parent
+single-parent:
+  first-name: First name
+  last-name: Last name
+  phone-number: Phone number
+  email: E-mail
 single-object:
   name: Name
   street: Street and number

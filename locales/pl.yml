@@ -13,6 +13,7 @@ button:
   trainers: TRENERZY
   calendar: KALENDARZ
   objects: OBIEKTY
+  parents: RODZICE
   your-profile: Twój profil
   save: Zapisz
   cancel: Anuluj
@@ -27,6 +28,7 @@ button:
   add-team: DODAJ NOWĄ DRUŻYNĘ
   add-object: DODAJ NOWY OBIEKT
   add-trainer: DODAJ NOWEGO TRENERA
+  add-parent: DODAJ NOWEGO RODZICA
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -61,6 +63,11 @@ single-player:
   nationality: Narodowość
   team: Drużyna
   parent: Rodzic
+single-parent:
+  first-name: Imię
+  last-name: Nazwisko
+  phone-number: Numer telefonu
+  email: E-mail
 single-object:
   name: Nazwa
   street: Ulica i numer
