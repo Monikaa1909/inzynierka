@@ -17,6 +17,14 @@ export default new Schema({
     type: String,
     required: [true, 'Missing informations - nationality is required']
   },
+  remarks: {
+    type: String,
+    required: false
+  },
+  validityOfMedicalExaminations: {
+    type: Date,
+    required: [true, 'Missing informations - validity of medical examinations is required']
+  },
   team: {
     type: Schema.Types.ObjectId,
     ref: "Team",

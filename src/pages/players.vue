@@ -65,6 +65,10 @@ const players = [
 ]
 
 const goEditPlayer = (playerId: any) => {
+  return router.push(`/player/edit/${playerId}`)
+}
+
+function goToPlayer(playerId: any) {
   return router.push(`/player/${playerId}`)
 }
 
@@ -81,7 +85,8 @@ const goEditPlayer = (playerId: any) => {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="player in players" v-bind:key="player.firstName">
+          <MiniWhiteFrame v-for="player in players" v-bind:key="player.firstName" class="hover:bg-#E3E3E3"
+            clickable="cursor-pointer" @go-to="goToPlayer(player.firstName)">
             <template v-slot:nav>
               <button @click="goEditPlayer(player.firstName)">
                 <img src="../assets/edit-icon.png" class="h-24px" />

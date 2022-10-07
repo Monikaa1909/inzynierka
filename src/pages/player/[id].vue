@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import 'v-calendar/dist/style.css';
-import { DatePicker } from 'v-calendar';
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
@@ -16,42 +15,14 @@ const player = {
   parent: 'Filip',
 }
 
-const parents = [
-  {
-    firstName: 'Filip',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-]
-
-const cancel = () => {
-  return router.push('/players')
+const goEditPlayer = (playerId: any) => {
+  return router.push(`/player/edit/${playerId}`)
 }
+
+const back = () => {
+  return router.push(`/players`)
+}
+
 </script>
 
 <template>
@@ -60,83 +31,48 @@ const cancel = () => {
       <MyCenterElement>
         <template v-slot>
           <MiniWhiteFrame>
+            <template v-slot:nav>
+              <button @click="goEditPlayer(player.firstName)">
+                <img src="../../assets/edit-icon.png" class="h-24px" />
+              </button>
+              <button>
+                <img src="../../assets/delete-icon.png" class="h-24px" />
+              </button>
+            </template>
             <template v-slot:icon>
-              <img src="../../assets/player-icon2.png" class=" h-150px" />
+              <img src="../../assets/player-icon2.png" class="h-150px" />
             </template>
             <template v-slot:attributes>
-              <SingleInput>
-                <template v-slot:inputName>{{ t('single-player.first-name') }}:</template>
-                <template v-slot:inputValue>
-                  <input v-model="player.firstName" placeholder="{{player.firstName}}"
-                    class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-                </template>
-              </SingleInput>
-              <SingleInput>
-                <template v-slot:inputName>{{ t('single-player.last-name') }}:</template>
-                <template v-slot:inputValue>
-                  <input v-model="player.lastName" placeholder="{{player.lastName}}"
-                    class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-                </template>
-              </SingleInput>
-              <SingleInput>
-                <template v-slot:inputName>{{ t('single-player.birthday-date') }}:</template>
-                <template v-slot:inputValue>
-                  <DatePicker v-model="player.birthdayDate" format="yyyy-MM-dd" :clearable="false"
-                    class="inline-block h-full" :locale='locale'>
-                    <template v-slot="{ inputValue, togglePopover }">
-                      <div class="flex items-center">
-                        <button class="p-2 bg-#143547 border border-#143547 hover:bg-#143547-200 text-white"
-                          @click="togglePopover()">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-4 h-4 fill-current">
-                            <path
-                              d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
-                          </svg>
-                        </button>
-                        <input :value="inputValue"
-                          class="bg-white text-gray-700 w-full py-1 px-2 appearance-none border focus:outline-none focus:border-blue-500"
-                          readonly />
-                      </div>
-                    </template>
-                  </DatePicker>
-                </template>
-              </SingleInput>
-              <SingleInput>
-                <template v-slot:inputName>{{ t('single-player.nationality') }}:</template>
-                <template v-slot:inputValue>
-                  <input v-model="player.nationality" placeholder="{{player.nationality}}"
-                    class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-                </template>
-              </SingleInput>
-              <SingleInput>
-                <template v-slot:inputName>{{ t('single-player.team') }}:</template>
-                <template v-slot:inputValue>
-                  <input v-model="player.team" placeholder="{{player.team}}"
-                    class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-                </template>
-              </SingleInput>
-              <SingleInput>
-                <template v-slot:inputName>{{ t('single-player.parent') }}:</template>
-                <template v-slot:inputValue>
-                  <div class="flex flex-auto w-full flox-row justify-center items-center">
-                    <select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.parent">
-                      <option v-for="parent in parents" :value="parent.firstName">{{parent.firstName}}
-                        {{parent.lastName}}</option>
-                    </select>
-                    <button class="flex flex-auto border-#143547 h-full justify-center items-center px-1 bg-#143547">
-                      <img src="../../assets/edit-icon-white.png" class="h-24px" />
-                    </button>
-                  </div>
-                </template>
-              </SingleInput>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
+                <template v-slot:attributeValue>{{ player.firstName }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
+                <template v-slot:attributeValue>{{ player.lastName }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.birthday-date') }}:</template>
+                <template v-slot:attributeValue>{{ player.birthdayDate.toLocaleDateString(locale) }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>
+                <template v-slot:attributeValue>{{ player.nationality }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.team') }}:</template>
+                <template v-slot:attributeValue>{{ player.team }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.parent') }}:</template>
+                <template v-slot:attributeValue>{{ player.parent }}</template>
+              </SingleAttribute>
             </template>
             <template v-slot:footer>
-              <SingleButton>
-                <template v-slot:buttonName>{{ t('button.save') }}</template>
-              </SingleButton>
-              <SingleButton @click="cancel">
-                <template v-slot:buttonName>{{ t('button.cancel') }}</template>
-              </SingleButton>
-            </template>
+							<SingleButton @click="back">
+								<template v-slot:buttonName>{{ t('button.back') }}</template>
+							</SingleButton>
+						</template>
           </MiniWhiteFrame>
         </template>
       </MyCenterElement>

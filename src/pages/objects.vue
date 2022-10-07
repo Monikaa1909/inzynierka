@@ -35,9 +35,12 @@ const objects = [
 ]
 
 const goEditObject = (objectId: any) => {
-  return router.push(`/object/${objectId}`)
+  return router.push(`/object/edit/${objectId}`)
 }
 
+function goToObject(objectId: any) {
+  return router.push(`/object/${objectId}`)
+}
 </script>
 
 <template>
@@ -51,7 +54,7 @@ const goEditObject = (objectId: any) => {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-2) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="object in objects" v-bind:key="object.name">
+          <MiniWhiteFrame v-for="object in objects" v-bind:key="object.name" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToObject(object.name)"> 
             <template v-slot:nav>
               <button @click="goEditObject(object.name)">
                 <img src="../assets/edit-icon.png" class="h-24px" />

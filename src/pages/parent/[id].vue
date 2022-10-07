@@ -5,72 +5,39 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const parents = [
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-]
+const parent = ref({
+  firstName: 'Jakub',
+  lastName: 'Gruszka',
+  phoneNumber: '123455432',
+  email: 'mdsdoc@wp.pl'
+},)
 
 const goEditParent = (parentId: any) => {
   return router.push(`/parent/edit/${parentId}`)
 }
 
-function goToParent(parentId: any) {
-  return router.push(`/parent/${parentId}`)
+const back = () => {
+  return router.push(`/parents`)
 }
 
 </script>
 
 <template>
   <BackgroundFrame>
-    <template v-slot:nav>
-      <button class="flex flex-row gap-2 items-center">
-        <img src="../assets/add-icon2.png" class="h-48px flex" />
-        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-parent')}}</p>
-      </button>
-    </template>
     <template v-slot:data>
-      <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
+      <MyCenterElement>
         <template v-slot>
-          <MiniWhiteFrame v-for="parent in parents" v-bind:key="parent.firstName" class="hover:bg-#E3E3E3"
-            clickable="cursor-pointer" @go-to="goToParent(parent.firstName)">
+          <MiniWhiteFrame>
             <template v-slot:nav>
               <button @click="goEditParent(parent.firstName)">
-                <img src="../assets/edit-icon.png" class="h-24px" />
+                <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
-                <img src="../assets/delete-icon.png" class="h-24px" />
+                <img src="../../assets/delete-icon.png" class="h-24px" />
               </button>
             </template>
             <template v-slot:icon>
-              <img src="../assets/parent-icon2.png" class="h-150px" />
+              <img src="../../assets/team-icon2.png" class="h-150px cursor-pointer" />
             </template>
             <template v-slot:attributes>
               <SingleAttribute>
@@ -90,12 +57,16 @@ function goToParent(parentId: any) {
                 <template v-slot:attributeValue>{{ parent.email }}</template>
               </SingleAttribute>
             </template>
+            <template v-slot:footer>
+							<SingleButton @click="back">
+								<template v-slot:buttonName>{{ t('button.back') }}</template>
+							</SingleButton>
+						</template>
           </MiniWhiteFrame>
         </template>
-      </MyGrid>
+      </MyCenterElement>
     </template>
   </BackgroundFrame>
-
 </template>
 
 <route lang="yaml">

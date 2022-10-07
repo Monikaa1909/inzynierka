@@ -7,17 +7,51 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const cancel = () => {
-  return router.push('/yourProfile')
-}
-
-var profile = {
-  firstName: 'Jerzy',
-  lastName: 'Brzęczek',
-  birthday: new Date(2010, 1, 12),
+const player = {
+  firstName: 'Jakub',
+  lastName: 'Gruszka',
+  birthdayDate: new Date(1999, 8, 12),
   nationality: 'Poland',
+  team: 'Biebrza Goniądz',
+  parent: 'Filip',
 }
 
+const parents = [
+  {
+    firstName: 'Filip',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+  {
+    firstName: 'Jakub',
+    lastName: 'Gruszka',
+    phoneNumber: '123455432',
+    email: 'mdsdoc@wp.pl'
+  },
+]
+
+const cancel = () => {
+  return router.push('/players')
+}
 </script>
 
 <template>
@@ -27,27 +61,27 @@ var profile = {
         <template v-slot>
           <MiniWhiteFrame>
             <template v-slot:icon>
-              <img src="../assets/player-icon2.png" class="h-150px" />
+              <img src="../../../assets/player-icon2.png" class=" h-150px" />
             </template>
             <template v-slot:attributes>
               <SingleInput>
                 <template v-slot:inputName>{{ t('single-player.first-name') }}:</template>
                 <template v-slot:inputValue>
-                  <input v-model="profile.firstName" placeholder="{{profile.firstName}}"
+                  <input v-model="player.firstName" placeholder="{{player.firstName}}"
                     class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
                 </template>
               </SingleInput>
               <SingleInput>
                 <template v-slot:inputName>{{ t('single-player.last-name') }}:</template>
                 <template v-slot:inputValue>
-                  <input v-model="profile.lastName" placeholder="{{profile.lastName}}"
+                  <input v-model="player.lastName" placeholder="{{player.lastName}}"
                     class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
                 </template>
               </SingleInput>
               <SingleInput>
                 <template v-slot:inputName>{{ t('single-player.birthday-date') }}:</template>
                 <template v-slot:inputValue>
-                  <DatePicker v-model="profile.birthday" format="yyyy-MM-dd" :clearable="false"
+                  <DatePicker v-model="player.birthdayDate" format="yyyy-MM-dd" :clearable="false"
                     class="inline-block h-full" :locale='locale'>
                     <template v-slot="{ inputValue, togglePopover }">
                       <div class="flex items-center">
@@ -69,8 +103,29 @@ var profile = {
               <SingleInput>
                 <template v-slot:inputName>{{ t('single-player.nationality') }}:</template>
                 <template v-slot:inputValue>
-                  <input v-model="profile.nationality" placeholder="{{profile.nationality}}"
+                  <input v-model="player.nationality" placeholder="{{player.nationality}}"
                     class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+                </template>
+              </SingleInput>
+              <SingleInput>
+                <template v-slot:inputName>{{ t('single-player.team') }}:</template>
+                <template v-slot:inputValue>
+                  <input v-model="player.team" placeholder="{{player.team}}"
+                    class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+                </template>
+              </SingleInput>
+              <SingleInput>
+                <template v-slot:inputName>{{ t('single-player.parent') }}:</template>
+                <template v-slot:inputValue>
+                  <div class="flex flex-auto w-full flox-row justify-center items-center">
+                    <select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.parent">
+                      <option v-for="parent in parents" :value="parent.firstName">{{parent.firstName}}
+                        {{parent.lastName}}</option>
+                    </select>
+                    <button class="flex flex-auto border-#143547 h-full justify-center items-center px-1 pt-1 bg-#143547">
+                      <img src="../../../assets/edit-icon-white.png" class="h-24px" />
+                    </button>
+                  </div>
                 </template>
               </SingleInput>
             </template>

@@ -42,11 +42,11 @@ const teams = [
 ]
 
 const goEditTeam = (teamId: any) => {
-  return router.push(`/team/${teamId}`)
+  return router.push(`/team/edit/${teamId}`)
 }
 
-const goTeam = (teamId: any) => {
-  return router.push(`/player/${teamId}`)
+function goToTeam(teamId: any) {
+  return router.push(`/team/${teamId}`)
 }
 
 
@@ -63,7 +63,7 @@ const goTeam = (teamId: any) => {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="team in teams" v-bind:key="team.name">
+          <MiniWhiteFrame v-for="team in teams" v-bind:key="team.name" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToTeam(team.name)">
             <template v-slot:nav>
               <button @click="goEditTeam(team.name)">
                 <img src="../assets/edit-icon.png" class="h-24px" />
@@ -73,7 +73,7 @@ const goTeam = (teamId: any) => {
               </button>
             </template>
             <template v-slot:icon>
-              <img src="../assets/team-icon2.png" class="h-150px cursor-pointer" @click="goTeam(team.name)" />
+              <img src="../assets/team-icon2.png" class="h-150px cursor-pointer"/>
             </template>
             <template v-slot:attributes>
               <SingleAttribute>

@@ -9,90 +9,55 @@ const team = ref({
   trainer: 'Jerzy'
 })
 
-const trainers = [
-{
-    firstName: 'Jerzy',
-    lastName: 'Brzęczek',
-    birthdayDate: new Date(1999, 8, 12),
-    nationality: 'Poland',
-    academy: 'Biebrza Goniądz',
-    phoneNumber: '123644334',
-    email: 'jbrzeczek@gmail.com',
-  },
-  {
-    firstName: 'Czesław',
-    lastName: 'Michniewicz',
-    birthdayDate: new Date(1978, 8, 12),
-    nationality: 'Poland',
-    academy: 'Biebrza Goniądz',
-    phoneNumber: '123644334',
-    email: 'jbrzeczek@gmail.com',
-  },
-  {
-    firstName: 'Jan',
-    lastName: 'Kowalski',
-    birthdayDate: new Date(1978, 8, 12),
-    nationality: 'Poland',
-    academy: 'Biebrza Goniądz',
-    phoneNumber: '123644334',
-    email: 'jbrzeczek@gmail.com',
-  },
-]
-
-const cancel = () => {
-  return router.push('/teams')
+const goEditTeam = (teamId: any) => {
+  return router.push(`/team/edit/${teamId}`)
 }
+
+const back = () => {
+  return router.push(`/teams`)
+}
+
 </script>
 
 <template>
   <BackgroundFrame>
     <template v-slot:data>
       <MyCenterElement>
-    <template v-slot>
-      <MiniWhiteFrame>
-        <template v-slot:icon>
-          <img src="../../assets/team-icon2.png" class=" h-150px" />
-        </template>
-        <template v-slot:attributes>
-          <SingleInput>
-            <template v-slot:inputName>{{ t('single-team.name') }}:</template>
-            <template v-slot:inputValue>
-              <input v-model="team.name" placeholder="{{team.name}}"
-                class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+        <template v-slot>
+          <MiniWhiteFrame class="px-8">
+            <template v-slot:nav>
+              <button @click="goEditTeam(team.name)">
+                <img src="../../assets/edit-icon.png" class="h-24px" />
+              </button>
+              <button>
+                <img src="../../assets/delete-icon.png" class="h-24px" />
+              </button>
             </template>
-          </SingleInput>
-          <SingleInput>
-            <template v-slot:inputName>{{ t('single-team.years') }}:</template>
-            <template v-slot:inputValue>
-              <div class="flex w-full flex-row items-center gap-2">
-                <input v-model="team.startYear" placeholder="{{team.startYear}}"
-                  class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-                <p>-</p>
-                <input v-model="team.endYear" placeholder="{{team.endYear}}"
-                  class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-              </div>
+            <template v-slot:icon>
+              <img src="../../assets/team-icon2.png" class="h-150px cursor-pointer" />
             </template>
-          </SingleInput>
-          <SingleInput>
-            <template v-slot:inputName>{{ t('single-team.trainer') }}:</template>
-            <template v-slot:inputValue>
-              <select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="team.trainer">
-                <option v-for="trainer in trainers" :value="trainer.firstName">{{trainer.firstName}} {{trainer.lastName}}</option>
-              </select>
+            <template v-slot:attributes>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-team.name') }}:</template>
+                <template v-slot:attributeValue>{{ team.name }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-team.years') }}:</template>
+                <template v-slot:attributeValue>{{ team.startYear }} - {{ team.endYear }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-team.trainer') }}:</template>
+                <template v-slot:attributeValue>{{ team.trainer }}</template>
+              </SingleAttribute>
             </template>
-          </SingleInput>
+            <template v-slot:footer>
+              <SingleButton @click="back">
+                <template v-slot:buttonName>{{ t('button.back') }}</template>
+              </SingleButton>
+            </template>
+          </MiniWhiteFrame>
         </template>
-        <template v-slot:footer>
-          <SingleButton>
-            <template v-slot:buttonName>{{ t('button.save') }}</template>
-          </SingleButton>
-          <SingleButton @click="cancel">
-            <template v-slot:buttonName>{{ t('button.cancel') }}</template>
-          </SingleButton>
-        </template>
-      </MiniWhiteFrame>
-    </template>
-  </MyCenterElement>
+      </MyCenterElement>
     </template>
   </BackgroundFrame>
 </template>
