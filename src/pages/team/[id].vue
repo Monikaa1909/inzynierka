@@ -51,7 +51,7 @@ const cancel = () => {
     <template v-slot>
       <MiniWhiteFrame>
         <template v-slot:icon>
-          <img src="../../assets/team-icon2.png" class="h-150px" />
+          <img src="../../assets/team-icon2.png" class=" h-150px" />
         </template>
         <template v-slot:attributes>
           <SingleInput>
