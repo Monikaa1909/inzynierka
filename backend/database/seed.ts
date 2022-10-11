@@ -109,7 +109,8 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-12-09',
         nationality: 'Polska',
         parent: parent1,
-        team: team1
+        team: team1,
+        validityOfMedicalExaminations: '2022-12-09'
     });
     player1.save(function (err) {
         if (err) return console.log(err.message);
@@ -121,7 +122,8 @@ export const seedDatabase = async () => {
         birthdayDate: '2011-11-09',
         nationality: 'Polska',
         parent: parent2,
-        team: team1
+        team: team1,
+        validityOfMedicalExaminations: '2022-12-09'
     });
     player2.save(function (err) {
         if (err) return console.log(err.message);
@@ -133,7 +135,8 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
         parent: parent3,
-        team: team1
+        team: team1,
+        validityOfMedicalExaminations: '2022-12-09'
     });
     player3.save(function (err) {
         if (err) return console.log(err.message);
@@ -145,7 +148,8 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
         team: team1,
-        parent: parent4
+        parent: parent4,
+        validityOfMedicalExaminations: '2022-12-09'
     });
     player4.save(function (err) {
         if (err) return console.log(err.message);

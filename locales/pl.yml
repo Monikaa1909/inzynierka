@@ -86,6 +86,7 @@ single-event:
   team: Drużyna
   object: Obiekt
   opponent: Przeciwnik
+  hour: Godzina
   new-object: Nowy obiekt
   start-date: Data rozpoczęcia
   end-date: Data zakończenia

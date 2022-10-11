@@ -7,6 +7,10 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const props = defineProps({
+	date: String,
+})
+
 const teams = [
 	{
 		name: 'team1',
@@ -99,7 +103,7 @@ const event = ref({
 })
 
 const cancel = () => {
-	return router.push('/calendar')
+	return router.push(`/events/${props.date}`)
 }
 </script>
     
@@ -112,9 +116,7 @@ const cancel = () => {
 						<template v-slot:icon>
 							<img src="../assets/calendar-icon2.png" class=" h-150px" />
 						</template>
-
 						<template v-slot:attributes>
-
 							<SingleInput>
 								<template v-slot:inputName>{{ t('single-event.type')}}:</template>
 								<template v-slot:inputValue>
@@ -155,7 +157,7 @@ const cancel = () => {
 							<SingleInput v-if="event.type === 'Tournament'">
 								<template v-slot:inputName>{{ t('single-event.start-date')}}:</template>
 								<template v-slot:inputValue>
-									<DatePicker v-model="event.startDate" mode="dateTime"  :clearable="false"
+									<DatePicker v-model="event.startDate" mode="dateTime" :clearable="false"
 										class="inline-block h-full min-w-full" :locale="locale">
 										<template v-slot="{ inputValue, togglePopover }">
 											<div class="flex items-center">
@@ -241,7 +243,7 @@ const cancel = () => {
 							<SingleButton>
 								<template v-slot:buttonName>{{ t('button.save') }}</template>
 							</SingleButton>
-							<SingleButton @click="cancel">
+							<SingleButton @click="cancel()">
 								<template v-slot:buttonName>{{ t('button.cancel') }}</template>
 							</SingleButton>
 						</template>

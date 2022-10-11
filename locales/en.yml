@@ -82,11 +82,12 @@ single-trainer:
   phone-number: Phone number
   email: E-mail
 single-event:
-  type: Type
+  type: Event type
   date: Date
   team: Team
   object: Object
   opponent: Opponent
+  hour: Hour
   new-object: New object
   start-date: Start date
   end-date: End date
