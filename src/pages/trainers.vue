@@ -48,6 +48,11 @@ const goEditTrainer = (trainerId: any) => {
   return router.push(`/trainer/edit/${trainerId}`)
 }
 
+const goAddTrainer = () => {
+  return router.push(`/trainer/add/newTrainer`)
+}
+
+
 function goToTrainer(trainerId: any) {
   return router.push(`/trainer/${trainerId}`)
 }
@@ -57,7 +62,7 @@ function goToTrainer(trainerId: any) {
 <template>
   <BackgroundFrame>
     <template v-slot:nav>
-      <button class="flex flex-row gap-2 items-center">
+      <button @click="goAddTrainer" class="flex flex-row gap-2 items-center">
         <img src="../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-trainer')}}</p>
       </button>

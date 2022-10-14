@@ -20,7 +20,7 @@ const sportsFacility = {
 							<img src="../../../assets/object-icon2.png" class=" h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<NewObjectForm :sports-facility-id="sportsFacility.name"></NewObjectForm>
+							<NewSportsFacilityForm :sports-facility-id="sportsFacility.name"></NewSportsFacilityForm>
 						</template>
 					</MiniWhiteFrame>
 				</template>

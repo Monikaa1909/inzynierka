@@ -12,7 +12,7 @@
 							<img src="../../../assets/object-icon2.png" class=" h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<NewObjectForm></NewObjectForm>
+							<NewSportsFacilityForm></NewSportsFacilityForm>
 						</template>
 					</MiniWhiteFrame>
 				</template>
