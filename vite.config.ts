@@ -132,6 +132,10 @@ export default defineConfig({
     onFinished() { generateSitemap() },
   },
 
+  server: {
+    
+  },
+
   optimizeDeps: {
     include: [
       'vue',
