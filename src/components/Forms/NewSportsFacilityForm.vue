@@ -10,20 +10,20 @@ const props = defineProps({
 	}
 })
 
-const sportsFacility = {
+const sportsFacility = ref({
 	name: 'Stadion Miejski w Białymstoku',
 	street: 'Słoneczna',
 	houseNumber: '1',
 	postalCode: '15-323',
 	city: 'Białystok',
-}
+})
 
 if (!props.sportsFacilityId) {
-	sportsFacility.name = ''
-	sportsFacility.street = ''
-	sportsFacility.houseNumber = ''
-	sportsFacility.postalCode = ''
-	sportsFacility.city = ''
+	sportsFacility.value.name = ''
+	sportsFacility.value.street = ''
+	sportsFacility.value.houseNumber = ''
+	sportsFacility.value.postalCode = ''
+	sportsFacility.value.city = ''
 }
 
 const onSubmit = (values: any) => {

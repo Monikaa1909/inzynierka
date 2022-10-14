@@ -13,7 +13,7 @@ const props = defineProps({
 	}
 })
 
-const trainer = {
+const trainer = ref({
 	firstName: 'Jerzy',
 	lastName: 'Brzęczek',
 	birthdayDate: new Date(1999, 8, 12),
@@ -21,16 +21,16 @@ const trainer = {
 	academy: 'Biebrza Goniądz',
 	phoneNumber: '123644334',
 	email: 'jbrzeczek@gmail.com',
-}
+})
 
 if (!props.trainerId) {
-	trainer.firstName = ''
-	trainer.lastName = ''
-	trainer.birthdayDate = new Date()
-	trainer.nationality = ''
-	trainer.academy = ''
-	trainer.phoneNumber = ''
-	trainer.email = ''
+	trainer.value.firstName = ''
+	trainer.value.lastName = ''
+	trainer.value.birthdayDate = new Date()
+	trainer.value.nationality = ''
+	trainer.value.academy = ''
+	trainer.value.phoneNumber = ''
+	trainer.value.email = ''
 }
 
 const onSubmit = (values: any) => {

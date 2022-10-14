@@ -45,6 +45,10 @@ const goEditTeam = (teamId: any) => {
   return router.push(`/team/edit/${teamId}`)
 }
 
+const goAddTeam = () => {
+  return router.push(`/team/add/newTeam`)
+}
+
 function goToTeam(teamId: any) {
   return router.push(`/team/${teamId}`)
 }
@@ -55,7 +59,7 @@ function goToTeam(teamId: any) {
 <template>
   <BackgroundFrame>
     <template v-slot:nav>
-      <button class="flex flex-row gap-2 items-center">
+      <button @click="goAddTeam" class="flex flex-row gap-2 items-center">
         <img src="../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-team')}}</p>
       </button>
