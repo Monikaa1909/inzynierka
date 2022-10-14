@@ -1832,7 +1832,7 @@
     "@vue/compiler-dom" "3.2.37"
     "@vue/shared" "3.2.37"
 
-"@vue/devtools-api@^6.0.0-beta.15", "@vue/devtools-api@^6.0.0-beta.7", "@vue/devtools-api@^6.1.4":
+"@vue/devtools-api@^6.0.0-beta.7", "@vue/devtools-api@^6.1.4":
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.2.0.tgz#e3dc98a0cce8e87292745e2d24c9ee8c274a023b"
   integrity sha512-pF1G4wky+hkifDiZSWn8xfuLOJI1ZXtuambpBEYaf7Xaf6zC/pM29rvAGpd3qaGXnr4BAXU1Pxz/VfvBGwexGA==
@@ -7132,12 +7132,12 @@ vary@^1, vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vee-validate@^4.5.10:
-  version "4.5.11"
-  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-4.5.11.tgz#cdf3dd3d2474e9ab2c2074ba641503823258743d"
-  integrity sha512-bNF2TtuRnLnPsw6+Q/P3bMx8c2iJbvQmyikTr9r65PLAdqtdhQxnsIS3ayYNIzNWZ50sysv01DteN9h3XT/gFg==
+vee-validate@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-4.7.0.tgz#442c0a9b8dad28790ea10b37b6855f25f3e4f5a8"
+  integrity sha512-7HW2RE8mWaT57Jn+JU7jwczFqtlc1rIAwSbp8kD1L2sO0plhT9YeDNKW5iaI9baosc4h+iyb6itMlXtqAAqAfw==
   dependencies:
-    "@vue/devtools-api" "^6.0.0-beta.15"
+    "@vue/devtools-api" "^6.1.4"
 
 verror@1.10.0:
   version "1.10.0"

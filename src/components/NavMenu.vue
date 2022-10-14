@@ -44,7 +44,7 @@ const goCalendar = () => {
 
 const goObjects = () => {
   isHidden.value = true
-  return router.push('/objects')
+  return router.push('/sportsFacilities')
 }
 
 const goParents = () => {

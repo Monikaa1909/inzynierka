@@ -14,6 +14,7 @@ declare module 'vue' {
     MyCenterElement: typeof import('./components/MyCenterElement.vue')['default']
     MyGrid: typeof import('./components/MyGrid.vue')['default']
     NavMenu: typeof import('./components/NavMenu.vue')['default']
+    NewObjectForm: typeof import('./components/Forms/NewObjectForm.vue')['default']
     README: typeof import('./components/README.md')['default']
     SingleAttribute: typeof import('./components/SingleAttribute.vue')['default']
     SingleButton: typeof import('./components/SingleButton.vue')['default']
