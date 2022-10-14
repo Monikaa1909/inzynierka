@@ -8,7 +8,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const props = defineProps({
-	date: String,
+	date: { type: String, required: true },
 })
 
 const teams = [
@@ -82,12 +82,13 @@ const objects = [
 		city: 'Białystok',
 	}
 ]
-
+console.log(props.date)
 const event = ref({
 	type: "Training",
-	date: new Date(),
-	startDate: new Date(),
-	endDate: new Date(),
+	startDate: new Date(props.date),
+	endDate: new Date(2022, 8, 12, 15, 10),
+	startHour: 0,
+	startMinutes: 0,
 	team: teams[0].name,
 	object: objects[0].name,
 	newObject: '',
@@ -102,6 +103,22 @@ const event = ref({
 	opponent: '',
 })
 
+const hours = ref<Array<Number>>([])
+for (let i = 0; i < 24; i++) {
+	hours.value.push(i);
+}
+
+const minutes = ref<Array<Number>>([])
+for (let i = 0; i < 60; i++) {
+	minutes.value.push(i);
+}
+
+const save = () => {
+	event.value.startDate.setHours(event.value.startHour)
+	event.value.startDate.setMinutes(event.value.startMinutes)
+	console.log(event.value.startDate)
+}
+
 const cancel = () => {
 	return router.push(`/events/${props.date}`)
 }
@@ -114,7 +131,7 @@ const cancel = () => {
 				<template v-slot>
 					<MiniWhiteFrame>
 						<template v-slot:icon>
-							<img src="../assets/calendar-icon2.png" class=" h-150px" />
+							<img src="../../assets/calendar-icon2.png" class=" h-150px" />
 						</template>
 						<template v-slot:attributes>
 							<SingleInput>
@@ -131,20 +148,21 @@ const cancel = () => {
 								</template>
 							</SingleInput>
 
+
 							<SingleInput v-if="event.type !== 'Tournament'">
 								<template v-slot:inputName>{{ t('single-event.date')}}:</template>
 								<template v-slot:inputValue>
-									<DatePicker v-model="event.date" mode="dateTime" :clearable="false"
+									{{ event.startDate.toLocaleDateString(locale) }}
+								</template>
+							</SingleInput>
+							
+							<SingleInput v-if="event.type === 'Tournament'">
+								<template v-slot:inputName>{{ t('single-event.start-date')}}:</template>
+								<template v-slot:inputValue>
+									<DatePicker v-model="event.startDate" mode="dateTime" :clearable="false"
 										class="inline-block h-full min-w-full" :locale="locale">
-										<template v-slot="{ inputValue, togglePopover }">
+										<template v-slot="{ inputValue }">
 											<div class="flex items-center">
-												<button class="p-2 bg-#143547 border border-#143547 hover:bg-#143547-200 text-white"
-													@click="togglePopover()">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-4 h-4 fill-current">
-														<path
-															d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
-													</svg>
-												</button>
 												<input :value="inputValue"
 													class="bg-white text-gray-700 w-full py-1 px-2 appearance-none border focus:outline-none focus:border-blue-500"
 													readonly />
@@ -154,26 +172,20 @@ const cancel = () => {
 								</template>
 							</SingleInput>
 
-							<SingleInput v-if="event.type === 'Tournament'">
-								<template v-slot:inputName>{{ t('single-event.start-date')}}:</template>
+							<SingleInput>
+								<template v-slot:inputName>{{ t('single-event.hour')}}:</template>
 								<template v-slot:inputValue>
-									<DatePicker v-model="event.startDate" mode="dateTime" :clearable="false"
-										class="inline-block h-full min-w-full" :locale="locale">
-										<template v-slot="{ inputValue, togglePopover }">
-											<div class="flex items-center">
-												<button class="p-2 bg-#143547 border border-#143547 hover:bg-#143547-200 text-white"
-													@click="togglePopover()">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-4 h-4 fill-current">
-														<path
-															d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
-													</svg>
-												</button>
-												<input :value="inputValue"
-													class="bg-white text-gray-700 w-full py-1 px-2 appearance-none border focus:outline-none focus:border-blue-500"
-													readonly />
-											</div>
-										</template>
-									</DatePicker>
+									<div class="flex w-full flex-row items-center gap-2">
+										<select v-model="event.startHour"
+											class="flex flex-auto w-full border-1 border-#143547 p-1 justify-center  text-center shadow-lg">
+											<option v-for="hour in hours">{{hour}}</option>
+										</select>
+										<p>:</p>
+										<select v-model="event.startMinutes"
+											class="flex flex-auto w-full border-1 border-#143547 p-1 justify-center  text-center shadow-lg">
+											<option v-for="minute in minutes">{{minute}}</option>
+										</select>
+									</div>
 								</template>
 							</SingleInput>
 
@@ -212,15 +224,11 @@ const cancel = () => {
 							<SingleInput>
 								<template v-slot:inputName>{{ t('single-event.object')}}:</template>
 								<template v-slot:inputValue>
-									<div class="flex flex-auto w-full flox-row justify-center items-center">
-										<select v-model="event.object" class="flex flex-auto border-1 p-1 w-full border-#143547 shadow-lg">
-											<option v-for="object in objects" :value="object.name">{{object.name}}</option>
-											<option :value="'newobject'">{{ t('single-event.add-new')}}</option>
-										</select>
-										<button class="flex flex-auto border-#143547 h-full justify-center items-center px-1 bg-#143547">
-											<img src="../assets/add-icon.png" class="h-24px" />
-										</button>
-									</div>
+									<select v-model="event.object"
+										class="flex flex-auto w-full border-1 p-1 w-full border-#143547 shadow-lg">
+										<option v-for="object in objects" :value="object.name">{{object.name}}</option>
+										<option :value="'newobject'">{{ t('single-event.add-new')}}</option>
+									</select>
 								</template>
 							</SingleInput>
 							<SingleInput v-if="event.object === 'newobject'">
@@ -240,7 +248,7 @@ const cancel = () => {
 						</template>
 
 						<template v-slot:footer>
-							<SingleButton>
+							<SingleButton @click="save()">
 								<template v-slot:buttonName>{{ t('button.save') }}</template>
 							</SingleButton>
 							<SingleButton @click="cancel()">

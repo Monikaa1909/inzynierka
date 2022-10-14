@@ -8,7 +8,7 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 const props = defineProps({
 	date: String,
 })
-
+console.log(props.date)
 const myMatches = [
   {
     goalsConceded: 2,
@@ -211,7 +211,7 @@ const goEditEvent = (eventId: any) => {
 }
 
 const goAddEvent = () => {
-  return router.push(`/addEventDay/${props.date}`)
+  return router.push(`/addEventOnSpecificDay/${props.date}`)
 }
 
 </script>
@@ -273,7 +273,6 @@ const goAddEvent = () => {
                 <img v-else-if="event.type == 'Training'" src="../../assets/calendar-icon-green.png" class="h-150px" />
               </template>
               <template v-slot:attributes>
-                {{props.date}}
                 <SingleAttribute>
                   <template v-slot:attributeName>{{ t('single-event.type') }}:</template>
                   <template v-slot:attributeValue>{{ event.type }}</template>

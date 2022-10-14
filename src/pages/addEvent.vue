@@ -210,15 +210,15 @@ const cancel = () => {
 							<SingleInput>
 								<template v-slot:inputName>{{ t('single-event.object')}}:</template>
 								<template v-slot:inputValue>
-									<div class="flex flex-auto w-full flox-row justify-center items-center">
-										<select v-model="event.object" class="flex flex-auto border-1 p-1 w-full border-#143547 shadow-lg">
+									<!-- <div class="flex flex-auto w-full flox-row justify-center items-center"> -->
+										<select v-model="event.object" class="flex flex-auto w-full border-1 p-1 w-full border-#143547 shadow-lg">
 											<option v-for="object in objects" :value="object.name">{{object.name}}</option>
 											<option :value="'newobject'">{{ t('single-event.add-new')}}</option>
 										</select>
-										<button class="flex flex-auto border-#143547 h-full justify-center items-center px-1 bg-#143547">
+										<!-- <button class="flex flex-auto border-#143547 h-full justify-center items-center px-1 bg-#143547">
 											<img src="../assets/add-icon.png" class="h-24px" />
 										</button>
-									</div>
+									</div> -->
 								</template>
 							</SingleInput>
 							<SingleInput v-if="event.object === 'newobject'">
