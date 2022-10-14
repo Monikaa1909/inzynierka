@@ -16,6 +16,7 @@ button:
   parents: PARENTS
   your-profile: Your profile
   save: Save
+  save-object: Save object
   cancel: Cancel
   trainings: Trainings
   matches: Matches
@@ -64,6 +65,8 @@ single-player:
   nationality: Nationality
   team: Team
   parent: Parent
+  remarks: Remarks
+  validity-of-medical-examinations: Validity of medical examinations
 single-parent:
   first-name: First name
   last-name: Last name

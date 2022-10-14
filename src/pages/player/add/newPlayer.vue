@@ -5,16 +5,6 @@ const { availableLocales, locale } = useI18n()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const player = ref({
-  id: 'addsd',
-  firstName: 'Jakub',
-  lastName: 'Gruszka',
-  birthdayDate: new Date(1999, 8, 12),
-  nationality: 'Poland',
-  team: 'Biebrza Goniądz',
-  parent: 'Filip',
-})
-
 </script>
 
 <template>
@@ -27,7 +17,7 @@ const player = ref({
               <img src="../../../assets/player-icon2.png" class=" h-150px" />
             </template>
             <template v-slot:attributes>
-              <NewPlayerForm :player-id="player.id"></NewPlayerForm>
+              <NewPlayerForm></NewPlayerForm>
             </template>
           </MiniWhiteFrame>
         </template>

@@ -5,7 +5,7 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const parents = [
+const parents = ref([
   {
     id: 'cdsc',
     firstName: 'Jakub',
@@ -41,7 +41,7 @@ const parents = [
     phoneNumber: '123455432',
     email: 'mdsdoc@wp.pl'
   },
-]
+])
 
 const goEditParent = (parentId: any) => {
   return router.push(`/parent/edit/${parentId}`)

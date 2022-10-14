@@ -7,65 +7,90 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const players = [
   {
+    id: 'cdcjf1',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     birthdayDate: new Date(1999, 8, 12),
     nationality: 'Poland',
-    team: 'Biebrza Goniądz',
-    parent: 'Filip Gruszka',
+    remarks: '',
+    team: 'Młodzik',
+    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    parent: "cdsca1"
   },
   {
+    id: 'cdcjf2',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     birthdayDate: new Date(1999, 8, 12),
     nationality: 'Poland',
-    team: 'Biebrza Goniądz',
-    parent: 'Filip Gruszka',
+    remarks: '',
+    team: 'Młodzik',
+    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    parent: "cdsca1"
   },
   {
+    id: 'cdcjf3',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     birthdayDate: new Date(1999, 8, 12),
     nationality: 'Poland',
-    team: 'Biebrza Goniądz',
-    parent: 'Filip Gruszka',
+    remarks: '',
+    team: 'Młodzik',
+    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    parent: "cdsca1"
   },
   {
+    id: 'cdcjf4',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     birthdayDate: new Date(1999, 8, 12),
     nationality: 'Poland',
-    team: 'Biebrza Goniądz',
-    parent: 'Filip Gruszka',
+    remarks: '',
+    team: 'Młodzik',
+    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    parent: "cdsca1"
   },
   {
+    id: 'cdcjf5',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     birthdayDate: new Date(1999, 8, 12),
     nationality: 'Poland',
-    team: 'Biebrza Goniądz',
-    parent: 'Filip Gruszka',
+    remarks: '',
+    team: 'Młodzik',
+    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    parent: "cdsca1"
   },
   {
+    id: 'cdcjf6',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     birthdayDate: new Date(1999, 8, 12),
     nationality: 'Poland',
-    team: 'Biebrza Goniądz',
-    parent: 'Filip Gruszka',
+    remarks: '',
+    team: 'Młodzik',
+    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    parent: "cdsca1"
   },
   {
+    id: 'cdcjf7',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     birthdayDate: new Date(1999, 8, 12),
     nationality: 'Poland',
-    team: 'Biebrza Goniądz',
-    parent: 'Filip Gruszka',
+    remarks: '',
+    team: 'Młodzik',
+    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    parent: "cdsca1"
   },
 ]
 
 const goEditPlayer = (playerId: any) => {
   return router.push(`/player/edit/${playerId}`)
+}
+
+const goAddPlayer = (playerId: any) => {
+  return router.push(`/player/add/newPlayer`)
 }
 
 function goToPlayer(playerId: any) {
@@ -77,7 +102,7 @@ function goToPlayer(playerId: any) {
 <template>
   <BackgroundFrame>
     <template v-slot:nav>
-      <button class="flex flex-row gap-2 items-center">
+      <button @click="goAddPlayer" class="flex flex-row gap-2 items-center">
         <img src="../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player')}}</p>
       </button>
@@ -85,10 +110,10 @@ function goToPlayer(playerId: any) {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="player in players" v-bind:key="player.firstName" class="hover:bg-#E3E3E3"
-            clickable="cursor-pointer" @go-to="goToPlayer(player.firstName)">
+          <MiniWhiteFrame v-for="player in players" v-bind:key="player.id" class="hover:bg-#E3E3E3"
+            clickable="cursor-pointer" @go-to="goToPlayer(player.id)">
             <template v-slot:nav>
-              <button @click="goEditPlayer(player.firstName)">
+              <button @click="goEditPlayer(player.id)">
                 <img src="../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
@@ -114,6 +139,14 @@ function goToPlayer(playerId: any) {
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>
                 <template v-slot:attributeValue>{{ player.nationality }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.remarks') }}:</template>
+                <template v-slot:attributeValue>{{ player.remarks }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
+                <template v-slot:attributeValue>{{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}</template>
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.team') }}:</template>

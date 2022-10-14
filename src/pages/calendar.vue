@@ -200,7 +200,7 @@ const activeAll = computed(() => {
 })
 
 const goAddEvent = (playerId: any) => {
-  return router.push(`/addEvent`)
+  return router.push(`/events/add/newEvent`)
 }
 
 </script>

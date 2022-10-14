@@ -17,6 +17,7 @@ button:
   your-profile: Twój profil
   save: Zapisz
   cancel: Anuluj
+  save-object: Dodaj obiekt
   trainings: Treningi
   matches: Mecze
   tournaments: Turnieje
@@ -63,6 +64,8 @@ single-player:
   nationality: Narodowość
   team: Drużyna
   parent: Rodzic
+  remarks: Uwagi
+  validity-of-medical-examinations: Ważność badań lekarskich
 single-parent:
   first-name: Imię
   last-name: Nazwisko

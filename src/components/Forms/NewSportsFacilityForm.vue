@@ -26,7 +26,7 @@ if (!props.sportsFacilityId) {
 	sportsFacility.value.city = ''
 }
 
-const onSubmit = (values: any) => {}
+const onSubmit = (values: any) => { }
 
 const validateName = (value: any) => {
 	if (!value) {
@@ -136,7 +136,8 @@ const cancel = () => {
 				<ErrorMessage class="text-xs" name="city" />
 			</template>
 		</SingleInput>
-		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
+		<div
+			class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
 			<SingleButton>
 				<template v-slot:buttonName>{{ t('button.save') }}</template>
 			</SingleButton>

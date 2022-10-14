@@ -2,7 +2,7 @@
 const { t } = useI18n()
 const router = useRouter()
 
-const teams = [
+const teams = ref([
   {
     id: 'cdsc',
     name: 'team1',
@@ -45,7 +45,7 @@ const teams = [
     endYear: 'players1',
     trainer: 'Jerzy Brzęczek'
   },
-]
+])
 
 const goEditTeam = (teamId: any) => {
   return router.push(`/team/edit/${teamId}`)

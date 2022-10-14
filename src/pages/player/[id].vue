@@ -6,14 +6,17 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const player = {
-  firstName: 'Jakub',
-  lastName: 'Gruszka',
-  birthdayDate: new Date(1999, 8, 12),
-  nationality: 'Poland',
-  team: 'Biebrza Goniądz',
-  parent: 'Filip',
-}
+const player = ref({
+  id: 'dscs',
+  firstName: 'Jerzy',
+	lastName: 'Brzęczek',
+	birthdayDate: new Date(1999, 8, 12),
+	nationality: 'Poland',
+	remarks: '',
+	team: 'Młodzik',
+	validityOfMedicalExaminations: new Date(2022, 12, 12),
+	parent: "cdsca1"
+})
 
 const goEditPlayer = (playerId: any) => {
   return router.push(`/player/edit/${playerId}`)
@@ -58,6 +61,14 @@ const back = () => {
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>
                 <template v-slot:attributeValue>{{ player.nationality }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.remarks') }}:</template>
+                <template v-slot:attributeValue>{{ player.remarks }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
+                <template v-slot:attributeValue>{{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}</template>
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.team') }}:</template>

@@ -98,9 +98,6 @@ const event = ref({
 	opponent: '',
 })
 
-const cancel = () => {
-	return router.push('/calendar')
-}
 </script>
     
 <template>
@@ -110,26 +107,14 @@ const cancel = () => {
 				<template v-slot>
 					<MiniWhiteFrame>
 						<template v-slot:icon>
-							<img src="../assets/calendar-icon2.png" class=" h-150px" />
+							<img src="../../../assets/calendar-icon2.png" class=" h-150px" />
 						</template>
 
 						<template v-slot:attributes>
-
-							<SingleInput>
-								<template v-slot:inputName>{{ t('single-event.type')}}:</template>
-								<template v-slot:inputValue>
-									<select v-model="event.type" class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
-										<option v-if="locale === 'en'" :value="'Training'">Training</option>
-										<option v-else-if="locale === 'pl'" :value="'Training'">Trening</option>
-										<option v-if="locale === 'en'" :value="'Tournament'">Tournament</option>
-										<option v-else-if="locale === 'pl'" :value="'Tournament'">Turniej</option>
-										<option v-if="locale === 'en'" :value="'Match'">Match</option>
-										<option v-else-if="locale === 'pl'" :value="'Match'">Mecz</option>
-									</select>
-								</template>
-							</SingleInput>
-
-							<SingleInput v-if="event.type !== 'Tournament'">
+							<NewEventForm></NewEventForm>
+							
+							<!-- 
+								<SingleInput v-if="event.type !== 'Tournament'">
 								<template v-slot:inputName>{{ t('single-event.date')}}:</template>
 								<template v-slot:inputValue>
 									<DatePicker v-model="event.date" mode="dateTime" :clearable="false"
@@ -155,7 +140,7 @@ const cancel = () => {
 							<SingleInput v-if="event.type === 'Tournament'">
 								<template v-slot:inputName>{{ t('single-event.start-date')}}:</template>
 								<template v-slot:inputValue>
-									<DatePicker v-model="event.startDate" mode="dateTime"  :clearable="false"
+									<DatePicker v-model="event.startDate" mode="dateTime" :clearable="false"
 										class="inline-block h-full min-w-full" :locale="locale">
 										<template v-slot="{ inputValue, togglePopover }">
 											<div class="flex items-center">
@@ -210,15 +195,11 @@ const cancel = () => {
 							<SingleInput>
 								<template v-slot:inputName>{{ t('single-event.object')}}:</template>
 								<template v-slot:inputValue>
-									<!-- <div class="flex flex-auto w-full flox-row justify-center items-center"> -->
-										<select v-model="event.object" class="flex flex-auto w-full border-1 p-1 w-full border-#143547 shadow-lg">
-											<option v-for="object in objects" :value="object.name">{{object.name}}</option>
-											<option :value="'newobject'">{{ t('single-event.add-new')}}</option>
-										</select>
-										<!-- <button class="flex flex-auto border-#143547 h-full justify-center items-center px-1 bg-#143547">
-											<img src="../assets/add-icon.png" class="h-24px" />
-										</button>
-									</div> -->
+									<select v-model="event.object"
+										class="flex flex-auto w-full border-1 p-1 w-full border-#143547 shadow-lg">
+										<option v-for="object in objects" :value="object.name">{{object.name}}</option>
+										<option :value="'newobject'">{{ t('single-event.add-new')}}</option>
+									</select>
 								</template>
 							</SingleInput>
 							<SingleInput v-if="event.object === 'newobject'">
@@ -234,17 +215,9 @@ const cancel = () => {
 								<template v-slot:inputValue>
 									<input v-model="event.opponent" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 								</template>
-							</SingleInput>
+							</SingleInput> -->
 						</template>
 
-						<template v-slot:footer>
-							<SingleButton>
-								<template v-slot:buttonName>{{ t('button.save') }}</template>
-							</SingleButton>
-							<SingleButton @click="cancel">
-								<template v-slot:buttonName>{{ t('button.cancel') }}</template>
-							</SingleButton>
-						</template>
 					</MiniWhiteFrame>
 				</template>
 			</MyCenterElement>
