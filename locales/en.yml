@@ -71,7 +71,8 @@ single-parent:
   email: E-mail
 single-object:
   name: Name
-  street: Street and number
+  street: Street
+  number: Number
   postal-code: Postal code
   city: City
 single-trainer:

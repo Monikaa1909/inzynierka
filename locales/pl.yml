@@ -70,7 +70,8 @@ single-parent:
   email: E-mail
 single-object:
   name: Nazwa
-  street: Ulica i numer
+  street: Ulica
+  number: Numer
   postal-code: Kod pocztowy
   city: Miejscowość
 single-trainer:

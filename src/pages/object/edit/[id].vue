@@ -4,11 +4,11 @@ const router = useRouter()
 
 const object = {
 	name: 'Stadion Miejski w Białymstoku',
-	street: 'Słoneczna 1',
+	street: 'Słoneczna',
+	houseNumber: 1,
 	postalCode: '15-323',
 	city: 'Białystok',
 }
-
 
 const cancel = () => {
 	return router.push('/objects')

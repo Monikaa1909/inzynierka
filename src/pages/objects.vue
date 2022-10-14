@@ -4,31 +4,36 @@ const router = useRouter()
 const objects = [
   {
     name: 'Stadion Miejski w Białymstoku',
-    street: 'Słoneczna 1',
+    street: 'Słoneczna',
+    houseNumber: 1,
     postalCode: '15-323',
     city: 'Białystok',
   },
   {
     name: 'Stadion2',
-    street: 'Słoneczna 1',
+    street: 'Kwiatowa',
+    houseNumber: 13,
     postalCode: '15-323',
     city: 'Białystok',
   },
   {
     name: 'Stadion3',
-    street: 'Słoneczna 1',
+    street: 'Różana',
+    houseNumber: 16,
     postalCode: '15-323',
     city: 'Białystok',
   },
   {
     name: 'Stadion Miejski w Białymstoku',
-    street: 'Słoneczna 1',
+    street: 'Kolorowa',
+    houseNumber: 1,
     postalCode: '15-323',
     city: 'Białystok',
   },
   {
     name: 'Stadion Miejski w Białymstoku',
-    street: 'Słoneczna 1',
+    street: 'Zielona',
+    houseNumber: 5,
     postalCode: '15-323',
     city: 'Białystok',
   }
@@ -74,6 +79,10 @@ function goToObject(objectId: any) {
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-object.street') }}:</template>
                 <template v-slot:attributeValue>{{ object.street }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-object.number') }}:</template>
+                <template v-slot:attributeValue>{{ object.houseNumber }}</template>
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-object.postal-code') }}:</template>

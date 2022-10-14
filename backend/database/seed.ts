@@ -156,21 +156,24 @@ export const seedDatabase = async () => {
     });
 
     // ADDRESS ----------------------------------------------------------------------------
-    const address1 = new models.Address({ 
-        street: 'Słoneczna',
-        houseNumber: 1,
-        city: 'Białystok',
-        postalCode: '15-323'
-    });
-    address1.save(function (err) {
-        if (err) return console.log(err.message);
-    });
+    // const address1 = new models.Address({ 
+    //     street: 'Słoneczna',
+    //     houseNumber: 1,
+    //     city: 'Białystok',
+    //     postalCode: '15-323'
+    // });
+    // address1.save(function (err) {
+    //     if (err) return console.log(err.message);
+    // });
 
     // SPORTSFACILITIES ----------------------------------------------------------------------------
     const sportsFacility1 = new models.SportsFacility({ 
         name: "Stadion Miejski w Białymstoku",
         academy: academy1,
-        address: address1
+        street: 'Słoneczna',
+        houseNumber: 1,
+        city: 'Białystok',
+        postalCode: '15-323'
     });
     sportsFacility1.save(function (err) {
         if (err) return console.log(err.message);
