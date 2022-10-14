@@ -3,6 +3,7 @@ const { t } = useI18n()
 const router = useRouter()
 const sportsFacilities = [
   {
+    id: 'cdsc',
     name: 'Stadion Miejski w Białymstoku',
     street: 'Słoneczna',
     houseNumber: 1,
@@ -10,6 +11,7 @@ const sportsFacilities = [
     city: 'Białystok',
   },
   {
+    id: 'cdsc',
     name: 'Stadion2',
     street: 'Kwiatowa',
     houseNumber: 13,
@@ -17,6 +19,7 @@ const sportsFacilities = [
     city: 'Białystok',
   },
   {
+    id: 'cdsc',
     name: 'Stadion3',
     street: 'Różana',
     houseNumber: 16,
@@ -24,6 +27,7 @@ const sportsFacilities = [
     city: 'Białystok',
   },
   {
+    id: 'cdsc',
     name: 'Stadion Miejski w Białymstoku',
     street: 'Kolorowa',
     houseNumber: 1,
@@ -31,6 +35,7 @@ const sportsFacilities = [
     city: 'Białystok',
   },
   {
+    id: 'cdsc',
     name: 'Stadion Miejski w Białymstoku',
     street: 'Zielona',
     houseNumber: 5,
@@ -44,7 +49,7 @@ const goEditObject = (sportsFacilityId: any) => {
 }
 
 const goAddNewSportsFacility = () => {
-  return router.push(`/sportsFacility/new/newSportsFacility`)
+  return router.push(`/sportsFacility/add/newSportsFacility`)
 }
 
 function goToObject(sportsFacilityId: any) {
@@ -63,9 +68,9 @@ function goToObject(sportsFacilityId: any) {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-2) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="sportsFacility in sportsFacilities" v-bind:key="sportsFacility.name" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToObject(sportsFacility.name)"> 
+          <MiniWhiteFrame v-for="sportsFacility in sportsFacilities" v-bind:key="sportsFacility.id" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToObject(sportsFacility.name)"> 
             <template v-slot:nav>
-              <button @click="goEditObject(sportsFacility.name)">
+              <button @click="goEditObject(sportsFacility.id)">
                 <img src="../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>

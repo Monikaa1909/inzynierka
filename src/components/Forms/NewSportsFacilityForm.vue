@@ -26,9 +26,7 @@ if (!props.sportsFacilityId) {
 	sportsFacility.value.city = ''
 }
 
-const onSubmit = (values: any) => {
-	console.log(values, null, 2);
-}
+const onSubmit = (values: any) => {}
 
 const validateName = (value: any) => {
 	if (!value) {
@@ -81,7 +79,7 @@ const validateCity = (value: any) => {
 }
 
 const cancel = () => {
-	return router.push('/sportsFacilities')
+	return router.go(-1)
 }
 
 </script>

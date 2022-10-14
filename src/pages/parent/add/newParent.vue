@@ -1,16 +1,9 @@
 <script setup lang="ts">
+import 'v-calendar/dist/style.css';
 const { availableLocales, locale } = useI18n()
 
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
-const parent = ref({
-  id: 'rfwefew',
-  firstName: 'Jakub',
-  lastName: 'Gruszka',
-  phoneNumber: '123455432',
-  email: 'mdsdoc@wp.pl'
-})
 
 </script>
 
@@ -21,11 +14,10 @@ const parent = ref({
         <template v-slot>
           <MiniWhiteFrame>
             <template v-slot:icon>
-              <img src="../../../assets/team-icon2.png" class="h-150px cursor-pointer" />
+              <img src="../../../assets/parent-icon2.png" class="h-150px cursor-pointer" />
             </template>
             <template v-slot:attributes>
-              <NewParentForm :parentId="parent.id">
-              </NewParentForm>
+              <NewParentForm></NewParentForm>
             </template>
           </MiniWhiteFrame>
         </template>

@@ -12,7 +12,7 @@ const props = defineProps({
 	}
 })
 
-const trainers = [
+const trainers = ref([
 	{
 		firstName: 'Jerzy',
 		lastName: 'Brzęczek',
@@ -40,12 +40,12 @@ const trainers = [
 		phoneNumber: '123644334',
 		email: 'jbrzeczek@gmail.com',
 	},
-]
+])
 
 const team = ref({
-	name: 'team1',
-	startYear: 'years1',
-	endYear: 'players1',
+	name: 'Junior młodszy',
+	startYear: '2009',
+	endYear: '2010',
 	trainer: 'Jerzy'
 })
 
@@ -112,7 +112,7 @@ const trainerErrorMessage = computed(() => {
 })
 
 const cancel = () => {
-	return router.push('/teams')
+	return router.go(-1)
 }
 
 </script>

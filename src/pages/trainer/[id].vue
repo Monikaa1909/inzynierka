@@ -20,7 +20,7 @@ const goEditTrainer = (trainerId: any) => {
 }
 
 const back = () => {
-  return router.push(`/trainers`)
+  return router.go(-1)
 }
 
 </script>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 const sportsFacility = {
+	id: 'cdsc',
 	name: 'Stadion Miejski w Białymstoku',
 	street: 'Słoneczna',
 	houseNumber: 1,
@@ -20,7 +21,7 @@ const sportsFacility = {
 							<img src="../../../assets/object-icon2.png" class=" h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<NewSportsFacilityForm :sports-facility-id="sportsFacility.name"></NewSportsFacilityForm>
+							<NewSportsFacilityForm :sports-facility-id="sportsFacility.id"></NewSportsFacilityForm>
 						</template>
 					</MiniWhiteFrame>
 				</template>

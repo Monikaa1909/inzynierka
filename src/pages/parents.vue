@@ -7,30 +7,35 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const parents = [
   {
+    id: 'cdsc',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     phoneNumber: '123455432',
     email: 'mdsdoc@wp.pl'
   },
   {
+    id: 'cdsc',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     phoneNumber: '123455432',
     email: 'mdsdoc@wp.pl'
   },
   {
+    id: 'cdsc',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     phoneNumber: '123455432',
     email: 'mdsdoc@wp.pl'
   },
   {
+    id: 'cdsc',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     phoneNumber: '123455432',
     email: 'mdsdoc@wp.pl'
   },
   {
+    id: 'cdsc',
     firstName: 'Jakub',
     lastName: 'Gruszka',
     phoneNumber: '123455432',
@@ -42,6 +47,10 @@ const goEditParent = (parentId: any) => {
   return router.push(`/parent/edit/${parentId}`)
 }
 
+const goAddParent = (parentId: any) => {
+  return router.push(`/parent/add/newParent`)
+}
+
 function goToParent(parentId: any) {
   return router.push(`/parent/${parentId}`)
 }
@@ -51,7 +60,7 @@ function goToParent(parentId: any) {
 <template>
   <BackgroundFrame>
     <template v-slot:nav>
-      <button class="flex flex-row gap-2 items-center">
+      <button @click="goAddParent" class="flex flex-row gap-2 items-center">
         <img src="../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-parent')}}</p>
       </button>
@@ -59,10 +68,10 @@ function goToParent(parentId: any) {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="parent in parents" v-bind:key="parent.firstName" class="hover:bg-#E3E3E3"
+          <MiniWhiteFrame v-for="parent in parents" v-bind:key="parent.id" class="hover:bg-#E3E3E3"
             clickable="cursor-pointer" @go-to="goToParent(parent.firstName)">
             <template v-slot:nav>
-              <button @click="goEditParent(parent.firstName)">
+              <button @click="goEditParent(parent.id)">
                 <img src="../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>

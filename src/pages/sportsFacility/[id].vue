@@ -11,11 +11,11 @@ const object = {
 }
 
 const goEditObject = (objectId: any) => {
-  return router.push(`/object/edit/${objectId}`)
+  return router.push(`/sportsFacility/edit/${objectId}`)
 }
 
 const back = () => {
-  return router.push(`/objects`)
+  return router.go(-1)
 }
 
 </script>

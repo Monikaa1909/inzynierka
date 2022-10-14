@@ -6,6 +6,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const parent = ref({
+  id: 'cdsc',
   firstName: 'Jakub',
   lastName: 'Gruszka',
   phoneNumber: '123455432',
@@ -17,7 +18,7 @@ const goEditParent = (parentId: any) => {
 }
 
 const back = () => {
-  return router.push(`/parents`)
+  return router.go(-1)
 }
 
 </script>
@@ -29,7 +30,7 @@ const back = () => {
         <template v-slot>
           <MiniWhiteFrame>
             <template v-slot:nav>
-              <button @click="goEditParent(parent.firstName)">
+              <button @click="goEditParent(parent.id)">
                 <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>

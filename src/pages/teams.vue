@@ -4,36 +4,42 @@ const router = useRouter()
 
 const teams = [
   {
+    id: 'cdsc',
     name: 'team1',
     startYear: 'years1',
     endYear: 'players1',
     trainer: 'Jerzy Brzęczek'
   },
   {
+    id: 'cdsc',
     name: 'team1',
     startYear: 'years1',
     endYear: 'players1',
     trainer: 'Jerzy Brzęczek'
   },
   {
+    id: 'cdsc',
     name: 'team1',
     startYear: 'years1',
     endYear: 'players1',
     trainer: 'Jerzy Brzęczek'
   },
   {
+    id: 'cdsc',
     name: 'team1',
     startYear: 'years1',
     endYear: 'players1',
     trainer: 'Jerzy Brzęczek'
   },
   {
+    id: 'cdsc',
     name: 'team1',
     startYear: 'years1',
     endYear: 'players1',
     trainer: 'Jerzy Brzęczek'
   },
   {
+    id: 'cdsc',
     name: 'team1',
     startYear: 'years1',
     endYear: 'players1',
@@ -67,9 +73,9 @@ function goToTeam(teamId: any) {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="team in teams" v-bind:key="team.name" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToTeam(team.name)">
+          <MiniWhiteFrame v-for="team in teams" v-bind:key="team.id" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToTeam(team.id)">
             <template v-slot:nav>
-              <button @click="goEditTeam(team.name)">
+              <button @click="goEditTeam(team.id)">
                 <img src="../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
