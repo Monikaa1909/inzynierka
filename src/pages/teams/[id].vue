@@ -10,11 +10,11 @@ const team = ref({
 })
 
 const goEditTeam = (teamId: any) => {
-  return router.push(`/team/edit/${teamId}`)
+  return router.push(`/teams/edit/${teamId}`)
 }
 
 const back = () => {
-  return router.push(`/teams`)
+  return router.go(-1)
 }
 
 </script>

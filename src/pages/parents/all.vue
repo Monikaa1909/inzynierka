@@ -44,15 +44,15 @@ const parents = ref([
 ])
 
 const goEditParent = (parentId: any) => {
-  return router.push(`/parent/edit/${parentId}`)
+  return router.push(`/parents/edit/${parentId}`)
 }
 
 const goAddParent = (parentId: any) => {
-  return router.push(`/parent/add/newParent`)
+  return router.push(`/parents/add/newParent`)
 }
 
 function goToParent(parentId: any) {
-  return router.push(`/parent/${parentId}`)
+  return router.push(`/parents/${parentId}`)
 }
 
 </script>
@@ -61,7 +61,7 @@ function goToParent(parentId: any) {
   <BackgroundFrame>
     <template v-slot:nav>
       <button @click="goAddParent" class="flex flex-row gap-2 items-center">
-        <img src="../assets/add-icon2.png" class="h-48px flex" />
+        <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-parent')}}</p>
       </button>
     </template>
@@ -72,14 +72,14 @@ function goToParent(parentId: any) {
             clickable="cursor-pointer" @go-to="goToParent(parent.firstName)">
             <template v-slot:nav>
               <button @click="goEditParent(parent.id)">
-                <img src="../assets/edit-icon.png" class="h-24px" />
+                <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
-                <img src="../assets/delete-icon.png" class="h-24px" />
+                <img src="../../assets/delete-icon.png" class="h-24px" />
               </button>
             </template>
             <template v-slot:icon>
-              <img src="../assets/parent-icon2.png" class="h-150px" />
+              <img src="../../assets/parent-icon2.png" class="h-150px" />
             </template>
             <template v-slot:attributes>
               <SingleAttribute>

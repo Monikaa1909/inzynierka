@@ -56,9 +56,7 @@ if (!props.teamId) {
 	team.value.trainer = ''
 }
 
-const onSubmit = (values: any) => {
-
-}
+const onSubmit = (values: any) => {}
 
 const validateName = (value: any) => {
 	if (!value) {

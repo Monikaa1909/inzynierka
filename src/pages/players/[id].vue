@@ -19,11 +19,11 @@ const player = ref({
 })
 
 const goEditPlayer = (playerId: any) => {
-  return router.push(`/player/edit/${playerId}`)
+  return router.push(`/players/edit/${playerId}`)
 }
 
 const back = () => {
-  return router.push(`/players`)
+  return router.go(-1)
 }
 
 </script>

@@ -48,15 +48,15 @@ const teams = ref([
 ])
 
 const goEditTeam = (teamId: any) => {
-  return router.push(`/team/edit/${teamId}`)
+  return router.push(`/teams/edit/${teamId}`)
 }
 
 const goAddTeam = () => {
-  return router.push(`/team/add/newTeam`)
+  return router.push(`/teams/add/newTeam`)
 }
 
 function goToTeam(teamId: any) {
-  return router.push(`/team/${teamId}`)
+  return router.push(`/teams/${teamId}`)
 }
 
 
@@ -66,7 +66,7 @@ function goToTeam(teamId: any) {
   <BackgroundFrame>
     <template v-slot:nav>
       <button @click="goAddTeam" class="flex flex-row gap-2 items-center">
-        <img src="../assets/add-icon2.png" class="h-48px flex" />
+        <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-team')}}</p>
       </button>
     </template>
@@ -76,14 +76,14 @@ function goToTeam(teamId: any) {
           <MiniWhiteFrame v-for="team in teams" v-bind:key="team.id" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToTeam(team.id)">
             <template v-slot:nav>
               <button @click="goEditTeam(team.id)">
-                <img src="../assets/edit-icon.png" class="h-24px" />
+                <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
-                <img src="../assets/delete-icon.png" class="h-24px" />
+                <img src="../../assets/delete-icon.png" class="h-24px" />
               </button>
             </template>
             <template v-slot:icon>
-              <img src="../assets/team-icon2.png" class="h-150px cursor-pointer"/>
+              <img src="../../assets/team-icon2.png" class="h-150px cursor-pointer"/>
             </template>
             <template v-slot:attributes>
               <SingleAttribute>

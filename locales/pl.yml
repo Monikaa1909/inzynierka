@@ -66,6 +66,7 @@ single-player:
   parent: Rodzic
   remarks: Uwagi
   validity-of-medical-examinations: Ważność badań lekarskich
+  validity-of-medical-examinations-short: Badania lekarskie
 single-parent:
   first-name: Imię
   last-name: Nazwisko
@@ -95,6 +96,14 @@ single-event:
   start-date: Data rozpoczęcia
   end-date: Data zakończenia
   add-new: Dodaj nowy...
+your-profile:
+  name: Nazwa akademii
+  first-name: Imię
+  last-name: Nazwisko
+  birthday-date: Data urodzenia
+  nationality: Narodowość
+  phone-number: Numer telefonu
+  email: E-mail
 days-of-week:
   monday: PONIEDZIAŁEK
   tuesday: WTOREK

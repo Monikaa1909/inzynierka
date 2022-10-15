@@ -45,15 +45,15 @@ const sportsFacilities = [
 ]
 
 const goEditObject = (sportsFacilityId: any) => {
-  return router.push(`/sportsFacility/edit/${sportsFacilityId}`)
+  return router.push(`/sportsFaciliiesy/edit/${sportsFacilityId}`)
 }
 
 const goAddNewSportsFacility = () => {
-  return router.push(`/sportsFacility/add/newSportsFacility`)
+  return router.push(`/sportsFacilities/add/newSportsFacility`)
 }
 
 function goToObject(sportsFacilityId: any) {
-  return router.push(`/sportsFacility/${sportsFacilityId}`)
+  return router.push(`/sportsFacilities/${sportsFacilityId}`)
 }
 </script>
 
@@ -61,7 +61,7 @@ function goToObject(sportsFacilityId: any) {
   <BackgroundFrame>
     <template v-slot:nav>
       <button @click="goAddNewSportsFacility()" class="flex flex-row gap-2 items-center">
-        <img src="../assets/add-icon2.png" class="h-48px flex" />
+        <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-object')}}</p>
       </button>
     </template>
@@ -71,14 +71,14 @@ function goToObject(sportsFacilityId: any) {
           <MiniWhiteFrame v-for="sportsFacility in sportsFacilities" v-bind:key="sportsFacility.id" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToObject(sportsFacility.name)"> 
             <template v-slot:nav>
               <button @click="goEditObject(sportsFacility.id)">
-                <img src="../assets/edit-icon.png" class="h-24px" />
+                <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
-                <img src="../assets/delete-icon.png" class="h-24px" />
+                <img src="../../assets/delete-icon.png" class="h-24px" />
               </button>
             </template>
             <template v-slot:icon>
-              <img src="../assets/object-icon2.png" class="h-150px" />
+              <img src="../../assets/object-icon2.png" class="h-150px" />
             </template>
             <template v-slot:attributes>
               <SingleAttribute>

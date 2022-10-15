@@ -10,7 +10,7 @@ const props = defineProps({
     <div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
       <slot name="nav"></slot>
     </div>
-    <div class="h-full w-full flex flex-col gap-2 justify-center sm:(flex-row flex-wrap)" :class="props.clickable" @click="$emit('goTo', 1)">
+    <div class="h-full w-full flex flex-col gap-4 justify-center sm:(flex-row flex-wrap)" :class="props.clickable" @click="$emit('goTo', 1)">
       <div class="flex justify-center items-center flex-basis">
         <slot name="icon"></slot>
       </div>

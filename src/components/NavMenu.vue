@@ -24,17 +24,17 @@ const goStart = () => {
 
 const goTeams = () => {
   isHidden.value = true
-  return router.push('/teams')
+  return router.push('/teams/all')
 }
 
 const goPlayers = () => {
   isHidden.value = true
-  return router.push('/players')
+  return router.push('/players/all')
 }
 
 const goTrainers = () => {
   isHidden.value = true
-  return router.push('/trainers')
+  return router.push('/trainers/all')
 }
 
 const goCalendar = () => {
@@ -44,17 +44,17 @@ const goCalendar = () => {
 
 const goObjects = () => {
   isHidden.value = true
-  return router.push('/sportsFacilities')
+  return router.push('/sportsFacilities/all')
 }
 
 const goParents = () => {
   isHidden.value = true
-  return router.push('/parents')
+  return router.push('/parents/all')
 }
 
 const goYourProfile = () => {
   isHidden.value = true
-  return router.push('/yourProfile')
+  return router.push('/yourProfile/personalData')
 }
 
 const logout = async () => {

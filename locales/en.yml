@@ -67,6 +67,7 @@ single-player:
   parent: Parent
   remarks: Remarks
   validity-of-medical-examinations: Validity of medical examinations
+  validity-of-medical-examinations-short: Medical examinations
 single-parent:
   first-name: First name
   last-name: Last name
@@ -96,6 +97,14 @@ single-event:
   start-date: Start date
   end-date: End date
   add-new: Add new...
+your-profile:
+  name: Academy name
+  first-name: First name
+  last-name: Last name
+  birthday-date: Birthday date
+  nationality: Nationality
+  phone-number: Phone number
+  email: E-mail
 days-of-week:
   monday: MONDAY
   tuesday: TUSEDAY

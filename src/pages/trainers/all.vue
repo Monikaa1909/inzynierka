@@ -5,32 +5,73 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const trainer = ref({
-  firstName: 'Jerzy',
-  lastName: 'Brzęczek',
-  birthdayDate: new Date(1999, 8, 12),
-  nationality: 'Poland',
-  academy: 'Biebrza Goniądz',
-  phoneNumber: '123644334',
-  email: 'jbrzeczek@gmail.com',
-},)
+const trainers = [
+  {
+    firstName: 'Jerzy',
+    lastName: 'Brzęczek',
+    birthdayDate: new Date(1999, 8, 12),
+    nationality: 'Poland',
+    academy: 'Biebrza Goniądz',
+    phoneNumber: '123644334',
+    email: 'jbrzeczek@gmail.com',
+  },
+  {
+    firstName: 'Czesław',
+    lastName: 'Michniewicz',
+    birthdayDate: new Date(1978, 8, 12),
+    nationality: 'Poland',
+    academy: 'Biebrza Goniądz',
+    phoneNumber: '123644334',
+    email: 'jbrzeczek@gmail.com',
+  },
+  {
+    firstName: 'Jan',
+    lastName: 'Kowalski',
+    birthdayDate: new Date(1978, 8, 12),
+    nationality: 'Poland',
+    academy: 'Biebrza Goniądz',
+    phoneNumber: '123644334',
+    email: 'jbrzeczek@gmail.com',
+  },
+  {
+    firstName: 'Piotr',
+    lastName: 'Zając',
+    birthdayDate: new Date(1978, 8, 12),
+    nationality: 'Poland',
+    academy: 'Biebrza Goniądz',
+    phoneNumber: '123644334',
+    email: 'jbrzeczek@gmail.com',
+  },
+]
 
 const goEditTrainer = (trainerId: any) => {
-  return router.push(`/trainer/edit/${trainerId}`)
+  return router.push(`/trainers/edit/${trainerId}`)
 }
 
-const back = () => {
-  return router.go(-1)
+const goAddTrainer = () => {
+  return router.push(`/trainers/add/newTrainer`)
+}
+
+
+function goToTrainer(trainerId: any) {
+  return router.push(`/trainers/${trainerId}`)
 }
 
 </script>
 
 <template>
   <BackgroundFrame>
+    <template v-slot:nav>
+      <button @click="goAddTrainer" class="flex flex-row gap-2 items-center">
+        <img src="../../assets/add-icon2.png" class="h-48px flex" />
+        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-trainer')}}</p>
+      </button>
+    </template>
     <template v-slot:data>
-      <MyCenterElement>
+      <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame>
+          <MiniWhiteFrame v-for="trainer in trainers" v-bind:key="trainer.firstName" class="hover:bg-#E3E3E3"
+            clickable="cursor-pointer" @go-to="goToTrainer(trainer.firstName)">
             <template v-slot:nav>
               <button @click="goEditTrainer(trainer.firstName)">
                 <img src="../../assets/edit-icon.png" class="h-24px" />
@@ -40,7 +81,7 @@ const back = () => {
               </button>
             </template>
             <template v-slot:icon>
-              <img src="../../assets/trainer-icon2.png" class="h-150px cursor-pointer" />
+              <img src="../../assets/trainer-icon2.png" class="h-150px" />
             </template>
             <template v-slot:attributes>
               <SingleAttribute>
@@ -68,16 +109,12 @@ const back = () => {
                 <template v-slot:attributeValue>{{ trainer.email }}</template>
               </SingleAttribute>
             </template>
-            <template v-slot:footer>
-              <SingleButton @click="back">
-                <template v-slot:buttonName>{{ t('button.back') }}</template>
-              </SingleButton>
-            </template>
           </MiniWhiteFrame>
         </template>
-      </MyCenterElement>
+      </MyGrid>
     </template>
   </BackgroundFrame>
+
 </template>
 
 <route lang="yaml">

@@ -86,15 +86,15 @@ const players = [
 ]
 
 const goEditPlayer = (playerId: any) => {
-  return router.push(`/player/edit/${playerId}`)
+  return router.push(`/players/edit/${playerId}`)
 }
 
 const goAddPlayer = (playerId: any) => {
-  return router.push(`/player/add/newPlayer`)
+  return router.push(`/players/add/newPlayer`)
 }
 
 function goToPlayer(playerId: any) {
-  return router.push(`/player/${playerId}`)
+  return router.push(`/players/${playerId}`)
 }
 
 </script>
@@ -103,7 +103,7 @@ function goToPlayer(playerId: any) {
   <BackgroundFrame>
     <template v-slot:nav>
       <button @click="goAddPlayer" class="flex flex-row gap-2 items-center">
-        <img src="../assets/add-icon2.png" class="h-48px flex" />
+        <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player')}}</p>
       </button>
     </template>
@@ -114,14 +114,14 @@ function goToPlayer(playerId: any) {
             clickable="cursor-pointer" @go-to="goToPlayer(player.id)">
             <template v-slot:nav>
               <button @click="goEditPlayer(player.id)">
-                <img src="../assets/edit-icon.png" class="h-24px" />
+                <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
-                <img src="../assets/delete-icon.png" class="h-24px" />
+                <img src="../../assets/delete-icon.png" class="h-24px" />
               </button>
             </template>
             <template v-slot:icon>
-              <img src="../assets/player-icon2.png" class="h-150px" />
+              <img src="../../assets/player-icon2.png" class="h-150px" />
             </template>
             <template v-slot:attributes>
               <SingleAttribute>
@@ -145,7 +145,7 @@ function goToPlayer(playerId: any) {
                 <template v-slot:attributeValue>{{ player.remarks }}</template>
               </SingleAttribute>
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
+                <template v-slot:attributeName>{{ t('single-player.validity-of-medical-examinations-short') }}:</template>
                 <template v-slot:attributeValue>{{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}</template>
               </SingleAttribute>
               <SingleAttribute>

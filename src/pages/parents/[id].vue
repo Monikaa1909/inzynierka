@@ -14,7 +14,7 @@ const parent = ref({
 },)
 
 const goEditParent = (parentId: any) => {
-  return router.push(`/parent/edit/${parentId}`)
+  return router.push(`/parents/edit/${parentId}`)
 }
 
 const back = () => {

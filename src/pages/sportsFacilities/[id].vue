@@ -11,7 +11,7 @@ const object = {
 }
 
 const goEditObject = (objectId: any) => {
-  return router.push(`/sportsFacility/edit/${objectId}`)
+  return router.push(`/sportsFacilities/edit/${objectId}`)
 }
 
 const back = () => {
