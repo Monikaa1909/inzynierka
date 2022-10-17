@@ -101,6 +101,9 @@ single-event:
   end-date: Data zakończenia
   add-new: Dodaj nowy...
   remarks: Uwagi
+  goals-scored: Bramki zdobyte
+  goals-conceded: Bramki stracone
+  result: Wynik
 your-profile:
   name: Nazwa akademii
   first-name: Imię

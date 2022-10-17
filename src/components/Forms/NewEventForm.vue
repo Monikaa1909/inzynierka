@@ -18,91 +18,91 @@ const props = defineProps({
 })
 
 const teams = ref([
-  {
-    id: 'idteam1',
-    name: 'Młodzik D1',
-    startYear: '2011',
-    endYear: '2012',
-    trainer: 'Jerzy Brzęczek'
-  },
-  {
-    id: 'idteam2',
-    name: 'Młodzik D2',
-    startYear: '2010',
-    endYear: '2011',
-    trainer: 'Jerzy Brzęczek'
-  },
-  {
-    id: 'idteam3',
-    name: 'Trampkarz C1',
-    startYear: '2009',
-    endYear: '2010',
-    trainer: 'Jerzy Brzęczek'
-  },
-  {
-    id: 'idteam4',
-    name: 'Trampkarz C2',
-    startYear: '2008',
-    endYear: '2009',
-    trainer: 'Jerzy Brzęczek'
-  },
-  {
-    id: 'idteam5',
-    name: 'Junior Młodszy B1',
-    startYear: '2006',
-    endYear: '2007',
-    trainer: 'Jerzy Brzęczek'
-  },
-  {
-    id: 'idteam6',
-    name: 'Junior Młodszy B2',
-    startYear: '2007',
-    endYear: '2008',
-    trainer: 'Jerzy Brzęczek'
-  },
+	{
+		id: 'idteam1',
+		name: 'Młodzik D1',
+		startYear: '2011',
+		endYear: '2012',
+		trainer: 'Jerzy Brzęczek'
+	},
+	{
+		id: 'idteam2',
+		name: 'Młodzik D2',
+		startYear: '2010',
+		endYear: '2011',
+		trainer: 'Jerzy Brzęczek'
+	},
+	{
+		id: 'idteam3',
+		name: 'Trampkarz C1',
+		startYear: '2009',
+		endYear: '2010',
+		trainer: 'Jerzy Brzęczek'
+	},
+	{
+		id: 'idteam4',
+		name: 'Trampkarz C2',
+		startYear: '2008',
+		endYear: '2009',
+		trainer: 'Jerzy Brzęczek'
+	},
+	{
+		id: 'idteam5',
+		name: 'Junior Młodszy B1',
+		startYear: '2006',
+		endYear: '2007',
+		trainer: 'Jerzy Brzęczek'
+	},
+	{
+		id: 'idteam6',
+		name: 'Junior Młodszy B2',
+		startYear: '2007',
+		endYear: '2008',
+		trainer: 'Jerzy Brzęczek'
+	},
 ])
 
 const sportsFacilities = ref([
-  {
-    id: 'sportsFacilitiesid1',
-    name: 'Stadion Miejski w Białymstoku',
-    street: 'Słoneczna',
-    houseNumber: 1,
-    postalCode: '15-323',
-    city: 'Białystok',
-  },
-  {
-    id: 'sportsFacilitiesid2',
-    name: 'Orlik na Kwiatowej',
-    street: 'Kwiatowa',
-    houseNumber: 13,
-    postalCode: '15-323',
-    city: 'Białystok',
-  },
-  {
-    id: 'sportsFacilitiesid3',
-    name: 'Stadion Miejski "Zwierzyniec"',
-    street: 'Zwierzyniecka',
-    houseNumber: 16,
-    postalCode: '15-323',
-    city: 'Białystok',
-  },
-  {
-    id: 'sportsFacilitiesid4',
-    name: 'Orlik szkolny',
-    street: 'Kolorowa',
-    houseNumber: 1,
-    postalCode: '15-323',
-    city: 'Białystok',
-  },
-  {
-    id: 'sportsFacilitiesid5',
-    name: 'Stadion Miejski na Zielonej',
-    street: 'Zielona',
-    houseNumber: 5,
-    postalCode: '15-323',
-    city: 'Białystok',
-  }
+	{
+		id: 'sportsFacilitiesid1',
+		name: 'Stadion Miejski w Białymstoku',
+		street: 'Słoneczna',
+		houseNumber: 1,
+		postalCode: '15-323',
+		city: 'Białystok',
+	},
+	{
+		id: 'sportsFacilitiesid2',
+		name: 'Orlik na Kwiatowej',
+		street: 'Kwiatowa',
+		houseNumber: 13,
+		postalCode: '15-323',
+		city: 'Białystok',
+	},
+	{
+		id: 'sportsFacilitiesid3',
+		name: 'Stadion Miejski "Zwierzyniec"',
+		street: 'Zwierzyniecka',
+		houseNumber: 16,
+		postalCode: '15-323',
+		city: 'Białystok',
+	},
+	{
+		id: 'sportsFacilitiesid4',
+		name: 'Orlik szkolny',
+		street: 'Kolorowa',
+		houseNumber: 1,
+		postalCode: '15-323',
+		city: 'Białystok',
+	},
+	{
+		id: 'sportsFacilitiesid5',
+		name: 'Stadion Miejski na Zielonej',
+		street: 'Zielona',
+		houseNumber: 5,
+		postalCode: '15-323',
+		city: 'Białystok',
+	}
 ])
 
 const event = ref({
@@ -113,6 +113,8 @@ const event = ref({
 	team: teams.value[0].id,
 	sportsFacility: sportsFacilities.value[0].id,
 	opponent: 'AP Wigry Suwałki',
+	goalsConceded: 1,
+	goalsScored: 0,
 	ifNewSportsFacility: computed(() => {
 		if (event.value.sportsFacility !== 'newobject') {
 			return false
@@ -130,8 +132,10 @@ if (!props.eventId) {
 	event.value.endDate = new Date()
 	event.value.team = ''
 	event.value.opponent = ''
+	event.value.goalsConceded = 0
+	event.value.goalsScored = 0
 	event.value.remarks = ''
-} 
+}
 if (props.day) {
 	console.log(props.day)
 	event.value.type = 'Training'
@@ -140,8 +144,9 @@ if (props.day) {
 	event.value.team = ''
 	event.value.remarks = ''
 	event.value.opponent = ''
+	event.value.goalsConceded = 0
+	event.value.goalsScored = 0
 	event.value.startDate = new Date(props.day)
-
 }
 
 const sportsFacility = ref({
@@ -204,7 +209,7 @@ const validateName = (value: any) => {
 }
 
 const validateNumber = (value: any) => {
-	if (!value) {
+	if (!value && value!=0) {
 		return 'This field is required';
 	}
 	const regex = /^[0-9]+$/i;
@@ -320,6 +325,26 @@ const cancel = () => {
 				<ErrorMessage class="text-xs" name="opponent" />
 			</template>
 		</SingleInput>
+		<SingleInput v-if="event.type === 'Match'">
+			<template v-slot:inputName>{{ t('single-event.goals-scored') }}:</template>
+			<template v-slot:inputValue>
+				<Field v-model="event.goalsScored" name="goalsScored" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNumber" />
+			</template>
+			<template v-slot:errorMessage>
+				<ErrorMessage class="text-xs" name="goalsScored" />
+			</template>
+		</SingleInput>
+		<SingleInput v-if="event.type === 'Match'">
+			<template v-slot:inputName>{{ t('single-event.goals-conceded') }}:</template>
+			<template v-slot:inputValue>
+				<Field v-model="event.goalsConceded" name="goalsConceded" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNumber" />
+			</template>
+			<template v-slot:errorMessage>
+				<ErrorMessage class="text-xs" name="goalsConceded" />
+			</template>
+		</SingleInput>
 		<SingleInput>
 			<template v-slot:inputName>{{ t('single-event.remarks') }}:</template>
 			<template v-slot:inputValue>
@@ -368,7 +393,8 @@ const cancel = () => {
 					<template v-slot:inputName>{{ t('single-object.number') }}:</template>
 					<template v-slot:inputValue>
 						<Field v-model="sportsFacility.houseNumber" name="number" type="input"
-							class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNumber" />
+							class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
+							:rules="validateNumber" />
 					</template>
 					<template v-slot:errorMessage>
 						<ErrorMessage class="text-xs" name="number" />
@@ -378,7 +404,8 @@ const cancel = () => {
 					<template v-slot:inputName>{{ t('single-object.postal-code') }}:</template>
 					<template v-slot:inputValue>
 						<Field v-model="sportsFacility.postalCode" name="postalCode" type="input"
-							class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validatePostalCode" />
+							class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
+							:rules="validatePostalCode" />
 					</template>
 					<template v-slot:errorMessage>
 						<ErrorMessage class="text-xs" name="postalCode" />
@@ -395,8 +422,9 @@ const cancel = () => {
 					</template>
 				</SingleInput>
 				<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
-					<button class="bg-#143547 p-1 text-sm text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">{{
-					t('button.save-object') }}</button>
+					<button
+						class="bg-#143547 p-1 text-sm text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">{{
+						t('button.save-object') }}</button>
 					<button @click="event.sportsFacility=''"
 						class="bg-#143547 p-1 text-sm text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">{{
 						t('button.cancel') }}</button>

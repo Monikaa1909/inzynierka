@@ -51,7 +51,8 @@ const trainings = ref([
     date: new Date(2022, 10, 12, 16, 10),
     team: 'Młodzik D1',
     sportsFacility: 'Stadion miejski w Białymstoku',
-    remarks: ''
+    remarks: '',
+    type: ''
   },
   {
     id: 'trainingid1',
@@ -109,6 +110,8 @@ const events = computed(() => {
           type: 'Match',
           startDate: match.date,
           team: match.team,
+          goalsConceded: match.goalsConceded,
+	        goalsScored: match.goalsScored,
           sportsFacility: match.sportsFacility,
           opponent: match.opponent,
           remarks: match.remarks,
@@ -185,6 +188,8 @@ const events = computed(() => {
           startDate: match.date,
           team: match.team,
           sportsFacility: match.sportsFacility,
+          goalsConceded: match.goalsConceded,
+	        goalsScored: match.goalsScored,
           opponent: match.opponent,
           remarks: match.remarks,
           get hour(): string {
@@ -280,6 +285,13 @@ const goToEvent = (eventId: any) => {
   return router.push(`/events/${eventId}`)
 }
 
+const showAttendanceList = (eventId: any) => {
+  return router.push(`/events/attendanceList/${eventId}`)
+}
+
+const showMatchStatistic = (eventId: any) => {
+  return router.push(`/events/statistic/match/${eventId}`)
+}
 </script>
 
 <template>
@@ -323,12 +335,13 @@ const goToEvent = (eventId: any) => {
         </div>
         <MyCenterElement class="xl:(px-300px) lg:(200px)">
           <template v-slot>
-            <MiniWhiteFrame v-for="event in events" v-bind:key="event.id" class="hover:bg-#E3E3E3 w-full" clickable="cursor-pointer" @go-to="goToEvent(event.id)">
+            <MiniWhiteFrame v-for="event in events" v-bind:key="event.id" class="hover:bg-#E3E3E3 w-full"
+              clickable="cursor-pointer" @go-to="goToEvent(event.id)">
               <template v-slot:nav>
-                <button>
+                <button @click="showAttendanceList(event.id)">
                   <img src="../../../assets/attendance-list-icon.png" class="h-24px" />
                 </button>
-                <button>
+                <button v-if="event.type === 'Match'" @click="showMatchStatistic(event.id)">
                   <img src="../../../assets/statistic-icon.png" class="h-24px" />
                 </button>
                 <button @click="goEditEvent(event.id)">
@@ -385,6 +398,12 @@ const goToEvent = (eventId: any) => {
                   <template v-slot:attributeName>{{ t('single-event.opponent') }}:</template>
                   <template v-slot:attributeValue>
                     {{ event.opponent }}
+                  </template>
+                </SingleAttribute>
+                <SingleAttribute v-if="event.type === 'Match'">
+                  <template v-slot:attributeName>{{ t('single-event.result') }}:</template>
+                  <template v-slot:attributeValue>
+                    {{ event.goalsScored }} : {{ event.goalsConceded }}
                   </template>
                 </SingleAttribute>
                 <SingleAttribute v-if="event.remarks != ''">

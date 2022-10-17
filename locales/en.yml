@@ -102,6 +102,9 @@ single-event:
   end-date: End date
   add-new: Add new...
   remarks: Remarks
+  goals-scored: Goals scored
+  goals-conceded: Goals conceded
+  result: Result
 your-profile:
   name: Academy name
   first-name: First name

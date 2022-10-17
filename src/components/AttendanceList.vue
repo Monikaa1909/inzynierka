@@ -3,11 +3,22 @@ const { availableLocales, locale } = useI18n()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const props = defineProps({
+	id: {
+		type: String,
+		require: true
+	},
+	edit: {
+		type: Boolean,
+		require: true
+	}
+})
+
 const attendanceList = ref([
 	{
 		id: 'attendancelistid1',
 		player: 'Janusz Kowalski',
-		training: 'trainingid1',
+		training: props.id,
 		attendance: true,
 		remarks: ''
 	},
@@ -16,7 +27,7 @@ const attendanceList = ref([
 		player: 'Robert Lewandowski',
 		training: 'trainingid1',
 		attendance: true,
-		remarks: ''
+		remarks: 'Spóźnienie 15 minut'
 	},
 	{
 		id: 'attendancelistid3',
@@ -58,47 +69,29 @@ const attendanceList = ref([
 </script>
 
 <template>
-	<div class="w-full border flex flex-col gap-2">
-		<!-- <div v-for="player in attendanceList" v-bind:key="player.id" class="border w-full flex flex-row gap-2 ">
-			<input type="checkbox" v-model="player.attendance" class="h-24px bg-#D8A22E border border-#D8A22E"/>
+	<div v-for="player in attendanceList" v-bind:key="player.id"
+		class="w-full  flex flex-row gap-4 place-content-between">
+		<div class="w-auto flex flex-row gap-2">
+			<button v-if="props.edit" @click="player.attendance = !player.attendance">
+				<img v-if="!player.attendance" src="../assets/checkbox-checked.png" class="h-24px" />
+				<img v-else src="../assets/checkbox-unchecked.png" class="h-24px" />
+			</button>
+			<div v-else>
+				<img v-if="!player.attendance" src="../assets/checkbox-checked.png" class="h-24px" />
+				<img v-else src="../assets/checkbox-unchecked.png" class="h-24px" />
+			</div>
 			<p>{{player.player}}</p>
-		</div> -->
-
-
+		</div>
+		<div class="w-auto flex flex-row gap-2 items-center">
+			<p class=" flex text-sm" v-if="!props.edit && player.remarks">({{player.remarks}})</p>
+			<input v-else-if="props.edit" v-model="player.remarks"
+				class="flex flex-auto w-full  text-sm border-1 border-#143547 p-1 shadow-lg" />
+		</div>
 	</div>
 </template>
 
-<style>
-.label-checkbox {
-  margin-right: 0.87rem;
-  margin-left: auto;
-  border: 1px solid #4273DE;
-  box-sizing: border-box;
-  border-radius: 10px;
-  padding: 5px 10px;
-  text-align: center;
-  display: inline-block;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
-  color: #4273DE;
-}
-
-.check-day {
-  
-}
-
-.checked {
-  background: #42de4f;
-  color: #fff;
-}
-
-.checked::before {
-  content: "✔";
-}</style>
 <route lang="yaml">
 meta:
   layout: home
 </route>
+

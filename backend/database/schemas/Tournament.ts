@@ -12,6 +12,10 @@ export default new Schema({
     ref: "Team",
     required: [true, 'Missing informations - each match or tournament must have a host (team)']
   },
+  friendly: {
+    type: Boolean,
+    required: [true, 'Missing informations - tournament type is required']
+  },
   sportsFacility: {
     type: Schema.Types.ObjectId,
     ref: "SportsFacility"

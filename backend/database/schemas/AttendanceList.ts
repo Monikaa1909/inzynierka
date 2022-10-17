@@ -9,7 +9,17 @@ export default new Schema({
     training: {
         type: Schema.Types.ObjectId,
         ref: "Training",
-        required: [true, 'Missing informations - each attendace list item must have a strictly defined training']  
+        required: [false]  
+    },
+    match: {
+        type: Schema.Types.ObjectId,
+        ref: "Match",
+        required: [false]  
+    },
+    tournaments: {
+        type: Schema.Types.ObjectId,
+        ref: "Tournament",
+        required: [false]  
     },
     attendance: {
         type: Boolean,

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
@@ -105,8 +106,10 @@ const event = ref({
 	type: "Training",
 	startDate: new Date(),
 	endDate: new Date(),
-	team: teams.value[0].id,
-	sportsFacility: sportsFacilities.value[0].id,
+	team: teams.value[0].name,
+	goalsConceded: 1,
+	goalsScored: 0,
+	sportsFacility: sportsFacilities.value[0].name,
 	opponent: 'AP Wigry Suwałki',
 	ifNewSportsFacility: computed(() => {
 		if (event.value.sportsFacility !== 'newobject') {
@@ -134,6 +137,14 @@ const goEditEvent = (eventId: any) => {
 	return router.push(`/events/edit/${eventId}`)
 }
 
+const showAttendanceList = (eventId: any) => {
+	return router.push(`/events/attendanceList/${eventId}`)
+}
+
+const showMatchStatistic = (eventId: any) => {
+	return router.push(`/events/statistic/match/${eventId}`)
+}
+
 </script>
 
 <template>
@@ -142,12 +153,12 @@ const goEditEvent = (eventId: any) => {
 
 			<MyCenterElement>
 				<template v-slot>
-					<MiniWhiteFrame v-bind:key="event.id">
+					<MiniWhiteFrame>
 						<template v-slot:nav>
-							<button>
+							<button @click="showAttendanceList(props.id)">
 								<img src="../../assets/attendance-list-icon.png" class="h-24px" />
 							</button>
-							<button>
+							<button v-if="event.type === 'Match'" @click="showMatchStatistic(props.id)">
 								<img src="../../assets/statistic-icon.png" class="h-24px" />
 							</button>
 							<button @click="goEditEvent(event.id)">
@@ -205,21 +216,23 @@ const goEditEvent = (eventId: any) => {
 									{{ event.opponent }}
 								</template>
 							</SingleAttribute>
+							<SingleAttribute v-if="event.type === 'Match'">
+								<template v-slot:attributeName>{{ t('single-event.result') }}:</template>
+								<template v-slot:attributeValue>
+									{{ event.goalsScored }} : {{ event.goalsConceded }}
+								</template>
+							</SingleAttribute>
 							<SingleAttribute v-if="event.remarks != ''">
 								<template v-slot:attributeName>{{ t('single-event.remarks') }}:</template>
 								<template v-slot:attributeValue>{{ event.remarks }}</template>
 							</SingleAttribute>
 						</template>
 						<template v-slot:footer>
-							<AttendanceList></AttendanceList>
+							<SingleButton @click="router.go(-1)">
+								<template v-slot:buttonName>{{ t('button.back') }}</template>
+							</SingleButton>
 						</template>
 					</MiniWhiteFrame>
-
-					<!-- <MiniWhiteFrame v-bind:key="event.id">
-						<template v-slot:attributes>
-							
-						</template>
-					</MiniWhiteFrame> -->
 				</template>
 			</MyCenterElement>
 		</template>

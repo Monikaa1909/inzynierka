@@ -11,6 +11,13 @@ export default new Schema({
         ref: "Match",
         required: [true, 'Missing informations - each match statistic item must have a strictly defined match']  
     },
+    goalsConceded: {
+        type: Number,
+        default: 0,
+        get: (v:any) => Math.round(v),
+        set: (v:any) => Math.round(v),
+        min: [0, 'Number of goals scored must be at least 0, got {VALUE}'],
+    },
     goalsScored: {
         type: Number,
         default: 0,
