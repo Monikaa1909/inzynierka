@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const router = useRouter()
-const sportsFacilities = [
+
+const sportsFacilities = ref([
   {
-    id: 'cdsc',
+    id: 'sportsFacilitiesid1',
     name: 'Stadion Miejski w Białymstoku',
     street: 'Słoneczna',
     houseNumber: 1,
@@ -11,41 +12,41 @@ const sportsFacilities = [
     city: 'Białystok',
   },
   {
-    id: 'cdsc',
-    name: 'Stadion2',
+    id: 'sportsFacilitiesid2',
+    name: 'Orlik na Kwiatowej',
     street: 'Kwiatowa',
     houseNumber: 13,
     postalCode: '15-323',
     city: 'Białystok',
   },
   {
-    id: 'cdsc',
-    name: 'Stadion3',
-    street: 'Różana',
+    id: 'sportsFacilitiesid3',
+    name: 'Stadion Miejski "Zwierzyniec"',
+    street: 'Zwierzyniecka',
     houseNumber: 16,
     postalCode: '15-323',
     city: 'Białystok',
   },
   {
-    id: 'cdsc',
-    name: 'Stadion Miejski w Białymstoku',
+    id: 'sportsFacilitiesid4',
+    name: 'Orlik szkolny',
     street: 'Kolorowa',
     houseNumber: 1,
     postalCode: '15-323',
     city: 'Białystok',
   },
   {
-    id: 'cdsc',
-    name: 'Stadion Miejski w Białymstoku',
+    id: 'sportsFacilitiesid5',
+    name: 'Stadion Miejski na Zielonej',
     street: 'Zielona',
     houseNumber: 5,
     postalCode: '15-323',
     city: 'Białystok',
   }
-]
+])
 
 const goEditObject = (sportsFacilityId: any) => {
-  return router.push(`/sportsFaciliiesy/edit/${sportsFacilityId}`)
+  return router.push(`/sportsFacilities/edit/${sportsFacilityId}`)
 }
 
 const goAddNewSportsFacility = () => {

@@ -8,7 +8,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const goSpecificDay = (day: any) => {
-  return router.push(`/events/${day.id}`)
+  return router.push(`/events/day/${day.id}`)
 }
 
 const myMatches = [

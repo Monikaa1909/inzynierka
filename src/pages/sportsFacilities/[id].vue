@@ -8,6 +8,7 @@ const object = {
   houseNumber: 1,
   postalCode: '15-323',
   city: 'Białystok',
+  remarks: 'Brak oświetlenia'
 }
 
 const goEditObject = (objectId: any) => {
@@ -57,6 +58,10 @@ const back = () => {
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-object.city') }}:</template>
                 <template v-slot:attributeValue>{{ object.city }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-object.remarks') }}:</template>
+                <template v-slot:attributeValue>{{ object.remarks }}</template>
               </SingleAttribute>
             </template>
             <template v-slot:footer>

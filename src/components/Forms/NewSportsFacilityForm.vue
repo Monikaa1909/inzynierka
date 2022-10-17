@@ -16,6 +16,7 @@ const sportsFacility = ref({
 	houseNumber: '1',
 	postalCode: '15-323',
 	city: 'Białystok',
+	remarks: 'Brak oświetlenia'
 })
 
 if (!props.sportsFacilityId) {
@@ -24,6 +25,7 @@ if (!props.sportsFacilityId) {
 	sportsFacility.value.houseNumber = ''
 	sportsFacility.value.postalCode = ''
 	sportsFacility.value.city = ''
+	sportsFacility.value.remarks = ''
 }
 
 const onSubmit = (values: any) => { }
@@ -134,6 +136,13 @@ const cancel = () => {
 			</template>
 			<template v-slot:errorMessage>
 				<ErrorMessage class="text-xs" name="city" />
+			</template>
+		</SingleInput>
+		<SingleInput>
+			<template v-slot:inputName>{{ t('single-object.remarks') }}:</template>
+			<template v-slot:inputValue>
+				<textarea v-model="sportsFacility.remarks" type="textarea" placeholder=""
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"></textarea>
 			</template>
 		</SingleInput>
 		<div

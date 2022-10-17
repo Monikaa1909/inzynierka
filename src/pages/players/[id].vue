@@ -63,10 +63,6 @@ const back = () => {
                 <template v-slot:attributeValue>{{ player.nationality }}</template>
               </SingleAttribute>
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.remarks') }}:</template>
-                <template v-slot:attributeValue>{{ player.remarks }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
                 <template v-slot:attributeValue>{{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}</template>
               </SingleAttribute>
@@ -74,9 +70,13 @@ const back = () => {
                 <template v-slot:attributeName>{{ t('single-player.team') }}:</template>
                 <template v-slot:attributeValue>{{ player.team }}</template>
               </SingleAttribute>
-              <SingleAttribute>
+              <SingleAttribute v-if="player.parent != ''">
                 <template v-slot:attributeName>{{ t('single-player.parent') }}:</template>
                 <template v-slot:attributeValue>{{ player.parent }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-player.remarks') }}:</template>
+                <template v-slot:attributeValue>{{ player.remarks }}</template>
               </SingleAttribute>
             </template>
             <template v-slot:footer>

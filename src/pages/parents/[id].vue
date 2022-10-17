@@ -10,7 +10,8 @@ const parent = ref({
   firstName: 'Jakub',
   lastName: 'Gruszka',
   phoneNumber: '123455432',
-  email: 'mdsdoc@wp.pl'
+  email: 'mdsdoc@wp.pl',
+  remarks: '',
 },)
 
 const goEditParent = (parentId: any) => {
@@ -56,6 +57,10 @@ const back = () => {
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-parent.email') }}:</template>
                 <template v-slot:attributeValue>{{ parent.email }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-parent.remarks') }}:</template>
+                <template v-slot:attributeValue>{{ parent.remarks }}</template>
               </SingleAttribute>
             </template>
             <template v-slot:footer>

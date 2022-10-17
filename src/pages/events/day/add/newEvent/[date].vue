@@ -5,6 +5,10 @@ const { availableLocales, locale } = useI18n()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const props = defineProps({
+  date: String,
+})
+
 </script>
     
 <template>
@@ -14,10 +18,10 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 				<template v-slot>
 					<MiniWhiteFrame>
 						<template v-slot:icon>
-							<img src="../../../assets/calendar-icon2.png" class=" h-150px" />
+							<img src="../../../../../assets/calendar-icon2.png" class=" h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<NewEventForm></NewEventForm>
+							<NewEventForm :day="props.date"></NewEventForm>
 						</template>
 					</MiniWhiteFrame>
 				</template>

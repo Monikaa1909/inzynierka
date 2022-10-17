@@ -5,6 +5,13 @@ const { availableLocales, locale } = useI18n()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const props = defineProps({
+	id: {
+		type: String,
+		required: true
+	}
+})
+
 </script>
     
 <template>
@@ -17,13 +24,13 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 							<img src="../../../assets/calendar-icon2.png" class=" h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<NewEventForm></NewEventForm>
+							<NewEventForm :eventId="props.id"></NewEventForm>
 						</template>
 					</MiniWhiteFrame>
 				</template>
 			</MyCenterElement>
 		</template>
-	</BackgroundFrame>>
+	</BackgroundFrame>
 </template>
     
 <route lang="yaml">

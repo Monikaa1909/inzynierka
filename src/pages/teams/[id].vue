@@ -6,7 +6,8 @@ const team = ref({
   name: 'team1',
   startYear: 'years1',
   endYear: 'players1',
-  trainer: 'Jerzy'
+  trainer: 'Jerzy',
+  remarks: ''
 })
 
 const goEditTeam = (teamId: any) => {
@@ -48,6 +49,10 @@ const back = () => {
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-team.trainer') }}:</template>
                 <template v-slot:attributeValue>{{ team.trainer }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-team.remarks') }}:</template>
+                <template v-slot:attributeValue>{{ team.remarks }}</template>
               </SingleAttribute>
             </template>
             <template v-slot:footer>

@@ -4,45 +4,45 @@ const router = useRouter()
 
 const teams = ref([
   {
-    id: 'cdsc',
-    name: 'team1',
-    startYear: 'years1',
-    endYear: 'players1',
+    id: 'idteam1',
+    name: 'Młodzik D1',
+    startYear: '2011',
+    endYear: '2012',
     trainer: 'Jerzy Brzęczek'
   },
   {
-    id: 'cdsc',
-    name: 'team1',
-    startYear: 'years1',
-    endYear: 'players1',
+    id: 'idteam2',
+    name: 'Młodzik D2',
+    startYear: '2010',
+    endYear: '2011',
     trainer: 'Jerzy Brzęczek'
   },
   {
-    id: 'cdsc',
-    name: 'team1',
-    startYear: 'years1',
-    endYear: 'players1',
+    id: 'idteam3',
+    name: 'Trampkarz C1',
+    startYear: '2009',
+    endYear: '2010',
     trainer: 'Jerzy Brzęczek'
   },
   {
-    id: 'cdsc',
-    name: 'team1',
-    startYear: 'years1',
-    endYear: 'players1',
+    id: 'idteam4',
+    name: 'Trampkarz C2',
+    startYear: '2008',
+    endYear: '2009',
     trainer: 'Jerzy Brzęczek'
   },
   {
-    id: 'cdsc',
-    name: 'team1',
-    startYear: 'years1',
-    endYear: 'players1',
+    id: 'idteam5',
+    name: 'Junior Młodszy B1',
+    startYear: '2006',
+    endYear: '2007',
     trainer: 'Jerzy Brzęczek'
   },
   {
-    id: 'cdsc',
-    name: 'team1',
-    startYear: 'years1',
-    endYear: 'players1',
+    id: 'idteam6',
+    name: 'Junior Młodszy B2',
+    startYear: '2007',
+    endYear: '2008',
     trainer: 'Jerzy Brzęczek'
   },
 ])

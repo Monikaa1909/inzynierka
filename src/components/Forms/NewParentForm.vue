@@ -18,6 +18,7 @@ const parent = ref({
 	lastName: 'Brzęczek',
 	phoneNumber: '123644334',
 	email: 'jbrzeczek@gmail.com',
+	remarks: 'jakieś tam uwagi'
 })
 
 if (!props.parentId) {
@@ -25,6 +26,7 @@ if (!props.parentId) {
 	parent.value.lastName = ''
 	parent.value.phoneNumber = ''
 	parent.value.email = ''
+	parent.value.remarks = ''
 }
 
 const onSubmit = (values: any) => {}
@@ -111,6 +113,13 @@ const cancel = () => {
 			</template>
 			<template v-slot:errorMessage>
 				<ErrorMessage class="text-xs" name="email" />
+			</template>
+		</SingleInput>
+		<SingleInput>
+			<template v-slot:inputName>{{ t('single-parent.remarks') }}:</template>
+			<template v-slot:inputValue>
+				<textarea v-model="parent.remarks" type="textarea" placeholder=""
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"></textarea>
 			</template>
 		</SingleInput>
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">

@@ -46,7 +46,8 @@ const team = ref({
 	name: 'Junior młodszy',
 	startYear: '2009',
 	endYear: '2010',
-	trainer: 'Jerzy'
+	trainer: 'Jerzy',
+	remarks: ''
 })
 
 if (!props.teamId) {
@@ -54,6 +55,7 @@ if (!props.teamId) {
 	team.value.startYear = ''
 	team.value.endYear = ''
 	team.value.trainer = ''
+	team.value.remarks = ''
 }
 
 const onSubmit = (values: any) => {}
@@ -153,6 +155,13 @@ const cancel = () => {
 					</select>
 					<p class="text-xs">{{ trainerErrorMessage }}</p>
 				</div>
+			</template>
+		</SingleInput>
+		<SingleInput>
+			<template v-slot:inputName>{{ t('single-team.remarks') }}:</template>
+			<template v-slot:inputValue>
+				<textarea v-model="team.remarks" type="textarea" placeholder=""
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"></textarea>
 			</template>
 		</SingleInput>
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">

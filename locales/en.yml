@@ -58,6 +58,7 @@ single-team:
   name: Name
   years: Years
   trainer: Trainer
+  remarks: Remarks
 single-player:
   first-name: First name
   last-name: Last name
@@ -73,12 +74,14 @@ single-parent:
   last-name: Last name
   phone-number: Phone number
   email: E-mail
+  remarks: Remarks
 single-object:
   name: Name
   street: Street
   number: Number
   postal-code: Postal code
   city: City
+  remarks: Remarks
 single-trainer:
   first-name: First name
   last-name: Last name
@@ -86,6 +89,7 @@ single-trainer:
   nationality: Nationality
   phone-number: Phone number
   email: E-mail
+  remarks: Remarks
 single-event:
   type: Event type
   date: Date
@@ -97,6 +101,7 @@ single-event:
   start-date: Start date
   end-date: End date
   add-new: Add new...
+  remarks: Remarks
 your-profile:
   name: Academy name
   first-name: First name

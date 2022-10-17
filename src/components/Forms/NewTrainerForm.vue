@@ -21,6 +21,7 @@ const trainer = ref({
 	academy: 'Biebrza Goniądz',
 	phoneNumber: '123644334',
 	email: 'jbrzeczek@gmail.com',
+	remarks: ''
 })
 
 if (!props.trainerId) {
@@ -31,6 +32,7 @@ if (!props.trainerId) {
 	trainer.value.academy = ''
 	trainer.value.phoneNumber = ''
 	trainer.value.email = ''
+	trainer.value.remarks = ''
 }
 
 const onSubmit = (values: any) => {
@@ -161,6 +163,13 @@ const cancel = () => {
 			</template>
 			<template v-slot:errorMessage>
 				<ErrorMessage class="text-xs" name="email" />
+			</template>
+		</SingleInput>
+		<SingleInput>
+			<template v-slot:inputName>{{ t('single-trainer.remarks') }}:</template>
+			<template v-slot:inputValue>
+				<textarea v-model="trainer.remarks" type="textarea" placeholder=""
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"></textarea>
 			</template>
 		</SingleInput>
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">

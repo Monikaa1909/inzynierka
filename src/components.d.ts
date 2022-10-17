@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AttendanceList: typeof import('./components/AttendanceList.vue')['default']
     BackgroundFrame: typeof import('./components/BackgroundFrame.vue')['default']
     BackgroundFrameCenter: typeof import('./components/BackgroundFrameCenter.vue')['default']
     BackgroundFrameGrid: typeof import('./components/BackgroundFrameGrid.vue')['default']

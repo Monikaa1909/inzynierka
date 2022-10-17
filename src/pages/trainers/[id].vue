@@ -14,6 +14,7 @@ const trainer = ref({
   academy: 'Biebrza Goniądz',
   phoneNumber: '123644334',
   email: 'jbrzeczek@gmail.com',
+  remarks: ''
 },)
 
 const goEditTrainer = (trainerId: any) => {
@@ -67,6 +68,10 @@ const back = () => {
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-trainer.email') }}:</template>
                 <template v-slot:attributeValue>{{ trainer.email }}</template>
+              </SingleAttribute>
+              <SingleAttribute>
+                <template v-slot:attributeName>{{ t('single-trainer.remarks') }}:</template>
+                <template v-slot:attributeValue>{{ trainer.remarks }}</template>
               </SingleAttribute>
             </template>
             <template v-slot:footer>
