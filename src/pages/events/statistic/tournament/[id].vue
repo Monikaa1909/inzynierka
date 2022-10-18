@@ -33,7 +33,7 @@ const goEditTournamentStatistic = (eventId: any) => {
 							<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<MatchStatistic :id="props.id" :eventType="'Tournament'"></MatchStatistic>
+							<EventStatistic :id="props.id" :eventType="'Tournament'"></EventStatistic>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">

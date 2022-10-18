@@ -25,7 +25,7 @@ const props = defineProps({
 							<img src="../../../../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<MatchStatisticForm :id="props.id" :eventType="'Tournament'"></MatchStatisticForm>
+							<NewEventStatisticForm :id="props.id" :eventType="'Tournament'"></NewEventStatisticForm>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">

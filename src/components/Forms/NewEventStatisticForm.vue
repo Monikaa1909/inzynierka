@@ -16,7 +16,7 @@ const props = defineProps({
   }
 })
 
-const matchStatistics = ref([
+const statistics = ref([
   {
     id: 'matchstatisticsid1',
     player: 'Janusz Kowalski',
@@ -180,64 +180,68 @@ for (let i = 0; i < 120; i++) {
           {{ t('match-statistic.remarks') }}
         </div>
       </div>
-      <div v-for="matchStatistic in matchStatistics" v-bind:key="matchStatistic.id"
+      <div v-for="statistic in statistics" v-bind:key="statistic.id"
         class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
         <div class="self-center justify-self-center font-medium text-xs block md:(hidden)">
           {{t('match-statistic.player') }}
         </div>
-        <div class="self-center justify-self-center col-span-1 text-xs md:()">{{matchStatistic.player}}
+        <div  class="self-center justify-self-center col-span-1 text-xs md:()">{{statistic.player}}
         </div>
         <div class="self-center justify-self-center font-medium text-xs block md:(hidden)">{{
         t('match-statistic.attendance') }}</div>
         <div class="self-center justify-self-center text-xs">
-          <button @click="matchStatistic.attendance = !matchStatistic.attendance">
-            <img v-if="!matchStatistic.attendance" src="../../assets/checkbox-checked-icon.png" class="h-18px" />
+          <button @click="statistic.attendance = !statistic.attendance">
+            <img v-if="statistic.attendance" src="../../assets/checkbox-checked-icon.png" class="h-18px" />
             <img v-else src="../../assets/checkbox-unchecked-icon.png" class="h-18px" />
           </button>
         </div>
 
         <div class="self-center justify-self-center  font-medium text-xs block md:(hidden)">{{
         t('match-statistic.goals-scored') }}</div>
-        <div class="self-center justify-self-center font-medium text-xs flex flex-col">
-          <select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="matchStatistic.goalsScored">
+        <div v-if="statistic.attendance" class="self-center justify-self-center font-medium text-xs flex flex-col">
+          <select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.goalsScored">
             <option v-for="number in goalsNumber">{{number}}
             </option>
           </select>
         </div>
+        <div v-else class="self-center justify-self-center font-medium text-xs flex flex-col"></div>
 
         <div class="self-center justify-self-center  font-medium text-xs block sm:(hidden)">{{
         t('match-statistic.yellow-cards') }}</div>
-        <div class="self-center justify-self-center font-medium text-xs flex flex-col">
-          <select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="matchStatistic.yellowCards">
+        <div v-if="statistic.attendance" class="self-center justify-self-center font-medium text-xs flex flex-col">
+          <select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.yellowCards">
             <option :value="0">0</option>
             <option :value="1">1</option>
             <option :value="2">2</option>
           </select>
         </div>
+        <div v-else class="self-center justify-self-center font-medium text-xs flex flex-col"></div>
 
         <div class="self-center justify-self-center font-medium text-xs block sm:(hidden)">{{
         t('match-statistic.red-cards') }}</div>
-        <div class="self-center justify-self-center font-medium text-xs flex flex-col">
-          <select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="matchStatistic.redCards">
+        <div v-if="statistic.attendance" class="self-center justify-self-center font-medium text-xs flex flex-col">
+          <select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.redCards">
             <option :value="0">0</option>
             <option :value="1">1</option>
           </select>
         </div>
+        <div v-else class="self-center justify-self-center font-medium text-xs flex flex-col"></div>
 
         <div class="self-center justify-self-center  font-medium text-xs block sm:(hidden)">{{
         t('match-statistic.minutes-played') }}</div>
-        <div class="self-center justify-self-center font-medium text-xs flex flex-col">
-          <select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="matchStatistic.minutesPlayed">
+        <div v-if="statistic.attendance" class="self-center justify-self-center font-medium text-xs flex flex-col">
+          <select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.minutesPlayed">
             <option v-for="number in minutesNumber">{{number}}
             </option>
           </select>
         </div>
+        <div v-else class="self-center justify-self-center font-medium text-xs flex flex-col"></div>
 
         <div class="self-center justify-self-center font-medium text-xs block sm:(hidden)">{{
         t('match-statistic.remarks') }}</div>
         <div class="self-center justify-self-center text-xs">
-          <textarea v-model="matchStatistic.remarks" type="textarea" placeholder=""
+          <textarea v-model="statistic.remarks" type="textarea" placeholder=""
             class="flex flex-auto w-full border-1 h-18px border-#143547 shadow-lg px-1"></textarea>
         </div>
 
