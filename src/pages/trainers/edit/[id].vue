@@ -7,6 +7,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const trainer = ref({
+  id: 'trainerid1',
   firstName: 'Jerzy',
   lastName: 'Brzęczek',
   birthdayDate: new Date(1999, 8, 12),
@@ -28,7 +29,7 @@ const trainer = ref({
               <img src="../../../assets/trainer-icon2.png" class="h-150px cursor-pointer" />
             </template>
             <template v-slot:attributes>
-              <NewTrainerForm :trainer-id="trainer.firstName"></NewTrainerForm>
+              <NewTrainerForm :trainer-id="trainer.id"></NewTrainerForm>
             </template>
           </MiniWhiteFrame>
         </template>

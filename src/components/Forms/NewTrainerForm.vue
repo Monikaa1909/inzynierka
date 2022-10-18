@@ -14,6 +14,7 @@ const props = defineProps({
 })
 
 const trainer = ref({
+	id: 'trainerid1',
 	firstName: 'Jerzy',
 	lastName: 'Brzęczek',
 	birthdayDate: new Date(1999, 8, 12),
@@ -35,9 +36,7 @@ if (!props.trainerId) {
 	trainer.value.remarks = ''
 }
 
-const onSubmit = (values: any) => {
-	console.log(values, null, 2);
-}
+const onSubmit = (values: any) => { }
 
 const validateName = (value: any) => {
 	if (!value) {

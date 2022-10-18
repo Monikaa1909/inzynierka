@@ -6,7 +6,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const trainer = ref({
-  id: 'dcf',
+  id: 'trainerid1',
   firstName: 'Jerzy',
   lastName: 'Brzęczek',
   birthdayDate: new Date(1999, 8, 12),
@@ -19,10 +19,6 @@ const trainer = ref({
 
 const goEditTrainer = (trainerId: any) => {
   return router.push(`/trainers/edit/${trainerId}`)
-}
-
-const back = () => {
-  return router.go(-1)
 }
 
 </script>
@@ -75,7 +71,7 @@ const back = () => {
               </SingleAttribute>
             </template>
             <template v-slot:footer>
-              <SingleButton @click="back">
+              <SingleButton @click="router.go(-1)">
                 <template v-slot:buttonName>{{ t('button.back') }}</template>
               </SingleButton>
             </template>

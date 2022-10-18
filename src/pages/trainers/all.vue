@@ -7,6 +7,7 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const trainers = [
   {
+    id: 'trainerid1',
     firstName: 'Jerzy',
     lastName: 'Brzęczek',
     birthdayDate: new Date(1999, 8, 12),
@@ -16,6 +17,7 @@ const trainers = [
     email: 'jbrzeczek@gmail.com',
   },
   {
+    id: 'trainerid2',
     firstName: 'Czesław',
     lastName: 'Michniewicz',
     birthdayDate: new Date(1978, 8, 12),
@@ -25,6 +27,7 @@ const trainers = [
     email: 'jbrzeczek@gmail.com',
   },
   {
+    id: 'trainerid3',
     firstName: 'Jan',
     lastName: 'Kowalski',
     birthdayDate: new Date(1978, 8, 12),
@@ -34,6 +37,7 @@ const trainers = [
     email: 'jbrzeczek@gmail.com',
   },
   {
+    id: 'trainerid4',
     firstName: 'Piotr',
     lastName: 'Zając',
     birthdayDate: new Date(1978, 8, 12),
@@ -70,10 +74,10 @@ function goToTrainer(trainerId: any) {
     <template v-slot:data>
       <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <template v-slot>
-          <MiniWhiteFrame v-for="trainer in trainers" v-bind:key="trainer.firstName" class="hover:bg-#E3E3E3"
-            clickable="cursor-pointer" @go-to="goToTrainer(trainer.firstName)">
+          <MiniWhiteFrame v-for="trainer in trainers" v-bind:key="trainer.id" class="hover:bg-#E3E3E3"
+            clickable="cursor-pointer" @go-to="goToTrainer(trainer.id)">
             <template v-slot:nav>
-              <button @click="goEditTrainer(trainer.firstName)">
+              <button @click="goEditTrainer(trainer.id)">
                 <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
