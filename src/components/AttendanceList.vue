@@ -73,12 +73,12 @@ const attendanceList = ref([
 		class="w-full  flex flex-row gap-4 place-content-between">
 		<div class="w-auto flex flex-row gap-2">
 			<button v-if="props.edit" @click="player.attendance = !player.attendance">
-				<img v-if="!player.attendance" src="../assets/checkbox-checked.png" class="h-24px" />
-				<img v-else src="../assets/checkbox-unchecked.png" class="h-24px" />
+				<img v-if="!player.attendance" src="../assets/checkbox-checked-icon.png" class="h-24px" />
+				<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-24px" />
 			</button>
 			<div v-else>
-				<img v-if="!player.attendance" src="../assets/checkbox-checked.png" class="h-24px" />
-				<img v-else src="../assets/checkbox-unchecked.png" class="h-24px" />
+				<img v-if="!player.attendance" src="../assets/checkbox-checked-icon.png" class="h-24px" />
+				<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-24px" />
 			</div>
 			<p>{{player.player}}</p>
 		</div>

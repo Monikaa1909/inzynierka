@@ -104,6 +104,8 @@ single-event:
   goals-scored: Bramki zdobyte
   goals-conceded: Bramki stracone
   result: Wynik
+  duration: Czas trwania meczu
+  minutes: minut
 your-profile:
   name: Nazwa akademii
   first-name: Imię
@@ -128,4 +130,12 @@ events:
     match: Mecz
     training: Trening
     tournament: Turniej
+match-statistic:
+  player: Zawodnik
+  attendance: Obecność
+  goals-scored: Gole zdobyte
+  yellow-cards: Żółte kartki
+  red-cards: Czerwone kartki
+  minutes-played: Rozegrane minuty
+  remarks: Uwagi
 not-found: Nie znaleziono

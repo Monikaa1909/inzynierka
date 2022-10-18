@@ -105,6 +105,8 @@ single-event:
   goals-scored: Goals scored
   goals-conceded: Goals conceded
   result: Result
+  duration: Duration of the match
+  minutes: minutes
 your-profile:
   name: Academy name
   first-name: First name
@@ -129,4 +131,12 @@ events:
     match: Match
     training: Training
     tournament: Tournament
+match-statistic:
+  player: Player
+  attendance: Attendance
+  goals-scored: Goals scored
+  yellow-cards: Yellow cards
+  red-cards: Red cards
+  minutes-played: Minutes played
+  remarks: Remarks
 not-found: Not found

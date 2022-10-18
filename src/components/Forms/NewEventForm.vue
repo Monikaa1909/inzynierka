@@ -107,14 +107,12 @@ const sportsFacilities = ref([
 
 const event = ref({
 	id: 'eventid1',
-	type: "Training",
+	type: 'Training',
 	startDate: new Date(),
 	endDate: new Date(),
 	team: teams.value[0].id,
 	sportsFacility: sportsFacilities.value[0].id,
 	opponent: 'AP Wigry Suwałki',
-	goalsConceded: 1,
-	goalsScored: 0,
 	ifNewSportsFacility: computed(() => {
 		if (event.value.sportsFacility !== 'newobject') {
 			return false
@@ -122,7 +120,18 @@ const event = ref({
 		else
 			return true
 	}),
-	remarks: ''
+	remarks: '',
+	typeName: computed(() => {
+		if (locale.value === 'en') {
+			if (event.value.type === "Training") return "Training"
+			else if (event.value.type === "Match") return "Match"
+			else return "Tournament"
+		}
+		else
+			if (event.value.type === "Training") return "Trening"
+			else if (event.value.type === "Match") return "Mecz"
+			else return "Turniej"
+	}),
 })
 
 if (!props.eventId) {
@@ -132,20 +141,16 @@ if (!props.eventId) {
 	event.value.endDate = new Date()
 	event.value.team = ''
 	event.value.opponent = ''
-	event.value.goalsConceded = 0
-	event.value.goalsScored = 0
 	event.value.remarks = ''
 }
 if (props.day) {
 	console.log(props.day)
-	event.value.type = 'Training'
+	// event.value.type = 'Training'
 	event.value.sportsFacility = ''
 	event.value.endDate = new Date()
 	event.value.team = ''
 	event.value.remarks = ''
 	event.value.opponent = ''
-	event.value.goalsConceded = 0
-	event.value.goalsScored = 0
 	event.value.startDate = new Date(props.day)
 }
 
@@ -209,7 +214,7 @@ const validateName = (value: any) => {
 }
 
 const validateNumber = (value: any) => {
-	if (!value && value!=0) {
+	if (!value && value != 0) {
 		return 'This field is required';
 	}
 	const regex = /^[0-9]+$/i;
@@ -255,7 +260,7 @@ const cancel = () => {
 		<SingleInput>
 			<template v-slot:inputName>{{ t('single-event.type')}}:</template>
 			<template v-slot:inputValue>
-				<div class="fles flex-auto w-full flex-col">
+				<div v-if="!props.eventId" class="fles flex-auto w-full flex-col">
 					<select v-model="event.type" class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
 						<option v-if="locale === 'en'" :value="'Training'">Training</option>
 						<option v-else-if="locale === 'pl'" :value="'Training'">Trening</option>
@@ -266,6 +271,7 @@ const cancel = () => {
 					</select>
 					<p class="text-xs">{{ typeErrorMessage }}</p>
 				</div>
+				<p v-else>{{event.typeName}}</p>
 			</template>
 		</SingleInput>
 		<SingleInput>
@@ -307,12 +313,13 @@ const cancel = () => {
 		<SingleInput>
 			<template v-slot:inputName>{{ t('single-event.team')}}:</template>
 			<template v-slot:inputValue>
-				<div class="fles flex-auto w-full flex-col">
+				<div v-if="!props.eventId" class="fles flex-auto w-full flex-col">
 					<select v-model="event.team" class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
 						<option v-for="team in teams" :value="team.id">{{team.name}}</option>
 					</select>
 					<p class="text-xs">{{ teamErrorMessage }}</p>
 				</div>
+				<p v-else>{{event.team}}</p>
 			</template>
 		</SingleInput>
 		<SingleInput v-if="event.type === 'Match'">
@@ -323,26 +330,6 @@ const cancel = () => {
 			</template>
 			<template v-slot:errorMessage>
 				<ErrorMessage class="text-xs" name="opponent" />
-			</template>
-		</SingleInput>
-		<SingleInput v-if="event.type === 'Match'">
-			<template v-slot:inputName>{{ t('single-event.goals-scored') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="event.goalsScored" name="goalsScored" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNumber" />
-			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="goalsScored" />
-			</template>
-		</SingleInput>
-		<SingleInput v-if="event.type === 'Match'">
-			<template v-slot:inputName>{{ t('single-event.goals-conceded') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="event.goalsConceded" name="goalsConceded" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNumber" />
-			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="goalsConceded" />
 			</template>
 		</SingleInput>
 		<SingleInput>
@@ -393,8 +380,7 @@ const cancel = () => {
 					<template v-slot:inputName>{{ t('single-object.number') }}:</template>
 					<template v-slot:inputValue>
 						<Field v-model="sportsFacility.houseNumber" name="number" type="input"
-							class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
-							:rules="validateNumber" />
+							class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNumber" />
 					</template>
 					<template v-slot:errorMessage>
 						<ErrorMessage class="text-xs" name="number" />
@@ -404,8 +390,7 @@ const cancel = () => {
 					<template v-slot:inputName>{{ t('single-object.postal-code') }}:</template>
 					<template v-slot:inputValue>
 						<Field v-model="sportsFacility.postalCode" name="postalCode" type="input"
-							class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"
-							:rules="validatePostalCode" />
+							class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validatePostalCode" />
 					</template>
 					<template v-slot:errorMessage>
 						<ErrorMessage class="text-xs" name="postalCode" />
@@ -422,9 +407,8 @@ const cancel = () => {
 					</template>
 				</SingleInput>
 				<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
-					<button
-						class="bg-#143547 p-1 text-sm text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">{{
-						t('button.save-object') }}</button>
+					<button class="bg-#143547 p-1 text-sm text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">{{
+					t('button.save-object') }}</button>
 					<button @click="event.sportsFacility=''"
 						class="bg-#143547 p-1 text-sm text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">{{
 						t('button.cancel') }}</button>

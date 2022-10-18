@@ -111,7 +111,7 @@ const events = computed(() => {
           startDate: match.date,
           team: match.team,
           goalsConceded: match.goalsConceded,
-	        goalsScored: match.goalsScored,
+          goalsScored: match.goalsScored,
           sportsFacility: match.sportsFacility,
           opponent: match.opponent,
           remarks: match.remarks,
@@ -189,7 +189,7 @@ const events = computed(() => {
           team: match.team,
           sportsFacility: match.sportsFacility,
           goalsConceded: match.goalsConceded,
-	        goalsScored: match.goalsScored,
+          goalsScored: match.goalsScored,
           opponent: match.opponent,
           remarks: match.remarks,
           get hour(): string {
@@ -338,7 +338,7 @@ const showMatchStatistic = (eventId: any) => {
             <MiniWhiteFrame v-for="event in events" v-bind:key="event.id" class="hover:bg-#E3E3E3 w-full"
               clickable="cursor-pointer" @go-to="goToEvent(event.id)">
               <template v-slot:nav>
-                <button @click="showAttendanceList(event.id)">
+                <button v-if="event.type === 'Training'" @click="showAttendanceList(event.id)">
                   <img src="../../../assets/attendance-list-icon.png" class="h-24px" />
                 </button>
                 <button v-if="event.type === 'Match'" @click="showMatchStatistic(event.id)">
@@ -366,13 +366,13 @@ const showMatchStatistic = (eventId: any) => {
                 <SingleAttribute v-if="event.type !== 'Tournament'">
                   <template v-slot:attributeName>{{ t('single-event.date') }}:</template>
                   <template v-slot:attributeValue>
-                    {{ event.startDate.toLocaleDateString(locale) }}
+                    {{ event.startDate.toLocaleDateString(locale) }}  {{ event.hour }}:{{ event.minutes}}
                   </template>
                 </SingleAttribute>
                 <SingleAttribute v-if="event.type === 'Tournament'">
                   <template v-slot:attributeName>{{ t('single-event.start-date') }}:</template>
                   <template v-slot:attributeValue>
-                    {{ event.startDate.toLocaleDateString(locale) }}
+                    {{ event.startDate.toLocaleDateString(locale) }}  {{ event.hour }}:{{ event.minutes}}
                   </template>
                 </SingleAttribute>
                 <SingleAttribute v-if="event.type === 'Tournament'">
@@ -380,11 +380,6 @@ const showMatchStatistic = (eventId: any) => {
                   <template v-slot:attributeValue>
                     {{ event.endDate.toLocaleDateString(locale) }}
                   </template>
-                </SingleAttribute>
-                <SingleAttribute>
-                  <template v-slot:attributeName>{{ t('single-event.hour') }}:</template>
-                  <template v-slot:attributeValue>{{ event.hour }}:{{ event.minutes
-                  }}</template>
                 </SingleAttribute>
                 <SingleAttribute>
                   <template v-slot:attributeName>{{ t('single-event.team') }}:</template>
