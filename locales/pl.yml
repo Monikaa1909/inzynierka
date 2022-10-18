@@ -106,6 +106,7 @@ single-event:
   result: Wynik
   duration: Czas trwania meczu
   minutes: minut
+  description: Description
 your-profile:
   name: Nazwa akademii
   first-name: Imię

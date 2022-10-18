@@ -73,19 +73,19 @@ const attendanceList = ref([
 		class="w-full  flex flex-row gap-4 place-content-between">
 		<div class="w-auto flex flex-row gap-2">
 			<button v-if="props.edit" @click="player.attendance = !player.attendance">
-				<img v-if="!player.attendance" src="../assets/checkbox-checked-icon.png" class="h-24px" />
-				<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-24px" />
+				<img v-if="!player.attendance" src="../assets/checkbox-checked-icon.png" class="h-18px" />
+				<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-18px" />
 			</button>
 			<div v-else>
-				<img v-if="!player.attendance" src="../assets/checkbox-checked-icon.png" class="h-24px" />
-				<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-24px" />
+				<img v-if="!player.attendance" src="../assets/checkbox-checked-icon.png" class="h-18px" />
+				<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-18px" />
 			</div>
 			<p>{{player.player}}</p>
 		</div>
 		<div class="w-auto flex flex-row gap-2 items-center">
 			<p class=" flex text-sm" v-if="!props.edit && player.remarks">({{player.remarks}})</p>
-			<input v-else-if="props.edit" v-model="player.remarks"
-				class="flex flex-auto w-full  text-sm border-1 border-#143547 p-1 shadow-lg" />
+			<textarea v-else-if="props.edit" v-model="player.remarks" 
+				class="flex flex-auto w-full text-xs border-1 border-#143547 h-24px shadow-lg" ></textarea>
 		</div>
 	</div>
 </template>

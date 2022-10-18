@@ -292,6 +292,10 @@ const showAttendanceList = (eventId: any) => {
 const showMatchStatistic = (eventId: any) => {
   return router.push(`/events/statistic/match/${eventId}`)
 }
+
+const showTournamentStatistic = (eventId: any) => {
+  return router.push(`/events/statistic/tournament/${eventId}`)
+}
 </script>
 
 <template>
@@ -344,6 +348,9 @@ const showMatchStatistic = (eventId: any) => {
                 <button v-if="event.type === 'Match'" @click="showMatchStatistic(event.id)">
                   <img src="../../../assets/statistic-icon.png" class="h-24px" />
                 </button>
+                <button v-if="event.type === 'Tournament'" @click="showTournamentStatistic(event.id)">
+                  <img src="../../../assets/statistic-icon.png" class="h-24px" />
+                </button>
                 <button @click="goEditEvent(event.id)">
                   <img src="../../../assets/edit-icon.png" class="h-24px" />
                 </button>
@@ -352,10 +359,10 @@ const showMatchStatistic = (eventId: any) => {
                 </button>
               </template>
               <template v-slot:icon>
-                <img v-if="event.type == 'Match'" src="../../../assets/calendar-icon-purple.png" class="h-150px" />
-                <img v-else-if="event.type == 'Tournament'" src="../../../assets/calendar-icon-purple-light.png"
+                <img v-if="event.type == 'Match'" src="../../../assets/match-icon2.png" class="h-150px" />
+                <img v-else-if="event.type == 'Tournament'" src="../../../assets/tournament-icon.png"
                   class="h-150px" />
-                <img v-else-if="event.type == 'Training'" src="../../../assets/calendar-icon-green.png"
+                <img v-else-if="event.type == 'Training'" src="../../../assets/training-icon.png"
                   class="h-150px" />
               </template>
               <template v-slot:attributes>

@@ -12,6 +12,7 @@ declare module 'vue' {
     Counter: typeof import('./components/Counter.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     MatchStatistic: typeof import('./components/MatchStatistic.vue')['default']
+    MatchStatisticForm: typeof import('./components/Forms/MatchStatisticForm.vue')['default']
     MiniWhiteFrame: typeof import('./components/MiniWhiteFrame.vue')['default']
     MyCenterElement: typeof import('./components/MyCenterElement.vue')['default']
     MyGrid: typeof import('./components/MyGrid.vue')['default']

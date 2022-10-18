@@ -25,11 +25,14 @@ const props = defineProps({
 							<img src="../../../../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<MatchStatistic :id="props.id" :edit="true"></MatchStatistic>
+							<MatchStatisticForm :id="props.id" :eventType="'Match'"></MatchStatisticForm>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">
-								<template v-slot:buttonName>{{ t('button.back') }}</template>
+								<template v-slot:buttonName>{{ t('button.save') }}</template>
+							</SingleButton>
+							<SingleButton @click="router.go(-1)">
+								<template v-slot:buttonName>{{ t('button.cancel') }}</template>
 							</SingleButton>
 						</template>
 					</MiniWhiteFrame>

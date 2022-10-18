@@ -12,8 +12,8 @@ const props = defineProps({
 	}
 })
 
-const goEditMatchStatistic = (eventId: any) => {
-	return router.push(`/events/statistic/match/edit/${eventId}`)
+const goEditTournamentStatistic = (eventId: any) => {
+	return router.push(`/events/statistic/tournament/edit/${eventId}`)
 }
 </script>
 
@@ -25,7 +25,7 @@ const goEditMatchStatistic = (eventId: any) => {
 				<template v-slot>
 					<MiniWhiteFrame>
 						<template v-slot:nav>
-							<button @click="goEditMatchStatistic(props.id)">
+							<button @click="goEditTournamentStatistic(props.id)">
 								<img src="../../../../assets/edit-icon.png" class="h-24px" />
 							</button>
 						</template>
@@ -33,7 +33,7 @@ const goEditMatchStatistic = (eventId: any) => {
 							<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<MatchStatistic :id="props.id" :eventType="'Match'"></MatchStatistic>
+							<MatchStatistic :id="props.id" :eventType="'Tournament'"></MatchStatistic>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">

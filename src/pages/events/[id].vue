@@ -169,10 +169,11 @@ const showMatchStatistic = (eventId: any) => {
 							</button>
 						</template>
 						<template v-slot:icon>
-							<img v-if="event.type == 'Match'" src="../../assets/calendar-icon-purple.png" class="h-150px" />
-							<img v-else-if="event.type == 'Tournament'" src="../../assets/calendar-icon-purple-light.png"
-								class="h-150px" />
-							<img v-else-if="event.type == 'Training'" src="../../assets/calendar-icon-green.png" class="h-150px" />
+							<img v-if="event.type == 'Match'" src="../../assets/match-icon2.png" class="h-150px" />
+                <img v-else-if="event.type == 'Tournament'" src="../../assets/tournament-icon.png"
+                  class="h-150px" />
+                <img v-else-if="event.type == 'Training'" src="../../assets/training-icon.png"
+                  class="h-150px" />
 						</template>
 						<template v-slot:attributes>
 							<SingleAttribute>

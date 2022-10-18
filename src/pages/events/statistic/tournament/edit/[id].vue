@@ -12,9 +12,6 @@ const props = defineProps({
 	}
 })
 
-const goEditMatchStatistic = (eventId: any) => {
-	return router.push(`/events/statistic/match/edit/${eventId}`)
-}
 </script>
 
 <template>
@@ -24,20 +21,18 @@ const goEditMatchStatistic = (eventId: any) => {
 			<MyCenterElement>
 				<template v-slot>
 					<MiniWhiteFrame>
-						<template v-slot:nav>
-							<button @click="goEditMatchStatistic(props.id)">
-								<img src="../../../../assets/edit-icon.png" class="h-24px" />
-							</button>
-						</template>
 						<template v-slot:icon>
-							<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
+							<img src="../../../../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<MatchStatistic :id="props.id" :eventType="'Match'"></MatchStatistic>
+							<MatchStatisticForm :id="props.id" :eventType="'Tournament'"></MatchStatisticForm>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">
-								<template v-slot:buttonName>{{ t('button.back') }}</template>
+								<template v-slot:buttonName>{{ t('button.save') }}</template>
+							</SingleButton>
+							<SingleButton @click="router.go(-1)">
+								<template v-slot:buttonName>{{ t('button.cancel') }}</template>
 							</SingleButton>
 						</template>
 					</MiniWhiteFrame>

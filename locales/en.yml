@@ -107,6 +107,7 @@ single-event:
   result: Result
   duration: Duration of the match
   minutes: minutes
+  description: Description
 your-profile:
   name: Academy name
   first-name: First name
