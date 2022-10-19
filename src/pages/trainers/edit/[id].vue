@@ -10,7 +10,7 @@ const trainer = ref({
   id: 'trainerid1',
   firstName: 'Jerzy',
   lastName: 'Brzęczek',
-  birthdayDate: new Date(1999, 8, 12),
+  birthdayDate: new Date("1999, 8, 12"),
   nationality: 'Poland',
   academy: 'Biebrza Goniądz',
   phoneNumber: '123644334',

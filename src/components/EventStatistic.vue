@@ -18,13 +18,17 @@ const props = defineProps({
 		type: String,
 		require: false,
 		default: 'all'
-	}
+	},
+	isHidden: {
+    type: Boolean,
+    requie: false
+  }
 })
 
 const statistics = ref([
 	{
 		id: 'matchstatisticsid1',
-		player: 'Janusz Kowalski',
+		player: 'Dominik Kowalski',
 		match: props.id,
 		attendance: true,
 		goalsScored: 2,
@@ -35,7 +39,7 @@ const statistics = ref([
 	},
 	{
 		id: 'matchstatisticsid2',
-		player: 'Janusz Kowalski',
+		player: 'Andrzej Kowalski',
 		match: props.id,
 		attendance: true,
 		goalsScored: 5,
@@ -57,13 +61,13 @@ const statistics = ref([
 	},
 	{
 		id: 'matchstatisticsid4',
-		player: 'Janusz Kowalski',
+		player: 'Wiesław Kowalski',
 		match: props.id,
 		attendance: false,
-		goalsScored: 2,
-		yellowCards: 1,
+		goalsScored: 0,
+		yellowCards: 0,
 		redCards: 0,
-		minutesPlayed: 90,
+		minutesPlayed: 0,
 		remarks: ''
 	},
 	{
@@ -128,51 +132,66 @@ const tournament = ref(
 )
 
 const sortedStatistic = computed(() => {
-	var temp
-	temp = statistics.value
-			temp.forEach(element => {
-				if(!element.attendance) {
-					element.goalsScored = 0
-					element.yellowCards = 0
-					element.redCards = 0
-					element.minutesPlayed = 0
-				}
-			});
-	switch (props.sort) {
+	statistics.value.forEach(element => {
+		if (!element.attendance) {
+			element.goalsScored = 0
+			element.yellowCards = 0
+			element.redCards = 0
+			element.minutesPlayed = 0
+		}
+	});
+	switch (sortType.value) {
 		case 'all':
+			statistics.value.sort(function (a: any, b: any) {
+				if (a.player < b.player) return -1
+				else return 1
+			})
 			return statistics.value
 		case 'goalsScored':
-			temp.sort(function (a: any, b: any) {
+			statistics.value.sort(function (a: any, b: any) {
 				if (a.goalsScored > b.goalsScored) return -1
-				else return 1
+				else if (a.goalsScored < b.goalsScored) return 1
+				else if (!a.attendance && b.attendance) return 1
+				else return -1
 			})
-			return temp
+			return statistics.value
 		case 'yellowCards':
-			temp.sort(function (a: any, b: any) {
+			statistics.value.sort(function (a: any, b: any) {
 				if (a.yellowCards > b.yellowCards) return -1
-				else return 1
+				else if (a.yellowCards < b.yellowCards) return 1
+				else if (!a.attendance && b.attendance) return 1
+				else return -1
 			})
-			return temp
+			return statistics.value
 		case 'redCards':
-			temp.sort(function (a: any, b: any) {
+			statistics.value.sort(function (a: any, b: any) {
 				if (a.redCards > b.redCards) return -1
-				else return 1
+				else if (a.redCards < b.redCards) return 1
+				else if (!a.attendance && b.attendance) return 1
+				else return -1 
 			})
-			return temp
+			return statistics.value
 		case 'minutesPlayed':
-			temp.sort(function (a: any, b: any) {
+			statistics.value.sort(function (a: any, b: any) {
 				if (a.minutesPlayed > b.minutesPlayed) return -1
-				else return 1
+				else if (a.minutesPlayed < b.minutesPlayed) return 1
+				else if (!a.attendance && b.attendance) return 1
+				else return -1
 			})
-			return temp
+			return statistics.value
 	}
 })
 
-
+const sortType = ref('all')
+function changeSorting(newSortType: any) {
+  sortType.value = newSortType
+}
 </script>
 
 <template>
 	<div class="w-full flex flex-col gap-4">
+		<StatisticSortOptions @changeSorting="changeSorting" v-if="!props.isHidden" :statisticType="'event'" ></StatisticSortOptions>
+
 		<div v-if="props.eventType === 'Match'" class="flex flex-col gap-2">
 			<div class="flex flex-row gap-2 w-full px-2">
 				<p class="font-medium">{{ t('single-event.result')}}: </p>
@@ -232,7 +251,8 @@ const sortedStatistic = computed(() => {
 				<div v-if="statistic.attendance" class="self-center justify-self-center text-xs">{{statistic.redCards}}</div>
 				<div class="self-center justify-self-center  font-medium text-xs block sm:(hidden)">{{
 				t('match-statistic.minutes-played') }}</div>
-				<div v-if="statistic.attendance" class="self-center justify-self-center  text-xs">{{statistic.minutesPlayed}}</div>
+				<div v-if="statistic.attendance" class="self-center justify-self-center  text-xs">{{statistic.minutesPlayed}}
+				</div>
 				<div class="self-center justify-self-center font-medium text-xs block sm:(hidden)">{{
 				t('match-statistic.remarks') }}</div>
 				<div v-if="statistic.attendance" class="self-center justify-self-center text-xs">{{statistic.remarks}}</div>

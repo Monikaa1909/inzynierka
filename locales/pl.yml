@@ -30,6 +30,7 @@ button:
   add-object: DODAJ NOWY OBIEKT
   add-trainer: DODAJ NOWEGO TRENERA
   add-parent: DODAJ NOWEGO RODZICA
+  check-statistic: SPRAWDŹ STATYSTYKI
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -140,4 +141,6 @@ match-statistic:
   minutes-played: Rozegrane minuty
   remarks: Uwagi
   clear: Wyczyść
+  sum: Suma
+  average: Średnia
 not-found: Nie znaleziono

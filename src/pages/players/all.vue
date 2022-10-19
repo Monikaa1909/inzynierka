@@ -10,80 +10,84 @@ const players = ref([
     id: 'cdcjf1',
     firstName: 'Jakub',
     lastName: 'Gruszka',
-    birthdayDate: new Date(1999, 8, 12),
+    birthdayDate: new Date("1999, 8, 12"),
     nationality: 'Poland',
     remarks: '',
     team: 'Młodzik',
-    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    validityOfMedicalExaminations: new Date("2022, 12, 12"),
     parent: "cdsca1"
   },
   {
     id: 'cdcjf2',
     firstName: 'Jakub',
     lastName: 'Gruszka',
-    birthdayDate: new Date(1999, 8, 12),
+    birthdayDate: new Date("1999, 8, 12"),
     nationality: 'Poland',
     remarks: '',
     team: 'Młodzik',
-    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    validityOfMedicalExaminations: new Date("2022, 8, 17"),
     parent: "cdsca1"
   },
   {
     id: 'cdcjf3',
     firstName: 'Jakub',
     lastName: 'Gruszka',
-    birthdayDate: new Date(1999, 8, 12),
+    birthdayDate: new Date("1999, 8, 12"),
     nationality: 'Poland',
     remarks: '',
     team: 'Młodzik',
-    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    validityOfMedicalExaminations: new Date("2022, 12, 12"),
     parent: "cdsca1"
   },
   {
     id: 'cdcjf4',
     firstName: 'Jakub',
     lastName: 'Gruszka',
-    birthdayDate: new Date(1999, 8, 12),
+    birthdayDate: new Date("1999, 8, 12"),
     nationality: 'Poland',
     remarks: '',
     team: 'Młodzik',
-    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    validityOfMedicalExaminations: new Date("2022, 5, 12"),
     parent: "cdsca1"
   },
   {
     id: 'cdcjf5',
     firstName: 'Jakub',
     lastName: 'Gruszka',
-    birthdayDate: new Date(1999, 8, 12),
+    birthdayDate: new Date("1999, 8, 12"),
     nationality: 'Poland',
     remarks: '',
     team: 'Młodzik',
-    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    validityOfMedicalExaminations: new Date("2022, 12, 12"),
     parent: "cdsca1"
   },
   {
     id: 'cdcjf6',
     firstName: 'Jakub',
     lastName: 'Gruszka',
-    birthdayDate: new Date(1999, 8, 12),
+    birthdayDate: new Date("1999, 8, 12"),
     nationality: 'Poland',
     remarks: '',
     team: 'Młodzik',
-    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    validityOfMedicalExaminations: new Date("2022, 12, 12"),
     parent: "cdsca1"
   },
   {
     id: 'cdcjf7',
     firstName: 'Jakub',
     lastName: 'Gruszka',
-    birthdayDate: new Date(1999, 8, 12),
+    birthdayDate: new Date("1999, 8, 12"),
     nationality: 'Poland',
     remarks: '',
     team: 'Młodzik',
-    validityOfMedicalExaminations: new Date(2022, 12, 12),
+    validityOfMedicalExaminations: new Date("2022, 4, 13"),
     parent: "cdsca1"
   },
 ])
+
+const today = computed(() => {
+  return new Date()
+})
 
 const goEditPlayer = (playerId: any) => {
   return router.push(`/players/edit/${playerId}`)
@@ -91,6 +95,10 @@ const goEditPlayer = (playerId: any) => {
 
 const goAddPlayer = (playerId: any) => {
   return router.push(`/players/add/newPlayer`)
+}
+
+const goCheckStatistic = () => {
+  return router.push(`/players/statistic`)
 }
 
 function goToPlayer(playerId: any) {
@@ -102,6 +110,10 @@ function goToPlayer(playerId: any) {
 <template>
   <BackgroundFrame>
     <template v-slot:nav>
+      <button @click="goCheckStatistic" class="flex flex-row gap-2 mr-8 items-center">
+        <img src="../../assets/statistic-icon2.png" class="h-48px flex" />
+        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic')}}</p>
+      </button>
       <button @click="goAddPlayer" class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player')}}</p>
@@ -142,7 +154,14 @@ function goToPlayer(playerId: any) {
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.validity-of-medical-examinations-short') }}:</template>
-                <template v-slot:attributeValue>{{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}</template>
+                <template v-slot:attributeValue>
+                  <p v-if="player.validityOfMedicalExaminations > today">
+                    {{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}
+                  </p> 
+                  <p v-else class="text-red">
+                    {{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}
+                  </p>
+                </template>
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.team') }}:</template>

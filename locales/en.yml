@@ -30,6 +30,7 @@ button:
   add-object: ADD NEW OBJECT
   add-trainer: ADD NEW TRAINER
   add-parent: ADD NEW PARENT
+  check-statistic: CHECK STATISTIC
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -141,4 +142,6 @@ match-statistic:
   minutes-played: Minutes played
   remarks: Remarks
   clear: Clear
+  sum: Sum
+  average: Average
 not-found: Not found

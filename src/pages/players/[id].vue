@@ -10,20 +10,20 @@ const player = ref({
   id: 'dscs',
   firstName: 'Jerzy',
 	lastName: 'Brzęczek',
-	birthdayDate: new Date(1999, 8, 12),
+	birthdayDate: new Date("1999, 8, 12"),
 	nationality: 'Poland',
 	remarks: '',
 	team: 'Młodzik',
-	validityOfMedicalExaminations: new Date(2022, 12, 12),
+	validityOfMedicalExaminations: new Date("2021-01-01"),
 	parent: "cdsca1"
+})
+
+const today = computed(() => {
+  return new Date()
 })
 
 const goEditPlayer = (playerId: any) => {
   return router.push(`/players/edit/${playerId}`)
-}
-
-const back = () => {
-  return router.go(-1)
 }
 
 </script>
@@ -35,7 +35,7 @@ const back = () => {
         <template v-slot>
           <MiniWhiteFrame>
             <template v-slot:nav>
-              <button @click="goEditPlayer(player.firstName)">
+              <button @click="goEditPlayer(player.id)">
                 <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button>
@@ -64,7 +64,14 @@ const back = () => {
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
-                <template v-slot:attributeValue>{{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}</template>
+                <template v-slot:attributeValue>
+                  <p v-if="player.validityOfMedicalExaminations > today">
+                    {{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}
+                  </p> 
+                  <p v-else class="text-red">
+                    {{ player.validityOfMedicalExaminations.toLocaleDateString(locale) }}
+                  </p>
+                </template>
               </SingleAttribute>
               <SingleAttribute>
                 <template v-slot:attributeName>{{ t('single-player.team') }}:</template>
@@ -80,7 +87,7 @@ const back = () => {
               </SingleAttribute>
             </template>
             <template v-slot:footer>
-							<SingleButton @click="back">
+							<SingleButton @click="router.go(-1)">
 								<template v-slot:buttonName>{{ t('button.back') }}</template>
 							</SingleButton>
 						</template>

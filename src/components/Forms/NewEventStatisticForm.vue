@@ -19,7 +19,7 @@ const props = defineProps({
 const statistics = ref([
   {
     id: 'matchstatisticsid1',
-    player: 'Janusz Kowalski',
+    player: 'Dominik Kowalski',
     match: props.id,
     attendance: true,
     goalsScored: 2,
@@ -30,35 +30,35 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid2',
-    player: 'Janusz Kowalski',
+    player: 'Andrzej Kowalski',
     match: props.id,
     attendance: true,
-    goalsScored: 2,
+    goalsScored: 5,
     yellowCards: 1,
     redCards: 0,
-    minutesPlayed: 90,
-    remarks: 'Bardzo świetny występ!'
+    minutesPlayed: 45,
+    remarks: ''
   },
   {
     id: 'matchstatisticsid3',
     player: 'Janusz Kowalski',
     match: props.id,
     attendance: true,
-    goalsScored: 2,
+    goalsScored: 6,
     yellowCards: 1,
     redCards: 0,
-    minutesPlayed: 90,
+    minutesPlayed: 11,
     remarks: ''
   },
   {
     id: 'matchstatisticsid4',
-    player: 'Janusz Kowalski',
+    player: 'Wiesław Kowalski',
     match: props.id,
     attendance: false,
-    goalsScored: 2,
-    yellowCards: 1,
+    goalsScored: 0,
+    yellowCards: 0,
     redCards: 0,
-    minutesPlayed: 90,
+    minutesPlayed: 0,
     remarks: ''
   },
   {
@@ -66,9 +66,9 @@ const statistics = ref([
     player: 'Janusz',
     match: props.id,
     attendance: false,
-    goalsScored: 2,
+    goalsScored: 0,
     yellowCards: 1,
-    redCards: 0,
+    redCards: 1,
     minutesPlayed: 90,
     remarks: ''
   },
@@ -77,10 +77,10 @@ const statistics = ref([
     player: 'Janusz Kowalski',
     match: props.id,
     attendance: true,
-    goalsScored: 2,
-    yellowCards: 1,
-    redCards: 0,
-    minutesPlayed: 90,
+    goalsScored: 1,
+    yellowCards: 2,
+    redCards: 1,
+    minutesPlayed: 50,
     remarks: ''
   },
   {
@@ -88,13 +88,21 @@ const statistics = ref([
     player: 'Janusz Kowalski',
     match: props.id,
     attendance: true,
-    goalsScored: 0,
-    yellowCards: 1,
+    goalsScored: 1,
+    yellowCards: 0,
     redCards: 0,
-    minutesPlayed: 90,
+    minutesPlayed: 40,
     remarks: ''
   },
 ])
+
+const sortedStatistic = computed(() => {
+  statistics.value.sort(function (a: any, b: any) {
+    if (a.player < b.player) return -1
+    else return 1
+  })
+  return statistics.value
+})
 
 const match = ref(
   {
@@ -152,7 +160,7 @@ for (let i = 0; i < 120; i++) {
       <div v-else class="flex flex-row gap-2 w-full px-2">
         <p class="font-medium">{{ t('single-event.description')}}: </p>
         <textarea v-model="tournament.description" type="textarea" placeholder=""
-					class="flex w-full border-1 border-#143547 shadow-lg px-1"></textarea>
+          class="flex w-full border-1 border-#143547 shadow-lg px-1"></textarea>
       </div>
     </div>
 
@@ -180,13 +188,13 @@ for (let i = 0; i < 120; i++) {
           {{ t('match-statistic.remarks') }}
         </div>
       </div>
-      <div v-for="statistic in statistics" v-bind:key="statistic.id"
+      <div v-for="statistic in sortedStatistic" v-bind:key="statistic.id"
         class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
         <div class="self-center justify-self-center font-medium text-xs block md:(hidden)">
           {{t('match-statistic.player') }}
         </div>
-        <div  class="self-center justify-self-center col-span-1 text-xs md:()">{{statistic.player}}
+        <div class="self-center justify-self-center col-span-1 text-xs md:()">{{statistic.player}}
         </div>
         <div class="self-center justify-self-center font-medium text-xs block md:(hidden)">{{
         t('match-statistic.attendance') }}</div>

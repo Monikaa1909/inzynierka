@@ -5,19 +5,8 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const props = defineProps({
-	id: {
-		type: String,
-		require: true
-	}
-})
-
 const isHidden = ref(true)
-const sortType = ref('all')
 
-const goEditMatchStatistic = (eventId: any) => {
-	return router.push(`/events/statistic/match/edit/${eventId}`)
-}
 </script>
 
 <template>
@@ -28,17 +17,14 @@ const goEditMatchStatistic = (eventId: any) => {
 					<MiniWhiteFrame>
 						<template v-slot:nav>
 							<button @click="isHidden = !isHidden">
-								<img src="../../../../assets/filter-icon.png" class="h-24px" />
-							</button>
-							<button @click="goEditMatchStatistic(props.id)">
-								<img src="../../../../assets/edit-icon.png" class="h-24px" />
+								<img src="../../assets/filter-icon.png" class="h-24px" />
 							</button>
 						</template>
 						<template v-slot:icon>
-							<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
+							<img src="../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<EventStatistic :id="props.id" :eventType="'Match'" :isHidden="isHidden" :sort="sortType"></EventStatistic>
+							<PlayersStatistic :isHidden="isHidden"></PlayersStatistic>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">

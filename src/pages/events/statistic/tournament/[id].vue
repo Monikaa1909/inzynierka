@@ -12,6 +12,9 @@ const props = defineProps({
 	}
 })
 
+const isHidden = ref(true)
+const sortType = ref('all')
+
 const goEditTournamentStatistic = (eventId: any) => {
 	return router.push(`/events/statistic/tournament/edit/${eventId}`)
 }
@@ -20,11 +23,13 @@ const goEditTournamentStatistic = (eventId: any) => {
 <template>
 	<BackgroundFrame>
 		<template v-slot:data>
-
 			<MyCenterElement>
 				<template v-slot>
 					<MiniWhiteFrame>
 						<template v-slot:nav>
+							<button @click="isHidden = !isHidden">
+								<img src="../../../../assets/filter-icon.png" class="h-24px" />
+							</button>
 							<button @click="goEditTournamentStatistic(props.id)">
 								<img src="../../../../assets/edit-icon.png" class="h-24px" />
 							</button>
@@ -33,7 +38,7 @@ const goEditTournamentStatistic = (eventId: any) => {
 							<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<EventStatistic :id="props.id" :eventType="'Tournament'"></EventStatistic>
+							<EventStatistic :id="props.id" :eventType="'Tournament'" :isHidden="isHidden" :sort="sortType"></EventStatistic>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">
