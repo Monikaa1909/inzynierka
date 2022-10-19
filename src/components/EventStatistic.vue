@@ -191,7 +191,6 @@ function changeSorting(newSortType: any) {
 <template>
 	<div class="w-full flex flex-col gap-4">
 		<StatisticSortOptions @changeSorting="changeSorting" v-if="!props.isHidden" :statisticType="'event'" ></StatisticSortOptions>
-
 		<div v-if="props.eventType === 'Match'" class="flex flex-col gap-2">
 			<div class="flex flex-row gap-2 w-full px-2">
 				<p class="font-medium">{{ t('single-event.result')}}: </p>

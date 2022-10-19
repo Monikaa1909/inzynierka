@@ -297,7 +297,7 @@ function changeSorting(newSortType: any) {
 <template>
   <div class="w-full flex flex-col gap-4">
     <StatisticSortOptions @changeSorting="changeSorting" v-if="!props.isHidden" ></StatisticSortOptions>
-    <div class="h-full w-full grid gap-2 px-2">
+    <div class="h-full w-full grid gap-2 px-2 border">
       <div class="h-full w-full grid grid-cols-6 invisible md:(visible)">
         <div class="self-center justify-self-center font-medium text-xs">{{ t('match-statistic.player')
         }}

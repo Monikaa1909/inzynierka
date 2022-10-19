@@ -12,9 +12,23 @@ const props = defineProps({
 	}
 })
 
+const tournament = ref({
+	id: 'tournamentsid1',
+	name: 'Tymbark',
+	startDate: new Date(2022, 10, 12, 16, 0),
+	endDate: new Date(2022, 10, 15),
+	team: 'Młodzik D1',
+	description: 'Bardzo fajny turniej',
+	sportsFacility: 'Stadion miejski w Białymstoku',
+	remarks: ''
+},)
+
 const isHidden = ref(true)
 const sortType = ref('all')
 
+function changeSorting(newSortType: any) {
+	sortType.value = newSortType
+}
 const goEditTournamentStatistic = (eventId: any) => {
 	return router.push(`/events/statistic/tournament/edit/${eventId}`)
 }
@@ -38,7 +52,13 @@ const goEditTournamentStatistic = (eventId: any) => {
 							<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<EventStatistic :id="props.id" :eventType="'Tournament'" :isHidden="isHidden" :sort="sortType"></EventStatistic>
+							<StatisticSortOptions :statisticType="'tournament'" @changeSorting="changeSorting" v-if="!isHidden">
+							</StatisticSortOptions>
+							<div class="flex flex-row gap-2 w-full px-2">
+								<p class="font-medium">{{ t('single-event.description')}}: </p>
+								<p>{{tournament.description}}</p>
+							</div>
+							<StatisticTable :sortType="sortType" :statisticType="'tournament'"></StatisticTable>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">

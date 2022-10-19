@@ -33,7 +33,11 @@ declare module '@vue/runtime-core' {
     SingleAttribute: typeof import('./components/SingleAttribute.vue')['default']
     SingleButton: typeof import('./components/SingleButton.vue')['default']
     SingleInput: typeof import('./components/SingleInput.vue')['default']
+    SingleStatistic: typeof import('./components/Statistic/SingleStatistic.vue')['default']
+    SingleSummaryStatistic: typeof import('./components/Statistic/SingleSummaryStatistic.vue')['default']
+    StatisticHeader: typeof import('./components/Statistic/StatisticHeader.vue')['default']
     StatisticSortOptions: typeof import('./components/Statistic/StatisticSortOptions.vue')['default']
+    StatisticTable: typeof import('./components/Statistic/StatisticTable.vue')['default']
     WelcomeMenu: typeof import('./components/WelcomeMenu.vue')['default']
     YourProfile: typeof import('./components/YourProfile.vue')['default']
   }

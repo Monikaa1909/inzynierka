@@ -12,8 +12,24 @@ const props = defineProps({
 	}
 })
 
+const match = ref({
+	id: 'matchesid1',
+	goalsConceded: 2,
+	goalsScored: 0,
+	opponent: 'Biebrza Goniądz',
+	duration: 90,
+	date: new Date(2022, 10, 12, 10, 5),
+	team: 'Trampkarz C2',
+	sportsFacility: 'Stadion miejski w Białymstoku',
+	remarks: 'Zadzwonić potwierdzić boisko'
+},)
+
 const isHidden = ref(true)
 const sortType = ref('all')
+
+function changeSorting(newSortType: any) {
+	sortType.value = newSortType
+}
 
 const goEditMatchStatistic = (eventId: any) => {
 	return router.push(`/events/statistic/match/edit/${eventId}`)
@@ -38,7 +54,19 @@ const goEditMatchStatistic = (eventId: any) => {
 							<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<EventStatistic :id="props.id" :eventType="'Match'" :isHidden="isHidden" :sort="sortType"></EventStatistic>
+							<StatisticSortOptions :statisticType="'match'" @changeSorting="changeSorting" v-if="!isHidden">
+							</StatisticSortOptions>
+							<div class="flex flex-col gap-2">
+								<div class="flex flex-row gap-2 w-full px-2">
+									<p class="font-medium">{{ t('single-event.result')}}: </p>
+									<p>{{match.goalsScored}}:{{match.goalsConceded}}</p>
+								</div>
+								<div class="flex flex-row gap-2 w-full px-2">
+									<p class="font-medium">{{ t('single-event.duration')}}: </p>
+									<p>{{match.duration}} {{t('single-event.minutes')}}</p>
+								</div>
+							</div>
+							<StatisticTable :sortType="sortType" :statisticType="'match'"></StatisticTable>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">

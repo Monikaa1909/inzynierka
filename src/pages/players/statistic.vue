@@ -7,6 +7,10 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const isHidden = ref(true)
 
+const sortType = ref('all')
+function changeSorting(newSortType: any) {
+  sortType.value = newSortType
+}
 </script>
 
 <template>
@@ -24,7 +28,8 @@ const isHidden = ref(true)
 							<img src="../../assets/statistic-icon2.png" class="h-150px" />
 						</template>
 						<template v-slot:attributes>
-							<PlayersStatistic :isHidden="isHidden"></PlayersStatistic>
+							<StatisticSortOptions @changeSorting="changeSorting" v-if="!isHidden" ></StatisticSortOptions>
+							<StatisticTable :sortType="sortType" ></StatisticTable>
 						</template>
 						<template v-slot:footer>
 							<SingleButton @click="router.go(-1)">
