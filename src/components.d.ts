@@ -23,6 +23,7 @@ declare module '@vue/runtime-core' {
     NewEventStatisticForm: typeof import('./components/Forms/NewEventStatisticForm.vue')['default']
     NewParentForm: typeof import('./components/Forms/NewParentForm.vue')['default']
     NewPlayerForm: typeof import('./components/Forms/NewPlayerForm.vue')['default']
+    NewProfileForm: typeof import('./components/Forms/NewProfileForm.vue')['default']
     NewSportsFacilityForm: typeof import('./components/Forms/NewSportsFacilityForm.vue')['default']
     NewTeamForm: typeof import('./components/Forms/NewTeamForm.vue')['default']
     NewTrainerForm: typeof import('./components/Forms/NewTrainerForm.vue')['default']

@@ -22,7 +22,7 @@ const accountType = ref('Trainer')
               <img v-else src="../../assets/academy-icon.png" class="h-150px" />
             </template>
             <template v-slot:attributes>
-
+              <NewProfileForm></NewProfileForm>
             </template>
           </MiniWhiteFrame>
         </template>
