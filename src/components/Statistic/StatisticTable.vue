@@ -9,7 +9,7 @@ const props = defineProps({
   sortType: {
     type: String,
     requie: false,
-    default: 'all'
+    default: 'playersDown'
   },
   statisticType: {
     type: String,
@@ -273,96 +273,110 @@ const statistics = ref([
   },
 ])
 
+console.log(props.sortType)
+
 const sortedStatistic = computed(() => {
-  if (props.statisticType === 'all') {
-    switch (props.sortType) {
-      case 'all':
-        statistics.value.sort(function (a: any, b: any) {
-          if (a.player < b.player) return -1
-          else return 1
-        })
-        return statistics.value
-      case 'attendance':
-        statistics.value.sort(function (a: any, b: any) {
-          if (a.attendance > b.attendance) return -1
-          else return 1
-        })
-        return statistics.value
-      case 'goalsScored':
-        statistics.value.sort(function (a: any, b: any) {
-          if (a.goalsScored > b.goalsScored) return -1
-          else return 1
-        })
-        return statistics.value
-      case 'yellowCards':
-        statistics.value.sort(function (a: any, b: any) {
-          if (a.yellowCards > b.yellowCards) return -1
-          else return 1
-        })
-        return statistics.value
-      case 'redCards':
-        statistics.value.sort(function (a: any, b: any) {
-          if (a.redCards > b.redCards) return -1
-          else return 1
-        })
-        return statistics.value
-      case 'minutesPlayed':
-        statistics.value.sort(function (a: any, b: any) {
-          if (a.minutesPlayed > b.minutesPlayed) return -1
-          else return 1
-        })
-        return statistics.value
-    }
-  } 
-  else {
+  if (props.statisticType != 'all') {
     statistics.value.forEach(element => {
-		if (!element.attendance2) {
-			element.goalsScored = 0
-			element.yellowCards = 0
-			element.redCards = 0
-			element.minutesPlayed = 0
-		}
-	});
-	switch (props.sortType) {
-		case 'all':
-			statistics.value.sort(function (a: any, b: any) {
-				if (a.player < b.player) return -1
-				else return 1
-			})
-			return statistics.value
-		case 'goalsScored':
-			statistics.value.sort(function (a: any, b: any) {
-				if (a.goalsScored > b.goalsScored) return -1
-				else if (a.goalsScored < b.goalsScored) return 1
-				else if (!a.attendance2 && b.attendance2) return 1
-				else return -1
-			})
-			return statistics.value
-		case 'yellowCards':
-			statistics.value.sort(function (a: any, b: any) {
-				if (a.yellowCards > b.yellowCards) return -1
-				else if (a.yellowCards < b.yellowCards) return 1
-				else if (!a.attendance2 && b.attendance2) return 1
-				else return -1
-			})
-			return statistics.value
-		case 'redCards':
-			statistics.value.sort(function (a: any, b: any) {
-				if (a.redCards > b.redCards) return -1
-				else if (a.redCards < b.redCards) return 1
-				else if (!a.attendance2 && b.attendance2) return 1
-				else return -1 
-			})
-			return statistics.value
-		case 'minutesPlayed':
-			statistics.value.sort(function (a: any, b: any) {
-				if (a.minutesPlayed > b.minutesPlayed) return -1
-				else if (a.minutesPlayed < b.minutesPlayed) return 1
-				else if (!a.attendance2 && b.attendance2) return 1
-				else return -1
-			})
-			return statistics.value
-	}
+      if (!element.attendance2) {
+        element.goalsScored = 0
+        element.yellowCards = 0
+        element.redCards = 0
+        element.minutesPlayed = 0
+      }
+    })
+  }
+  switch (props.sortType) {
+    case 'playersUp':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.player < b.player) return 1
+        else return -1
+      })
+      return statistics.value
+    case 'playersDown':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.player < b.player) return -1
+        else return 1
+      })
+      return statistics.value
+    case 'attendanceDown':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.attendance > b.attendance) return 1
+        else return -1
+      })
+      return statistics.value
+    case 'attendanceUp':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.attendance > b.attendance) return -1
+        else return 1
+      })
+      return statistics.value
+    case 'goalsScoredDown':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.goalsScored > b.goalsScored) return 1
+        else if (a.goalsScored < b.goalsScored) return -1
+        else if (!a.attendance2 && b.attendance2) return -1
+        else return 1
+      })
+      return statistics.value
+    case 'goalsScoredUp':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.goalsScored > b.goalsScored) return -1
+        else if (a.goalsScored < b.goalsScored) return 1
+        else if (!a.attendance2 && b.attendance2) return 1
+        else return -1
+      })
+      return statistics.value
+    case 'yellowCardsDown':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.yellowCards > b.yellowCards) return 1
+        else if (a.yellowCards < b.yellowCards) return -1
+        else if (!a.attendance2 && b.attendance2) return -1
+        else return 1
+      })
+      return statistics.value
+    case 'yellowCardsUp':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.yellowCards > b.yellowCards) return -1
+        else if (a.yellowCards < b.yellowCards) return 1
+        else if (!a.attendance2 && b.attendance2) return 1
+        else return -1
+      })
+      return statistics.value
+    case 'redCardsDown':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.redCards > b.redCards) return 1
+        else if (a.redCards < b.redCards) return -1
+        else if (!a.attendance2 && b.attendance2) return -1
+        else return 1
+      })
+      return statistics.value
+    case 'redCardsUp':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.redCards > b.redCards) return -1
+        else if (a.redCards < b.redCards) return 1
+        else if (!a.attendance2 && b.attendance2) return 1
+        else return -1
+      })
+      return statistics.value
+    case 'minutesPlayedDown':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.minutesPlayed > b.minutesPlayed) return 1
+        else if (a.minutesPlayed < b.minutesPlayed) return -1
+        else if (!a.attendance2 && b.attendance2) return -1
+        else return 1
+      })
+      return statistics.value
+    case 'minutesPlayedUp':
+      statistics.value.sort(function (a: any, b: any) {
+        if (a.minutesPlayed > b.minutesPlayed) return -1
+        else if (a.minutesPlayed < b.minutesPlayed) return 1
+        else if (!a.attendance2 && b.attendance2) return 1
+        else return -1
+      })
+      return statistics.value
+    default :
+      return statistics.value
   }
 })
 
@@ -402,19 +416,19 @@ const sortedStatistic = computed(() => {
       </SingleStatistic>
       <SingleStatistic>
         <template v-slot:name>{{t('match-statistic.goals-scored') }}</template>
-        <template v-if="statistic.attendance2" v-slot:data>{{statistic.goalsScored}}</template>
+        <template v-if="props.statisticType === 'all' || (props.statisticType != 'all' && statistic.attendance2)" v-slot:data>{{statistic.goalsScored}}</template>
       </SingleStatistic>
       <SingleStatistic>
         <template v-slot:name>{{t('match-statistic.yellow-cards') }}</template>
-        <template v-if="statistic.attendance2" v-slot:data>{{statistic.yellowCards}}</template>
+        <template v-if="props.statisticType === 'all' || (props.statisticType != 'all' && statistic.attendance2)" v-slot:data>{{statistic.yellowCards}}</template>
       </SingleStatistic>
       <SingleStatistic>
         <template v-slot:name>{{t('match-statistic.red-cards') }}</template>
-        <template v-if="statistic.attendance2" v-slot:data>{{statistic.redCards}}</template>
+        <template v-if="props.statisticType === 'all' || (props.statisticType != 'all' && statistic.attendance2)" v-slot:data>{{statistic.redCards}}</template>
       </SingleStatistic>
       <SingleStatistic>
         <template v-slot:name>{{t('match-statistic.minutes-played') }}</template>
-        <template v-if="statistic.attendance2" v-slot:data>{{statistic.minutesPlayed}}</template>
+        <template v-if="props.statisticType === 'all' || (props.statisticType != 'all' && statistic.attendance2)" v-slot:data>{{statistic.minutesPlayed}}</template>
       </SingleStatistic>
       <SingleStatistic v-if="props.statisticType != 'all'">
         <template v-slot:name>{{t('match-statistic.remarks') }}</template>

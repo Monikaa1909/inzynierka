@@ -142,6 +142,7 @@ match-statistic:
   minutes-played: Minutes played
   remarks: Remarks
   clear: Clear
+  players: Players
   sum: Sum
   average: Average
 not-found: Not found

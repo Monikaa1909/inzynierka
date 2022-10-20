@@ -141,6 +141,7 @@ match-statistic:
   minutes-played: Rozegrane minuty
   remarks: Uwagi
   clear: Wyczyść
+  players: Zawodnicy
   sum: Suma
   average: Średnia
 not-found: Nie znaleziono

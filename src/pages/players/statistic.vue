@@ -7,7 +7,7 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const isHidden = ref(true)
 
-const sortType = ref('all')
+const sortType = ref('playersDown')
 function changeSorting(newSortType: any) {
   sortType.value = newSortType
 }
