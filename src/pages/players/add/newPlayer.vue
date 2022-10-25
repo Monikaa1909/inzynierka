@@ -8,6 +8,7 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 </script>
 
 <template>
+  
   <BackgroundFrame>
     <template #data>
       <MyCenterElement>
@@ -22,6 +23,7 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
       </MyCenterElement>
     </template>
   </BackgroundFrame>
+  
 </template>
 
 <route lang="yaml">

@@ -149,4 +149,5 @@ error-messages:
   valid-name: To pole musi zawierać poprawną formę
   validation-error: Dane są nieprawidłowo uzupełnione
   unknow-error: Wystąpił błąd przy łączeniu z bazą danych. Spróbuj ponownie za chwilę lub napisz do nas creaassistanthelpgmailcom
+  went-wrong: Coś poszło nie tak... Spróbuj ponownie za chwilę!
 not-found: Nie znaleziono

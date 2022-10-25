@@ -13,7 +13,8 @@ const player = ref({} as Omit<Player, '_id'>)
 
 const {
   data: playerData,
-  isFinished
+  isFinished,
+  isFetching
 } = useFetch(`/api/player/${props.id}`, { initialData: {} }).json<Player>()
 
 whenever(playerData, (data) => {
@@ -34,10 +35,12 @@ const goEditPlayer = (playerId: any) => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <LoadingCircle v-if="isFetching"></LoadingCircle>
+  <BackgroundFrame v-if="isFinished">
     <template #data>
-      <MyCenterElement v-if="isFinished">
+      <MyCenterElement>
         <MiniWhiteFrame>
+
           <template #nav>
             <button @click="goEditPlayer(props.id)">
               <img src="../../assets/edit-icon.png" class="h-24px" />
@@ -46,29 +49,34 @@ const goEditPlayer = (playerId: any) => {
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>
-          <template v-slot:icon>
+          <template #icon>
             <img src="../../assets/player-icon2.png" class="h-150px" />
           </template>
-          <template v-slot:attributes>
+          <template #attributes>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.first-name') }}:</template>
-                <template v-slot:attributeValue>{{ player.firstName }}</template>
+                <template #attributeName>{{ t('single-player.first-name') }}:</template>
+                <template #attributeValue>{{ player.firstName }}</template>
               </SingleAttribute>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.last-name') }}:</template>
-                <template v-slot:attributeValue>{{ player.lastName }}</template>
+                <template #attributeName>{{ t('single-player.last-name') }}:</template>
+                <template #attributeValue>{{ player.lastName }}</template>
               </SingleAttribute>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.birthday-date') }}:</template>
-                <template v-slot:attributeValue>{{ player.birthdayDate }}</template>
+                <template #attributeName>{{ t('single-player.birthday-date') }}:</template>
+                <template #attributeValue>{{ player.birthdayDate }}</template>
               </SingleAttribute>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.nationality') }}:</template>
-                <template v-slot:attributeValue>{{ player.nationality }}</template>
+                <template #attributeName>{{ t('single-player.nationality') }}:</template>
+                <template #attributeValue>{{ player.nationality }}</template>
               </SingleAttribute>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
-                <template v-slot:attributeValue>
+                <template #attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
+                <template #attributeValue>
                   <p v-if="new Date(player.validityOfMedicalExaminations) > today">
                     {{ player.validityOfMedicalExaminations }}
                   </p> 
@@ -77,28 +85,33 @@ const goEditPlayer = (playerId: any) => {
                   </p>
                 </template>
               </SingleAttribute>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.team') }}:</template>
-                <template v-slot:attributeValue>{{ player.team?.name }}</template>
+                <template #attributeName>{{ t('single-player.team') }}:</template>
+                <template #attributeValue>{{ player.team?.name }}</template>
               </SingleAttribute>
+
               <SingleAttribute v-if="player?.parent">
-                <template v-slot:attributeName>{{ t('single-player.parent') }}:</template>
-                <template v-slot:attributeValue>{{ player.parent.firstName }} {{ player.parent.lastName }}</template>
+                <template #attributeName>{{ t('single-player.parent') }}:</template>
+                <template #attributeValue>{{ player.parent.firstName }} {{ player.parent.lastName }}</template>
               </SingleAttribute>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-player.remarks') }}:</template>
-                <template v-slot:attributeValue>{{ player?.remarks }}</template>
+                <template #attributeName>{{ t('single-player.remarks') }}:</template>
+                <template #attributeValue>{{ player?.remarks }}</template>
               </SingleAttribute>
             </template>
-          <template v-slot:footer>
+            
+          <template #footer>
             <SingleButton @click="router.go(-1)">
-              <template v-slot:buttonName>{{ t('button.back') }}</template>
+              <template #buttonName>{{ t('button.back') }}</template>
             </SingleButton>
           </template>
         </MiniWhiteFrame>
       </MyCenterElement>
     </template>
   </BackgroundFrame>
+  <ErrorMessage v-else></ErrorMessage>
 </template>
 
 <route lang="yaml">

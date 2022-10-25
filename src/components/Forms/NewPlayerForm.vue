@@ -33,25 +33,39 @@ if (!props.playerId) {
 
 const {
 	data: playerData,
+	isFetching: isPlayersFetching,
 	isFinished: isPlayerFinished,
 } = useFetch(url, { initialData: {} }).json<Player>()
 
 whenever(playerData, (data) => {
 	player.value = data
+	console.log(player.value.team?._id)
 })
 
 const {
 	data: teams,
+	isFetching: isTeamsFetching,
 	isFinished: isTeamsFinished,
 } = useFetch('/api/teams', { initialData: [] }).json<Team[]>()
 
 const {
 	data: parents,
+	isFetching: isParentsFetching,
 	isFinished: isParentsFinished,
 } = useFetch('/api/parents', { initialData: [] }).json<Parent[]>()
 
 const isFinished = computed(() => {
+	if (isTeamsFinished.value) {
+		// playerData.value?.team =  
+		teams.value?.forEach(element => {
+		console.log(element._id)
+	});
+	}
 	return isPlayerFinished.value && isTeamsFinished.value && isParentsFinished.value
+})
+
+const isFetching = computed(() => {
+	return isPlayersFetching.value && isTeamsFetching.value && isParentsFetching.value
 })
 
 const { execute: savePlayer, error: saveError } = useFetch(url, { immediate: false }).post(player)
@@ -60,7 +74,6 @@ const { execute: updatePlayer, error: updateError } = useFetch(url, { immediate:
 const onSubmit = async () => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || birthdayDateErrorMessage.value || nationalityErrorMessage.value
 		|| validityOfMedicalExaminationsErrorMessage.value) {
-		console.log('errr')
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.playerId) {
@@ -125,6 +138,7 @@ const teamErrorMessage = computed(() => {
 </script>
 
 <template>
+	<LoadingCircle v-if="isFetching"></LoadingCircle>
 	<div v-if="isFinished" class="w-full flex flex-col gap-2 place-content-center">
 		<SingleInput>
 			<template #inputName>{{ t('single-player.first-name') }}:</template>
@@ -171,8 +185,8 @@ const teamErrorMessage = computed(() => {
 		</SingleInput>
 
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-player.nationality') }}:</template>
-			<template v-slot:inputValue>
+			<template #inputName>{{ t('single-player.nationality') }}:</template>
+			<template #inputValue>
 				<input v-model="player.nationality" name="nationality" type="input"
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
@@ -182,8 +196,8 @@ const teamErrorMessage = computed(() => {
 		</SingleInput>
 
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
-			<template v-slot:inputValue>
+			<template #inputName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
+			<template #inputValue>
 				<DatePicker v-model="player.validityOfMedicalExaminations" format="yyyy-MM-dd" :clearable="false"
 					class="inline-block h-full" :locale='locale'>
 					<template v-slot="{ inputValue, togglePopover }">
@@ -201,21 +215,22 @@ const teamErrorMessage = computed(() => {
 			<template v-if="validityOfMedicalExaminationsErrorMessage" #errorMessage>
 				{{ validityOfMedicalExaminationsErrorMessage }}
 			</template>
+
 		</SingleInput>
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-player.remarks') }}:</template>
-			<template v-slot:inputValue>
+			<template #inputName>{{ t('single-player.remarks') }}:</template>
+			<template #inputValue>
 				<textarea v-model="player.remarks" type="textarea" placeholder=""
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"></textarea>
 			</template>
 		</SingleInput>
 
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-player.team') }}:</template>
-			<template v-slot:inputValue>
+			<template #inputName>{{ t('single-player.team') }}:</template>
+			<template #inputValue>
 				<div class="fles flex-auto w-full flex-col">
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.team">
-						<option v-for="team in teams" :value="team._id">{{team._id}} {{ team.name }}
+						<option v-for="team in teams" :value="team">{{ team.name }}
 						</option>
 					</select>
 				</div>
@@ -230,7 +245,7 @@ const teamErrorMessage = computed(() => {
 			<template #inputValue>
 				<div class="fles flex-auto w-full flex-col">
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.parent">
-						<option v-for="parent in parents" :value="parent._id">{{ parent.firstName }} {{ parent.lastName }}
+						<option v-for="parent in parents" :value="parent">{{ parent.firstName }} {{ parent.lastName }}
 						</option>
 					</select>
 				</div>
@@ -246,6 +261,7 @@ const teamErrorMessage = computed(() => {
 			</SingleButton>
 		</div>
 	</div>
+	<ErrorMessage v-else></ErrorMessage>
 </template>
 
 <route lang="yaml">

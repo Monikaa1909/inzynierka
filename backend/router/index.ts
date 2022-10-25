@@ -1,7 +1,6 @@
 import express from 'express'
 import { seedDatabase } from '../database/seed'
 import models from '../database/models'
-import Player from 'backend/database/oldSchemas/Player'
 
 const router = express.Router()
 export default router
@@ -41,14 +40,6 @@ router.get('/player/:id', async (req, res) => {
             .populate({
                 path: 'team',
                 model: 'Team',
-                // populate: {
-                //     path: 'trainer',
-                //     model: 'Trainer',
-                //     populate: {
-                //         path: 'academy',
-                //         model: 'Academy',
-                //     }
-                // }
             })
         res.send(players)
     } catch (error) {

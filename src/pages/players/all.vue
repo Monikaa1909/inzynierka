@@ -29,9 +29,10 @@ function goToPlayer(playerId: any) {
   return router.push(`/players/${playerId}`)
 }
 
-const { 
-  data: players, 
-  isFinished, 
+const {
+  data: players,
+  isFetching,
+  isFinished,
   execute: refechPlayers
 } = useFetch(`/api/${academy}/players`, { initialData: [] }).json<Player[]>()
 
@@ -42,18 +43,19 @@ const deletePlayer = async (player: Player) => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <LoadingCircle v-if="isFetching"></LoadingCircle>
+  <BackgroundFrame v-if="isFinished" >
     <template #nav>
       <button @click="goCheckStatistic" class="flex flex-row gap-2 mr-8 items-center">
         <img src="../../assets/statistic-icon2.png" class="h-48px flex" />
-        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic')}}</p>
+        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic') }}</p>
       </button>
       <button @click="goAddPlayer" class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
-        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player')}}</p>
+        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player') }}</p>
       </button>
     </template>
-    <template v-if="isFinished" #data>
+    <template #data>
       <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
         <MiniWhiteFrame 
           v-for="player in players" 
@@ -116,10 +118,11 @@ const deletePlayer = async (player: Player) => {
       </MyGrid>
     </template>
   </BackgroundFrame>
-
+  <ErrorMessage v-else></ErrorMessage>
 </template>
 
 <route lang="yaml">
 meta:
   layout: home
 </route>
+
