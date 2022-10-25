@@ -145,4 +145,9 @@ match-statistic:
   players: Players
   sum: Sum
   average: Average
+error-messages:
+  required-field: This field is required
+  valid-name: This field must be a valid name
+  validation-error: The data is incorrectly completed
+  unknow-error: There was an error connecting to the database. Please try again in a moment or email us at creaassistanthelpgmailcom
 not-found: Not found

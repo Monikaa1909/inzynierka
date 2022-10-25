@@ -144,4 +144,9 @@ match-statistic:
   players: Zawodnicy
   sum: Suma
   average: Średnia
+error-messages:
+  required-field: To pole jest wymagane
+  valid-name: To pole musi zawierać poprawną formę
+  validation-error: Dane są nieprawidłowo uzupełnione
+  unknow-error: Wystąpił błąd przy łączeniu z bazą danych. Spróbuj ponownie za chwilę lub napisz do nas creaassistanthelpgmailcom
 not-found: Nie znaleziono

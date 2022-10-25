@@ -16,7 +16,7 @@ const myMatches = [
     goalsConceded: 2,
     goalsScored: 0,
     opponent: 'Biebrza Goniądz',
-    date: new Date(2022, 8, 12),
+    date: new Date("2022, 10, 11"),
     team: 'team1',
     sportFaciility: 'facility1'
   },
@@ -24,7 +24,7 @@ const myMatches = [
     goalsConceded: 1,
     goalsScored: 3,
     opponent: 'BVB',
-    date: new Date(2022, 8, 12),
+    date: new Date("2022, 10, 19"),
     team: 'team1',
     sportFaciility: 'facility2'
   },
@@ -32,30 +32,57 @@ const myMatches = [
     goalsConceded: 2,
     goalsScored: 0,
     opponent: 'Promień Mońki',
-    date: new Date(2022, 8, 12),
+    date: new Date("2022, 10, 23"),
     team: 'team1',
-    sportFaciility: 'facility1'
+    sportFaciility: 'Stadion Miejski w Białymstoku'
   },
 ]
 const myTrainings = [
   {
-    date: new Date(2022, 8, 12),
+    date: new Date("2022, 10, 3"),
     team: 'team1',
-    sportFaciility: 'facility1'
+    sportFaciility: 'Boisko Mechaniak w Białymstoku'
   },
   {
-    date: new Date(2022, 8, 13),
+    date: new Date("2022, 10, 5"),
     team: 'team2',
-    sportFaciility: 'facility1'
+    sportFaciility: 'Stadion Miejski w Białymstoku'
+  },
+  {
+    date: new Date("2022, 10, 12"),
+    team: 'team1',
+    sportFaciility: 'Boisko Mechaniak w Białymstoku'
+  },
+  {
+    date: new Date("2022, 10, 13"),
+    team: 'team2',
+    sportFaciility: 'Stadion Miejski w Białymstoku'
+  },
+  {
+    date: new Date("2022, 10, 18"),
+    team: 'team1',
+    sportFaciility: 'Boisko Mechaniak w Białymstoku'
+  },
+  {
+    date: new Date("2022, 10, 23"),
+    team: 'team2',
+    sportFaciility: 'Stadion Miejski w Białymstoku'
   }
 ]
 const myTournaments = [
   {
     name: 'Tymbark',
-    startDate: new Date(2022, 8, 12),
-    endDate: new Date(2022, 8, 15),
+    startDate: new Date("2022, 10, 25"),
+    endDate: new Date("2022, 10, 27"),
     team: 'team1',
-    sportFaciility: 'facility1'
+    sportFaciility: 'Stadion Miejski w Białymstoku'
+  },
+  {
+    name: 'Coca Cola Cup',
+    startDate: new Date("2022, 10, 2"),
+    endDate: new Date("2022, 10, 6"),
+    team: 'team1',
+    sportFaciility: 'Stadion Narodowy w Warszawie'
   },
 ]
 

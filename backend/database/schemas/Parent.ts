@@ -1,5 +1,14 @@
 import { Schema } from 'mongoose'
 
+export interface Parent {
+  _id: string
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  email: string
+}
+
+
 export default new Schema({
   firstName: {
     type: String,

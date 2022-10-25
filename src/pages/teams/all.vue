@@ -8,7 +8,7 @@ const teams = ref([
     name: 'Młodzik D1',
     startYear: '2011',
     endYear: '2012',
-    trainer: 'Jerzy Brzęczek'
+    trainer: 'Piotr Zając'
   },
   {
     id: 'idteam2',
@@ -22,7 +22,7 @@ const teams = ref([
     name: 'Trampkarz C1',
     startYear: '2009',
     endYear: '2010',
-    trainer: 'Jerzy Brzęczek'
+    trainer: 'Czesław Michniewicz'
   },
   {
     id: 'idteam4',
@@ -36,14 +36,14 @@ const teams = ref([
     name: 'Junior Młodszy B1',
     startYear: '2006',
     endYear: '2007',
-    trainer: 'Jerzy Brzęczek'
+    trainer: 'Jürgen Klopp'
   },
   {
     id: 'idteam6',
     name: 'Junior Młodszy B2',
     startYear: '2007',
     endYear: '2008',
-    trainer: 'Jerzy Brzęczek'
+    trainer: 'Pep Guardiola'
   },
 ])
 

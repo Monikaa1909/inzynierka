@@ -21,19 +21,19 @@ const props = defineProps({
 const statistics = ref([
   {
     id: 'matchstatisticsid1',
-    player: 'Dominik Kowalski',
+    player: 'Robert Lewandowski',
     match: 'statisticid1',
     attendance: '100',
     attendance2: true,
-    goalsScored: 2,
-    yellowCards: 1,
+    goalsScored: 32,
+    yellowCards: 2,
     redCards: 0,
     minutesPlayed: 90,
     remarks: ''
   },
   {
     id: 'matchstatisticsid2',
-    player: 'Andrzej Kowalski',
+    player: 'Erling Haaland',
     match: 'statisticid2',
     attendance: 70,
     attendance2: true,
@@ -45,7 +45,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid3',
-    player: 'Janusz Kowalski',
+    player: 'Karim Benzema',
     match: 'statisticid3',
     attendance: 90,
     attendance2: true,
@@ -57,7 +57,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid4',
-    player: 'Wiesław Kowalski',
+    player: 'Wojciech Szczęsny',
     match: 'statisticid4',
     attendance: 60,
     attendance2: true,
@@ -69,8 +69,8 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid5',
-    player: 'Janusz',
-    match: 'statisticid5',
+    player: 'Grzegorz',
+    match: 'Krychowiak',
     attendance: 44,
     attendance2: false,
     goalsScored: 0,
@@ -81,7 +81,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid6',
-    player: 'Janusz Kowalski',
+    player: 'Matthew Cash',
     match: 'statisticid6',
     attendance: 77,
     attendance2: true,
@@ -93,7 +93,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid7',
-    player: 'Janusz Kowalski',
+    player: 'Leo Messi',
     match: 'statisticid7',
     attendance: 89,
     attendance2: false,
@@ -105,7 +105,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid8',
-    player: 'Dominik Kowalski',
+    player: 'Kylian Mbappe',
     match: 'statisticid1',
     attendance: 100,
     attendance2: false,
@@ -117,7 +117,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid9',
-    player: 'Andrzej Kowalski',
+    player: 'Kamil Glik',
     match: 'statisticid2',
     attendance: 70,
     attendance2: true,
@@ -129,7 +129,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid10',
-    player: 'Janusz Kowalski',
+    player: 'Kamil Grosicki',
     match: 'statisticid3',
     attendance: 90,
     attendance2: true,
@@ -141,7 +141,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid11',
-    player: 'Wiesław Kowalski',
+    player: 'Marco Reus',
     match: 'statisticid4',
     attendance: 60,
     attendance2: true,
@@ -153,8 +153,8 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid12',
-    player: 'Janusz',
-    match: 'statisticid5',
+    player: 'Manuel',
+    match: 'Neuer',
     attendance: 44,
     attendance2: true,
     goalsScored: 0,
@@ -165,7 +165,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid13',
-    player: 'Janusz Kowalski',
+    player: 'Cristiano Ronaldo',
     match: 'statisticid6',
     attendance: 77,
     attendance2: true,
@@ -189,7 +189,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid15',
-    player: 'Dominik Kowalski',
+    player: 'Piotr Zieliński',
     match: 'statisticid1',
     attendance: 100,
     attendance2: true,
@@ -201,7 +201,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid16',
-    player: 'Andrzej Kowalski',
+    player: 'Neymar',
     match: 'statisticid2',
     attendance: 70,
     attendance2: true,
@@ -213,7 +213,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid17',
-    player: 'Janusz Kowalski',
+    player: 'Paul Pogba',
     match: 'statisticid3',
     attendance: 90,
     attendance2: true,
@@ -225,7 +225,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid18',
-    player: 'Wiesław Kowalski',
+    player: 'Sergio Ramos',
     match: 'statisticid4',
     attendance: 60,
     attendance2: true,
@@ -237,7 +237,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid19',
-    player: 'Janusz',
+    player: 'Ousmane Dembele',
     match: 'statisticid5',
     attendance: 44,
     attendance2: true,
@@ -249,7 +249,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid20',
-    player: 'Janusz Kowalski',
+    player: 'Antoine Griezmann',
     match: 'statisticid6',
     attendance: 77,
     attendance2: true,
@@ -261,7 +261,7 @@ const statistics = ref([
   },
   {
     id: 'matchstatisticsid21',
-    player: 'Janusz Kowalski',
+    player: 'Zlatan Ibrahimović',
     match: 'statisticid7',
     attendance: 89,
     attendance2: true,

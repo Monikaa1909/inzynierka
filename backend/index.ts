@@ -11,6 +11,7 @@ mongoose.connect('mongodb://localhost:27017/db').then(async () => {
   console.log('Connected to database')
 }).catch(console.error)
 
+app.use(express.json())
 app.use("/api", router)
 
 export const handler = app

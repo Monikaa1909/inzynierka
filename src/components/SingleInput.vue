@@ -7,7 +7,9 @@
     </p>
     <div class="flex w-full flex-col sm:(w-210px)">
       <slot name="inputValue"></slot>
-      <slot name="errorMessage"></slot>
+      <div class="text-xs" >
+        <slot name="errorMessage"></slot>
+      </div>
     </div>
   </div>
 </template>

@@ -9,18 +9,16 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 <template>
   <BackgroundFrame>
-    <template v-slot:data>
+    <template #data>
       <MyCenterElement>
-        <template v-slot>
-          <MiniWhiteFrame>
-            <template v-slot:icon>
+        <MiniWhiteFrame>
+            <template #icon>
               <img src="../../../assets/player-icon2.png" class=" h-150px" />
             </template>
-            <template v-slot:attributes>
+            <template #attributes>
               <NewPlayerForm></NewPlayerForm>
             </template>
           </MiniWhiteFrame>
-        </template>
       </MyCenterElement>
     </template>
   </BackgroundFrame>

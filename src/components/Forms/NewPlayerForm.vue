@@ -1,224 +1,186 @@
 <script setup lang="ts">
-import { Form, Field, ErrorMessage } from 'vee-validate';
 import { DatePicker } from 'v-calendar';
+import { Player } from 'backend/database/schemas/Player';
+import type { Team } from 'backend/database/schemas/Team';
+import type { Parent } from 'backend/database/schemas/Parent';
+import { requiredField, validateFirstName, validateNationality } from '~/validatesFunctions';
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const props = defineProps({
-	playerId: {
-		type: String,
-		required: false
-	}
-})
+const props = defineProps<{ playerId?: string }>()
 
-const player = ref({
-	id: 'dsfv',
-	firstName: 'Jerzy',
-	lastName: 'Brzęczek',
-	birthdayDate: new Date(1999, 8, 12),
-	nationality: 'Poland',
-	remarks: '',
-	team: 'Młodzik',
-	validityOfMedicalExaminations: new Date(2022, 12, 12),
-	parent: "cdsca1"
-})
+const url = computed(() => props.playerId
+	? `/api/player/${props.playerId}`
+	: '/api/player'
+)
+
+const player = ref({} as Omit<Player, '_id'>)
 
 if (!props.playerId) {
-	player.value.firstName = ''
-	player.value.lastName = ''
-	player.value.birthdayDate = new Date()
-	player.value.nationality = ''
-	player.value.validityOfMedicalExaminations = new Date()
-	player.value.remarks = ''
-	player.value.team = ''
-	player.value.parent = ''
+	player.value = {
+		firstName: '',
+		lastName: '',
+		birthdayDate: '',
+		nationality: '',
+		validityOfMedicalExaminations: '',
+		remarks: '',
+		team: undefined,
+		parent: undefined
+	}
 }
 
-const teams = ref([
-	{
-		id: 'cdsc1',
-		name: 'Młodzik',
-		startYear: 'years1',
-		endYear: 'players1',
-		trainer: 'Jerzy Brzęczek'
-	},
-	{
-		id: 'cdsc2',
-		name: 'Trampkarz',
-		startYear: 'years1',
-		endYear: 'players1',
-		trainer: 'Jerzy Brzęczek'
-	},
-	{
-		id: 'cdsc3',
-		name: 'Junior młodszy',
-		startYear: 'years1',
-		endYear: 'players1',
-		trainer: 'Jerzy Brzęczek'
-	},
-	{
-		id: 'cdsc4',
-		name: 'team1',
-		startYear: 'years1',
-		endYear: 'players1',
-		trainer: 'Jerzy Brzęczek'
-	},
-	{
-		id: 'cdsc5',
-		name: 'team1',
-		startYear: 'years1',
-		endYear: 'players1',
-		trainer: 'Jerzy Brzęczek'
-	},
-	{
-		id: 'cdsc6',
-		name: 'team1',
-		startYear: 'years1',
-		endYear: 'players1',
-		trainer: 'Jerzy Brzęczek'
-	},
-])
+const {
+	data: playerData,
+	isFinished: isPlayerFinished,
+} = useFetch(url, { initialData: {} }).json<Player>()
 
-const parents = ref([
-	{
-		id: 'cdsca1',
-		firstName: 'Jakub',
-		lastName: 'Gruszka',
-		phoneNumber: '123455432',
-		email: 'mdsdoc@wp.pl'
-	},
-	{
-		id: 'cdsc2',
-		firstName: 'Jerzy',
-		lastName: 'Gruszka',
-		phoneNumber: '123455432',
-		email: 'mdsdoc@wp.pl'
-	},
-	{
-		id: 'cdsc3',
-		firstName: 'Wiesław',
-		lastName: 'Gruszka',
-		phoneNumber: '123455432',
-		email: 'mdsdoc@wp.pl'
-	},
-	{
-		id: 'cdsc4',
-		firstName: 'Bogumił',
-		lastName: 'Gruszka',
-		phoneNumber: '123455432',
-		email: 'mdsdoc@wp.pl'
-	},
-	{
-		id: 'cdsc5',
-		firstName: 'Jakub',
-		lastName: 'Gruszka',
-		phoneNumber: '123455432',
-		email: 'mdsdoc@wp.pl'
-	},
-])
-
-const onSubmit = (values: any) => { }
-
-const validateName = (value: any) => {
-	if (!value) {
-		return 'This field is required';
-	}
-	const regex1 = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/i;
-	const regex2 = /^[\s]*$/i;
-	const regex3 = /^[\s][.]*/i;
-	const regex4 = /[.]*[\s]$/i;
-	if (regex2.test(value) || !regex1.test(value) || regex3.test(value) || regex4.test(value)) {
-		return 'This field must be a valid name';
-	}
-	return true;
-}
-
-const validateNationality = (value: any) => {
-	if (!value) {
-		return 'This field is required';
-	}
-	const regex1 = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ-\s]+$/i;
-	const regex2 = /^[\s]*$/i;
-	const regex3 = /^[\s][.]*/i;
-	const regex4 = /[.]*[\s]$/i;
-	if (regex2.test(value) || !regex1.test(value) || regex3.test(value) || regex4.test(value)) {
-		return 'This field must be a valid name';
-	}
-	return true;
-}
-
-const teamErrorMessage = computed(() => {
-	if (player.value.team === '')
-		return 'The player must have a selected team'
-	else
-		return ''
+whenever(playerData, (data) => {
+	player.value = data
 })
 
-// const parentErrorMessage = computed(() => {
-// 	if (player.value.parent === '')
-// 		return 'The player must have a selected parent'
-// 	else
-// 		return ''
-// })
+const {
+	data: teams,
+	isFinished: isTeamsFinished,
+} = useFetch('/api/teams', { initialData: [] }).json<Team[]>()
 
-const cancel = () => {
-	return router.go(-1)
+const {
+	data: parents,
+	isFinished: isParentsFinished,
+} = useFetch('/api/parents', { initialData: [] }).json<Parent[]>()
+
+const isFinished = computed(() => {
+	return isPlayerFinished.value && isTeamsFinished.value && isParentsFinished.value
+})
+
+const { execute: savePlayer, error: saveError } = useFetch(url, { immediate: false }).post(player)
+const { execute: updatePlayer, error: updateError } = useFetch(url, { immediate: false }).post(player)
+
+const onSubmit = async () => {
+	if (firstNameErrorMessage.value || lastNameErrorMessage.value || birthdayDateErrorMessage.value || nationalityErrorMessage.value
+		|| validityOfMedicalExaminationsErrorMessage.value) {
+		console.log('errr')
+		alert(t('error-messages.validation-error'))
+	} else {
+		if (!props.playerId) {
+			await savePlayer()
+			if (saveError.value) {
+				alert( t('error-messages.unknow-error'))
+				return
+			}
+		} else {
+			await updatePlayer()
+			if (updateError.value) {
+				alert( t('error-messages.unknow-error'))
+				return
+			}
+		}
+		return router.push('/players/all')
+	}
 }
+
+const firstNameErrorMessage = computed(() => {
+	if (!validateFirstName(player.value.firstName)) {
+		return false
+	}
+	return t(validateFirstName(player.value.firstName))
+})
+
+const lastNameErrorMessage = computed(() => {
+	if (!validateFirstName(player.value.lastName)) {
+		return false
+	}
+	return t(validateFirstName(player.value.lastName))
+})
+
+const birthdayDateErrorMessage = computed(() => {
+	if (!requiredField(player.value.birthdayDate)) {
+		return false
+	}
+	return t(requiredField(player.value.birthdayDate))
+})
+
+const nationalityErrorMessage = computed(() => {
+	if (!validateNationality(player.value.nationality)) {
+		return false
+	}
+	return t(validateNationality(player.value.nationality))
+})
+
+const validityOfMedicalExaminationsErrorMessage = computed(() => {
+	if (!requiredField(player.value.validityOfMedicalExaminations)) {
+		return false
+	}
+	return t(requiredField(player.value.validityOfMedicalExaminations))
+})
+
+const teamErrorMessage = computed(() => {
+	if (!requiredField(player.value.team)) {
+		return false
+	}
+	return t(requiredField(player.value.team))
+})
 
 </script>
 
 <template>
-	<Form @submit="onSubmit" class="w-full flex flex-col gap-2 place-content-center">
+	<div v-if="isFinished" class="w-full flex flex-col gap-2 place-content-center">
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-player.first-name') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="player.firstName" name="firstName" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateName" />
+			<template #inputName>{{ t('single-player.first-name') }}:</template>
+			<template #inputValue>
+				<input v-model="player.firstName" name="firstName" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="firstName" />
+			<template v-if="firstNameErrorMessage" #errorMessage>
+				{{ firstNameErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-player.last-name') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="player.lastName" name="lastName" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateName" />
+			<template #inputName>{{ t('single-player.last-name') }}:</template>
+			<template #inputValue>
+				<input v-model="player.lastName" name="lastName" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="lastName" />
+			<template v-if="lastNameErrorMessage" #errorMessage>
+				{{ lastNameErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-player.birthday-date') }}:</template>
-			<template v-slot:inputValue>
+			<template #inputName>{{ t('single-player.birthday-date') }}:</template>
+			<template #inputValue>
 				<DatePicker v-model="player.birthdayDate" format="yyyy-MM-dd" :clearable="false" class="inline-block h-full"
 					:locale='locale'>
 					<template v-slot="{ inputValue, togglePopover }">
-						<div class="flex items-center">
+						<div class="flex  items-center">
 							<button class="bg-#143547 flex hover:bg-#143547-200 text-white" @click="togglePopover()">
 								<img src="../../assets/calendar-button.png" class="h-32px " />
 							</button>
 							<input :value="inputValue"
-								class="bg-white text-gray-700 w-full h-32px py-1 px-2 appearance-none border focus:outline-none focus:border-blue-500"
+								class="bg-white border-#143547 text-gray-700 w-full h-32px py-1 px-2 appearance-none border focus:outline-none"
 								readonly />
 						</div>
 					</template>
 				</DatePicker>
 			</template>
+			<template v-if="birthdayDateErrorMessage" #errorMessage>
+				{{ birthdayDateErrorMessage }}
+			</template>
 		</SingleInput>
+
 		<SingleInput>
 			<template v-slot:inputName>{{ t('single-player.nationality') }}:</template>
 			<template v-slot:inputValue>
-				<Field v-model="player.nationality" name="nationality" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNationality" />
+				<input v-model="player.nationality" name="nationality" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="nationality" />
+			<template v-if="nationalityErrorMessage" #errorMessage>
+				{{ nationalityErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
 			<template v-slot:inputName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
 			<template v-slot:inputValue>
@@ -230,11 +192,14 @@ const cancel = () => {
 								<img src="../../assets/calendar-button.png" class="h-32px " />
 							</button>
 							<input :value="inputValue"
-								class="bg-white text-gray-700 w-full h-32px py-1 px-2 appearance-none border focus:outline-none focus:border-blue-500"
+								class="bg-white border-#143547 text-gray-700 w-full h-32px py-1 px-2 appearance-none border focus:outline-none"
 								readonly />
 						</div>
 					</template>
 				</DatePicker>
+			</template>
+			<template v-if="validityOfMedicalExaminationsErrorMessage" #errorMessage>
+				{{ validityOfMedicalExaminationsErrorMessage }}
 			</template>
 		</SingleInput>
 		<SingleInput>
@@ -250,34 +215,37 @@ const cancel = () => {
 			<template v-slot:inputValue>
 				<div class="fles flex-auto w-full flex-col">
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.team">
-						<option v-for="team in teams" :value="team.name">{{team.name}}
+						<option v-for="team in teams" :value="team._id">{{team._id}} {{ team.name }}
 						</option>
 					</select>
-					<p class="text-xs">{{ teamErrorMessage }}</p>
 				</div>
 			</template>
+			<template v-if="teamErrorMessage" #errorMessage>
+				{{ teamErrorMessage }}
+			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-player.parent') }}:</template>
-			<template v-slot:inputValue>
+			<template #inputName>{{ t('single-player.parent') }}:</template>
+			<template #inputValue>
 				<div class="fles flex-auto w-full flex-col">
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.parent">
-						<option v-for="parent in parents" :value="parent.id">{{parent.firstName}} {{parent.lastName}}
+						<option v-for="parent in parents" :value="parent._id">{{ parent.firstName }} {{ parent.lastName }}
 						</option>
 					</select>
-					<!-- <p class="text-xs">{{ parentErrorMessage }}</p> -->
 				</div>
 			</template>
 		</SingleInput>
+
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
-			<SingleButton>
+			<SingleButton @click="onSubmit()">
 				<template v-slot:buttonName>{{ t('button.save') }}</template>
 			</SingleButton>
-			<SingleButton @click="cancel()">
+			<SingleButton @click="router.go(-1)">
 				<template v-slot:buttonName>{{ t('button.cancel') }}</template>
 			</SingleButton>
 		</div>
-	</Form>
+	</div>
 </template>
 
 <route lang="yaml">

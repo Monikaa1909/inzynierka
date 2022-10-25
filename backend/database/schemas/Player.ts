@@ -1,4 +1,18 @@
 import { Schema } from 'mongoose'
+import { Parent } from './Parent'
+import { Team } from './Team'
+
+export interface Player {
+  _id: string
+  firstName: string
+  lastName: string
+  birthdayDate: string
+  nationality: string
+  remarks: string
+  validityOfMedicalExaminations: string
+  team?: Team
+  parent?: Parent
+}
 
 export default new Schema({
   firstName: {
