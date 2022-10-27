@@ -7,7 +7,10 @@ tasks:
     command: mkdir -p /workspace/data && mongod --dbpath /workspace/data
 
   - name: Logto
-    command: curl -fsSL https://raw.githubusercontent.com/logto-io/logto/HEAD/docker-compose.yml | TAG=prerelease docker compose -p logto -f - up
+    init: docker compose pull
+    command: ENDPOINT=$(gp url 3001) docker compose -p logto up
+    env:
+      TAG: prerelease
     
   - name: App
     init: yarn install
@@ -17,4 +20,9 @@ ports:
   - port: 3333 
     visibility: public
     onOpen: open-browser
+    
+  - name: Logto
+    description: The Logto core service
+    port: 3001
+    visibility: public
 
