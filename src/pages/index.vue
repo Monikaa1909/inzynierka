@@ -1,47 +1,25 @@
-<script setup>
-import { useTrainer } from '../stores/trainer'
-import { useParent } from '../stores/parent'
-import { useAcademy } from '../stores/academy'
+<script setup lang="ts">
+import { useLogto } from "@logto/vue"
 
-const trainer = useTrainer()
-const parent = useParent()
-const academy = useAcademy()
 const { t } = useI18n()
+
+const { signIn } = useLogto()
+const doSignIn = () => signIn(`${location.origin}/callback`)
 </script>
 
 <template>
-  <div v-if="parent.token != null || trainer.token != null || academy.token != null" class="flex flex-col h-full justify-center">
-    <router-link class="text-center p-4 text-2xl" to="/start">
+  <div class="flex flex-col h-full justify-center p-4">
+    <div class="text-center p-4 text-2xl">
       {{ t('intro.start') }}
-    </router-link>
-  </div>
-  <div v-else class="flex flex-col h-full justify-center p-4">
-    <router-link class="text-center p-4 text-2xl" to="/start">
-      {{ t('intro.start') }}
-    </router-link>
-    <!-- <router-link class="bg-#143547 color-#FFFFFF self-center w-300px m-2 p-2 shadow-lg text-center" to="/login">
+    </div>
+    <a class="bg-#143547 color-#FFFFFF self-center w-300px m-2 p-2 shadow-lg text-center"  @click="doSignIn">
       {{ t('login.sign-in') }}
-    </router-link>
+    </a>
     <p class="bg-#143547 color-#FFFFFF w-300px self-center m-2 p-2 shadow-lg text-center">
-      {{ t('login.register') }}
-    </p> -->
-  </div>
-</template>
-<!-- <template>
-  <div v-if="parent.token != null || trainer.token != null || academy.token != null">
-    <router-link class="text-center mb-4" to="/start">
-      {{ t('intro.start') }}
-    </router-link>
-  </div>
-  <div v-else class="flex flex-col text-xl my-16 mx-4">
-    <router-link class="bg-#143547 color-#FFFFFF w-300px m-2 p-1 shadow-lg text-center" to="/login">
-      {{ t('login.sign-in') }}
-    </router-link>
-    <p class="bg-#143547 color-#FFFFFF w-300px m-2 p-1 shadow-lg text-center">
       {{ t('login.register') }}
     </p>
   </div>
-</template> -->
+</template>
 
 <route lang="yaml">
 meta:

@@ -18,6 +18,7 @@ import mix from 'vite-plugin-mix'
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
 export default defineConfig({
+  envPrefix: ['GITPOD_'],
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
