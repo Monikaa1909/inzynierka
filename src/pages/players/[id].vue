@@ -14,7 +14,8 @@ const player = ref({} as Omit<Player, '_id'>)
 const {
   data: playerData,
   isFinished,
-  isFetching
+  isFetching,
+  error
 } = useFetch(`/api/player/${props.id}`, { initialData: {} }).json<Player>()
 
 whenever(playerData, (data) => {
@@ -32,20 +33,42 @@ const goEditPlayer = (playerId: any) => {
   return router.push(`/players/edit/${playerId}`)
 }
 
+const isDeleting = ref(false)
+
+const deletePlayer = () => {
+  isDeleting.value = true
+}
+
+const cancelDeleting = () => {
+  isDeleting.value = false
+}
+
+const confirmDeletePlayer = async () => {
+  isDeleting.value = false
+  await useFetch(`/api/player/${props.id}`).delete()
+  return router.go(-1)
+}
 </script>
 
 <template>
-  <LoadingCircle v-if="isFetching"></LoadingCircle>
-  <BackgroundFrame v-if="isFinished">
+  <BackgroundFrame>
     <template #data>
-      <MyCenterElement>
-        <MiniWhiteFrame>
 
+      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDeletePlayer="confirmDeletePlayer">
+        <template #deletedItem> 
+          {{player.firstName}} {{player.lastName}}
+        </template>
+      </DeletingMesageDialog>
+    
+      <LoadingCircle v-else-if="isFetching"></LoadingCircle>
+
+      <MyCenterElement v-if="isFinished && !isDeleting && !error && player">
+        <MiniWhiteFrame>
           <template #nav>
             <button @click="goEditPlayer(props.id)">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button>
+            <button @click="deletePlayer()">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>
@@ -88,7 +111,7 @@ const goEditPlayer = (playerId: any) => {
 
               <SingleAttribute>
                 <template #attributeName>{{ t('single-player.team') }}:</template>
-                <template #attributeValue>{{ player.team?.name }}</template>
+                <template #attributeValue>{{ player.team?.teamName }}</template>
               </SingleAttribute>
 
               <SingleAttribute v-if="player?.parent">
@@ -109,9 +132,13 @@ const goEditPlayer = (playerId: any) => {
           </template>
         </MiniWhiteFrame>
       </MyCenterElement>
+
+      <ErrorMessage v-else-if="!isDeleting && isFinished && !player">
+        {{t('error-messages.no-data')}}
+      </ErrorMessage>
+      <ErrorMessage v-else-if="!isDeleting && error"></ErrorMessage>
     </template>
   </BackgroundFrame>
-  <ErrorMessage v-else></ErrorMessage>
 </template>
 
 <route lang="yaml">

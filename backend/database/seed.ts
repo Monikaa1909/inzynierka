@@ -2,21 +2,13 @@ import models from './models'
 
 export const seedDatabase = async () => {
 
-    var person = { firstName: 'Val' };
-
-    // models.Player.create([person, person], function(error) {
-    //   // Will print out "There was a duplicate key error"
-    //   console.log(error);
-    // });
-
-
     // ACADEMIES ---------------------------------------------------------------------------------
-    const academy1 = new models.Academy({ name: 'AP Jagiellonia Białystok' });
+    const academy1 = new models.Academy({ academyName: 'AP Jagiellonia Białystok' });
     academy1.save(function (err) {
         if (err) return console.log(err.message);
     });
 
-    const academy2 = new models.Academy({ name: 'Biebrza Goniądz' });
+    const academy2 = new models.Academy({ academyName: 'Biebrza Goniądz' });
     academy2.save(function (err) {
         if (err) return console.log(err.message);
     });
@@ -38,7 +30,7 @@ export const seedDatabase = async () => {
         lastName: 'Agrest',
         birthdayDate: '1978-01-29',
         nationality: 'Polska',
-        academy: academy1
+        academy: academy2
     });
     trainer2.save(function (err) {
         if (err) return console.log(err.message);
@@ -68,7 +60,7 @@ export const seedDatabase = async () => {
 
     // TEAMS -------------------------------------------------------------------------------------
     const team1 = new models.Team({
-        name: 'Młodzik D1',
+        teamName: 'Młodzik D1',
         trainer: trainer1,
     });
     team1.save(function (err) {
@@ -76,23 +68,23 @@ export const seedDatabase = async () => {
     });
 
     const team2 = new models.Team({
-        name: 'Trampkarz C1',
-        trainer: trainer1,
+        teamName: 'Trampkarz C1',
+        trainer: trainer2,
     });
     team2.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team3 = new models.Team({
-        name: 'Junior młodszy B1',
-        trainer: trainer2,
+        teamName: 'Junior młodszy B1',
+        trainer: trainer1,
     });
     team3.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team4 = new models.Team({
-        name: 'Junior młodszy B2',
+        teamName: 'Junior młodszy B2',
         trainer: trainer2,
     });
     team4.save(function (err) {
@@ -100,23 +92,23 @@ export const seedDatabase = async () => {
     });
 
     const team5 = new models.Team({
-        name: 'Młodzik D1',
-        trainer: trainer3,
+        teamName: 'Młodzik D1',
+        trainer: trainer2,
     });
     team5.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team6 = new models.Team({
-        name: 'Trampkarz C1',
-        trainer: trainer4,
+        teamName: 'Trampkarz C1',
+        trainer: trainer1,
     });
     team6.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team7 = new models.Team({
-        name: 'Młodzik D2',
+        teamName: 'Młodzik D2',
         trainer: trainer3,
     });
     team7.save(function (err) {
@@ -124,8 +116,8 @@ export const seedDatabase = async () => {
     });
 
     const team8 = new models.Team({
-        name: 'Orlik E1',
-        trainer: trainer4,
+        teamName: 'Orlik E1',
+        trainer: trainer1,
     });
     team8.save(function (err) {
         if (err) return console.log(err.message);
@@ -136,7 +128,8 @@ export const seedDatabase = async () => {
         firstName: 'Jerzy',
         lastName: 'Kowalski',
         email: 'kowalj123@gmail.com',
-        phoneNumber: '125 653 444'
+        phoneNumber: '125 653 444',
+        academy: academy1
     });
     parent1.save(function (err) {
         if (err) return console.log(err.message);
@@ -146,7 +139,8 @@ export const seedDatabase = async () => {
         firstName: 'Jan',
         lastName: 'Kapustka',
         email: 'kapucha123@gmail.com',
-        phoneNumber: '125 653 444'
+        phoneNumber: '125 653 444',
+        academy: academy2
     });
     parent2.save(function (err) {
         if (err) return console.log(err.message);
@@ -154,7 +148,8 @@ export const seedDatabase = async () => {
 
     const parent3 = new models.Parent({
         firstName: 'Antoni',
-        lastName: 'Wierzba'
+        lastName: 'Wierzba',
+        academy: academy2
     });
     parent3.save(function (err) {
         if (err) return console.log(err.message);
@@ -163,7 +158,8 @@ export const seedDatabase = async () => {
     const parent4 = new models.Parent({
         firstName: 'Mariusz',
         lastName: 'Gruszka',
-        email: 'mGruszka@gmail.com'
+        email: 'mGruszka@gmail.com',
+        academy: academy2
     });
     parent4.save(function (err) {
         if (err) return console.log(err.message);
@@ -189,7 +185,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2011-11-09',
         nationality: 'Polska',
         parent: parent2,
-        team: team1,
+        team: team2,
         validityOfMedicalExaminations: '2022-12-09'
     });
     player2.save(function (err) {
@@ -202,7 +198,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
         parent: parent3,
-        team: team1,
+        team: team2,
         validityOfMedicalExaminations: '2022-12-09'
     });
     player3.save(function (err) {
@@ -214,7 +210,7 @@ export const seedDatabase = async () => {
         lastName: 'Gruszka',
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
-        team: team1,
+        team: team4,
         parent: parent4,
         validityOfMedicalExaminations: '2022-12-09'
     });
@@ -228,23 +224,12 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-12-09',
         nationality: 'Polska',
         parent: parent1,
-        team: team3,
+        team: team1,
         validityOfMedicalExaminations: '2022-12-09'
     });
     player5.save(function (err) {
         if (err) return console.log(err.message);
     });
-
-    // ADDRESS ----------------------------------------------------------------------------
-    // const address1 = new models.Address({ 
-    //     street: 'Słoneczna',
-    //     houseNumber: 1,
-    //     city: 'Białystok',
-    //     postalCode: '15-323'
-    // });
-    // address1.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
 
     // SPORTSFACILITIES ----------------------------------------------------------------------------
     const sportsFacility1 = new models.SportsFacility({

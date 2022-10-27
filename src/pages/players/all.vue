@@ -17,53 +17,76 @@ const goEditPlayer = (playerId: any) => {
   return router.push(`/players/edit/${playerId}`)
 }
 
-const goAddPlayer = (playerId: any) => {
-  return router.push(`/players/add/newPlayer`)
-}
-
-const goCheckStatistic = () => {
-  return router.push(`/players/statistic`)
-}
-
 function goToPlayer(playerId: any) {
   return router.push(`/players/${playerId}`)
 }
+
+// const players = ref([] as Omit<Player[], '_id'>)
 
 const {
   data: players,
   isFetching,
   isFinished,
+  error,
   execute: refechPlayers
-} = useFetch(`/api/${academy}/players`, { initialData: [] }).json<Player[]>()
+} = useFetch(`/api/players/${academy}`, { initialData: [] }).json<Player[]>()
 
-const deletePlayer = async (player: Player) => {
-  await useFetch(`/api/player/${player._id}`).delete()
+// whenever(playersData, (data) => {
+//   data.forEach(element => {
+//     if (element.team?.trainer.academy.academyName === academy)
+//     players.value.push(element)
+//   });
+
+//   players.value.forEach(element => {
+//     console.log(element._id)
+//   });
+// })
+
+const isDeleting = ref(false)
+const deletingPlayer = ref<Player>()
+
+const deletePlayer = (player: Player) => {
+  isDeleting.value = true
+  deletingPlayer.value = player
+}
+
+const cancelDeleting = () => {
+  isDeleting.value = false
+}
+
+const confirmDeletePlayer = async () => {
+  isDeleting.value = false
+  await useFetch(`/api/player/${deletingPlayer.value?._id}`).delete()
   refechPlayers()
 }
 </script>
 
 <template>
-  <LoadingCircle v-if="isFetching"></LoadingCircle>
-  <BackgroundFrame v-if="isFinished" >
+  <BackgroundFrame>
     <template #nav>
-      <button @click="goCheckStatistic" class="flex flex-row gap-2 mr-8 items-center">
+      <router-link to="/players/statistic" class="flex flex-row gap-2 mr-8 items-center">
         <img src="../../assets/statistic-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic') }}</p>
-      </button>
-      <button @click="goAddPlayer" class="flex flex-row gap-2 items-center">
+      </router-link>
+      <router-link to="/players/add/newPlayer" class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player') }}</p>
-      </button>
+      </router-link>
     </template>
     <template #data>
-      <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
-        <MiniWhiteFrame 
-          v-for="player in players" 
-          :key="player._id" 
-          class="hover:bg-#E3E3E3"
-          clickable="cursor-pointer" 
-          @go-to="goToPlayer(player._id)"
-        >
+      
+      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDeletePlayer="confirmDeletePlayer">
+        <template #deletedItem> 
+          {{deletingPlayer?.firstName}} {{deletingPlayer?.lastName}}
+        </template>
+      </DeletingMesageDialog>
+
+      <LoadingCircle v-else-if="isFetching"></LoadingCircle>
+
+      <MyGrid v-if="isFinished && !isDeleting && !error && players?.length != 0" class="lg:(grid-cols-3) md:(grid-cols-2)">
+        <MiniWhiteFrame v-for="player in players" :key="player._id" class="hover:bg-#E3E3E3" clickable="cursor-pointer"
+          @go-to="goToPlayer(player._id)">
+
           <template #nav>
             <button @click="goEditPlayer(player._id)">
               <img src="../../assets/edit-icon.png" class="h-24px" />
@@ -102,7 +125,7 @@ const deletePlayer = async (player: Player) => {
               <template #attributeValue>
                 <p v-if="new Date(player.validityOfMedicalExaminations) > today">
                   {{ new Date(player.validityOfMedicalExaminations).toLocaleDateString(locale) }}
-                </p> 
+                </p>
                 <p v-else class="text-red">
                   {{ new Date(player.validityOfMedicalExaminations).toLocaleDateString(locale) }}
                 </p>
@@ -111,14 +134,18 @@ const deletePlayer = async (player: Player) => {
 
             <SingleAttribute>
               <template v-slot:attributeName>{{ t('single-player.team') }}:</template>
-              <template v-slot:attributeValue>{{ player.team?.name ?? 'Brak' }}</template>
+              <template v-slot:attributeValue>{{ player.team?.teamName ?? 'Brak' }}</template>
             </SingleAttribute>
           </template>
         </MiniWhiteFrame>
       </MyGrid>
+
+      <ErrorMessage v-else-if="!isDeleting && isFinished && players?.length === 0">
+        {{t('error-messages.no-data')}}
+      </ErrorMessage>
+      <ErrorMessage v-else-if="!isDeleting && error"></ErrorMessage>
     </template>
   </BackgroundFrame>
-  <ErrorMessage v-else></ErrorMessage>
 </template>
 
 <route lang="yaml">

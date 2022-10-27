@@ -1,11 +1,13 @@
 import { Schema } from 'mongoose'
+import { Academy } from './Academy'
 
 export interface Parent {
   _id: string
   firstName: string
   lastName: string
   phoneNumber: string
-  email: string
+  email: string,
+  academy: Academy
 }
 
 
@@ -25,5 +27,9 @@ export default new Schema({
   email: {
     type: String,
     match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'The e-mail address is invalid']
-  }
+  },
+  academy: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'Missing informations - each parent must belong to the academy']
+  },
 })

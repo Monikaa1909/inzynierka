@@ -31,6 +31,8 @@ button:
   add-trainer: ADD NEW TRAINER
   add-parent: ADD NEW PARENT
   check-statistic: CHECK STATISTIC
+  yes: Yes
+  no: No
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -151,4 +153,7 @@ error-messages:
   validation-error: The data is incorrectly completed
   unknow-error: There was an error connecting to the database. Please try again in a moment or email us at creaassistanthelpgmailcom
   went-wrong: Something went wrong... Try again later!
+  no-data: There is no data in data base
+other:
+  confirming-deleting: Are you sure you want to delete
 not-found: Not found

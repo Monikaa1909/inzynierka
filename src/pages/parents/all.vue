@@ -1,107 +1,109 @@
 <script setup lang="ts">
+import type { Parent } from 'backend/database/schemas/Parent';
+
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const parents = ref([
-  {
-    id: 'cdsc',
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    id: 'cdsc',
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    id: 'cdsc',
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    id: 'cdsc',
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-  {
-    id: 'cdsc',
-    firstName: 'Jakub',
-    lastName: 'Gruszka',
-    phoneNumber: '123455432',
-    email: 'mdsdoc@wp.pl'
-  },
-])
+const academy = 'AP Jagiellonia Białystok'
 
 const goEditParent = (parentId: any) => {
   return router.push(`/parents/edit/${parentId}`)
-}
-
-const goAddParent = (parentId: any) => {
-  return router.push(`/parents/add/newParent`)
 }
 
 function goToParent(parentId: any) {
   return router.push(`/parents/${parentId}`)
 }
 
+const {
+  data: parents,
+  isFetching,
+  isFinished,
+  error,
+  execute: refechParents
+} = useFetch(`/api/parents/${academy}`, { initialData: [] }).json<Parent[]>()
+
+const isDeleting = ref(false)
+const deletingParent = ref<Parent>()
+
+const deleteParent = (parent: Parent) => {
+  isDeleting.value = true
+  deletingParent.value = parent
+}
+
+const cancelDeleting = () => {
+  isDeleting.value = false
+}
+
+const confirmDeleteParent= async () => {
+  isDeleting.value = false
+  await useFetch(`/api/parent/${deletingParent.value?._id}`).delete()
+  refechParents()
+}
+
 </script>
 
 <template>
   <BackgroundFrame>
-    <template v-slot:nav>
-      <button @click="goAddParent" class="flex flex-row gap-2 items-center">
+    <template #nav>
+      <router-link to="/parents/add/newParent" class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-parent')}}</p>
-      </button>
+      </router-link>
     </template>
-    <template v-slot:data>
-      <MyGrid class="lg:(grid-cols-3) md:(grid-cols-2)">
-        <template v-slot>
-          <MiniWhiteFrame v-for="parent in parents" v-bind:key="parent.id" class="hover:bg-#E3E3E3"
+    <template #data>
+      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDeletePlayer="confirmDeleteParent">
+        <template #deletedItem> 
+          {{deletingParent?.firstName}} {{deletingParent?.lastName}}
+        </template>
+      </DeletingMesageDialog>
+
+      <LoadingCircle v-else-if="isFetching"></LoadingCircle>
+
+      <MyGrid v-if="isFinished && !isDeleting && !error" class="lg:(grid-cols-3) md:(grid-cols-2)">
+        <MiniWhiteFrame v-for="parent in parents" v-bind:key="parent._id" class="hover:bg-#E3E3E3"
             clickable="cursor-pointer" @go-to="goToParent(parent.firstName)">
-            <template v-slot:nav>
-              <button @click="goEditParent(parent.id)">
+            
+            <template #nav>
+              <button @click="goEditParent(parent._id)">
                 <img src="../../assets/edit-icon.png" class="h-24px" />
               </button>
-              <button>
+              <button @click="deleteParent(parent)">
                 <img src="../../assets/delete-icon.png" class="h-24px" />
               </button>
             </template>
-            <template v-slot:icon>
+
+            <template #icon>
               <img src="../../assets/parent-icon2.png" class="h-150px" />
             </template>
-            <template v-slot:attributes>
+
+            <template #attributes>
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-parent.first-name') }}:</template>
-                <template v-slot:attributeValue>{{ parent.firstName }}</template>
+                <template #attributeName>{{ t('single-parent.first-name') }}:</template>
+                <template #attributeValue>{{ parent.firstName }}</template>
               </SingleAttribute>
+              
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-parent.last-name') }}:</template>
-                <template v-slot:attributeValue>{{ parent.lastName }}</template>
+                <template #attributeName>{{ t('single-parent.last-name') }}:</template>
+                <template #attributeValue>{{ parent.lastName }}</template>
               </SingleAttribute>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-parent.phone-number') }}:</template>
-                <template v-slot:attributeValue>{{ parent.phoneNumber }}</template>
+                <template #attributeName>{{ t('single-parent.phone-number') }}:</template>
+                <template #attributeValue>{{ parent.phoneNumber }}</template>
               </SingleAttribute>
+
               <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-parent.email') }}:</template>
-                <template v-slot:attributeValue>{{ parent.email }}</template>
+                <template #attributeName>{{ t('single-parent.email') }}:</template>
+                <template #attributeValue>{{ parent.email }}</template>
               </SingleAttribute>
             </template>
           </MiniWhiteFrame>
-        </template>
       </MyGrid>
+
+      <ErrorMessage v-else-if="!isDeleting"></ErrorMessage>
     </template>
   </BackgroundFrame>
 

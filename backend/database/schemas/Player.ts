@@ -10,7 +10,7 @@ export interface Player {
   nationality: string
   remarks: string
   validityOfMedicalExaminations: string
-  team?: Team
+  team: Team
   parent?: Parent
 }
 

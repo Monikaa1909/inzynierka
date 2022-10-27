@@ -31,6 +31,8 @@ button:
   add-trainer: DODAJ NOWEGO TRENERA
   add-parent: DODAJ NOWEGO RODZICA
   check-statistic: SPRAWDŹ STATYSTYKI
+  yes: Tak
+  no: Nie
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -150,4 +152,7 @@ error-messages:
   validation-error: Dane są nieprawidłowo uzupełnione
   unknow-error: Wystąpił błąd przy łączeniu z bazą danych. Spróbuj ponownie za chwilę lub napisz do nas creaassistanthelpgmailcom
   went-wrong: Coś poszło nie tak... Spróbuj ponownie za chwilę!
+  no-data: Brak danych w bazie danych
+other:
+  confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono

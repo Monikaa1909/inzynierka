@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     BackgroundFrameGrid: typeof import('./components/BackgroundFrameGrid.vue')['default']
     ButtonsFrame: typeof import('./components/ButtonsFrame.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
+    DeletingMesageDialog: typeof import('./components/DeletingMesageDialog.vue')['default']
     ErrorMessage: typeof import('./components/ErrorMessage.vue')['default']
     EventStatistic: typeof import('./components/EventStatistic.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']

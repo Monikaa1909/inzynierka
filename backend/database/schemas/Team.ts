@@ -1,18 +1,16 @@
 import { Schema } from 'mongoose'
-import { Academy } from './Academy'
 import { Trainer } from './Trainer'
 
 export interface Team {
   _id: string
-  name: string
+  teamName: string
   startYear: Number
   endYear: Number
   trainer: Trainer
-  academy: Academy
 }
 
 export default new Schema({
-  name: {
+  teamName: {
     type: String,
     required: [true, 'Missing informations - each team must have a name']
   },

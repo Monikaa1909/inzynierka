@@ -9,6 +9,8 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const academy = 'AP Jagiellonia Białystok'
+
 const props = defineProps<{ playerId?: string }>()
 
 const url = computed(() => props.playerId
@@ -17,6 +19,8 @@ const url = computed(() => props.playerId
 )
 
 const player = ref({} as Omit<Player, '_id'>)
+const parents = ref([] as Omit<Parent[], '_id'>)
+const teams = ref([] as Omit<Team[], '_id'>)
 
 if (!props.playerId) {
 	player.value = {
@@ -35,37 +39,48 @@ const {
 	data: playerData,
 	isFetching: isPlayersFetching,
 	isFinished: isPlayerFinished,
+	error: playerError,
 } = useFetch(url, { initialData: {} }).json<Player>()
 
 whenever(playerData, (data) => {
 	player.value = data
-	console.log(player.value.team?._id)
+	console.log(player.value.parent)
 })
 
 const {
-	data: teams,
+	data: teamsData,
 	isFetching: isTeamsFetching,
 	isFinished: isTeamsFinished,
-} = useFetch('/api/teams', { initialData: [] }).json<Team[]>()
+	error: teamsError,
+} = useFetch(`/api/teams/${academy}`, { initialData: [] }).json<Team[]>()
 
 const {
-	data: parents,
+	data: parentsData,
 	isFetching: isParentsFetching,
+	error: parentsError,
 	isFinished: isParentsFinished,
-} = useFetch('/api/parents', { initialData: [] }).json<Parent[]>()
+} = useFetch(`/api/parents/${academy}`, { initialData: [] }).json<Parent[]>()
+
+whenever(parentsData, (data) => {
+	parents.value = data
+	parents.value.map(element => element.academy = element.academy._id)
+})
+
+whenever(teamsData, (data) => {
+	teams.value = data
+	teams.value.map(element => element.trainer = element.trainer._id)
+})
 
 const isFinished = computed(() => {
-	if (isTeamsFinished.value) {
-		// playerData.value?.team =  
-		teams.value?.forEach(element => {
-		console.log(element._id)
-	});
-	}
 	return isPlayerFinished.value && isTeamsFinished.value && isParentsFinished.value
 })
 
 const isFetching = computed(() => {
 	return isPlayersFetching.value && isTeamsFetching.value && isParentsFetching.value
+})
+
+const error = computed(() => {
+	return playerError.value && teamsError.value && parentsError.value
 })
 
 const { execute: savePlayer, error: saveError } = useFetch(url, { immediate: false }).post(player)
@@ -79,13 +94,13 @@ const onSubmit = async () => {
 		if (!props.playerId) {
 			await savePlayer()
 			if (saveError.value) {
-				alert( t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error'))
 				return
 			}
 		} else {
 			await updatePlayer()
 			if (updateError.value) {
-				alert( t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error'))
 				return
 			}
 		}
@@ -139,7 +154,8 @@ const teamErrorMessage = computed(() => {
 
 <template>
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
-	<div v-if="isFinished" class="w-full flex flex-col gap-2 place-content-center">
+
+	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
 		<SingleInput>
 			<template #inputName>{{ t('single-player.first-name') }}:</template>
 			<template #inputValue>
@@ -230,7 +246,7 @@ const teamErrorMessage = computed(() => {
 			<template #inputValue>
 				<div class="fles flex-auto w-full flex-col">
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.team">
-						<option v-for="team in teams" :value="team">{{ team.name }}
+						<option v-for="team in teams" :value="team">{{ team.teamName }}
 						</option>
 					</select>
 				</div>
@@ -261,7 +277,11 @@ const teamErrorMessage = computed(() => {
 			</SingleButton>
 		</div>
 	</div>
-	<ErrorMessage v-else></ErrorMessage>
+
+	<ErrorMessage v-else-if="isFinished">
+		{{ t('error-messages.no-data') }}
+	</ErrorMessage>
+	<ErrorMessage v-else-if="error"></ErrorMessage>
 </template>
 
 <route lang="yaml">
