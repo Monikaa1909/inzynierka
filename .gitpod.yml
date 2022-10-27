@@ -5,6 +5,9 @@ image:
 tasks:
   - name: Mongodb
     command: mkdir -p /workspace/data && mongod --dbpath /workspace/data
+
+  - name: Logto
+    command: curl -fsSL https://raw.githubusercontent.com/logto-io/logto/HEAD/docker-compose.yml | TAG=prerelease docker compose -p logto -f - up
     
   - name: App
     init: yarn install
