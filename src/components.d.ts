@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     Counter: typeof import('./components/Counter.vue')['default']
     DeletingMesageDialog: typeof import('./components/DeletingMesageDialog.vue')['default']
     ErrorMessage: typeof import('./components/ErrorMessage.vue')['default']
+    ErrorMessageInfo: typeof import('./components/ErrorMessageInfo.vue')['default']
     EventStatistic: typeof import('./components/EventStatistic.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     LoadingCircle: typeof import('./components/LoadingCircle.vue')['default']

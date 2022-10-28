@@ -10,7 +10,7 @@ const { t } = useI18n()
         <p class="flex">?</p>
       </div>
       <div class="w-full flex flex-row gap-4 place-content-center place-items-center">
-        <SingleButton @click="$emit('confirmDeletePlayer')">
+        <SingleButton @click="$emit('confirmDelete')">
           <template #buttonName>{{ t('button.yes') }}</template>
         </SingleButton>
         <SingleButton @click="$emit('cancelDeleting')">

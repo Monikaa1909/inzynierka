@@ -37,7 +37,7 @@ const cancelDeleting = () => {
   isDeleting.value = false
 }
 
-const confirmDeleteParent= async () => {
+const confirmDelete= async () => {
   isDeleting.value = false
   await useFetch(`/api/parent/${deletingParent.value?._id}`).delete()
   refechParents()
@@ -47,6 +47,7 @@ const confirmDeleteParent= async () => {
 
 <template>
   <BackgroundFrame>
+
     <template #nav>
       <router-link to="/parents/add/newParent" class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
@@ -54,7 +55,7 @@ const confirmDeleteParent= async () => {
       </router-link>
     </template>
     <template #data>
-      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDeletePlayer="confirmDeleteParent">
+      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
         <template #deletedItem> 
           {{deletingParent?.firstName}} {{deletingParent?.lastName}}
         </template>
@@ -62,9 +63,9 @@ const confirmDeleteParent= async () => {
 
       <LoadingCircle v-else-if="isFetching"></LoadingCircle>
 
-      <MyGrid v-if="isFinished && !isDeleting && !error" class="lg:(grid-cols-3) md:(grid-cols-2)">
+      <MyGrid v-if="isFinished && !isDeleting && !error && parents?.length != 0" class="lg:(grid-cols-3) md:(grid-cols-2)">
         <MiniWhiteFrame v-for="parent in parents" v-bind:key="parent._id" class="hover:bg-#E3E3E3"
-            clickable="cursor-pointer" @go-to="goToParent(parent.firstName)">
+            clickable="cursor-pointer" @go-to="goToParent(parent._id)">
             
             <template #nav>
               <button @click="goEditParent(parent._id)">
@@ -103,7 +104,10 @@ const confirmDeleteParent= async () => {
           </MiniWhiteFrame>
       </MyGrid>
 
-      <ErrorMessage v-else-if="!isDeleting"></ErrorMessage>
+      <ErrorMessageInfo v-else-if="!isDeleting && isFinished && parents?.length === 0">
+        {{t('error-messages.no-data')}}
+      </ErrorMessageInfo>
+      <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>
   </BackgroundFrame>
 

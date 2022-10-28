@@ -7,7 +7,8 @@ export interface Parent {
   lastName: string
   phoneNumber: string
   email: string,
-  academy: Academy
+  academy: Academy,
+  remarks?: string
 }
 
 
@@ -31,5 +32,9 @@ export default new Schema({
   academy: {
     type: Schema.Types.ObjectId,
     required: [true, 'Missing informations - each parent must belong to the academy']
+  },
+  remarks: {
+    type: String,
+    required: false
   },
 })

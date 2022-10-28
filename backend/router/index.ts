@@ -12,10 +12,20 @@ router.post('/db:seed', async (req, res) => {
     return seedDatabase()
 })
 
+router.get('/academy/:name', async (req, res) => {
+    try {
+        const academy = await models.Academy.findOne({academyName: req.params.name})
+        res.send(academy)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/players/:academy', async (req, res) => {
     try {
         console.log(req.params.academy)
         const players = await models.Player.find()
+            .sort({lastName: 1, firstName: 1})
             .populate('parent')
             .populate({
                 path: 'team',
@@ -39,26 +49,29 @@ router.get('/players/:academy', async (req, res) => {
 
 router.get('/player/:id', async (req, res) => {
     try {
-        const players = await models.Player.findById(req.params.id)
+        const player = await models.Player.findById(req.params.id)
             .populate('parent')
             .populate({
                 path: 'team',
                 model: 'Team',
             })
-        res.send(players)
+        res.send(player)
     } catch (error) {
         res.status(400).send(error)
     }
 })
 
 router.post('/player', async (req, res) => {
-    const player = models.Player.create(req.body, function (error: any) {
-        if (error) {
-            console.log(error.message);
-            res.status(400).send(error)
-        }
-        else res.send(player)
-    });
+    try {
+        const player = models.Player.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(player)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
 })
 
 router.post('/player/:id', async (req, res) => {
@@ -88,19 +101,80 @@ router.post('/player/:id', async (req, res) => {
 })
 
 router.delete('/player/:id', async (req, res) => {
-    const player = await models.Player.findOneAndDelete({ _id: req.params.id })
-    res.send(player)
+    try {
+        const player = await models.Player.findOneAndDelete({ _id: req.params.id })
+        res.send(player)
+    } catch (error) {
+        res.status(400).send(error)
+    }
 })
 
 router.get('/parents/:academy', async (req, res) => {
     try {
         const parents = await models.Parent.find()
+            .sort({lastName: 1, firstName: 1})
             .populate({
                 path: 'academy',
                 model: 'Academy',
                 match: { academyName: req.params.academy }
             }) as Parent[]
-        res.send(parents)
+        res.send(parents.filter(item => item.academy != null))
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/parent/:id', async (req, res) => {
+    try {
+        const parent = await models.Parent.findById(req.params.id)
+
+        res.send(parent)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/parent', async (req, res) => {
+    try {
+        const parent = models.Parent.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(parent)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/parent/:id', async (req, res) => {
+    try {
+        const parent = await models.Parent.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                remarks: req.body.remarks,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+                academy: req.body.academy,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(parent)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.delete('/parent/:id', async (req, res) => {
+    try {
+        const parent = await models.Parent.findOneAndDelete({ _id: req.params.id })
+        res.send(parent)
     } catch (error) {
         res.status(400).send(error)
     }
@@ -110,6 +184,7 @@ router.get('/teams/:academy', async (req, res) => {
     try {
         console.log(req.params.academy)
         const teams = await models.Team.find()
+            .sort({teamName: 1})
             .populate({
                 path: 'trainer',
                 model: 'Trainer',
@@ -128,11 +203,6 @@ router.get('/teams/:academy', async (req, res) => {
 
 router.get('/team/:id', async (req, res) => {
     const team = await models.Team.find({ _id: req.params.id })
-    res.send(team)
-})
-
-router.delete('/team/:id', async (req, res) => {
-    const team = await models.Team.findOneAndDelete({ _id: req.params.id })
     res.send(team)
 })
 
@@ -157,11 +227,6 @@ router.get('/:academy/matches', async (req, res) => {
     } catch (error) {
         res.status(400).send(error)
     }
-})
-
-router.get('/parents', async (req, res) => {
-    const parents = await models.Parent.find()
-    res.send(parents)
 })
 
 router.get('/sportsFacilities', async (req, res) => {

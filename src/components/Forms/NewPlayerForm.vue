@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { DatePicker } from 'v-calendar';
-import { Player } from 'backend/database/schemas/Player';
-import type { Team } from 'backend/database/schemas/Team';
-import type { Parent } from 'backend/database/schemas/Parent';
-import { requiredField, validateFirstName, validateNationality } from '~/validatesFunctions';
+import { requiredField, validateFirstName, validateNationality } from '~/validatesFunctions'
+import { Trainer } from 'backend/database/schemas/Trainer'
+import { Player } from 'backend/database/schemas/Player'
+import { DatePicker } from 'v-calendar'
+
+import type { Parent } from 'backend/database/schemas/Parent'
+import type {Academy} from 'backend/database/schemas/Academy'
+import type { Team } from 'backend/database/schemas/Team'
+
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 const locales = availableLocales
@@ -30,7 +34,7 @@ if (!props.playerId) {
 		nationality: '',
 		validityOfMedicalExaminations: '',
 		remarks: '',
-		team: undefined,
+		team: undefined!,
 		parent: undefined
 	}
 }
@@ -44,7 +48,6 @@ const {
 
 whenever(playerData, (data) => {
 	player.value = data
-	console.log(player.value.parent)
 })
 
 const {
@@ -63,12 +66,12 @@ const {
 
 whenever(parentsData, (data) => {
 	parents.value = data
-	parents.value.map(element => element.academy = element.academy._id)
+	parents.value.map(element => element.academy = element.academy._id as unknown as Academy)
 })
 
 whenever(teamsData, (data) => {
-	teams.value = data
-	teams.value.map(element => element.trainer = element.trainer._id)
+	teams.value = data 
+	teams.value.map(element => element.trainer = element.trainer._id as unknown as Trainer)
 })
 
 const isFinished = computed(() => {
@@ -88,7 +91,7 @@ const { execute: updatePlayer, error: updateError } = useFetch(url, { immediate:
 
 const onSubmit = async () => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || birthdayDateErrorMessage.value || nationalityErrorMessage.value
-		|| validityOfMedicalExaminationsErrorMessage.value) {
+		|| validityOfMedicalExaminationsErrorMessage.value || teamErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.playerId) {
@@ -233,6 +236,7 @@ const teamErrorMessage = computed(() => {
 			</template>
 
 		</SingleInput>
+		
 		<SingleInput>
 			<template #inputName>{{ t('single-player.remarks') }}:</template>
 			<template #inputValue>
@@ -261,7 +265,7 @@ const teamErrorMessage = computed(() => {
 			<template #inputValue>
 				<div class="fles flex-auto w-full flex-col">
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.parent">
-						<option v-for="parent in parents" :value="parent">{{ parent.firstName }} {{ parent.lastName }}
+						<option v-for="parent in parents" :value="parent">{{ parent.lastName }} {{ parent.firstName }}
 						</option>
 					</select>
 				</div>
@@ -277,11 +281,9 @@ const teamErrorMessage = computed(() => {
 			</SingleButton>
 		</div>
 	</div>
-
-	<ErrorMessage v-else-if="isFinished">
-		{{ t('error-messages.no-data') }}
-	</ErrorMessage>
-	<ErrorMessage v-else-if="error"></ErrorMessage>
+	
+	<ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
+	
 </template>
 
 <route lang="yaml">

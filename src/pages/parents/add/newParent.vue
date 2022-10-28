@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import 'v-calendar/dist/style.css';
 const { availableLocales, locale } = useI18n()
 
 const locales = availableLocales
@@ -9,18 +8,16 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 <template>
   <BackgroundFrame>
-    <template v-slot:data>
+    <template #data>
       <MyCenterElement>
-        <template v-slot>
-          <MiniWhiteFrame>
-            <template v-slot:icon>
+        <MiniWhiteFrame>
+            <template #icon>
               <img src="../../../assets/parent-icon2.png" class="h-150px cursor-pointer" />
             </template>
-            <template v-slot:attributes>
+            <template #attributes>
               <NewParentForm></NewParentForm>
             </template>
           </MiniWhiteFrame>
-        </template>
       </MyCenterElement>
     </template>
   </BackgroundFrame>

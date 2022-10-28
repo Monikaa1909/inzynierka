@@ -78,6 +78,7 @@ single-parent:
   phone-number: Phone number
   email: E-mail
   remarks: Remarks
+  academy: Academy
 single-object:
   name: Name
   street: Street

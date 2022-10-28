@@ -43,7 +43,7 @@ const cancelDeleting = () => {
   isDeleting.value = false
 }
 
-const confirmDeletePlayer = async () => {
+const confirmDelete = async () => {
   isDeleting.value = false
   await useFetch(`/api/player/${props.id}`).delete()
   return router.go(-1)
@@ -52,17 +52,20 @@ const confirmDeletePlayer = async () => {
 
 <template>
   <BackgroundFrame>
+
     <template #data>
 
-      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDeletePlayer="confirmDeletePlayer">
-        <template #deletedItem> 
-          {{player.firstName}} {{player.lastName}}
+      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting"
+        @confirmDelete="confirmDelete">
+        <template #deletedItem>
+          {{ player.firstName }} {{ player.lastName }}
         </template>
       </DeletingMesageDialog>
-    
+
       <LoadingCircle v-else-if="isFetching"></LoadingCircle>
 
       <MyCenterElement v-if="isFinished && !isDeleting && !error && player">
+
         <MiniWhiteFrame>
           <template #nav>
             <button @click="goEditPlayer(props.id)">
@@ -75,56 +78,57 @@ const confirmDeletePlayer = async () => {
           <template #icon>
             <img src="../../assets/player-icon2.png" class="h-150px" />
           </template>
+
           <template #attributes>
 
-              <SingleAttribute>
-                <template #attributeName>{{ t('single-player.first-name') }}:</template>
-                <template #attributeValue>{{ player.firstName }}</template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-player.first-name') }}:</template>
+              <template #attributeValue>{{ player.firstName }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute>
-                <template #attributeName>{{ t('single-player.last-name') }}:</template>
-                <template #attributeValue>{{ player.lastName }}</template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-player.last-name') }}:</template>
+              <template #attributeValue>{{ player.lastName }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute>
-                <template #attributeName>{{ t('single-player.birthday-date') }}:</template>
-                <template #attributeValue>{{ player.birthdayDate }}</template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-player.birthday-date') }}:</template>
+              <template #attributeValue>{{ player.birthdayDate }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute>
-                <template #attributeName>{{ t('single-player.nationality') }}:</template>
-                <template #attributeValue>{{ player.nationality }}</template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-player.nationality') }}:</template>
+              <template #attributeValue>{{ player.nationality }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute>
-                <template #attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
-                <template #attributeValue>
-                  <p v-if="new Date(player.validityOfMedicalExaminations) > today">
-                    {{ player.validityOfMedicalExaminations }}
-                  </p> 
-                  <p v-else class="text-red">
-                    {{ player.validityOfMedicalExaminations }}
-                  </p>
-                </template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-player.validity-of-medical-examinations') }}:</template>
+              <template #attributeValue>
+                <p v-if="new Date(player.validityOfMedicalExaminations) > today">
+                  {{ player.validityOfMedicalExaminations }}
+                </p>
+                <p v-else class="text-red">
+                  {{ player.validityOfMedicalExaminations }}
+                </p>
+              </template>
+            </SingleAttribute>
 
-              <SingleAttribute>
-                <template #attributeName>{{ t('single-player.team') }}:</template>
-                <template #attributeValue>{{ player.team?.teamName }}</template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-player.team') }}:</template>
+              <template #attributeValue>{{ player.team?.teamName }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute v-if="player?.parent">
-                <template #attributeName>{{ t('single-player.parent') }}:</template>
-                <template #attributeValue>{{ player.parent.firstName }} {{ player.parent.lastName }}</template>
-              </SingleAttribute>
+            <SingleAttribute v-if="player?.parent">
+              <template #attributeName>{{ t('single-player.parent') }}:</template>
+              <template #attributeValue>{{ player.parent.firstName }} {{ player.parent.lastName }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute>
-                <template #attributeName>{{ t('single-player.remarks') }}:</template>
-                <template #attributeValue>{{ player?.remarks }}</template>
-              </SingleAttribute>
-            </template>
-            
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-player.remarks') }}:</template>
+              <template #attributeValue>{{ player?.remarks }}</template>
+            </SingleAttribute>
+          </template>
+
           <template #footer>
             <SingleButton @click="router.go(-1)">
               <template #buttonName>{{ t('button.back') }}</template>
@@ -133,10 +137,10 @@ const confirmDeletePlayer = async () => {
         </MiniWhiteFrame>
       </MyCenterElement>
 
-      <ErrorMessage v-else-if="!isDeleting && isFinished && !player">
-        {{t('error-messages.no-data')}}
-      </ErrorMessage>
-      <ErrorMessage v-else-if="!isDeleting && error"></ErrorMessage>
+      <ErrorMessageInfo v-else-if="!isDeleting && isFinished && !player">
+        {{ t('error-messages.no-data') }}
+      </ErrorMessageInfo>
+      <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>
   </BackgroundFrame>
 </template>

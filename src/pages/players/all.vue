@@ -54,7 +54,7 @@ const cancelDeleting = () => {
   isDeleting.value = false
 }
 
-const confirmDeletePlayer = async () => {
+const confirmDelete = async () => {
   isDeleting.value = false
   await useFetch(`/api/player/${deletingPlayer.value?._id}`).delete()
   refechPlayers()
@@ -63,6 +63,7 @@ const confirmDeletePlayer = async () => {
 
 <template>
   <BackgroundFrame>
+
     <template #nav>
       <router-link to="/players/statistic" class="flex flex-row gap-2 mr-8 items-center">
         <img src="../../assets/statistic-icon2.png" class="h-48px flex" />
@@ -73,9 +74,10 @@ const confirmDeletePlayer = async () => {
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player') }}</p>
       </router-link>
     </template>
+
     <template #data>
       
-      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDeletePlayer="confirmDeletePlayer">
+      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
         <template #deletedItem> 
           {{deletingPlayer?.firstName}} {{deletingPlayer?.lastName}}
         </template>
@@ -140,10 +142,10 @@ const confirmDeletePlayer = async () => {
         </MiniWhiteFrame>
       </MyGrid>
 
-      <ErrorMessage v-else-if="!isDeleting && isFinished && players?.length === 0">
+      <ErrorMessageInfo v-else-if="!isDeleting && isFinished && players?.length === 0">
         {{t('error-messages.no-data')}}
-      </ErrorMessage>
-      <ErrorMessage v-else-if="!isDeleting && error"></ErrorMessage>
+      </ErrorMessageInfo>
+      <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>
   </BackgroundFrame>
 </template>

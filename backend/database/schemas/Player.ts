@@ -8,7 +8,7 @@ export interface Player {
   lastName: string
   birthdayDate: string
   nationality: string
-  remarks: string
+  remarks?: string
   validityOfMedicalExaminations: string
   team: Team
   parent?: Parent

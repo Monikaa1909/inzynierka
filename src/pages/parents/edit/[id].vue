@@ -4,13 +4,7 @@ const { availableLocales, locale } = useI18n()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const parent = ref({
-  id: 'rfwefew',
-  firstName: 'Jakub',
-  lastName: 'Gruszka',
-  phoneNumber: '123455432',
-  email: 'mdsdoc@wp.pl'
-})
+const props = defineProps<{ id: string }>()
 
 </script>
 
@@ -24,7 +18,7 @@ const parent = ref({
               <img src="../../../assets/team-icon2.png" class="h-150px cursor-pointer" />
             </template>
             <template v-slot:attributes>
-              <NewParentForm :parentId="parent.id">
+              <NewParentForm :parent-id="props.id">
               </NewParentForm>
             </template>
           </MiniWhiteFrame>
