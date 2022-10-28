@@ -6,33 +6,22 @@ const { availableLocales, locale } = useI18n()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const trainer = ref({
-  id: 'trainerid1',
-  firstName: 'Jerzy',
-  lastName: 'Brzęczek',
-  birthdayDate: new Date("1999, 8, 12"),
-  nationality: 'Poland',
-  academy: 'Biebrza Goniądz',
-  phoneNumber: '123644334',
-  email: 'jbrzeczek@gmail.com',
-},)
+const props = defineProps<{ id: string }>()
 
 </script>
 
 <template>
   <BackgroundFrame>
-    <template v-slot:data>
+    <template #data>
       <MyCenterElement>
-        <template v-slot>
-          <MiniWhiteFrame>
-            <template v-slot:icon>
-              <img src="../../../assets/trainer-icon2.png" class="h-150px cursor-pointer" />
-            </template>
-            <template v-slot:attributes>
-              <NewTrainerForm :trainer-id="trainer.id"></NewTrainerForm>
-            </template>
-          </MiniWhiteFrame>
-        </template>
+        <MiniWhiteFrame>
+          <template #:icon>
+            <img src="../../../assets/trainer-icon2.png" class="h-150px cursor-pointer" />
+          </template>
+          <template #attributes>
+            <NewTrainerForm :trainer-id="props.id"></NewTrainerForm>
+          </template>
+        </MiniWhiteFrame>
       </MyCenterElement>
     </template>
   </BackgroundFrame>

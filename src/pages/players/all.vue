@@ -21,8 +21,6 @@ function goToPlayer(playerId: any) {
   return router.push(`/players/${playerId}`)
 }
 
-// const players = ref([] as Omit<Player[], '_id'>)
-
 const {
   data: players,
   isFetching,
@@ -30,17 +28,6 @@ const {
   error,
   execute: refechPlayers
 } = useFetch(`/api/players/${academy}`, { initialData: [] }).json<Player[]>()
-
-// whenever(playersData, (data) => {
-//   data.forEach(element => {
-//     if (element.team?.trainer.academy.academyName === academy)
-//     players.value.push(element)
-//   });
-
-//   players.value.forEach(element => {
-//     console.log(element._id)
-//   });
-// })
 
 const isDeleting = ref(false)
 const deletingPlayer = ref<Player>()

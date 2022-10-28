@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import 'v-calendar/dist/style.css';
-import { Player } from 'backend/database/schemas/Player';
+import { Player } from 'backend/database/schemas/Player'
+
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
@@ -23,7 +23,6 @@ whenever(playerData, (data) => {
   player.value.birthdayDate = new Date(data.birthdayDate).toLocaleDateString(locale.value)
   player.value.validityOfMedicalExaminations = new Date(data.validityOfMedicalExaminations).toLocaleDateString(locale.value)
 })
-
 
 const today = computed(() => {
   return new Date()
@@ -48,11 +47,11 @@ const confirmDelete = async () => {
   await useFetch(`/api/player/${props.id}`).delete()
   return router.go(-1)
 }
+
 </script>
 
 <template>
   <BackgroundFrame>
-
     <template #data>
 
       <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting"

@@ -1,185 +1,247 @@
 <script setup lang="ts">
-import { Form, Field, ErrorMessage } from 'vee-validate';
-import { DatePicker } from 'v-calendar';
+import { validateFirstName, validateEmail, validatePhoneNumber, validateNationality, requiredField } from '~/validatesFunctions'
+
+import type { Academy } from 'backend/database/schemas/Academy'
+import { Trainer } from 'backend/database/schemas/Trainer'
+import { DatePicker } from 'v-calendar'
+
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
+
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const props = defineProps({
-	trainerId: {
-		type: String,
-		required: false
-	}
-})
+const academy = 'AP Jagiellonia Białystok'
 
-const trainer = ref({
-	id: 'trainerid1',
-	firstName: 'Jerzy',
-	lastName: 'Brzęczek',
-	birthdayDate: new Date("1999, 8, 12"),
-	nationality: 'Poland',
-	academy: 'Biebrza Goniądz',
-	phoneNumber: '123644334',
-	email: 'jbrzeczek@gmail.com',
-	remarks: ''
-})
+const props = defineProps<{ trainerId?: string }>()
+
+const url = computed(() => props.trainerId
+	? `/api/trainer/${props.trainerId}`
+	: '/api/trainer'
+)
+
+const trainer = ref({} as Omit<Trainer, '_id'>)
 
 if (!props.trainerId) {
-	trainer.value.firstName = ''
-	trainer.value.lastName = ''
-	trainer.value.birthdayDate = new Date()
-	trainer.value.nationality = ''
-	trainer.value.academy = ''
-	trainer.value.phoneNumber = ''
-	trainer.value.email = ''
-	trainer.value.remarks = ''
+	trainer.value = {
+		firstName: '',
+		lastName: '',
+		birthdayDate: '',
+		nationality: '',
+		remarks: '',
+		academy: undefined!,
+		phoneNumber: '',
+		email: ''
+	}
 }
 
-const onSubmit = (values: any) => { }
+const {
+	data: trainerData,
+	isFetching: isTrainerFetching,
+	isFinished: isTrainerFinished,
+	error: trainerError,
+} = useFetch(url, { initialData: {} }).json<Trainer>()
 
-const validateName = (value: any) => {
-	if (!value) {
-		return 'This field is required';
-	}
-	const regex1 = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/i;
-	const regex2 = /^[\s]*$/i;
-	const regex3 = /^[\s][.]*/i;
-	const regex4 = /[.]*[\s]$/i;
-	if (regex2.test(value) || !regex1.test(value) || regex3.test(value) || regex4.test(value)) {
-		return 'This field must be a valid name';
-	}
-	return true;
-}
+whenever(trainerData, (data) => {
+	trainer.value = data
+})
 
-const validateNationality = (value: any) => {
-	if (!value) {
-		return 'This field is required';
-	}
-	const regex1 = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ-\s]+$/i;
-	const regex2 = /^[\s]*$/i;
-	const regex3 = /^[\s][.]*/i;
-	const regex4 = /[.]*[\s]$/i;
-	if (regex2.test(value) || !regex1.test(value) || regex3.test(value) || regex4.test(value)) {
-		return 'This field must be a valid name';
-	}
-	return true;
-}
+const {
+	data: academyData,
+	isFetching: isAcademyFetching,
+	isFinished: isAcademyFinished,
+	error: academyError,
+} = useFetch(`/api/academy/${academy}`, { initialData: {} }).json<Academy>()
 
-const validatePhoneNumber = (value: any) => {
-	if (!value) {
-		return 'This field is required';
-	}
-	const regex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/i;
-	if (!regex.test(value)) {
-		return 'This field must be a valid number';
-	}
-	return true;
-}
+const isFinished = computed(() => {
+	console.log(academyData.value)
+	return isTrainerFinished.value && isAcademyFinished.value
+})
 
-const validateEmail = (value: any) => {
-	if (!value) {
-		return 'This field is required';
-	}
-	const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-	if (!regex.test(value)) {
-		return 'This field must be a valid postal code';
-	}
-	return true;
-}
+const isFetching = computed(() => {
+	return isTrainerFetching.value && isAcademyFetching.value
+})
 
-const cancel = () => {
-	return router.go(-1)
-}
+const error = computed(() => {
+	return trainerError.value && academyError.value
+})
 
+const { execute: saveTrainer, error: saveError } = useFetch(url, { immediate: false }).post(trainer)
+const { execute: updateTrainer, error: updateError } = useFetch(url, { immediate: false }).post(trainer)
+
+const onSubmit = async (values: any) => {
+	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value
+	|| nationalityErrorMessage.value || birthdayDateErrorMessage.value) {
+		alert(t('error-messages.validation-error'))
+	} else {
+		if (!props.trainerId) {
+			if (academyData.value) {
+				trainer.value.academy = academyData.value
+				await saveTrainer()
+				if (saveError.value) {
+					alert(t('error-messages.unknow-error'))
+					return
+				}
+			} else {
+				alert(t('error-messages.unknow-error'))
+					return
+			}
+
+		} else {
+			await updateTrainer()
+			if (updateError.value) {
+				alert(t('error-messages.unknow-error'))
+				return
+			}
+		}
+		return router.push('/trainers/all')
+	}
+ }
+
+const firstNameErrorMessage = computed(() => {
+	if (!validateFirstName(trainer.value.firstName)) {
+		return false
+	}
+	return t(validateFirstName(trainer.value.firstName))
+})
+
+const lastNameErrorMessage = computed(() => {
+	if (!validateFirstName(trainer.value.lastName)) {
+		return false
+	}
+	return t(validateFirstName(trainer.value.lastName))
+})
+
+const phoneNumberErrorMessage = computed(() => {
+	if (!validatePhoneNumber(trainer.value.phoneNumber)) {
+		return false
+	}
+	return t(validatePhoneNumber(trainer.value.phoneNumber))
+})
+
+const emailErrorMessage = computed(() => {
+	if (!validateEmail(trainer.value.email)) {
+		return false
+	}
+	return t(validateEmail(trainer.value.email))
+})
+
+const birthdayDateErrorMessage = computed(() => {
+	if (!requiredField(trainer.value.birthdayDate)) {
+		return false
+	}
+	return t(requiredField(trainer.value.birthdayDate))
+})
+
+const nationalityErrorMessage = computed(() => {
+	if (!validateNationality(trainer.value.nationality)) {
+		return false
+	}
+	return t(validateNationality(trainer.value.nationality))
+})
 </script>
 
 <template>
-	<Form @submit="onSubmit" class="w-full flex flex-col gap-2 place-content-center">
+	<LoadingCircle v-if="isFetching"></LoadingCircle>
+
+	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-trainer.first-name') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="trainer.firstName" name="firstName" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateName" />
+			<template #inputName>{{ t('single-trainer.first-name') }}:</template>
+			<template #inputValue>
+				<input v-model="trainer.firstName" name="firstName" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="firstName" />
+			<template #errorMessage v-if="firstNameErrorMessage">
+				{{ firstNameErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-trainer.last-name') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="trainer.lastName" name="lastName" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateName" />
+			<template #inputName>{{ t('single-trainer.last-name') }}:</template>
+			<template #inputValue>
+				<input v-model="trainer.lastName" name="lastName" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="lastName" />
+			<template #errorMessage v-if="lastNameErrorMessage">
+				{{ lastNameErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-trainer.birthday-date') }}:</template>
-			<template v-slot:inputValue>
-				<DatePicker v-model="trainer.birthdayDate" format="yyyy-MM-dd" :clearable="false"
-					class="inline-block h-full" :locale='locale'>
+			<template #inputName>{{ t('single-trainer.birthday-date') }}:</template>
+			<template #inputValue>
+				<DatePicker v-model="trainer.birthdayDate" format="yyyy-MM-dd" :clearable="false" class="inline-block h-full"
+					:locale='locale'>
 					<template v-slot="{ inputValue, togglePopover }">
 						<div class="flex items-center">
 							<button class="bg-#143547 flex hover:bg-#143547-200 text-white" @click="togglePopover()">
 								<img src="../../assets/calendar-button.png" class="h-32px " />
 							</button>
 							<input :value="inputValue"
-								class="bg-white text-gray-700 w-full h-32px py-1 px-2 appearance-none border focus:outline-none focus:border-blue-500"
+								class="bg-white text-gray-700 w-full h-32px py-1 px-2 appearance-none border focus:outline-none border-#143547"
 								readonly />
 						</div>
 					</template>
 				</DatePicker>
 			</template>
-		</SingleInput>
-		<SingleInput>
-			<template v-slot:inputName>{{ t('single-trainer.nationality') }}::</template>
-			<template v-slot:inputValue>
-				<Field v-model="trainer.nationality" name="nationality" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNationality" />
-			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="nationality" />
+			<template v-if="birthdayDateErrorMessage" #errorMessage>
+				{{ birthdayDateErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-trainer.phone-number') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="trainer.phoneNumber" name="phoneNumber" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validatePhoneNumber" />
+			<template #inputName>{{ t('single-trainer.nationality') }}::</template>
+			<template #inputValue>
+				<input v-model="trainer.nationality" name="nationality" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"  />
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="phoneNumber" />
+			<template #errorMessage v-if="nationalityErrorMessage">
+				{{ nationalityErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-trainer.email') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="trainer.email" name="email" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateEmail" />
+			<template #inputName>{{ t('single-trainer.phone-number') }}:</template>
+			<template #inputValue>
+				<input v-model="trainer.phoneNumber" name="phoneNumber" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="email" />
+			<template #errorMessage v-if="phoneNumberErrorMessage">
+				{{ phoneNumberErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-trainer.remarks') }}:</template>
-			<template v-slot:inputValue>
+			<template #inputName>{{ t('single-trainer.email') }}:</template>
+			<template #inputValue>
+				<input v-model="trainer.email" name="email" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+			</template>
+			<template #errorMessage v-if="emailErrorMessage">
+				{{ emailErrorMessage }}
+			</template>
+		</SingleInput>
+
+		<SingleInput>
+			<template #inputName>{{ t('single-trainer.remarks') }}:</template>
+			<template #inputValue>
 				<textarea v-model="trainer.remarks" type="textarea" placeholder=""
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"></textarea>
 			</template>
 		</SingleInput>
+
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
-			<SingleButton>
-				<template v-slot:buttonName>{{ t('button.save') }}</template>
+			<SingleButton @click="onSubmit">
+				<template #buttonName>{{ t('button.save') }}</template>
 			</SingleButton>
-			<SingleButton @click="cancel()">
-				<template v-slot:buttonName>{{ t('button.cancel') }}</template>
+			<SingleButton @click="router.go(-1)">
+				<template #buttonName>{{ t('button.cancel') }}</template>
 			</SingleButton>
 		</div>
-	</Form>
+	</div>
+
+	<ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
 </template>
 
 <route lang="yaml">

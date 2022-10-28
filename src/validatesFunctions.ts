@@ -28,7 +28,8 @@ export const validateNationality = (value: any) => {
 
 export const validatePhoneNumber = (value: any) => {
 	if (!value) {
-		return 'error-messages.required-field';
+		// return 'error-messages.required-field';
+		return '';
 	}
 	const regex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/i;
 	if (!regex.test(value)) {
@@ -39,7 +40,8 @@ export const validatePhoneNumber = (value: any) => {
 
 export const validateEmail = (value: any) => {
 	if (!value) {
-		return 'error-messages.required-field';
+		// return 'error-messages.required-field'
+		return '';
 	}
 	const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 	if (!regex.test(value)) {

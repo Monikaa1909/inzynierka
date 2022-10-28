@@ -54,6 +54,7 @@ const confirmDelete= async () => {
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-parent')}}</p>
       </router-link>
     </template>
+    
     <template #data>
       <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
         <template #deletedItem> 

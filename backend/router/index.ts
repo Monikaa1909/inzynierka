@@ -4,6 +4,7 @@ import models from '../database/models'
 import { Player } from 'backend/database/schemas/Player'
 import { Parent } from 'backend/database/schemas/Parent'
 import { Team } from 'backend/database/schemas/Team'
+import { Trainer } from 'backend/database/schemas/Trainer'
 
 const router = express.Router()
 export default router
@@ -175,6 +176,81 @@ router.delete('/parent/:id', async (req, res) => {
     try {
         const parent = await models.Parent.findOneAndDelete({ _id: req.params.id })
         res.send(parent)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/trainers/:academy', async (req, res) => {
+    try {
+        console.log(req.params.academy)
+        const trainer = await models.Trainer.find()
+            .sort({lastName: 1, firstName: 1})
+            .populate({
+                path: 'academy',
+                model: 'Academy',
+                match: { academyName: req.params.academy }           
+            }) as Trainer[]
+
+        res.send(trainer.filter(item => item.academy != null))
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/trainer/:id', async (req, res) => {
+    try {
+        const trainer = await models.Trainer.findById(req.params.id)
+        res.send(trainer)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/trainer', async (req, res) => {
+    try {
+        const trainer = models.Trainer.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(trainer)
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error)
+    }
+})
+
+router.post('/trainer/:id', async (req, res) => {
+    try {
+        const trainer = await models.Trainer.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                birthdayDate: req.body.birthdayDate,
+                nationality: req.body.nationality,
+                remarks: req.body.remarks,
+                academy: req.body.academy,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(trainer)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.delete('/trainer/:id', async (req, res) => {
+    try {
+        const trainer = await models.Trainer.findOneAndDelete({ _id: req.params.id })
+        res.send(trainer)
     } catch (error) {
         res.status(400).send(error)
     }

@@ -67,7 +67,6 @@ const { execute: updateParent, error: updateError } = useFetch(url, { immediate:
 
 const onSubmit = async (values: any) => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value) {
-		console.log(firstNameErrorMessage.value + ' ' + lastNameErrorMessage.value + ' ' + phoneNumberErrorMessage.value + ' ' + emailErrorMessage.value)
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.parentId) {
@@ -189,6 +188,8 @@ const emailErrorMessage = computed(() => {
 			</SingleButton>
 		</div>
 	</div>
+
+	<ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
 </template>
 
 <route lang="yaml">

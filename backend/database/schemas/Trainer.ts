@@ -9,7 +9,8 @@ export interface Trainer {
   nationality: string
   academy: Academy
   phoneNumber: string
-  email: string
+  email: string,
+  remarks?: string
 }
 
 export default new Schema({
@@ -40,5 +41,9 @@ export default new Schema({
   email: {
     type: String,
     match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'The e-mail address is invalid']
-  }
+  },
+  remarks: {
+    type: String,
+    required: false
+  },
 })
