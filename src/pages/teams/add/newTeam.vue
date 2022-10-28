@@ -4,18 +4,16 @@
 
 <template>
 	<BackgroundFrame>
-		<template v-slot:data>
+		<template #data>
 			<MyCenterElement>
-				<template v-slot>
-					<MiniWhiteFrame>
-						<template v-slot:icon>
-							<img src="../../../assets/team-icon2.png" class=" h-150px" />
-						</template>
-						<template v-slot:attributes>
-							<NewTeamForm></NewTeamForm>
-						</template>
-					</MiniWhiteFrame>
-				</template>
+				<MiniWhiteFrame>
+					<template #icon>
+						<img src="../../../assets/team-icon2.png" class=" h-150px" />
+					</template>
+					<template #attributes>
+						<NewTeamForm></NewTeamForm>
+					</template>
+				</MiniWhiteFrame>
 			</MyCenterElement>
 		</template>
 	</BackgroundFrame>

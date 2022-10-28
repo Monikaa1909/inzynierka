@@ -1,11 +1,5 @@
 <script setup lang="ts">
 
-import 'v-calendar/dist/style.css';
-const { availableLocales, locale } = useI18n()
-
-const locales = availableLocales
-locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
 const props = defineProps<{ id: string }>()
 
 </script>

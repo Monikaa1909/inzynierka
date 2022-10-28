@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Player } from 'backend/database/schemas/Player';
+import type { Player } from 'backend/database/schemas/Player'
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -46,6 +46,7 @@ const confirmDelete = async () => {
   await useFetch(`/api/player/${deletingPlayer.value?._id}`).delete()
   refechPlayers()
 }
+
 </script>
 
 <template>

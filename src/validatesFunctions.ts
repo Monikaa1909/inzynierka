@@ -106,3 +106,33 @@ export const validateCity = (value: any) => {
 	}
 	return '';
 }
+
+export const validateStartYear = (value: any, endYear: any) => {
+	if (!value) {
+		return 'The field with the lower year is required';
+	}
+	const regex = /^[1-2]{1}[0-9]{3}/i;
+	if (!regex.test(value)) {
+		return 'The field with the lower year must be a valid number';
+	}
+	if (endYear && regex.test(endYear)) {
+		if (value > endYear)
+			return 'The lower year must be smaller than higher year'
+	}
+	return '';
+}
+
+export const validateEndYear = (value: any, startYear: any) => {
+	if (!value) {
+		return 'The field with the higher year is required';
+	}
+	const regex = /^[1-2]{1}[0-9]{3}/i;
+	if (!regex.test(value)) {
+		return 'The field with the higher year must be a valid number';
+	}
+	if (startYear && regex.test(startYear)) {
+		if (value < startYear)
+			return 'The higher year must be bigger than lower year'
+	}
+	return '';
+}

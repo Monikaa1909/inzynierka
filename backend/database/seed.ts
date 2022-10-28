@@ -62,6 +62,8 @@ export const seedDatabase = async () => {
     const team1 = new models.Team({
         teamName: 'Młodzik D1',
         trainer: trainer1,
+        startYear: 2010,
+        endYear: 2011
     });
     team1.save(function (err) {
         if (err) return console.log(err.message);
@@ -70,6 +72,8 @@ export const seedDatabase = async () => {
     const team2 = new models.Team({
         teamName: 'Trampkarz C1',
         trainer: trainer2,
+        startYear: 2009,
+        endYear: 2010
     });
     team2.save(function (err) {
         if (err) return console.log(err.message);
@@ -78,6 +82,8 @@ export const seedDatabase = async () => {
     const team3 = new models.Team({
         teamName: 'Junior młodszy B1',
         trainer: trainer1,
+        startYear: 2008,
+        endYear: 2009
     });
     team3.save(function (err) {
         if (err) return console.log(err.message);

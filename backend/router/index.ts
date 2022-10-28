@@ -351,8 +351,60 @@ router.get('/teams/:academy', async (req, res) => {
 })
 
 router.get('/team/:id', async (req, res) => {
-    const team = await models.Team.find({ _id: req.params.id })
-    res.send(team)
+    try {
+        const team = await models.Team.findById(req.params.id)
+            .populate({
+                path: 'trainer',
+                model: 'Trainer',
+            })
+        res.send(team)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/team', async (req, res) => {
+    try {
+        const team = models.Team.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(team)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/team/:id', async (req, res) => {
+    try {
+        const team = await models.Team.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                teamName: req.body.teamName,
+                startYear: req.body.startYear,
+                endYear: req.body.endYear,
+                trainer: req.body.trainer,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(team)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.delete('/team/:id', async (req, res) => {
+    try {
+        const team = await models.Team.findOneAndDelete({ _id: req.params.id })
+        res.send(team)
+    } catch (error) {
+        res.status(400).send(error)
+    }
 })
 
 router.get('/:academy/matches', async (req, res) => {
