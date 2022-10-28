@@ -1,21 +1,35 @@
 <script setup lang="ts">
+import { SportsFacility } from 'backend/database/schemas/SportsFacility';
+
 const { t } = useI18n()
 const router = useRouter()
 
-const object = {
-  name: 'Stadion Miejski w Białymstoku',
-  street: 'Słoneczna',
-  houseNumber: 1,
-  postalCode: '15-323',
-  city: 'Białystok',
-  remarks: 'Brak oświetlenia'
-}
+const props = defineProps<{ id: string }>()
+
+const {
+  data: sportsFacility,
+  isFinished,
+  isFetching,
+  error
+} = useFetch(`/api/sportsFacility/${props.id}`, { initialData: {} }).json<SportsFacility>()
 
 const goEditObject = (objectId: any) => {
   return router.push(`/sportsFacilities/edit/${objectId}`)
 }
 
-const back = () => {
+const isDeleting = ref(false)
+
+const deleteSportsFacility = () => {
+  isDeleting.value = true
+}
+
+const cancelDeleting = () => {
+  isDeleting.value = false
+}
+
+const confirmDelete = async () => {
+  isDeleting.value = false
+  await useFetch(`/api/sportsFacility/${props.id}`).delete()
   return router.go(-1)
 }
 
@@ -23,54 +37,70 @@ const back = () => {
 
 <template>
   <BackgroundFrame>
-    <template v-slot:data>
-      <MyCenterElement>
-        <template v-slot>
-          <MiniWhiteFrame>
-            <template v-slot:nav>
-              <button @click="goEditObject(object.name)">
-                <img src="../../assets/edit-icon.png" class="h-24px" />
-              </button>
-              <button>
-                <img src="../../assets/delete-icon.png" class="h-24px" />
-              </button>
-            </template>
-            <template v-slot:icon>
-              <img src="../../assets/object-icon2.png" class=" h-150px" />
-            </template>
-            <template v-slot:attributes>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.name') }}:</template>
-                <template v-slot:attributeValue>{{ object.name }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.street') }}:</template>
-                <template v-slot:attributeValue>{{ object.street }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.number') }}:</template>
-                <template v-slot:attributeValue>{{ object.houseNumber }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.postal-code') }}:</template>
-                <template v-slot:attributeValue>{{ object.postalCode }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.city') }}:</template>
-                <template v-slot:attributeValue>{{ object.city }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.remarks') }}:</template>
-                <template v-slot:attributeValue>{{ object.remarks }}</template>
-              </SingleAttribute>
-            </template>
-            <template v-slot:footer>
-              <SingleButton @click="back">
-                <template v-slot:buttonName>{{ t('button.back') }}</template>
-              </SingleButton>
-            </template>
-          </MiniWhiteFrame>
+    <template #data>
+
+      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
+        <template #deletedItem>
+          {{ sportsFacility?.name }}
         </template>
+      </DeletingMesageDialog>
+
+      <LoadingCircle v-else-if="isFetching"></LoadingCircle>
+
+      <MyCenterElement v-if="isFinished && !isDeleting && !error && sportsFacility">
+        
+        <MiniWhiteFrame>
+          <template #nav>
+            <button @click="goEditObject(sportsFacility?._id)">
+              <img src="../../assets/edit-icon.png" class="h-24px" />
+            </button>
+            <button @click="deleteSportsFacility()">
+              <img src="../../assets/delete-icon.png" class="h-24px" />
+            </button>
+          </template>
+
+          <template #icon>
+            <img src="../../assets/object-icon2.png" class=" h-150px" />
+          </template>
+
+          <template #attributes>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.name') }}:</template>
+              <template #attributeValue>{{ sportsFacility?.name }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.street') }}:</template>
+              <template #attributeValue>{{ sportsFacility?.street }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.number') }}:</template>
+              <template #attributeValue>{{ sportsFacility?.houseNumber }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.postal-code') }}:</template>
+              <template #attributeValue>{{ sportsFacility?.postalCode }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.city') }}:</template>
+              <template #attributeValue>{{ sportsFacility?.city }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.remarks') }}:</template>
+              <template #attributeValue>{{ sportsFacility?.remarks }}</template>
+            </SingleAttribute>
+
+          </template>
+          <template v-slot:footer>
+            <SingleButton @click="router.go(-1)">
+              <template #buttonName>{{ t('button.back') }}</template>
+            </SingleButton>
+          </template>
+        </MiniWhiteFrame>
       </MyCenterElement>
     </template>
   </BackgroundFrame>

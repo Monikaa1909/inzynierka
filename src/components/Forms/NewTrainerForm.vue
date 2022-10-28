@@ -2,7 +2,7 @@
 import { validateFirstName, validateEmail, validatePhoneNumber, validateNationality, requiredField } from '~/validatesFunctions'
 
 import type { Academy } from 'backend/database/schemas/Academy'
-import { Trainer } from 'backend/database/schemas/Trainer'
+import type{ Trainer } from 'backend/database/schemas/Trainer'
 import { DatePicker } from 'v-calendar'
 
 const { t, availableLocales, locale } = useI18n()

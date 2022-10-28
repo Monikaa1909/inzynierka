@@ -1,4 +1,17 @@
 import { Schema } from 'mongoose'
+import { Academy } from './Academy'
+
+export interface SportsFacility {
+  _id: string
+  name: string
+  academy: Academy
+  street: string
+  houseNumber: string
+  city: string
+  postalCode: string,
+  remarks?: string
+}
+
 
 export default new Schema({
   name: {
@@ -29,5 +42,9 @@ export default new Schema({
     type: String,
     required: true,
     match: [/^[0-9]{2}-[0-9]{3}$/, 'The postal code is invalid']
+  },
+  remarks: {
+    type: String,
+    required: false
   }
 })

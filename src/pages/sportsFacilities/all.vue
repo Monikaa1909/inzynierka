@@ -1,111 +1,117 @@
 <script setup lang="ts">
+import { SportsFacility } from 'backend/database/schemas/SportsFacility';
+
 const { t } = useI18n()
 const router = useRouter()
 
-const sportsFacilities = ref([
-  {
-    id: 'sportsFacilitiesid1',
-    name: 'Stadion Miejski w Białymstoku',
-    street: 'Słoneczna',
-    houseNumber: 1,
-    postalCode: '15-323',
-    city: 'Białystok',
-  },
-  {
-    id: 'sportsFacilitiesid2',
-    name: 'Orlik na Kwiatowej',
-    street: 'Kwiatowa',
-    houseNumber: 13,
-    postalCode: '15-323',
-    city: 'Białystok',
-  },
-  {
-    id: 'sportsFacilitiesid3',
-    name: 'Stadion Miejski "Zwierzyniec"',
-    street: 'Zwierzyniecka',
-    houseNumber: 16,
-    postalCode: '15-323',
-    city: 'Białystok',
-  },
-  {
-    id: 'sportsFacilitiesid4',
-    name: 'Orlik szkolny',
-    street: 'Kolorowa',
-    houseNumber: 1,
-    postalCode: '15-323',
-    city: 'Białystok',
-  },
-  {
-    id: 'sportsFacilitiesid5',
-    name: 'Stadion Miejski na Zielonej',
-    street: 'Zielona',
-    houseNumber: 5,
-    postalCode: '15-323',
-    city: 'Białystok',
-  }
-])
+const academy = 'AP Jagiellonia Białystok'
 
 const goEditObject = (sportsFacilityId: any) => {
   return router.push(`/sportsFacilities/edit/${sportsFacilityId}`)
 }
 
-const goAddNewSportsFacility = () => {
-  return router.push(`/sportsFacilities/add/newSportsFacility`)
-}
-
 function goToObject(sportsFacilityId: any) {
   return router.push(`/sportsFacilities/${sportsFacilityId}`)
+}
+
+const {
+  data: sportsFacilities,
+  isFetching,
+  isFinished,
+  error,
+  execute: refechSportsFacilities
+} = useFetch(`/api/sportsFacilities/${academy}`, { initialData: [] }).json<SportsFacility[]>()
+
+const isDeleting = ref(false)
+const deletingSportsFacility = ref<SportsFacility>()
+
+const deleteSportsFacility = (sportsFacility: SportsFacility) => {
+  isDeleting.value = true
+  deletingSportsFacility.value = sportsFacility
+}
+
+const cancelDeleting = () => {
+  isDeleting.value = false
+}
+
+const confirmDelete = async () => {
+  isDeleting.value = false
+  await useFetch(`/api/sportsFacility/${deletingSportsFacility.value?._id}`).delete()
+  refechSportsFacilities()
 }
 </script>
 
 <template>
   <BackgroundFrame>
-    <template v-slot:nav>
-      <button @click="goAddNewSportsFacility()" class="flex flex-row gap-2 items-center">
+
+    <template #nav>
+      <router-link to="/sportsFacilities/add/newSportsFacility" class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
-        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-object')}}</p>
-      </button>
+        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-object') }}</p>
+      </router-link>
     </template>
-    <template v-slot:data>
-      <MyGrid class="lg:(grid-cols-2) md:(grid-cols-2)">
-        <template v-slot>
-          <MiniWhiteFrame v-for="sportsFacility in sportsFacilities" v-bind:key="sportsFacility.id" class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToObject(sportsFacility.name)"> 
-            <template v-slot:nav>
-              <button @click="goEditObject(sportsFacility.id)">
-                <img src="../../assets/edit-icon.png" class="h-24px" />
-              </button>
-              <button>
-                <img src="../../assets/delete-icon.png" class="h-24px" />
-              </button>
-            </template>
-            <template v-slot:icon>
-              <img src="../../assets/object-icon2.png" class="h-150px" />
-            </template>
-            <template v-slot:attributes>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.name') }}:</template>
-                <template v-slot:attributeValue>{{ sportsFacility.name }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.street') }}:</template>
-                <template v-slot:attributeValue>{{ sportsFacility.street }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.number') }}:</template>
-                <template v-slot:attributeValue>{{ sportsFacility.houseNumber }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.postal-code') }}:</template>
-                <template v-slot:attributeValue>{{ sportsFacility.postalCode }}</template>
-              </SingleAttribute>
-              <SingleAttribute>
-                <template v-slot:attributeName>{{ t('single-object.city') }}:</template>
-                <template v-slot:attributeValue>{{ sportsFacility.city }}</template>
-              </SingleAttribute>
-            </template>
-          </MiniWhiteFrame>
+
+    <template #data>
+
+      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
+        <template #deletedItem>
+          {{ deletingSportsFacility?.name }}
         </template>
+      </DeletingMesageDialog>
+
+      <LoadingCircle v-else-if="isFetching"></LoadingCircle>
+
+      <MyGrid v-if="isFinished && !isDeleting && !error && sportsFacilities?.length != 0"
+        class="lg:(grid-cols-2) md:(grid-cols-2)">
+        <MiniWhiteFrame v-for="sportsFacility in sportsFacilities" v-bind:key="sportsFacility._id"
+          class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToObject(sportsFacility._id)">
+          
+          <template #nav>
+            <button @click="goEditObject(sportsFacility._id)">
+              <img src="../../assets/edit-icon.png" class="h-24px" />
+            </button>
+            <button @click="deleteSportsFacility(sportsFacility)">
+              <img src="../../assets/delete-icon.png" class="h-24px" />
+            </button>
+          </template>
+
+          <template #icon>
+            <img src="../../assets/object-icon2.png" class="h-150px" />
+          </template>
+
+          <template #attributes>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.name') }}:</template>
+              <template v-slot:attributeValue>{{ sportsFacility.name }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.street') }}:</template>
+              <template #attributeValue>{{ sportsFacility.street }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.number') }}:</template>
+              <template #attributeValue>{{ sportsFacility.houseNumber }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.postal-code') }}:</template>
+              <template #attributeValue>{{ sportsFacility.postalCode }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-object.city') }}:</template>
+              <template #attributeValue>{{ sportsFacility.city }}</template>
+            </SingleAttribute>
+          </template>
+        </MiniWhiteFrame>
       </MyGrid>
+
+      <ErrorMessageInfo v-else-if="!isDeleting && isFinished && sportsFacilities?.length === 0">
+        {{t('error-messages.no-data')}}
+      </ErrorMessageInfo>
+      <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>
   </BackgroundFrame>
 </template>

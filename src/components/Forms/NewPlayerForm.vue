@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { requiredField, validateFirstName, validateNationality } from '~/validatesFunctions'
-import { Trainer } from 'backend/database/schemas/Trainer'
-import { Player } from 'backend/database/schemas/Player'
 import { DatePicker } from 'v-calendar'
 
+import type { Trainer } from 'backend/database/schemas/Trainer'
+import type { Academy } from 'backend/database/schemas/Academy'
+import type  { Player } from 'backend/database/schemas/Player'
 import type { Parent } from 'backend/database/schemas/Parent'
-import type {Academy} from 'backend/database/schemas/Academy'
 import type { Team } from 'backend/database/schemas/Team'
 
 const { t, availableLocales, locale } = useI18n()

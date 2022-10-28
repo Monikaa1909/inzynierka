@@ -1,160 +1,213 @@
 <script setup lang="ts">
-import { Form, Field, ErrorMessage } from 'vee-validate';
+import { validateName, validateNumber, validateCity, validatePostalCode } from '~/validatesFunctions'
+
+import type { Academy } from 'backend/database/schemas/Academy'
+import type { SportsFacility } from 'backend/database/schemas/SportsFacility'
+
 const { t } = useI18n()
 const router = useRouter()
 
-const props = defineProps({
-	sportsFacilityId: {
-		type: String,
-		required: false
-	}
-})
+const academy = 'AP Jagiellonia Białystok'
 
-const sportsFacility = ref({
-	name: 'Stadion Miejski w Białymstoku',
-	street: 'Słoneczna',
-	houseNumber: '1',
-	postalCode: '15-323',
-	city: 'Białystok',
-	remarks: 'Brak oświetlenia'
-})
+const props = defineProps<{ sportsFacilityId?: string }>()
+
+const url = computed(() => props.sportsFacilityId
+	? `/api/sportsFacility/${props.sportsFacilityId}`
+	: '/api/sportsFacility'
+)
+
+const sportsFacility = ref({} as Omit<SportsFacility, '_id'>)
 
 if (!props.sportsFacilityId) {
-	sportsFacility.value.name = ''
-	sportsFacility.value.street = ''
-	sportsFacility.value.houseNumber = ''
-	sportsFacility.value.postalCode = ''
-	sportsFacility.value.city = ''
-	sportsFacility.value.remarks = ''
+	sportsFacility.value = {
+		name: '',
+		street: '',
+		houseNumber: '',
+		postalCode: '',
+		remarks: '',
+		academy: undefined!,
+		city: '',
+	}
 }
 
-const onSubmit = (values: any) => { }
+const {
+	data: sportsFacilityData,
+	isFetching: isSportsFacilityFetching,
+	isFinished: isSportsFacilityFinished,
+	error: sportsFacilityError,
+} = useFetch(url, { initialData: {} }).json<SportsFacility>()
 
-const validateName = (value: any) => {
-	if (!value) {
-		return 'This field is required';
+whenever(sportsFacilityData, (data) => {
+	sportsFacility.value = data
+})
+
+const {
+	data: academyData,
+	isFetching: isAcademyFetching,
+	isFinished: isAcademyFinished,
+	error: academyError,
+} = useFetch(`/api/academy/${academy}`, { initialData: {} }).json<Academy>()
+
+const isFinished = computed(() => {
+	return isSportsFacilityFinished.value && isAcademyFinished.value
+})
+
+const isFetching = computed(() => {
+	return isSportsFacilityFetching.value && isAcademyFetching.value
+})
+
+const error = computed(() => {
+	return sportsFacilityError.value && academyError.value
+})
+
+const { execute: saveSportsFacility, error: saveError } = useFetch(url, { immediate: false }).post(sportsFacility)
+const { execute: updateSportsFacility, error: updateError } = useFetch(url, { immediate: false }).post(sportsFacility)
+
+const onSubmit = async (values: any) => { 
+	if (nameErrorMessage.value || streetErrorMessage.value || houseNumberErrorMessage.value || postalCodeErrorMessage.value
+	|| cityErrorMessage.value) {
+		alert(t('error-messages.validation-error'))
+	} else {
+		if (!props.sportsFacilityId) {
+			if (academyData.value) {
+				sportsFacility.value.academy = academyData.value
+				await saveSportsFacility()
+				if (saveError.value) {
+					alert(t('error-messages.unknow-error'))
+					return
+				}
+			} else {
+				alert(t('error-messages.unknow-error'))
+					return
+			}
+
+		} else {
+			await updateSportsFacility()
+			if (updateError.value) {
+				alert(t('error-messages.unknow-error'))
+				return
+			}
+		}
+		return router.push('/sportsFacilities/all')
 	}
-	const regex1 = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ0-9-\s]+$/i;
-	const regex2 = /^[\s]*$/i;
-	const regex3 = /^[\s][.]*/i;
-	const regex4 = /[.]*[\s]$/i;
-	if (regex2.test(value) || !regex1.test(value) || regex3.test(value) || regex4.test(value)) {
-		return 'This field must be a valid name';
-	}
-	return true;
 }
 
-const validateNumber = (value: any) => {
-	if (!value) {
-		return 'This field is required';
+const nameErrorMessage = computed(() => {
+	if (!validateName(sportsFacility.value.name)) {
+		return false
 	}
-	const regex = /^[0-9]+$/i;
-	if (!regex.test(value)) {
-		return 'This field must be a valid number';
-	}
-	return true;
-}
+	return t(validateName(sportsFacility.value.name))
+})
 
-const validatePostalCode = (value: any) => {
-	if (!value) {
-		return 'This field is required';
+const streetErrorMessage = computed(() => {
+	if (!validateName(sportsFacility.value.street)) {
+		return false
 	}
-	const regex = /^[0-9]{2}-[0-9]{3}$/;
-	if (!regex.test(value)) {
-		return 'This field must be a valid postal code';
-	}
-	return true;
-}
+	return t(validateName(sportsFacility.value.street))
+})
 
-const validateCity = (value: any) => {
-	if (!value) {
-		return 'This field is required';
+const houseNumberErrorMessage = computed(() => {
+	if (!validateNumber(sportsFacility.value.houseNumber)) {
+		return false
 	}
-	const regex = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ-\s]+$/i;
-	const regex2 = /^[\s]*$/i;
-	const regex3 = /^[\s][.]*/i;
-	const regex4 = /[.]*[\s]$/i;
-	if (!regex.test(value) || regex2.test(value) || regex3.test(value) || regex4.test(value)) {
-		return 'This field must be a valid city name (numbers and special characters are not allowed)';
-	}
-	return true;
-}
+	return t(validateNumber(sportsFacility.value.houseNumber))
+})
 
-const cancel = () => {
-	return router.go(-1)
-}
+const postalCodeErrorMessage = computed(() => {
+	if (!validatePostalCode(sportsFacility.value.postalCode)) {
+		return false
+	}
+	return t(validatePostalCode(sportsFacility.value.postalCode))
+})
+
+const cityErrorMessage = computed(() => {
+	if (!validateCity(sportsFacility.value.city)) {
+		return false
+	}
+	return t(validateCity(sportsFacility.value.city))
+})
 
 </script>
 
 <template>
-	<Form @submit="onSubmit" class="w-full flex flex-col gap-2 place-content-center">
+	<LoadingCircle v-if="isFetching"></LoadingCircle>
+
+	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.name') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.name" name="objectName" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateName" />
+			<template #inputName>{{ t('single-object.name') }}:</template>
+			<template #inputValue>
+				<input v-model="sportsFacility.name" name="objectName" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="objectName" />
+			<template #errorMessage v-if="nameErrorMessage">
+				{{ nameErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.street') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.street" name="street" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateName" />
+			<template #inputName>{{ t('single-object.street') }}:</template>
+			<template #inputValue>
+				<input v-model="sportsFacility.street" name="street" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="street" />
+			<template #errorMessage v-if="streetErrorMessage">
+				{{ streetErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.number') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.houseNumber" name="number" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNumber" />
+			<template #inputName>{{ t('single-object.number') }}:</template>
+			<template #inputValue>
+				<input v-model="sportsFacility.houseNumber" name="number" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="number" />
+			<template #errorMessage v-if="houseNumberErrorMessage">
+				{{ houseNumberErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.postal-code') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.postalCode" name="postalCode" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validatePostalCode" />
+			<template #inputName>{{ t('single-object.postal-code') }}:</template>
+			<template #inputValue>
+				<input v-model="sportsFacility.postalCode" name="postalCode" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="postalCode" />
+			<template #errorMessage v-if="postalCodeErrorMessage">
+				{{ postalCodeErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.city') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.city" name="city" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateCity" />
+			<template #inputName>{{ t('single-object.city') }}:</template>
+			<template #inputValue>
+				<input v-model="sportsFacility.city" name="city" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
 			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="city" />
+			<template #errorMessage v-if="cityErrorMessage">
+				{{ cityErrorMessage }}
 			</template>
 		</SingleInput>
+
 		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.remarks') }}:</template>
-			<template v-slot:inputValue>
+			<template #inputName>{{ t('single-object.remarks') }}:</template>
+			<template #inputValue>
 				<textarea v-model="sportsFacility.remarks" type="textarea" placeholder=""
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"></textarea>
 			</template>
 		</SingleInput>
-		<div
-			class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
-			<SingleButton>
-				<template v-slot:buttonName>{{ t('button.save') }}</template>
+
+		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
+			<SingleButton @click="onSubmit">
+				<template #buttonName>{{ t('button.save') }}</template>
 			</SingleButton>
-			<SingleButton @click="cancel()">
-				<template v-slot:buttonName>{{ t('button.cancel') }}</template>
+			<SingleButton @click="router.go(-1)">
+				<template #buttonName>{{ t('button.cancel') }}</template>
 			</SingleButton>
 		</div>
-	</Form>
+	</div>
+
+	<ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
 </template>
 
 <route lang="yaml">

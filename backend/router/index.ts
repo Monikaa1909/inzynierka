@@ -5,6 +5,7 @@ import { Player } from 'backend/database/schemas/Player'
 import { Parent } from 'backend/database/schemas/Parent'
 import { Team } from 'backend/database/schemas/Team'
 import { Trainer } from 'backend/database/schemas/Trainer'
+import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 
 const router = express.Router()
 export default router
@@ -251,6 +252,78 @@ router.delete('/trainer/:id', async (req, res) => {
     try {
         const trainer = await models.Trainer.findOneAndDelete({ _id: req.params.id })
         res.send(trainer)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/sportsfacilities/:academy', async (req, res) => {
+    try {
+        const sportsFacilities = await models.SportsFacility.find()
+            .sort({name: 1})
+            .populate({
+                path: 'academy',
+                model: 'Academy',
+                match: { academyName: req.params.academy }
+            }) as SportsFacility[]
+
+        res.send(sportsFacilities.filter(item => item.academy != null))
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/sportsFacility/:id', async (req, res) => {
+    try {
+        const sportsFacility = await models.SportsFacility.findById(req.params.id)
+            
+        res.send(sportsFacility)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/sportsFacility', async (req, res) => {
+    try {
+        const sportsFacility = models.SportsFacility.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(sportsFacility)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/sportsFacility/:id', async (req, res) => {
+    try {
+        const sportsFacility = await models.SportsFacility.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                name: req.body.name,
+                academy: req.body.academy,
+                street: req.body.street,
+                houseNumber: req.body.houseNumber,
+                postalCode: req.body.postalCode,
+                city: req.body.city,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(sportsFacility)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.delete('/sportsFacility/:id', async (req, res) => {
+    try {
+        const sportsFacility = await models.SportsFacility.findOneAndDelete({ _id: req.params.id })
+        res.send(sportsFacility)
     } catch (error) {
         res.status(400).send(error)
     }
