@@ -114,7 +114,9 @@ const onSubmit = async () => {
 				return
 			}
 		}
-		return router.push('/players/team/all')
+		
+		if (props.teamId) return router.push(`/players/team/${props.teamId}`)
+		else return router.push('/players/team/all')
 	}
 }
 

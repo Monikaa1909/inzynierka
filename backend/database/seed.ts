@@ -289,9 +289,37 @@ export const seedDatabase = async () => {
     // MATCHES ----------------------------------------------------------------------------
     const match1 = new models.Match({
         team: team1,
-        goalsConceded: 3
+        goalsConceded: 3,
+        goalsScored: 4,
+        opponent: 'Legia Warszawa',
+        date: new Date("2022, 10, 13"),
+        sportsFacility: sportsFacility2
     });
     match1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const match2 = new models.Match({
+        team: team1,
+        goalsConceded: 1,
+        goalsScored: 1,
+        opponent: 'Korona Kielce',
+        date: new Date("2022, 10, 17"),
+        sportsFacility: sportsFacility3
+    });
+    match2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const match3 = new models.Match({
+        team: team3,
+        goalsConceded: 0,
+        goalsScored: 1,
+        opponent: 'Lechia Gdańsk',
+        date: new Date("2022, 10, 24"),
+        sportsFacility: sportsFacility3
+    });
+    match3.save(function (err) {
         if (err) return console.log(err.message);
     });
 
@@ -299,7 +327,7 @@ export const seedDatabase = async () => {
     const matchStatistic1 = new models.MatchStatistic({
         player: player1,
         match: match1,
-        goalsScored: 1
+        goalsScored: 1,
     });
     matchStatistic1.save(function (err) {
         if (err) return console.log(err.message);
@@ -310,6 +338,59 @@ export const seedDatabase = async () => {
         goalsScored: 3
     });
     matchStatistic2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    // TOURNAMENTS ----------------------------------------------------------------------------
+    const tournament1 = new models.Tournament({
+        tournamentName: 'Towarzyski turniej "KopaninaCup"',
+        startDate: new Date("2022, 10, 13"),
+        endDate: new Date("2022, 10, 15"),
+        sportsFacility: sportsFacility3,
+        friendly: true,
+        team: team4
+    });
+    tournament1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const tournament2 = new models.Tournament({
+        tournamentName: 'Turniej o Puchar Burmistrza Wasilkowa',
+        startDate: new Date("2022, 10, 1"),
+        endDate: new Date("2022, 10, 2"),
+        sportsFacility: sportsFacility3,
+        friendly: false,
+        team: team3
+    });
+    tournament2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    // TRAININGS ----------------------------------------------------------------------------
+    const training1 = new models.Training({
+        date: new Date("2022, 10, 5"),
+        sportsFacility: sportsFacility1,
+        team: team4
+    });
+    training1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const training2 = new models.Training({
+        date: new Date("2022, 10, 7"),
+        sportsFacility: sportsFacility1,
+        team: team4
+    });
+    training2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const training3 = new models.Training({
+        date: new Date("2022, 10, 8"),
+        sportsFacility: sportsFacility1,
+        team: team4
+    });
+    training3.save(function (err) {
         if (err) return console.log(err.message);
     });
 

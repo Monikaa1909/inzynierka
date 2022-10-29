@@ -1,10 +1,15 @@
 import express from 'express'
 import { seedDatabase } from '../database/seed'
 import models from '../database/models'
+
+import { Tournament } from 'backend/database/schemas/Tournament'
+import { Training } from 'backend/database/schemas/Training'
+import { Trainer } from 'backend/database/schemas/Trainer'
 import { Player } from 'backend/database/schemas/Player'
 import { Parent } from 'backend/database/schemas/Parent'
+import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
-import { Trainer } from 'backend/database/schemas/Trainer'
+
 import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 
 const router = express.Router()
@@ -424,7 +429,7 @@ router.delete('/team/:id', async (req, res) => {
     }
 })
 
-router.get('/:academy/matches', async (req, res) => {
+router.get('/matches/:academy', async (req, res) => {
     try {
         const matches = await models.Match.find()
             .populate({
@@ -439,15 +444,105 @@ router.get('/:academy/matches', async (req, res) => {
                         match: { name: req.params.academy }
                     }
                 }
-            })
+            }) as Match[]
 
-        res.send(matches)
+        res.send(matches.filter(item => item.team.trainer.academy != null))
     } catch (error) {
         res.status(400).send(error)
     }
 })
 
-router.get('/sportsFacilities', async (req, res) => {
-    const sportsFacilities = await models.SportsFacility.find().populate('academy').populate('address')
-    res.send(sportsFacilities)
+router.get('/matches/team/:team', async (req, res) => {
+    try {
+        const matches = await models.Match.find()
+            .populate({
+                path: 'team',
+                model: 'Team',
+                match: { _id: req.params.team }
+            }) as Match[]
+
+        res.send(matches.filter(item => item.team != null))
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/trainings/:academy', async (req, res) => {
+    try {
+        const trainings = await models.Training.find()
+            .populate({
+                path: 'sportsFacility',
+                model: 'SportsFacility'
+            })
+            .populate({
+                path: 'team',
+                model: 'Team',
+                populate: {
+                    path: 'trainer',
+                    model: 'Trainer',
+                    populate: {
+                        path: 'academy',
+                        model: 'Academy',
+                        match: { name: req.params.academy }
+                    }
+                }
+            }) as Training[]
+        res.send(trainings.filter(item => item.team.trainer.academy != null))
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/trainings/team/:team', async (req, res) => {
+    try {
+        const trainings = await models.Training.find()
+            .populate({
+                path: 'sportsFacility',
+                model: 'SportsFacility'
+            })
+            .populate({
+                path: 'team',
+                model: 'Team',
+                match: { _id: req.params.team }
+            }) as Training[]
+        res.send(trainings.filter(item => item.team != null))
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/tournaments/:academy', async (req, res) => {
+    try {
+        const tournaments = await models.Tournament.find()
+            .populate({
+                path: 'team',
+                model: 'Team',
+                populate: {
+                    path: 'trainer',
+                    model: 'Trainer',
+                    populate: {
+                        path: 'academy',
+                        model: 'Academy',
+                        match: { name: req.params.academy }
+                    }
+                }
+            }) as Tournament[]
+        res.send(tournaments.filter(item => item.team.trainer.academy != null))
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/tournaments/team/:team', async (req, res) => {
+    try {
+        const tournaments = await models.Tournament.find()
+            .populate({
+                path: 'team',
+                model: 'Team',
+                match: { _id: req.params.team }
+            }) as Tournament[]
+        res.send(tournaments.filter(item => item.team != null))
+    } catch (error) {
+        res.status(400).send(error)
+    }
 })

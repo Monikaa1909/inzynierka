@@ -11,7 +11,6 @@ export interface Parent {
   remarks?: string
 }
 
-
 export default new Schema({
   firstName: {
     type: String,

@@ -1,4 +1,16 @@
+import { SportsFacility } from './SportsFacility'
 import { Schema } from 'mongoose'
+import { Team } from './Team'
+
+export interface Match {
+  _id: string
+  goalsScored?: Number
+  goalsConceded?: Number
+  opponent?: string
+  date: Date,
+  team: Team,
+  sportsFacility?: SportsFacility
+}
 
 export default new Schema({
   goalsConceded: {
@@ -20,7 +32,8 @@ export default new Schema({
     default: 'Your opposite team'
   },
   date: {
-    type: Date
+    type: Date,
+    required: [true, 'Missing informations - each match must have a date']
   },
   team: {
     type: Schema.Types.ObjectId,

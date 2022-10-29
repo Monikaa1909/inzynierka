@@ -1,200 +1,181 @@
 <script setup lang="ts">
-import 'v-calendar/dist/style.css';
+import { Tournament } from 'backend/database/schemas/Tournament'
+import { Training } from 'backend/database/schemas/Training';
+import { Match } from 'backend/database/schemas/Match'
+import { Team } from 'backend/database/schemas/Team'
+
 import { Calendar } from 'v-calendar';
+import 'v-calendar/dist/style.css';
+
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const goSpecificDay = (day: any) => {
-  return router.push(`/events/day/${day.id}`)
-}
+const academy = 'AP Jagiellonia Białystok'
+const teamsFilter = ref('all')
 
-const myMatches = [
-  {
-    goalsConceded: 2,
-    goalsScored: 0,
-    opponent: 'Biebrza Goniądz',
-    date: new Date("2022, 10, 11"),
-    team: 'team1',
-    sportFaciility: 'facility1'
-  },
-  {
-    goalsConceded: 1,
-    goalsScored: 3,
-    opponent: 'BVB',
-    date: new Date("2022, 10, 19"),
-    team: 'team1',
-    sportFaciility: 'facility2'
-  },
-  {
-    goalsConceded: 2,
-    goalsScored: 0,
-    opponent: 'Promień Mońki',
-    date: new Date("2022, 10, 23"),
-    team: 'team1',
-    sportFaciility: 'Stadion Miejski w Białymstoku'
-  },
-]
-const myTrainings = [
-  {
-    date: new Date("2022, 10, 3"),
-    team: 'team1',
-    sportFaciility: 'Boisko Mechaniak w Białymstoku'
-  },
-  {
-    date: new Date("2022, 10, 5"),
-    team: 'team2',
-    sportFaciility: 'Stadion Miejski w Białymstoku'
-  },
-  {
-    date: new Date("2022, 10, 12"),
-    team: 'team1',
-    sportFaciility: 'Boisko Mechaniak w Białymstoku'
-  },
-  {
-    date: new Date("2022, 10, 13"),
-    team: 'team2',
-    sportFaciility: 'Stadion Miejski w Białymstoku'
-  },
-  {
-    date: new Date("2022, 10, 18"),
-    team: 'team1',
-    sportFaciility: 'Boisko Mechaniak w Białymstoku'
-  },
-  {
-    date: new Date("2022, 10, 23"),
-    team: 'team2',
-    sportFaciility: 'Stadion Miejski w Białymstoku'
+const urlMatches = computed(() => {
+  if (teamsFilter.value === 'all') {
+    return `/api/matches/${academy}`
+  } else {
+    return `/api/matches/team/${teamsFilter.value}`
   }
-]
-const myTournaments = [
-  {
-    name: 'Tymbark',
-    startDate: new Date("2022, 10, 25"),
-    endDate: new Date("2022, 10, 27"),
-    team: 'team1',
-    sportFaciility: 'Stadion Miejski w Białymstoku'
-  },
-  {
-    name: 'Coca Cola Cup',
-    startDate: new Date("2022, 10, 2"),
-    endDate: new Date("2022, 10, 6"),
-    team: 'team1',
-    sportFaciility: 'Stadion Narodowy w Warszawie'
-  },
-]
+})
 
-interface Match {
-  goalsConceded: number,
-  goalsScored: number,
-  opponent: string,
-  date: Date,
-  team: string,
-  sportFaciility: string
-}
-const matches = ref<Array<Match>>([])
-for (let match of myMatches) {
-  matches.value.push(match)
-}
-
-interface Tournament {
-  name: String,
-  startDate: Date,
-  endDate: Date,
-  team: string,
-  sportFaciility: string
-}
-const tournaments = ref<Array<Tournament>>([])
-for (let tournament of myTournaments) {
-  tournaments.value.push(tournament)
-}
-
-interface Training {
-  date: Date,
-  team: string,
-  sportFaciility: string
-}
-const trainings = ref<Array<Training>>([])
-for (let training of myTrainings) {
-  trainings.value.push(training)
-}
-
-const eventsType = ref('all')
-
-const tournamentsAttributes = ref<Array<any>>([])
-for (let tournament of tournaments.value) {
-  const attribute = {
-    popover: {
-      label: computed(() => (t('events.tournament') + ' - ' + tournament.name))
-    },
-    highlight: {
-      color: 'purple',
-      fillMode: 'light',
-    },
-    dates: { start: tournament.startDate, end: tournament.endDate },
+const urlTrainings = computed(() => {
+  if (teamsFilter.value === 'all') {
+    return `/api/trainings/${academy}`
+  } else {
+    return `/api/trainings/team/${teamsFilter.value}`
   }
-  tournamentsAttributes.value.push(attribute)
-}
+})
+
+const urlTournaments = computed(() => {
+  if (teamsFilter.value === 'all') {
+    return `/api/tournaments/${academy}`
+  } else {
+    return `/api/tournaments/team/${teamsFilter.value}`
+  }
+})
+
+whenever(urlMatches, (data) => {
+  refechMatches()
+})
+
+whenever(urlTournaments, (data) => {
+  refechTournaments()
+})
+
+whenever(urlTrainings, (data) => {
+  refechTrainings()
+})
+
+const {
+  data: teams,
+  isFetching: isTeamsFetching,
+  isFinished: isTeamsFinished,
+  error: teamsError,
+} = useFetch(`/api/teams/${academy}`, { initialData: [] }).json<Team[]>()
+
+const matches = ref([] as Omit<Match[], '_id'>)
+const tournaments = ref([] as Omit<Tournament[], '_id'>)
+const trainings = ref([] as Omit<Training[], '_id'>)
 
 const matchesAttributes = ref<Array<any>>([])
-for (let match of matches.value) {
-  const attribute = {
-    key: 'match',
-    dates: match.date,
-    popover: {
-      label: computed(() => (t('events.match') + ' - ' + match.opponent))
-    },
-    highlight: {
-      color: 'purple',
-      fillMode: 'solid',
-    },
-  }
-  matchesAttributes.value.push(attribute)
-}
+const tournamentsAttributes = ref<Array<any>>([])
+const trainingsAttributes = ref<Array<any>>([])
 
-const trainingAttributes = ref<Array<any>>([])
-for (let training of trainings.value) {
-  const attribute = {
-    key: 'training',
-    dates: training.date,
-    popover: {
-      label: computed(() => (t('events.training') + ' - ' + training.sportFaciility))
-    },
-    dot: 'green'
-  }
-  trainingAttributes.value.push(attribute)
-}
+const {
+  data: matchesData,
+  isFetching: isMatchesFetching,
+  isFinished: isMatchesFinished,
+  error: matchesError,
+  execute: refechMatches
+} = useFetch(urlMatches, { initialData: [] }).json<Match[]>()
+
+whenever(matchesData, (data) => {
+  matchesAttributes.value = []
+  matches.value = data
+  matches.value.map(element => element.date = new Date(element.date).toLocaleDateString(locale.value) as unknown as Date)
+  matches.value.forEach(element => {
+    var attribute = {
+      key: 'match',
+      dates: element.date,
+      popover: {
+        label: computed(() => (t('events.match') + ' - ' + element.opponent))
+      },
+      highlight: {
+        color: 'purple',
+        fillMode: 'solid',
+      },
+    }
+    matchesAttributes.value.push(attribute)
+  })
+})
+
+const {
+  data: tournamentsData,
+  isFetching: isTournamentsFetching,
+  isFinished: isTournamentsFinished,
+  error: tournamentsError,
+  execute: refechTournaments
+} = useFetch(urlTournaments, { initialData: [] }).json<Tournament[]>()
+
+whenever(tournamentsData, (data) => {
+  tournamentsAttributes.value = []
+  tournaments.value = data
+  tournaments.value.map(element => element.startDate = new Date(element.startDate).toLocaleDateString(locale.value) as unknown as Date)
+  tournaments.value.map(element => element.endDate = new Date(element.endDate).toLocaleDateString(locale.value) as unknown as Date)
+  tournaments.value.forEach(element => {
+    var attribute = {
+      popover: {
+        label: computed(() => (t('events.tournament') + ' - ' + element.tournamentName))
+      },
+      highlight: {
+        color: 'purple',
+        fillMode: 'light',
+      },
+      dates: { start: element.startDate, end: element.endDate },
+    }
+    tournamentsAttributes.value.push(attribute)
+  });
+})
+
+const {
+  data: trainingsData,
+  isFetching: isTrainingsFetching,
+  isFinished: isTrainingsFinished,
+  error: trainingsError,
+  execute: refechTrainings
+} = useFetch(urlTrainings, { initialData: [] }).json<Training[]>()
+
+whenever(trainingsData, (data) => {
+  trainingsAttributes.value = []
+  trainings.value = data
+  trainings.value.map(element => element.date = new Date(element.date).toLocaleDateString(locale.value) as unknown as Date)
+  trainings.value.forEach(element => {
+    var attribute = {
+      key: 'training',
+      dates: element.date,
+      popover: {
+        label: computed(() => (t('events.training') + ' - ' + element.sportsFacility?.name))
+      },
+      dot: 'green'
+    }
+    trainingsAttributes.value.push(attribute)
+  })
+})
+
+const isFinished = computed(() => {
+  return isMatchesFinished.value && isTournamentsFinished.value && isTrainingsFinished.value && isTeamsFinished.value
+})
+
+const isFetching = computed(() => {
+  return isMatchesFetching.value && isTournamentsFetching.value && isTrainingsFetching.value && isTeamsFetching.value
+})
+
+const error = computed(() => {
+  return matchesError.value && tournamentsError.value && trainingsError.value && teamsError.value
+})
+
+const eventsTypeFilter = ref('all')
+
 const attributes = computed(() => {
   var newAttributes = <Array<any>>([])
-  switch (eventsType.value) {
-    case 'trainings':
-      trainingAttributes.value.forEach(element => {
-        newAttributes.push(element)
-      })
-      break
-    case 'matches':
-      matchesAttributes.value.forEach(element => {
-        newAttributes.push(element)
-      })
-      break
-    case 'tournaments':
-      tournamentsAttributes.value.forEach(element => {
-        newAttributes.push(element)
-      })
-      break
-    case 'all':
-      trainingAttributes.value.forEach(element => {
-        newAttributes.push(element)
-      })
-      matchesAttributes.value.forEach(element => {
-        newAttributes.push(element)
-      })
-      tournamentsAttributes.value.forEach(element => {
-        newAttributes.push(element)
-      })
-  }
+  if (eventsTypeFilter.value === 'trainings' || eventsTypeFilter.value === 'all')
+    trainingsAttributes.value.forEach(element => {
+      newAttributes.push(element)
+    })
+  if (eventsTypeFilter.value === 'tournaments' || eventsTypeFilter.value === 'all')
+    tournamentsAttributes.value.forEach(element => {
+      newAttributes.push(element)
+    })
+  if (eventsTypeFilter.value === 'matches' || eventsTypeFilter.value === 'all')
+    matchesAttributes.value.forEach(element => {
+      newAttributes.push(element)
+    })
   return newAttributes
 })
 
@@ -205,22 +186,22 @@ const filterMenu = () => {
 }
 
 const activeMatches = computed(() => {
-  if(eventsType.value === 'matches')
+  if (eventsTypeFilter.value === 'matches')
     return 'bg-#805AD5'
 })
 
 const activeTournaments = computed(() => {
-  if(eventsType.value === 'tournaments')
+  if (eventsTypeFilter.value === 'tournaments')
     return 'bg-#E9D8FD'
 })
 
 const activeTrainings = computed(() => {
-  if(eventsType.value === 'trainings')
+  if (eventsTypeFilter.value === 'trainings')
     return 'bg-#32B3A3'
 })
 
 const activeAll = computed(() => {
-  if(eventsType.value === 'all')
+  if (eventsTypeFilter.value === 'all')
     return 'bg-#143547 text-white '
   else
     return 'text-gray-700'
@@ -230,55 +211,94 @@ const goAddEvent = (playerId: any) => {
   return router.push(`/events/add/newEvent`)
 }
 
+const goSpecificDay = (day: any) => {
+  return router.push(`/events/day/${day.id}`)
+}
 </script>
 
 <template>
   <BackgroundFrame>
-    <template v-slot:data>
+    <template #data>
       <MyCenterElement>
-    <template v-slot>
-      <div class="w-full h-full p-4 flex flex-col gap-8">
-        <div class="w-full flex flex-col gap-4">
-          <div class="w-full flex flex-row justify-end gap-8 flex-wrap sm:(flex-nowrap)">
-            <button class="flex flex-row gap-2" @click="filterMenu">
-              <img src="../assets/filter-icon.png" class="h-48px" />
-              <p v-if="isHidden" class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.show-filters')}}</p>
-              <p v-else class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.hide-filters')}}</p>
-            </button>
-            <button @click="goAddEvent" class="flex flex-row gap-2">
-              <img src="../assets/add-icon2.png" class="h-48px" />
-              <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-event')}}</p>
-            </button>
+        <div class="w-full h-full p-4 flex flex-col gap-8">
+
+          <div class="w-full flex flex-col gap-4">
+            <div class="w-full flex flex-row justify-end gap-8 flex-wrap sm:(flex-nowrap)">
+              <button class="flex flex-row gap-2" @click="filterMenu">
+                <img src="../assets/filter-icon.png" class="h-48px" />
+                <p v-if="isHidden" class="h-full flex items-center text-base font-bold color-#464646">{{
+                    t('button.show-filters')
+                }}</p>
+                <p v-else class="h-full flex items-center text-base font-bold color-#464646">{{
+                    t('button.hide-filters')
+                }}</p>
+              </button>
+              <button @click="goAddEvent" class="flex flex-row gap-2">
+                <img src="../assets/add-icon2.png" class="h-48px" />
+                <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-event') }}</p>
+              </button>
+            </div>
+
+            <div class="w-full flex flex-col gap-2" :class="[isHidden ? 'invisible' : '']">
+              <div class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
+                <button @click="eventsTypeFilter = 'matches'" class="p-1 w-full rounded-xl">
+                  <p :class="activeMatches"
+                    class=" rounded-xl px-4 py-2 text-sm hover:bg-#805AD5 text-gray-700 text-center">{{
+                        t('button.matches')
+                    }}</p>
+                </button>
+                <button @click="eventsTypeFilter = 'tournaments'" class="p-1 w-full rounded-xl">
+                  <p :class="activeTournaments"
+                    class=" rounded-xl px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-center">{{
+                        t('button.tournaments')
+                    }}</p>
+                </button>
+                <button @click="eventsTypeFilter = 'trainings'" class="p-1 w-full rounded-xl">
+                  <p :class="activeTrainings"
+                    class="rounded-xl px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-center">{{
+                        t('button.trainings')
+                    }}</p>
+                </button>
+                <button @click="eventsTypeFilter = 'all'" class="p-1 w-full rounded-xl">
+                  <p :class="activeAll"
+                    class="rounded-xl px-4 py-2 text-sm hover:bg-#143547 hover:text-white text-center">
+                    {{ t('button.all') }}</p>
+                </button>
+              </div>
+
+              <div
+                class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row flex-wrap)">
+                <button v-for="team in teams" @click="teamsFilter = team._id" 
+                
+                class="p-1 rounded-xl">
+                  <p class=" rounded-xl px-4 py-2 text-sm hover:bg-#2F4D5E hover:text-white  text-center"
+                  :class="[teamsFilter === team._id ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
+                    {{ team.teamName }}</p>
+                </button>
+                <button @click="teamsFilter = 'all'" class="p-1 rounded-xl">
+                  <p class=" rounded-xl px-4 py-2 text-sm hover:bg-#2F4D5E hover:text-white text-center"
+                  :class="[teamsFilter === 'all' ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
+                    {{ t('button.all')}} </p>
+                </button>
+              </div>
+            </div>
+
           </div>
-          <div :class="[isHidden ? 'invisible' : '']"
-            class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
-            <button @click="eventsType='matches'" class="p-1 w-full rounded-xl">
-              <p :class="activeMatches"
-                class=" rounded-xl px-4 py-2 text-sm hover:bg-#805AD5 text-gray-700 text-center">{{ t('button.matches')
-                }}</p>
-            </button>
-            <button @click="eventsType='tournaments'" class="p-1 w-full rounded-xl">
-              <p :class="activeTournaments"
-                class=" rounded-xl px-4 py-2 text-sm hover:bg-#E9D8FD text-gray-700 text-center">{{
-                t('button.tournaments') }}</p>
-            </button>
-            <button @click="eventsType='trainings'" class="p-1 w-full rounded-xl">
-              <p :class="activeTrainings"
-                class="rounded-xl px-4 py-2 text-sm hover:bg-#32B3A3 text-gray-700 text-center">{{ t('button.trainings')
-                }}</p>
-            </button>
-            <button @click="eventsType='all'" class="p-1 w-full rounded-xl">
-              <p :class="activeAll" class="rounded-xl px-4 py-2 text-sm hover:bg-#143547 hover:text-white text-center">
-                {{ t('button.all') }}</p>
-            </button>
+
+          <div class="w-full h-full flex items-center">
+            <LoadingCircle v-if="isFetching"></LoadingCircle>
+
+            <Calendar v-if="isFinished && !error && attributes?.length != 0" is-expanded :attributes="attributes"
+              :locale="locale" @dayclick="goSpecificDay">
+            </Calendar>
+
+            <ErrorMessageInfo v-else-if="isFinished && attributes?.length === 0">
+              {{ t('error-messages.no-data') }}
+            </ErrorMessageInfo>
+            <ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
           </div>
         </div>
-        <div class="w-full h-full flex items-center">
-          <Calendar is-expanded :attributes="attributes" :locale="locale" @dayclick="goSpecificDay"></Calendar>
-        </div>
-      </div>
-    </template>
-  </MyCenterElement>
+      </MyCenterElement>
     </template>
   </BackgroundFrame>
 </template>
@@ -287,3 +307,4 @@ const goAddEvent = (playerId: any) => {
 meta:
   layout: home
 </route>
+

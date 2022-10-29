@@ -1,8 +1,18 @@
+import { SportsFacility } from './SportsFacility'
 import { Schema } from 'mongoose'
+import { Team } from './Team'
+
+export interface Training {
+  _id: string
+  date: Date,
+  team: Team,
+  sportsFacility?: SportsFacility
+}
 
 export default new Schema({
   date: {      
-    type: Date
+    type: Date,
+    required: [true, 'Missing informations - each training must have date']
   },
   team: {
     type: Schema.Types.ObjectId,
