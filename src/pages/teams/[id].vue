@@ -13,7 +13,7 @@ const {
   error
 } = useFetch(`/api/team/${props.id}`, { initialData: {} }).json<Team>()
 
-
+console.log('trainer ' + team.value?.trainer + ' ' + team.value)
 const goEditTeam = (teamId: any) => {
   return router.push(`/teams/edit/${teamId}`)
 }

@@ -26,10 +26,16 @@ const goEditPlayer = (playerId: any) => {
   return router.push(`/players/edit/${playerId}`)
 }
 
+const goAddPlayer = () => {
+  if (props.id != 'all') {
+    return router.push(`/players/add/newPlayer/${props.id}`)
+  }
+  return router.push(`/players/add/newPlayer/all`)
+}
+
 function goToPlayer(playerId: any) {
   return router.push(`/players/${playerId}`)
 }
-
 
 whenever(url, (data) => {
   refechPlayers()
@@ -70,10 +76,10 @@ const confirmDelete = async () => {
         <img src="../../../assets/statistic-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic') }}</p>
       </router-link>
-      <router-link to="/players/add/newPlayer" class="flex flex-row gap-2 items-center">
+      <button @click="goAddPlayer()" class="flex flex-row gap-2 items-center">
         <img src="../../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player') }}</p>
-      </router-link>
+      </button>
     </template>
 
     <template #data>

@@ -15,7 +15,7 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const academy = 'AP Jagiellonia Białystok'
 
-const props = defineProps<{ playerId?: string }>()
+const props = defineProps<{ playerId?: string, teamId?: string }>()
 
 const url = computed(() => props.playerId
 	? `/api/player/${props.playerId}`
@@ -70,7 +70,14 @@ whenever(parentsData, (data) => {
 })
 
 whenever(teamsData, (data) => {
-	teams.value = data 
+	teams.value = data
+	if (!props.playerId && props.teamId != 'all') {
+		teams.value.forEach(element => {
+			if (element._id === props.teamId) {
+				player.value.team = element
+			}
+		});
+	}
 	teams.value.map(element => element.trainer = element.trainer._id as unknown as Trainer)
 })
 
@@ -107,7 +114,7 @@ const onSubmit = async () => {
 				return
 			}
 		}
-		return router.push('/players/all')
+		return router.push('/players/team/all')
 	}
 }
 
@@ -236,7 +243,7 @@ const teamErrorMessage = computed(() => {
 			</template>
 
 		</SingleInput>
-		
+
 		<SingleInput>
 			<template #inputName>{{ t('single-player.remarks') }}:</template>
 			<template #inputValue>
@@ -245,7 +252,12 @@ const teamErrorMessage = computed(() => {
 			</template>
 		</SingleInput>
 
-		<SingleInput>
+		<SingleInput v-if="!props.playerId && props.teamId != 'all'">
+			<template #inputName>{{ t('single-player.team') }}:</template>
+			<template #inputValue>{{ player.team.teamName }}</template>
+		</SingleInput>
+
+		<SingleInput v-else >
 			<template #inputName>{{ t('single-player.team') }}:</template>
 			<template #inputValue>
 				<div class="fles flex-auto w-full flex-col">
@@ -281,9 +293,9 @@ const teamErrorMessage = computed(() => {
 			</SingleButton>
 		</div>
 	</div>
-	
+
 	<ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
-	
+
 </template>
 
 <route lang="yaml">
