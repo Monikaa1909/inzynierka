@@ -18,6 +18,10 @@ const goEditTeam = (teamId: any) => {
   return router.push(`/teams/edit/${teamId}`)
 }
 
+const goTeamsPlayers = (teamId: any) => {
+  return router.push(`/teams/players/${teamId}`)
+}
+
 const isDeleting = ref(false)
 
 const deleteTeam = () => {
@@ -52,6 +56,9 @@ const confirmDelete = async () => {
         <MiniWhiteFrame class="px-8">
 
           <template #nav>
+            <button @click="goTeamsPlayers(team?._id)">
+              <img src="../../assets/academy-icon.png" class="h-24px" />
+            </button>
             <button @click="goEditTeam(team?._id)">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>

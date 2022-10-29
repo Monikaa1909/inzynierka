@@ -118,7 +118,7 @@ const logout = async () => {
             class="px-2 justify-items-center text-base font-medium color-#32B3A3"
           >{{ t('account.trainer') }}</p>
           <button @click="settingsMenu">
-            <img src="../assets/settings-icon.svg" class="px-2 py-0.5 h-24px" />
+            <img src="../assets/settings-icon.png" class="px-2 py-0.5 h-24px" />
           </button>
         </div>
         <div>

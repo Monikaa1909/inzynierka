@@ -30,7 +30,7 @@ export const seedDatabase = async () => {
         lastName: 'Agrest',
         birthdayDate: '1978-01-29',
         nationality: 'Polska',
-        academy: academy2
+        academy: academy1
     });
     trainer2.save(function (err) {
         if (err) return console.log(err.message);
@@ -41,7 +41,7 @@ export const seedDatabase = async () => {
         lastName: 'Sokólski',
         birthdayDate: '1989-12-11',
         nationality: 'Polska',
-        academy: academy2
+        academy: academy1
     });
     trainer3.save(function (err) {
         if (err) return console.log(err.message);
@@ -52,7 +52,7 @@ export const seedDatabase = async () => {
         lastName: 'Zajączkowski',
         birthdayDate: '1998-01-20',
         nationality: 'Polska',
-        academy: academy2
+        academy: academy1
     });
     trainer4.save(function (err) {
         if (err) return console.log(err.message);
@@ -60,72 +60,72 @@ export const seedDatabase = async () => {
 
     // TEAMS -------------------------------------------------------------------------------------
     const team1 = new models.Team({
-        teamName: 'Młodzik D1',
+        teamName: 'Żak',
         trainer: trainer1,
-        startYear: 2010,
-        endYear: 2011
+        startYear: 2014,
+        endYear: 2016
     });
     team1.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team2 = new models.Team({
-        teamName: 'Trampkarz C1',
+        teamName: 'Orlik 1',
         trainer: trainer2,
-        startYear: 2009,
-        endYear: 2010
+        startYear: 2012,
+        endYear: 2014
     });
     team2.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team3 = new models.Team({
-        teamName: 'Junior młodszy B1',
-        trainer: trainer1,
-        startYear: 2008,
-        endYear: 2009
+        teamName: 'Orlik 2',
+        trainer: trainer3,
+        startYear: 2012,
+        endYear: 2014
     });
     team3.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team4 = new models.Team({
-        teamName: 'Junior młodszy B2',
-        trainer: trainer2,
+        teamName: 'Młodzik',
+        trainer: trainer4,
+        startYear: 2010,
+        endYear: 2012
     });
     team4.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team5 = new models.Team({
-        teamName: 'Młodzik D1',
-        trainer: trainer2,
+        teamName: 'Trampkarz',
+        trainer: trainer4,
+        startYear: 2008,
+        endYear: 2010
     });
     team5.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team6 = new models.Team({
-        teamName: 'Trampkarz C1',
+        teamName: 'Junior młodszy',
         trainer: trainer1,
+        startYear: 2006,
+        endYear: 2008
     });
     team6.save(function (err) {
         if (err) return console.log(err.message);
     });
 
     const team7 = new models.Team({
-        teamName: 'Młodzik D2',
+        teamName: 'Junior starszy',
         trainer: trainer3,
+        startYear: 2004,
+        endYear: 2005
     });
     team7.save(function (err) {
-        if (err) return console.log(err.message);
-    });
-
-    const team8 = new models.Team({
-        teamName: 'Orlik E1',
-        trainer: trainer1,
-    });
-    team8.save(function (err) {
         if (err) return console.log(err.message);
     });
 
@@ -146,7 +146,7 @@ export const seedDatabase = async () => {
         lastName: 'Kapustka',
         email: 'kapucha123@gmail.com',
         phoneNumber: '125 653 444',
-        academy: academy2
+        academy: academy1
     });
     parent2.save(function (err) {
         if (err) return console.log(err.message);
@@ -155,7 +155,7 @@ export const seedDatabase = async () => {
     const parent3 = new models.Parent({
         firstName: 'Antoni',
         lastName: 'Wierzba',
-        academy: academy2
+        academy: academy1
     });
     parent3.save(function (err) {
         if (err) return console.log(err.message);
@@ -165,7 +165,7 @@ export const seedDatabase = async () => {
         firstName: 'Mariusz',
         lastName: 'Gruszka',
         email: 'mGruszka@gmail.com',
-        academy: academy2
+        academy: academy1
     });
     parent4.save(function (err) {
         if (err) return console.log(err.message);
@@ -216,7 +216,7 @@ export const seedDatabase = async () => {
         lastName: 'Gruszka',
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
-        team: team4,
+        team: team3,
         parent: parent4,
         validityOfMedicalExaminations: '2022-12-09'
     });
@@ -230,7 +230,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-12-09',
         nationality: 'Polska',
         parent: parent1,
-        team: team1,
+        team: team4,
         validityOfMedicalExaminations: '2022-12-09'
     });
     player5.save(function (err) {
@@ -247,6 +247,42 @@ export const seedDatabase = async () => {
         postalCode: '15-323'
     });
     sportsFacility1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const sportsFacility2 = new models.SportsFacility({
+        name: "Orlik przy Kwiatowej",
+        academy: academy1,
+        street: 'Kwiatowa',
+        houseNumber: 7,
+        city: 'Białystok',
+        postalCode: '15-323'
+    });
+    sportsFacility2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const sportsFacility3 = new models.SportsFacility({
+        name: "Boisko 'Mechaniak'",
+        academy: academy1,
+        street: 'Broniewskiego',
+        houseNumber: 17,
+        city: 'Białystok',
+        postalCode: '15-323'
+    });
+    sportsFacility3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const sportsFacility4 = new models.SportsFacility({
+        name: "Ośrodek szkoleniowy AP Jagiellonia Białystok",
+        academy: academy1,
+        street: 'Elewatorska',
+        houseNumber: 4,
+        city: 'Białystok',
+        postalCode: '15-323'
+    });
+    sportsFacility4.save(function (err) {
         if (err) return console.log(err.message);
     });
 
