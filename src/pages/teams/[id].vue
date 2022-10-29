@@ -19,7 +19,7 @@ const goEditTeam = (teamId: any) => {
 }
 
 const goTeamsPlayers = (teamId: any) => {
-  return router.push(`/teams/players/${teamId}`)
+  return router.push(`/players/team/${teamId}`)
 }
 
 const isDeleting = ref(false)

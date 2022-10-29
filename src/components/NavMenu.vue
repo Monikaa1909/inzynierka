@@ -31,7 +31,7 @@ const goTeams = () => {
 
 const goPlayers = () => {
   isHidden.value = true
-  return router.push('/players/all')
+  return router.push('/players/team/all')
 }
 
 const goTrainers = () => {

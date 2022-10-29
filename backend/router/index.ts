@@ -49,6 +49,23 @@ router.get('/players/:academy', async (req, res) => {
     }
 })
 
+router.get('/players/team/:team', async (req, res) => {
+    try {
+        const players = await models.Player.find()
+            .sort({lastName: 1, firstName: 1})
+            .populate('parent')
+            .populate({
+                path: 'team',
+                model: 'Team',
+                match: { _id: req.params.team },
+            }) as Player[]
+
+        res.send(players.filter(item => (item.team != null)))
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/player/:id', async (req, res) => {
     try {
         const player = await models.Player.findById(req.params.id)

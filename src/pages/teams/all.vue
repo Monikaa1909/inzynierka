@@ -25,6 +25,10 @@ const {
 const isDeleting = ref(false)
 const deletingTeam = ref<Team>()
 
+const goTeamsPlayers = (teamId: any) => {
+  return router.push(`/players/team/${teamId}`)
+}
+
 const deleteTeam = (team: Team) => {
   isDeleting.value = true
   deletingTeam.value = team
@@ -68,6 +72,9 @@ const confirmDelete = async () => {
         <MiniWhiteFrame v-for="team in teams" v-bind:key="team._id" class="hover:bg-#E3E3E3" clickable="cursor-pointer"
           @go-to="goToTeam(team._id)">
           <template #nav>
+            <button @click="goTeamsPlayers(team._id)">
+              <img src="../../assets/academy-icon.png" class="h-24px" />
+            </button>
             <button @click="goEditTeam(team._id)">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
@@ -75,7 +82,7 @@ const confirmDelete = async () => {
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>
-          
+
           <template #icon>
             <img src="../../assets/team-icon2.png" class="h-150px cursor-pointer" />
           </template>
@@ -100,7 +107,7 @@ const confirmDelete = async () => {
       </MyGrid>
 
       <ErrorMessageInfo v-else-if="!isDeleting && isFinished && teams?.length === 0">
-        {{t('error-messages.no-data')}}
+        {{ t('error-messages.no-data') }}
       </ErrorMessageInfo>
       <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>
