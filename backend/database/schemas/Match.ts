@@ -9,7 +9,9 @@ export interface Match {
   opponent?: string
   date: Date,
   team: Team,
+  friendly?: Boolean,
   sportsFacility?: SportsFacility
+  remarks?: string
 }
 
 export default new Schema({
@@ -43,5 +45,14 @@ export default new Schema({
   sportsFacility: {
     type: Schema.Types.ObjectId,
     ref: "SportsFacility"
-  }
+  },
+  remarks: {
+    type: String,
+    required: false
+  },
+  friendly: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 })

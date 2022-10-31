@@ -292,7 +292,7 @@ export const seedDatabase = async () => {
         goalsConceded: 3,
         goalsScored: 4,
         opponent: 'Legia Warszawa',
-        date: new Date("2022, 10, 13"),
+        date: new Date('2022-10-13 10:30:00'),
         sportsFacility: sportsFacility2
     });
     match1.save(function (err) {
@@ -304,7 +304,7 @@ export const seedDatabase = async () => {
         goalsConceded: 1,
         goalsScored: 1,
         opponent: 'Korona Kielce',
-        date: new Date("2022, 10, 17"),
+        date: new Date('2022-10-17 13:00:00'),
         sportsFacility: sportsFacility3
     });
     match2.save(function (err) {
@@ -316,7 +316,7 @@ export const seedDatabase = async () => {
         goalsConceded: 0,
         goalsScored: 1,
         opponent: 'Lechia Gdańsk',
-        date: new Date("2022, 10, 24"),
+        date: new Date('2022-10-24 11:00:00'),
         sportsFacility: sportsFacility3
     });
     match3.save(function (err) {
@@ -356,8 +356,8 @@ export const seedDatabase = async () => {
 
     const tournament2 = new models.Tournament({
         tournamentName: 'Turniej o Puchar Burmistrza Wasilkowa',
-        startDate: new Date("2022, 10, 1"),
-        endDate: new Date("2022, 10, 2"),
+        startDate: new Date('2022-10-01 10:05:00'),
+        endDate: new Date('2022-10-02 19:00:00'),
         sportsFacility: sportsFacility3,
         friendly: false,
         team: team3
@@ -368,7 +368,7 @@ export const seedDatabase = async () => {
 
     // TRAININGS ----------------------------------------------------------------------------
     const training1 = new models.Training({
-        date: new Date("2022, 10, 5"),
+        date: new Date('2022-10-20 15:30'),
         sportsFacility: sportsFacility1,
         team: team4
     });
@@ -377,7 +377,7 @@ export const seedDatabase = async () => {
     });
 
     const training2 = new models.Training({
-        date: new Date("2022, 10, 7"),
+        date: new Date('2022-10-07 17:05'),
         sportsFacility: sportsFacility1,
         team: team4
     });
@@ -386,7 +386,7 @@ export const seedDatabase = async () => {
     });
 
     const training3 = new models.Training({
-        date: new Date("2022, 10, 8"),
+        date: new Date('2022-10-08 17:05'),
         sportsFacility: sportsFacility1,
         team: team4
     });

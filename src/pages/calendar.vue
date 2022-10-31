@@ -78,13 +78,13 @@ const {
 whenever(matchesData, (data) => {
   matchesAttributes.value = []
   matches.value = data
-  matches.value.map(element => element.date = new Date(element.date).toLocaleDateString(locale.value) as unknown as Date)
+  matches.value.map(element => element.date = new Date(element.date) as unknown as Date)
   matches.value.forEach(element => {
     var attribute = {
       key: 'match',
       dates: element.date,
       popover: {
-        label: computed(() => (t('events.match') + ' - ' + element.opponent))
+        label: computed(() => (t('events.match') + ' - ' + element.opponent + ' ' + new Date(element.date).toLocaleString(locale.value)))
       },
       highlight: {
         color: 'purple',
@@ -106,8 +106,8 @@ const {
 whenever(tournamentsData, (data) => {
   tournamentsAttributes.value = []
   tournaments.value = data
-  tournaments.value.map(element => element.startDate = new Date(element.startDate).toLocaleDateString(locale.value) as unknown as Date)
-  tournaments.value.map(element => element.endDate = new Date(element.endDate).toLocaleDateString(locale.value) as unknown as Date)
+  tournaments.value.map(element => element.startDate = new Date(element.startDate) as unknown as Date)
+  tournaments.value.map(element => element.endDate = new Date(element.endDate) as unknown as Date)
   tournaments.value.forEach(element => {
     var attribute = {
       popover: {
@@ -134,7 +134,7 @@ const {
 whenever(trainingsData, (data) => {
   trainingsAttributes.value = []
   trainings.value = data
-  trainings.value.map(element => element.date = new Date(element.date).toLocaleDateString(locale.value) as unknown as Date)
+  trainings.value.map(element => element.date = new Date(element.date) as unknown as Date)
   trainings.value.forEach(element => {
     var attribute = {
       key: 'training',
@@ -266,7 +266,7 @@ const goSpecificDay = (day: any) => {
                 </button>
               </div>
 
-              <div
+              <div v-if="isTeamsFinished"
                 class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row flex-wrap)">
                 <button v-for="team in teams" @click="teamsFilter = team._id" 
                 

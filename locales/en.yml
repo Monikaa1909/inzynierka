@@ -112,6 +112,10 @@ single-event:
   duration: Duration of the match
   minutes: minutes
   description: Description
+  friendly: Friendly
+  type-of-match: Type of match
+  type-of-tournament: Type of tournament
+  name: Name
 your-profile:
   name: Academy name
   first-name: First name
@@ -132,6 +136,10 @@ events:
   match: MATCH
   tournament: TOURNAMENT
   training: TRAINING
+  lower-case:
+    match: Match
+    tournament: Tournament
+    training: Training
   type:
     match: Match
     training: Training

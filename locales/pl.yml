@@ -110,7 +110,11 @@ single-event:
   result: Wynik
   duration: Czas trwania meczu
   minutes: minut
-  description: Description
+  description: Opis
+  friendly: Towarzyski
+  type-of-match: Typ meczu
+  type-of-tournament: Typ turnieju
+  name: Nazwa
 your-profile:
   name: Nazwa akademii
   first-name: Imię
@@ -131,6 +135,10 @@ events:
   match: MECZ
   tournament: TURNIEJ
   training: TRENING
+  lower-case:
+    match: Mecz
+    tournament: Turniej
+    training: Trening
   type:
     match: Mecz
     training: Trening

@@ -7,6 +7,7 @@ export interface Training {
   date: Date,
   team: Team,
   sportsFacility?: SportsFacility
+  remarks?: string
 }
 
 export default new Schema({
@@ -22,5 +23,9 @@ export default new Schema({
   sportsFacility: {
     type: Schema.Types.ObjectId,
     ref: "SportsFacility"
-  }
+  },
+  remarks: {
+    type: String,
+    required: false
+  },
 })

@@ -37,6 +37,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SingleAttribute: typeof import('./components/SingleAttribute.vue')['default']
     SingleButton: typeof import('./components/SingleButton.vue')['default']
+    SingleEvent: typeof import('./components/SingleEvent.vue')['default']
     SingleInput: typeof import('./components/SingleInput.vue')['default']
     SingleStatistic: typeof import('./components/Statistic/SingleStatistic.vue')['default']
     SingleSummaryStatistic: typeof import('./components/Statistic/SingleSummaryStatistic.vue')['default']
