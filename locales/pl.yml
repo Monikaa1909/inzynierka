@@ -115,6 +115,8 @@ single-event:
   type-of-match: Typ meczu
   type-of-tournament: Typ turnieju
   name: Nazwa
+  friendly-match: Mecz towarzyski
+  friendly-tournament: Turniej towarzyski
 your-profile:
   name: Nazwa akademii
   first-name: Imię

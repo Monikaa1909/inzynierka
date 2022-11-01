@@ -1,5 +1,5 @@
 export const validateFirstName: any = (value: string) => {
-    if (!value) {
+	if (!value) {
 		return 'error-messages.required-field';
 	}
 	const regex1 = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/i;
@@ -75,8 +75,8 @@ export const validateEmail = (value: any) => {
 	return '';
 }
 
-export const requiredField: any = (value: string) => {
-    if (!value) {
+export const requiredField: any = (value: any) => {
+	if (!value) {
 		return 'error-messages.required-field';
 	}
 	return '';
@@ -133,6 +133,26 @@ export const validateEndYear = (value: any, startYear: any) => {
 	if (startYear && regex.test(startYear)) {
 		if (value < startYear)
 			return 'The higher year must be bigger than lower year'
+	}
+	return '';
+}
+
+export const validateStartDate = (startDate: Date, endDate: Date) => {
+	if (!startDate) {
+		return 'The field with the start date is required';
+	}
+	if (startDate >= endDate) {
+		return 'Start date must be smaller than end date'
+	}
+	return '';
+}
+
+export const validateEndDate = (endDate: Date, startDate: Date) => {
+	if (!startDate) {
+		return 'The field with the start date is required';
+	}
+	if (startDate >= endDate) {
+		return 'End date must be higher than start date'
 	}
 	return '';
 }

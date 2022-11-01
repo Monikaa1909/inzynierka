@@ -323,6 +323,18 @@ export const seedDatabase = async () => {
         if (err) return console.log(err.message);
     });
 
+    const match4 = new models.Match({
+        team: team4,
+        goalsConceded: 2,
+        goalsScored: 1,
+        opponent: 'Lechia Gdańsk',
+        date: new Date('2022-10-24 13:00:00'),
+        sportsFacility: sportsFacility1
+    });
+    match4.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
     // MATCHESSTATISTIC ----------------------------------------------------------------------------
     const matchStatistic1 = new models.MatchStatistic({
         player: player1,

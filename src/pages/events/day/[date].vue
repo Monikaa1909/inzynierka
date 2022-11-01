@@ -256,8 +256,8 @@ const activeAll = computed(() => {
     return 'text-gray-700'
 })
 
-const goEditEvent = (eventId: any) => {
-  return router.push(`/events/edit/${eventId}`)
+const goEditEvent = (eventId: string, eventType: string) => {
+  return router.push(`/events/edit/${eventType.toLowerCase()}/${eventId}`)
 }
 
 const goAddEvent = () => {
@@ -396,7 +396,7 @@ const confirmDelete = async () => {
               <button v-if="event.type === 'Tournament'" @click="showTournamentStatistic(event.id)">
                 <img src="../../../assets/statistic-icon.png" class="h-24px" />
               </button>
-              <button @click="goEditEvent(event.id)">
+              <button @click="goEditEvent(event.id, event.type)">
                 <img src="../../../assets/edit-icon.png" class="h-24px" />
               </button>
               <button @click="deleteEvent(event)">

@@ -8,7 +8,7 @@ export interface Tournament {
   startDate: Date,
   endDate: Date,
   team: Team,
-  friendly: Boolean
+  friendly?: boolean
   sportsFacility?: SportsFacility
   remarks?: string
 }
@@ -33,7 +33,8 @@ export default new Schema({
   },
   friendly: {
     type: Boolean,
-    required: [true, 'Missing informations - tournament type is required']
+    required: false,
+    default: false,
   },
   sportsFacility: {
     type: Schema.Types.ObjectId,

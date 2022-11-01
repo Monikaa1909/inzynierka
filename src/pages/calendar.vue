@@ -79,12 +79,13 @@ whenever(matchesData, (data) => {
   matchesAttributes.value = []
   matches.value = data
   matches.value.map(element => element.date = new Date(element.date) as unknown as Date)
+  let i = 0
   matches.value.forEach(element => {
-    var attribute = {
-      key: 'match',
+    let attribute = {
+      key: 'match' + i++,
       dates: element.date,
       popover: {
-        label: computed(() => (t('events.match') + ' - ' + element.opponent + ' ' + new Date(element.date).toLocaleString(locale.value)))
+        label: computed(() => t('events.match') + (element.opponent ? (' - ' + element.opponent) : ''))
       },
       highlight: {
         color: 'purple',
@@ -108,10 +109,13 @@ whenever(tournamentsData, (data) => {
   tournaments.value = data
   tournaments.value.map(element => element.startDate = new Date(element.startDate) as unknown as Date)
   tournaments.value.map(element => element.endDate = new Date(element.endDate) as unknown as Date)
+  let i = 0 
   tournaments.value.forEach(element => {
-    var attribute = {
+    let attribute = {
+      key: 'tournament' + i++,
       popover: {
-        label: computed(() => (t('events.tournament') + ' - ' + element.tournamentName))
+        label: computed(() => 
+          (t('events.tournament') + (element.tournamentName ? (' - ' + element.tournamentName) : '')))
       },
       highlight: {
         color: 'purple',
@@ -135,12 +139,13 @@ whenever(trainingsData, (data) => {
   trainingsAttributes.value = []
   trainings.value = data
   trainings.value.map(element => element.date = new Date(element.date) as unknown as Date)
+  let i = 0
   trainings.value.forEach(element => {
-    var attribute = {
-      key: 'training',
+    let attribute = {
+      key: 'training' + i++,
       dates: element.date,
       popover: {
-        label: computed(() => (t('events.training') + ' - ' + element.sportsFacility?.name))
+        label: computed(() => (t('events.training') + (element.sportsFacility ? (' - ' + element.sportsFacility.name) : '')))
       },
       dot: 'green'
     }
@@ -214,6 +219,7 @@ const goAddEvent = (playerId: any) => {
 const goSpecificDay = (day: any) => {
   return router.push(`/events/day/${day.id}`)
 }
+
 </script>
 
 <template>
@@ -288,8 +294,11 @@ const goSpecificDay = (day: any) => {
           <div class="w-full h-full flex items-center">
             <LoadingCircle v-if="isFetching"></LoadingCircle>
 
-            <Calendar v-if="isFinished && !error && attributes?.length != 0" is-expanded :attributes="attributes"
-              :locale="locale" @dayclick="goSpecificDay">
+            <Calendar v-if="isFinished && !error && attributes?.length != 0" 
+              is-expanded 
+              :attributes="attributes"
+              :locale="locale" @dayclick="goSpecificDay"
+              >
             </Calendar>
 
             <ErrorMessageInfo v-else-if="isFinished && attributes?.length === 0">

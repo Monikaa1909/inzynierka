@@ -5,6 +5,8 @@ const { availableLocales, locale } = useI18n()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const props = defineProps<{ id: string }>()
+
 </script>
     
 <template>
@@ -13,10 +15,10 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 			<MyCenterElement>
 				<MiniWhiteFrame>
 					<template #icon>
-						<img src="../../../assets/calendar-icon2.png" class=" h-150px" />
+						<img src="../../../../assets/calendar-icon2.png" class=" h-150px" />
 					</template>
 					<template #attributes>
-						<NewEventForm></NewEventForm>
+						<NewEventForm :id="props.id" :type="'Training'"></NewEventForm>
 					</template>
 				</MiniWhiteFrame>
 			</MyCenterElement>

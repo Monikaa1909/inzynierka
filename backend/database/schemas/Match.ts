@@ -4,12 +4,12 @@ import { Team } from './Team'
 
 export interface Match {
   _id: string
-  goalsScored?: Number
-  goalsConceded?: Number
+  goalsScored?: number
+  goalsConceded?: number
   opponent?: string
   date: Date,
   team: Team,
-  friendly?: Boolean,
+  friendly?: boolean,
   sportsFacility?: SportsFacility
   remarks?: string
 }

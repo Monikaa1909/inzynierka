@@ -480,6 +480,49 @@ router.get('/match/:id', async (req, res) => {
 
         res.send(match)
     } catch (error) {
+        console.log(error)
+        res.status(400).send(error)
+    }
+})
+
+router.post('/match', async (req, res) => {
+    try {
+        const match = models.Match.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(match)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/match/:id', async (req, res) => {
+    console.log('updatowanie meczu')
+    try {
+        console.log(req.body.sportsFacility)
+        const match = await models.Match.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                // goalsScored: req.body.goalsScored,
+                // goalsConceded: req.body.goalsConceded,
+                opponent: req.body.opponent,
+                date: req.body.date,
+                team: req.body.team,
+                friendly: req.body.friendly,
+                sportsFacility: req.body.sportsFacility,
+                remarks: req.body.remarks,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(match)
+    } catch (error) {
+        console.log(error)
         res.status(400).send(error)
     }
 })
@@ -546,6 +589,41 @@ router.get('/training/:id', async (req, res) => {
                 model: 'Team',
             }) as Training[]
 
+        res.send(training)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/training', async (req, res) => {
+    try {
+        const training = models.Training.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(training)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/training/:id', async (req, res) => {
+    try {
+        const training = await models.Training.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                date: req.body.date,
+                team: req.body.team,
+                sportsFacility: req.body.sportsFacilities,
+                remarks: req.body.remarks,
+            },
+            {
+                new: true
+            }
+        )
         res.send(training)
     } catch (error) {
         res.status(400).send(error)
@@ -619,6 +697,45 @@ router.get('/tournament/:id', async (req, res) => {
         res.status(400).send(error)
     }
 })
+
+router.post('/tournament', async (req, res) => {
+    try {
+        const tournament = models.Tournament.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(tournament)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/tournament/:id', async (req, res) => {
+    try {
+        const tournament = await models.Tournament.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                tournamentName: req.body.tournament,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                team: req.body.team,
+                friendly: req.body.friendly,
+                sportsFacility: req.body.sportsFacilities,
+                remarks: req.body.remarks,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(tournament)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 
 router.delete('/tournament/:id', async (req, res) => {
     try {
