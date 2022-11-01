@@ -617,7 +617,7 @@ router.post('/training/:id', async (req, res) => {
             {
                 date: req.body.date,
                 team: req.body.team,
-                sportsFacility: req.body.sportsFacilities,
+                sportsFacility: req.body.sportsFacility,
                 remarks: req.body.remarks,
             },
             {
@@ -723,7 +723,7 @@ router.post('/tournament/:id', async (req, res) => {
                 endDate: req.body.endDate,
                 team: req.body.team,
                 friendly: req.body.friendly,
-                sportsFacility: req.body.sportsFacilities,
+                sportsFacility: req.body.sportsFacility,
                 remarks: req.body.remarks,
             },
             {

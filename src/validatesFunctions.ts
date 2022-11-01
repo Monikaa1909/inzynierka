@@ -16,7 +16,7 @@ export const validateName: any = (value: string) => {
 	if (!value) {
 		return 'This field is required';
 	}
-	const regex1 = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ0-9-\s]+$/i;
+	const regex1 = /^[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ0-9-"'\s]+$/i;
 	const regex2 = /^[\s]*$/i;
 	const regex3 = /^[\s][.]*/i;
 	const regex4 = /[.]*[\s]$/i;

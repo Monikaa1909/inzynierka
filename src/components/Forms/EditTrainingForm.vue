@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { requiredField, validateName } from '~/validatesFunctions'
+import { requiredField } from '~/validatesFunctions'
 import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 import { Academy } from 'backend/database/schemas/Academy'
-import { Match } from 'backend/database/schemas/Match'
+import { Training } from 'backend/database/schemas/Training'
 
 import { DatePicker } from 'v-calendar'
 
@@ -16,7 +16,7 @@ const academy = 'AP Jagiellonia Białystok'
 
 const props = defineProps<{ id: string }>()
 
-const event = ref({} as Omit<Match, '_id'>)
+const event = ref({} as Omit<Training, '_id'>)
 const sportsFacilities = ref([] as Omit<SportsFacility[], '_id'>)
 
 const {
@@ -32,13 +32,16 @@ whenever(sportsFacilitiesData, (data) => {
 })
 
 const {
-	data: matchData,
-	isFetching: isMatchFetching,
-	error: matchError,
-} = useFetch(`/api/match/${props.id}`, { initialData: {} }).json<Match>()
+	data: trainingData,
+	isFetching: isTrainingFetching,
+	error: trainingError,
+} = useFetch(`/api/training/${props.id}`, { initialData: {} }).json<Training>()
 
-whenever(matchData, (data) => {
+const team = ref('')
+
+whenever(trainingData, (data) => {
 	event.value = data
+	team.value = data.team.teamName
 })
 
 const isFinished = computed(() => {
@@ -46,11 +49,11 @@ const isFinished = computed(() => {
 })
 
 const isFetching = computed(() => {
-	return isSportsFacilitiesFetching.value && isMatchFetching.value
+	return isSportsFacilitiesFetching.value && isTrainingFetching.value
 })
 
 const error = computed(() => {
-	return sportsFacilitiesError.value && matchError.value 
+	return sportsFacilitiesError.value && trainingError.value 
 })
 
 const teamErrorMessage = computed(() => {
@@ -60,15 +63,6 @@ const teamErrorMessage = computed(() => {
 	return t(requiredField(event.value.team))
 })
 
-const opponentErrorMessage = computed(() => {
-	if (requiredField(event.value.opponent))
-		return false
-	else if (!validateName(event.value.opponent)) {
-		return false
-	}
-	return t(validateName(event.value.opponent))
-})
-
 const dateErrorMessage = computed(() => {
 	if (!requiredField(event.value.date)) {
 		return false
@@ -76,14 +70,14 @@ const dateErrorMessage = computed(() => {
 	return t(requiredField(event.value.date))
 })
 
-const { execute: updateMatch, error: updateError } = useFetch(`/api/match/${props.id}`, { immediate: false }).post(event)
+const { execute: updateTraining, error: updateError } = useFetch(`/api/training/${props.id}`, { immediate: false }).post(event)
 
 const onSubmit = async () => {
-	if (opponentErrorMessage.value || teamErrorMessage.value || opponentErrorMessage.value || dateErrorMessage.value)
+	if (teamErrorMessage.value || dateErrorMessage.value)
 		alert(t('error-messages.validation-error'))
     else {
       event.value.sportsFacility = event.value.sportsFacility?._id as unknown as SportsFacility
-      await updateMatch()
+      await updateTraining()
 			if (updateError.value) {
 				alert(t('error-messages.unknow-error'))
 				return
@@ -102,7 +96,7 @@ const onSubmit = async () => {
 		<SingleInput>
 			<template #inputName>{{ t('single-event.type') }}:</template>
 			<template #inputValue>
-				{{ t('events.lower-case.match') }}
+				{{ t('events.lower-case.training') }}
 			</template>
 		</SingleInput>
 
@@ -130,30 +124,7 @@ const onSubmit = async () => {
 		<SingleInput>
 			<template #inputName>{{ t('single-event.team') }}:</template>
 			<template #inputValue>
-				
-				<p>{{ event.team }}</p>
-			</template>
-			<template #errorMessage v-if="teamErrorMessage && !props.id">
-				{{ teamErrorMessage }}
-			</template>
-		</SingleInput>
-    
-    <SingleInput>
-      <template #inputName>{{ t('single-event.opponent') }}:</template>
-      <template #inputValue>
-				<input v-model="event.opponent" name="opponent" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-			</template>
-      <template #errorMessage v-if="opponentErrorMessage"> {{ opponentErrorMessage }} </template>
-    </SingleInput>
-
-		<SingleInput>
-			<template #inputName >{{ t('single-event.friendly-match') }}:</template>
-			<template #inputValue>
-				<button @click="event.friendly = !event.friendly">
-					<img v-if="event.friendly" src="../../assets/checkbox-checked-icon.png" class="h-18px" />
-					<img v-else src="../../assets/checkbox-unchecked-icon.png" class="h-18px" />
-				</button>
+				<p>{{ team }}</p>
 			</template>
 		</SingleInput>
 

@@ -18,7 +18,7 @@ const props = defineProps<{ id: string }>()
 						<img src="../../../../assets/calendar-icon2.png" class=" h-150px" />
 					</template>
 					<template #attributes>
-						<NewEventForm :id="props.id" :type="'Training'"></NewEventForm>
+						<EditTrainingForm :id="props.id"></EditTrainingForm>
 					</template>
 				</MiniWhiteFrame>
 			</MyCenterElement>

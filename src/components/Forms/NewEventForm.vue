@@ -185,9 +185,10 @@ const onSubmit = async () => {
 				alert(t('error-messages.unknow-error'))
 				return
 			}
+			if (props.day) return router.push(`/events/day/${event.value.startDate}`)
+			else return router.push('/calendar')
 		}
-
-
+		
 	} else if (event.value.type === 'Training') {
 		if (teamErrorMessage.value || dateErrorMessage.value)
 			alert(t('error-messages.validation-error'))
@@ -204,11 +205,13 @@ const onSubmit = async () => {
 				alert(t('error-messages.unknow-error'))
 				return
 			}
+			if (props.day) return router.push(`/events/day/${event.value.startDate}`)
+			else return router.push('/calendar')
 		}
 
 	} else if (event.value.type === 'Tournament') {
-		if (nameErrorMessage.value || startDateErrorMessage || endDateErrorMessage || teamErrorMessage.value)
-			alert(t('error-messages.validation-error'))
+		if (nameErrorMessage.value || startDateErrorMessage.value || endDateErrorMessage.value || teamErrorMessage.value)
+			alert(t('error-messages.validation-error') + 'tourname')
 		else {
 			tournament.value = {
 				tournamentName: event.value.tournamentName,
@@ -224,12 +227,13 @@ const onSubmit = async () => {
 				alert(t('error-messages.unknow-error'))
 				return
 			}
+			if (props.day) return router.push(`/events/day/${event.value.startDate}`)
+			else return router.push('/calendar')
 		}
 
 	}
 
-	if (props.day) return router.push(`/events/day/${event.value.startDate}`)
-	else return router.push('/calendar')
+	
 
 }
 
