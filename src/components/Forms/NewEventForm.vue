@@ -59,27 +59,6 @@ const event = ref({} as {
 	tournamentName?: string
 })
 
-const ev = ref({
-	type: props.type ? props.type : 'Training',
-	startDate: props.day ? new Date(props.day) : new Date(),
-	endDate: props.day ? (new Date(props.day)) : new Date(),
-	team: undefined,
-	sportsFacility: undefined as unknown as SportsFacility,
-	opponent: '',
-	friendly: false,
-	remarks: '',
-	goalsScored: 0,
-	goalsConceded: 0,
-	tournamentName: ''
-	// ifNewSportsFacility: computed(() => {
-	// 	if (event.value.sportsFacility !== 'newobject') {
-	// 		return false
-	// 	}
-	// 	else
-	// 		return true
-	// }),
-})
-
 event.value.type = 'Training',
 	event.value.startDate = props.day ? new Date(props.day) : new Date(),
 	event.value.endDate = props.day ? (new Date(props.day)) : new Date(),
@@ -89,15 +68,6 @@ event.value.type = 'Training',
 	event.value.goalsScored = 0,
 	event.value.goalsConceded = 0,
 	event.value.tournamentName = ''
-
-// const sportsFacility = ref({
-// 	name: '',
-// 	street: '',
-// 	houseNumber: '',
-// 	postalCode: '',
-// 	city: '',
-// })
-
 
 const isFinished = computed(() => {
 	return isSportsFacilitiesFinished.value && isTeamsFinished.value
@@ -230,11 +200,7 @@ const onSubmit = async () => {
 			if (props.day) return router.push(`/events/day/${event.value.startDate}`)
 			else return router.push('/calendar')
 		}
-
 	}
-
-	
-
 }
 
 </script>
@@ -247,7 +213,7 @@ const onSubmit = async () => {
 		<SingleInput>
 			<template #inputName>{{ t('single-event.type') }}:</template>
 			<template #inputValue>
-				<div v-if="!props.id" class="fles flex-auto w-full flex-col">
+				<div class="fles flex-auto w-full flex-col">
 					<select v-model="event.type" class="flex flex-auto w-full border-1 p-1 border-#143547 shadow-lg">
 						<option v-if="locale === 'en'" :value="'Training'">Training</option>
 						<option v-else-if="locale === 'pl'" :value="'Training'">Trening</option>
@@ -257,9 +223,6 @@ const onSubmit = async () => {
 						<option v-else-if="locale === 'pl'" :value="'Match'">Mecz</option>
 					</select>
 				</div>
-				<p v-if="props.id && event.type === 'Training'">{{ t('events.lower-case.training') }}</p>
-				<p v-if="props.id && event.type === 'Match'">{{ t('events.lower-case.match') }}</p>
-				<p v-if="props.id && event.type === 'Tournament'">{{ t('events.lower-case.tournament') }}</p>
 			</template>
 		</SingleInput>
 
@@ -390,8 +353,6 @@ const onSubmit = async () => {
 			</template>
 		</SingleInput>
 
-		<!-- new objects... -->
-
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
 			<SingleButton @click="onSubmit()">
 				<template #buttonName>{{ t('button.save') }}</template>
@@ -410,67 +371,3 @@ const onSubmit = async () => {
 meta:
   layout: home
 </route>
-
-<!-- <div v-if="event.sportsFacility === 'newobject'" class=" w-full p-4">
-	<Form @submit="onSubmit" class="w-full flex flex-col gap-2 place-content-center">
-		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.name') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.name" name="objectName" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateName" />
-			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="objectName" />
-			</template>
-		</SingleInput>
-		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.street') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.street" name="street" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateName" />
-			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="street" />
-			</template>
-		</SingleInput>
-		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.number') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.houseNumber" name="number" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateNumber" />
-			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="number" />
-			</template>
-		</SingleInput>
-		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.postal-code') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.postalCode" name="postalCode" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validatePostalCode" />
-			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="postalCode" />
-			</template>
-		</SingleInput>
-		<SingleInput>
-			<template v-slot:inputName>{{ t('single-object.city') }}:</template>
-			<template v-slot:inputValue>
-				<Field v-model="sportsFacility.city" name="city" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" :rules="validateCity" />
-			</template>
-			<template v-slot:errorMessage>
-				<ErrorMessage class="text-xs" name="city" />
-			</template>
-		</SingleInput>
-		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
-			<button class="bg-#143547 p-1 text-sm text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">{{
-					t('button.save-object')
-			}}</button>
-			<button @click="event.sportsFacility = ''"
-				class="bg-#143547 p-1 text-sm text-#FFFFFF flex flex-row justify-center items-center sm:(px-8)">{{
-						t('button.cancel')
-				}}</button>
-		</div>
-	</Form>
-</div> -->

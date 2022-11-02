@@ -2,6 +2,7 @@ import express from 'express'
 import { seedDatabase } from '../database/seed'
 import models from '../database/models'
 
+import { AttendanceList } from 'backend/database/schemas/AttendanceList'
 import { Tournament } from 'backend/database/schemas/Tournament'
 import { Training } from 'backend/database/schemas/Training'
 import { Trainer } from 'backend/database/schemas/Trainer'
@@ -507,8 +508,8 @@ router.post('/match/:id', async (req, res) => {
                 _id: req.params.id
             },
             {
-                // goalsScored: req.body.goalsScored,
-                // goalsConceded: req.body.goalsConceded,
+                goalsScored: req.body.goalsScored,
+                goalsConceded: req.body.goalsConceded,
                 opponent: req.body.opponent,
                 date: req.body.date,
                 team: req.body.team,
@@ -741,6 +742,54 @@ router.delete('/tournament/:id', async (req, res) => {
     try {
         const tournament = await models.Tournament.findOneAndDelete({ _id: req.params.id })
         res.send(tournament)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/attendanceList/:id', async (req, res) => {
+    try {
+        const attendaceList = await models.AttendanceList.find({training: req.params.id})
+        .populate({
+            path: 'player',
+            model: 'Player',
+        }) as AttendanceList[]
+
+        res.send(attendaceList.filter(item => item.training != null))
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error)
+    }
+})
+
+router.post('/attendanceList', async (req, res) => {
+    try {
+        const attendanceList = models.AttendanceList.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(attendanceList)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/attendanceList/:id', async (req, res) => {
+    try {
+        const attendanceList = await models.AttendanceList.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                attendance: req.body.attendance,
+                remarks: req.body.remarks,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(attendanceList)
     } catch (error) {
         res.status(400).send(error)
     }

@@ -273,8 +273,8 @@ const goToEvent = (event: any) => {
     return router.push(`/events/training/${event.id}`)
 }
 
-const showAttendanceList = (eventId: any) => {
-  return router.push(`/events/attendanceList/${eventId}`)
+const showAttendanceList = (eventId: string, eventType: string) => {
+  return router.push(`/events/${eventType}/attendanceList/${eventId}`)
 }
 
 const showMatchStatistic = (eventId: any) => {
@@ -387,7 +387,7 @@ const confirmDelete = async () => {
             clickable="cursor-pointer" @go-to="goToEvent(event)">
             <template #nav>
 
-              <button v-if="event.type === 'Training'" @click="showAttendanceList(event.id)">
+              <button v-if="event.type === 'Training'" @click="showAttendanceList(event.id, 'training')">
                 <img src="../../../assets/attendance-list-icon.png" class="h-24px" />
               </button>
               <button v-if="event.type === 'Match'" @click="showMatchStatistic(event.id)">

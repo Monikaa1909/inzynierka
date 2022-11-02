@@ -191,7 +191,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2011-11-09',
         nationality: 'Polska',
         parent: parent2,
-        team: team2,
+        team: team1,
         validityOfMedicalExaminations: '2022-12-09'
     });
     player2.save(function (err) {
@@ -204,7 +204,7 @@ export const seedDatabase = async () => {
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
         parent: parent3,
-        team: team2,
+        team: team1,
         validityOfMedicalExaminations: '2022-12-09'
     });
     player3.save(function (err) {
@@ -216,7 +216,7 @@ export const seedDatabase = async () => {
         lastName: 'Gruszka',
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
-        team: team3,
+        team: team1,
         parent: parent4,
         validityOfMedicalExaminations: '2022-12-09'
     });
@@ -292,7 +292,7 @@ export const seedDatabase = async () => {
         goalsConceded: 3,
         goalsScored: 4,
         opponent: 'Legia Warszawa',
-        date: new Date('2022-10-13 10:30:00'),
+        date: new Date('2022-11-13 10:30:00'),
         sportsFacility: sportsFacility2
     });
     match1.save(function (err) {
@@ -304,7 +304,7 @@ export const seedDatabase = async () => {
         goalsConceded: 1,
         goalsScored: 1,
         opponent: 'Korona Kielce',
-        date: new Date('2022-10-17 13:00:00'),
+        date: new Date('2022-11-17 13:00:00'),
         sportsFacility: sportsFacility3
     });
     match2.save(function (err) {
@@ -316,7 +316,7 @@ export const seedDatabase = async () => {
         goalsConceded: 0,
         goalsScored: 1,
         opponent: 'Lechia Gdańsk',
-        date: new Date('2022-10-24 11:00:00'),
+        date: new Date('2022-11-24 11:00:00'),
         sportsFacility: sportsFacility3
     });
     match3.save(function (err) {
@@ -328,7 +328,7 @@ export const seedDatabase = async () => {
         goalsConceded: 2,
         goalsScored: 1,
         opponent: 'Lechia Gdańsk',
-        date: new Date('2022-10-24 13:00:00'),
+        date: new Date('2022-11-24 13:00:00'),
         sportsFacility: sportsFacility1
     });
     match4.save(function (err) {
@@ -356,8 +356,8 @@ export const seedDatabase = async () => {
     // TOURNAMENTS ----------------------------------------------------------------------------
     const tournament1 = new models.Tournament({
         tournamentName: 'Towarzyski turniej "KopaninaCup"',
-        startDate: new Date("2022, 10, 13"),
-        endDate: new Date("2022, 10, 15"),
+        startDate: new Date("2022, 11, 13"),
+        endDate: new Date("2022, 11, 15"),
         sportsFacility: sportsFacility3,
         friendly: true,
         team: team4
@@ -368,8 +368,8 @@ export const seedDatabase = async () => {
 
     const tournament2 = new models.Tournament({
         tournamentName: 'Turniej o Puchar Burmistrza Wasilkowa',
-        startDate: new Date('2022-10-01 10:05:00'),
-        endDate: new Date('2022-10-02 19:00:00'),
+        startDate: new Date('2022-11-01 10:05:00'),
+        endDate: new Date('2022-11-02 19:00:00'),
         sportsFacility: sportsFacility3,
         friendly: false,
         team: team3
@@ -380,16 +380,18 @@ export const seedDatabase = async () => {
 
     // TRAININGS ----------------------------------------------------------------------------
     const training1 = new models.Training({
-        date: new Date('2022-10-20 15:30'),
+        date: new Date('2022-11-20 15:30'),
         sportsFacility: sportsFacility1,
-        team: team4
+        team: team1,
+
     });
     training1.save(function (err) {
         if (err) return console.log(err.message);
     });
 
+    console.log(training1.id)
     const training2 = new models.Training({
-        date: new Date('2022-10-07 17:05'),
+        date: new Date('2022-11-07 17:05'),
         sportsFacility: sportsFacility1,
         team: team4
     });
@@ -398,11 +400,57 @@ export const seedDatabase = async () => {
     });
 
     const training3 = new models.Training({
-        date: new Date('2022-10-08 17:05'),
+        date: new Date('2022-11-08 17:05'),
         sportsFacility: sportsFacility1,
         team: team4
     });
     training3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    // ATTENDANCE LISTS ----------------------------------------------------------------------------
+    const attendaceList1 = new models.AttendanceList({
+        player: player1,
+        training: training1,
+        attendance: true,
+    });
+    attendaceList1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const attendaceList2 = new models.AttendanceList({
+        player: player2,
+        training: training1,
+        attendance: true,
+    });
+    attendaceList2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const attendaceList3 = new models.AttendanceList({
+        player: player3,
+        training: training1,
+        attendance: true,
+    });
+    attendaceList3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const attendaceList4 = new models.AttendanceList({
+        player: player3,
+        training: training1,
+        remarks: 'Nieobecność zgłoszona wcześniej',
+    });
+    attendaceList4.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
+    const attendaceList5 = new models.AttendanceList({
+        player: player5,
+        training: training2,
+        attendance: true,
+    });
+    attendaceList5.save(function (err) {
         if (err) return console.log(err.message);
     });
 

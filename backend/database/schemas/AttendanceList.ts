@@ -1,4 +1,14 @@
+import { Training } from './Training'
+import { Player } from './Player'
 import { Schema } from 'mongoose'
+
+export interface AttendanceList {
+    _id: string
+    player: Player,
+    training: Training,
+    attendance?: boolean
+    remarks?: string
+  }
 
 export default new Schema({
     player: {
@@ -9,17 +19,7 @@ export default new Schema({
     training: {
         type: Schema.Types.ObjectId,
         ref: "Training",
-        required: [false]  
-    },
-    match: {
-        type: Schema.Types.ObjectId,
-        ref: "Match",
-        required: [false]  
-    },
-    tournaments: {
-        type: Schema.Types.ObjectId,
-        ref: "Tournament",
-        required: [false]  
+        required: [true, 'Missing informations - each attendace list item must have a strictly defined training']  
     },
     attendance: {
         type: Boolean,
