@@ -17,6 +17,7 @@ const sorting = ref({
   attendance: false,
   players: true
 })
+
 </script>
 
 <template>

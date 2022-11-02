@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    '[id]': typeof import('./components/[id].vue')['default']
     AttendanceList: typeof import('./components/AttendanceList.vue')['default']
     BackgroundFrame: typeof import('./components/BackgroundFrame.vue')['default']
     BackgroundFrameCenter: typeof import('./components/BackgroundFrameCenter.vue')['default']
@@ -23,6 +24,8 @@ declare module '@vue/runtime-core' {
     EventStatistic: typeof import('./components/EventStatistic.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     LoadingCircle: typeof import('./components/LoadingCircle.vue')['default']
+    MatchAndTournamentStatistic: typeof import('./components/MatchAndTournamentStatistic.vue')['default']
+    MatchStatistic: typeof import('./components/MatchStatistic.vue')['default']
     MiniWhiteFrame: typeof import('./components/MiniWhiteFrame.vue')['default']
     MyCenterElement: typeof import('./components/MyCenterElement.vue')['default']
     MyGrid: typeof import('./components/MyGrid.vue')['default']

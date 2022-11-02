@@ -2,6 +2,7 @@ import express from 'express'
 import { seedDatabase } from '../database/seed'
 import models from '../database/models'
 
+import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
 import { AttendanceList } from 'backend/database/schemas/AttendanceList'
 import { Tournament } from 'backend/database/schemas/Tournament'
 import { Training } from 'backend/database/schemas/Training'
@@ -12,6 +13,7 @@ import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
 
 import { SportsFacility } from 'backend/database/schemas/SportsFacility'
+import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
 
 const router = express.Router()
 export default router
@@ -500,9 +502,7 @@ router.post('/match', async (req, res) => {
 })
 
 router.post('/match/:id', async (req, res) => {
-    console.log('updatowanie meczu')
     try {
-        console.log(req.body.sportsFacility)
         const match = await models.Match.findOneAndUpdate(
             {
                 _id: req.params.id
@@ -516,6 +516,7 @@ router.post('/match/:id', async (req, res) => {
                 friendly: req.body.friendly,
                 sportsFacility: req.body.sportsFacility,
                 remarks: req.body.remarks,
+                duration: req.body.duration,
             },
             {
                 new: true
@@ -713,13 +714,14 @@ router.post('/tournament', async (req, res) => {
 })
 
 router.post('/tournament/:id', async (req, res) => {
+    console.log('update tournament')
     try {
         const tournament = await models.Tournament.findOneAndUpdate(
             {
                 _id: req.params.id
             },
             {
-                tournamentName: req.body.tournament,
+                tournamentName: req.body.tournamentName,
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
                 team: req.body.team,
@@ -736,7 +738,6 @@ router.post('/tournament/:id', async (req, res) => {
         res.status(400).send(error)
     }
 })
-
 
 router.delete('/tournament/:id', async (req, res) => {
     try {
@@ -790,6 +791,111 @@ router.post('/attendanceList/:id', async (req, res) => {
             }
         )
         res.send(attendanceList)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/matchStatistic/:id', async (req, res) => {
+    try {
+        const matchStatistic = await models.MatchStatistic.find({match: req.params.id})
+        .populate({
+            path: 'player',
+            model: 'Player',
+        }) as MatchStatistic[]
+
+        res.send(matchStatistic.filter(item => item.match != null))
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error)
+    }
+})
+
+router.post('/matchStatistic', async (req, res) => {
+    try {
+        const matchStatistic = models.MatchStatistic.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(matchStatistic)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/matchStatistic/:id', async (req, res) => {
+    try {
+        const matchStatistic = await models.MatchStatistic.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                attendance: req.body.attendance,
+                remarks: req.body.remarks,
+                goalsScored: req.body.goalsScored,
+                yellowCards: req.body.yellowCards,
+                redCards: req.body.redCards,
+                minutesPlayed: req.body.minutesPlayed,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(matchStatistic)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/tournamentStatistic/:id', async (req, res) => {
+    try {
+        const tournamentStatistic = await models.TournamentStatistic.find({tournament: req.params.id})
+        .populate({
+            path: 'player',
+            model: 'Player',
+        }) as TournamentStatistic[]
+
+        res.send(tournamentStatistic.filter(item => item.tournament != null))
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error)
+    }
+})
+
+router.post('/tournamentStatistic', async (req, res) => {
+    try {
+        const tournamentStatistic = models.TournamentStatistic.create(req.body, function (error: any) {
+            if (error) {
+                res.status(400).send(error)
+            }
+            else res.send(tournamentStatistic)
+        })
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/tournamentStatistic/:id', async (req, res) => {
+    try {
+        console.log('tournament st update')
+        const tournamentStatistic = await models.TournamentStatistic.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                attendance: req.body.attendance,
+                remarks: req.body.remarks,
+                goalsScored: req.body.goalsScored,
+                yellowCards: req.body.yellowCards,
+                redCards: req.body.redCards,
+                minutesPlayed: req.body.minutesPlayed,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(tournamentStatistic)
     } catch (error) {
         res.status(400).send(error)
     }

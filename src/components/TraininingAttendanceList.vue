@@ -66,37 +66,22 @@ whenever(players, (data) => {
 	}
 })
 
-const playerAttendanceId = ref('')
-
-const {
-	data: playerAttendanceData,
-	isFetching: isPlayerAttendanceFetching,
-	error: playerAttendanceError,
-	execute: refetchPlayerAttendance
-} = useFetch(`/api/attendanceList/${playerAttendanceId.value}`, { initialData: {}, immediate: false }).json<AttendanceList>()
-
 const isFinished = computed(() => {
 	return isAttendanceListFinished.value
 })
 
 const isFetching = computed(() => {
-	return isAttendanceListFetching.value || isPlayerAttendanceFetching.value || isPlayersFetching.value || isTrainingListFetching.value
+	return isAttendanceListFetching.value ||  isPlayersFetching.value || isTrainingListFetching.value
 })
 
 const error = computed(() => {
-	return attendanceListError.value && playerAttendanceError.value && trainingListError.value && playersError.value
+	return attendanceListError.value && trainingListError.value && playersError.value
 })
 
 const onSubmit = async () => {
 
 	if (props.edit) {
 		attendanceList.value.forEach(async element => {
-			playerAttendanceId.value = element._id
-			refetchPlayerAttendance()
-			whenever(playerAttendanceData, (data) => {
-				playerAttendance.value = data
-			})
-
 			playerAttendance.value.attendance = element.attendance
 			playerAttendance.value.remarks = element.remarks
 
@@ -121,6 +106,7 @@ const goEditAttendanceList = (eventId: any) => {
 <template>
 
 	<MiniWhiteFrame>
+
 		<template #nav v-if="!props.edit">
 			<button @click="goEditAttendanceList(props.id)">
 				<img src="../assets/edit-icon.png" class="h-24px" />
@@ -150,8 +136,8 @@ const goEditAttendanceList = (eventId: any) => {
 						<img v-if="playerAttendance.attendance" src="../assets/checkbox-checked-icon.png" class="h-18px" />
 						<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-18px" />
 					</div>
-					<p>{{ playerAttendance.player.firstName }}</p>
-					<p>{{ playerAttendance.player.lastName }}</p>
+					<p class="flex items-center">{{ playerAttendance.player.firstName }}</p>
+					<p class="flex items-center">{{ playerAttendance.player.lastName }}</p>
 				</div>
 				<div class="w-auto flex flex-row gap-2 items-center">
 					<p class=" flex text-sm" v-if="!props.edit && playerAttendance.remarks">({{ playerAttendance.remarks }})</p>

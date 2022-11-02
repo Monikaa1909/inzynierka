@@ -278,11 +278,11 @@ const showAttendanceList = (eventId: string, eventType: string) => {
 }
 
 const showMatchStatistic = (eventId: any) => {
-  return router.push(`/events/statistic/match/${eventId}`)
+  return router.push(`/events/match/statistic/${eventId}`)
 }
 
 const showTournamentStatistic = (eventId: any) => {
-  return router.push(`/events/statistic/tournament/${eventId}`)
+  return router.push(`/events/tournament/statistic/${eventId}`)
 }
 
 const isDeleting = ref(false)

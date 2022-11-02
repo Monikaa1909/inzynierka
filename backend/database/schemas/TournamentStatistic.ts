@@ -1,11 +1,11 @@
 import { Schema } from 'mongoose'
-import { Match } from './Match'
+import { Tournament } from './Tournament'
 import { Player } from './Player'
 
-export interface MatchStatistic {
+export interface TournamentStatistic {
     _id: string
     player: Player
-    match: Match
+    tournament: Tournament
     goalsScored?: number
     yellowCards?: number,
     redCards?: number,
@@ -20,10 +20,10 @@ export default new Schema({
         ref: "Player",
         required: [true, 'Missing informations - each match statistic item must have a strictly defined player']
     },
-    match: {
+    tournament: {
         type: Schema.Types.ObjectId,
-        ref: "Match",
-        required: [true, 'Missing informations - each match statistic item must have a strictly defined match']
+        ref: "Tournament",
+        required: [true, 'Missing informations - each match statistic item must have a strictly defined tournament']
     },
     goalsScored: {
         type: Number,

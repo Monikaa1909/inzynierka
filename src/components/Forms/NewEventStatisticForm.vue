@@ -144,6 +144,7 @@ for (let i = 0; i < 120; i++) {
 
 <template>
   <div class="w-full flex flex-col gap-8">
+    
     <div class="flex flex-col gap-2">
       <div v-if="props.eventType === 'Match'" class="flex flex-row gap-2 w-full px-2">
         <p class="font-medium">{{ t('single-event.result')}}: </p>

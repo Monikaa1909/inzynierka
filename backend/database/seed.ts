@@ -340,6 +340,9 @@ export const seedDatabase = async () => {
         player: player1,
         match: match1,
         goalsScored: 1,
+        yellowCards: 1,
+        minutesPlayed: 67,
+        attendance: true
     });
     matchStatistic1.save(function (err) {
         if (err) return console.log(err.message);
@@ -347,9 +350,31 @@ export const seedDatabase = async () => {
     const matchStatistic2 = new models.MatchStatistic({
         player: player2,
         match: match1,
-        goalsScored: 3
+        goalsScored: 3,
+        minutesPlayed: 90,
+        attendance: true
     });
     matchStatistic2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const matchStatistic3 = new models.MatchStatistic({
+        player: player3,
+        match: match1,
+        minutesPlayed: 89,
+        remarks: 'Doznał kontuzji prawego kolana',
+        attendance: true
+    });
+    matchStatistic3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const matchStatistic4 = new models.MatchStatistic({
+        player: player4,
+        match: match1,
+        goalsScored: 2,
+        minutesPlayed: 90,
+        attendance: true
+    });
+    matchStatistic4.save(function (err) {
         if (err) return console.log(err.message);
     });
 
@@ -360,7 +385,7 @@ export const seedDatabase = async () => {
         endDate: new Date("2022, 11, 15"),
         sportsFacility: sportsFacility3,
         friendly: true,
-        team: team4
+        team: team1
     });
     tournament1.save(function (err) {
         if (err) return console.log(err.message);
@@ -378,6 +403,48 @@ export const seedDatabase = async () => {
         if (err) return console.log(err.message);
     });
 
+     // TOURNAMENTSTATISTIC ----------------------------------------------------------------------------
+     const tournamentStatistic1 = new models.TournamentStatistic({
+        player: player1,
+        tournament: tournament1,
+        goalsScored: 1,
+        yellowCards: 1,
+        minutesPlayed: 67,
+        attendance: true
+    });
+    tournamentStatistic1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const tournamentStatistic2 = new models.TournamentStatistic({
+        player: player2,
+        tournament: tournament1,
+        goalsScored: 3,
+        minutesPlayed: 90,
+        attendance: true
+    });
+    tournamentStatistic2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const tournamentStatistic3 = new models.TournamentStatistic({
+        player: player3,
+        tournament: tournament1,
+        minutesPlayed: 89,
+        remarks: 'Doznał kontuzji prawego kolana',
+        attendance: true
+    });
+    tournamentStatistic3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const tournamentStatistic4 = new models.TournamentStatistic({
+        player: player4,
+        tournament: tournament1,
+        goalsScored: 0,
+        minutesPlayed: 0,
+    });
+    tournamentStatistic4.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+
     // TRAININGS ----------------------------------------------------------------------------
     const training1 = new models.Training({
         date: new Date('2022-11-20 15:30'),
@@ -389,7 +456,6 @@ export const seedDatabase = async () => {
         if (err) return console.log(err.message);
     });
 
-    console.log(training1.id)
     const training2 = new models.Training({
         date: new Date('2022-11-07 17:05'),
         sportsFacility: sportsFacility1,
@@ -437,7 +503,7 @@ export const seedDatabase = async () => {
     });
 
     const attendaceList4 = new models.AttendanceList({
-        player: player3,
+        player: player4,
         training: training1,
         remarks: 'Nieobecność zgłoszona wcześniej',
     });
