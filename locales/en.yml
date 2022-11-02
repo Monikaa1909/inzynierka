@@ -165,6 +165,7 @@ error-messages:
   unknow-error: There was an error connecting to the database. Please try again in a moment or email us at creaassistanthelpgmailcom
   went-wrong: Something went wrong... Try again later!
   no-data: There is no data in data base
+  no-players-in-team: There is no players in that team in data base
 other:
   confirming-deleting: Are you sure you want to delete
 not-found: Not found
