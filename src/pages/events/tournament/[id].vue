@@ -43,7 +43,7 @@ const goEditEvent = (eventId: any) => {
 }
 
 const showTournamentStatistic = (eventId: any) => {
-  return router.push(`/events/statistic/tournament/${eventId}`)
+  return router.push(`/events/tournament/statistic/${eventId}`)
 }
 
 const isDeleting = ref(false)

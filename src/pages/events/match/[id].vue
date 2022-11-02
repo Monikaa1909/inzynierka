@@ -42,7 +42,7 @@ const goEditEvent = (eventId: any) => {
 }
 
 const showMatchStatistic = (eventId: any) => {
-	return router.push(`/events/statistic/match/${eventId}`)
+	return router.push(`/events/match/statistic/${eventId}`)
 }
 
 
