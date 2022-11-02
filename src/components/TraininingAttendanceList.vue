@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { AttendanceList } from 'backend/database/schemas/AttendanceList'
+import { Training } from 'backend/database/schemas/Training'
+import { Player } from 'backend/database/schemas/Player'
 
 const { t, availableLocales, locale } = useI18n()
 const locales = availableLocales
@@ -10,16 +12,58 @@ const props = defineProps<{ id: string, edit?: boolean }>()
 
 const attendanceList = ref([] as Omit<AttendanceList[], '_id'>)
 const playerAttendance = ref({} as AttendanceList)
+const training = ref({} as Omit<Training, '_id'>)
+const playerUrl = ref(``)
 
 const {
 	data: attendanceListData,
 	isFetching: isAttendanceListFetching,
 	isFinished: isAttendanceListFinished,
 	error: attendanceListError,
+	execute: refechAttendanceList
 } = useFetch(`/api/attendanceList/${props.id}`, { initialData: [] }).json<AttendanceList[]>()
+
+const {
+	data: trainingData,
+	isFetching: isTrainingListFetching,
+	error: trainingListError,
+	execute: refechTraining
+} = useFetch(`/api/training/${props.id}`, { initialData: {}, immediate: false }).json<Training>()
+
+const {
+	data: players,
+	isFetching: isPlayersFetching,
+	error: playersError,
+	execute: refechPlayers
+} = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
 
 whenever(attendanceListData, (data) => {
 	attendanceList.value = data
+	if (attendanceList.value.length === 0) {
+		refechTraining()
+	}
+})
+
+whenever(trainingData, (data) => {
+	training.value = data
+	playerUrl.value = `/api/players/team/${data.team._id}`
+	refechPlayers()
+})
+
+whenever(players, (data) => {
+	if (data.length > 0) {
+		data.forEach(async element => {
+			playerAttendance.value.player = element
+			playerAttendance.value.training = training as unknown as Training
+			const { execute: savePlayerAttendance, error: saveError } = useFetch(`/api/attendanceList`, { immediate: false }).post(playerAttendance)
+			await savePlayerAttendance()
+			if (saveError.value) {
+				alert(t('error-messages.unknow-error'))
+				return
+			}
+			refechAttendanceList()
+		})
+	}
 })
 
 const playerAttendanceId = ref('')
@@ -36,11 +80,11 @@ const isFinished = computed(() => {
 })
 
 const isFetching = computed(() => {
-	return isAttendanceListFetching.value || isPlayerAttendanceFetching.value
+	return isAttendanceListFetching.value || isPlayerAttendanceFetching.value || isPlayersFetching.value || isTrainingListFetching.value
 })
 
 const error = computed(() => {
-	return attendanceListError.value && playerAttendanceError.value
+	return attendanceListError.value && playerAttendanceError.value && trainingListError.value && playersError.value
 })
 
 const onSubmit = async () => {
@@ -57,7 +101,7 @@ const onSubmit = async () => {
 			playerAttendance.value.remarks = element.remarks
 
 			const { execute: updatePlayerAttendance, error: updateError } = useFetch(`/api/attendanceList/${element._id}`, { immediate: false }).post(playerAttendance)
-			
+
 			await updatePlayerAttendance()
 			if (updateError.value) {
 				alert(t('error-messages.unknow-error'))
@@ -91,7 +135,11 @@ const goEditAttendanceList = (eventId: any) => {
 
 			<LoadingCircle v-if="isFetching"></LoadingCircle>
 
-			<div v-if="isFinished && !error" v-for="playerAttendance in attendanceList" v-bind:key="playerAttendance._id"
+			<ErrorMessageInfo v-else-if="!error && isFinished && players?.length === 0">
+				{{ t('error-messages.no-players-in-team') }}
+			</ErrorMessageInfo>
+
+			<div v-else-if="isFinished && !error" v-for="playerAttendance in attendanceList" v-bind:key="playerAttendance._id"
 				class="w-full  flex flex-row gap-4 place-content-between">
 				<div class="w-auto flex flex-row gap-2">
 					<button v-if="props.edit" @click="playerAttendance.attendance = !playerAttendance.attendance">
@@ -112,7 +160,8 @@ const goEditAttendanceList = (eventId: any) => {
 				</div>
 			</div>
 
-			<ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
+			<ErrorMessageInfo v-else></ErrorMessageInfo>
+
 		</template>
 
 		<template #footer>

@@ -42,7 +42,7 @@ const goEditEvent = (eventId: any) => {
 }
 
 const showAttendanceList = (eventId: any) => {
-  return router.push(`/events/attendanceList/${eventId}`)
+  return router.push(`/events/training/attendanceList/${eventId}`)
 }
 
 const isDeleting = ref(false)
@@ -103,6 +103,11 @@ const confirmDelete = async () => {
 								{{ training.date.toLocaleDateString(locale) }}
 							</template>
 						</SingleAttribute>
+
+						<SingleAttribute>
+                <template #attributeName>{{ t('single-event.team') }}:</template>
+                <template #attributeValue>{{ training.team.teamName }}</template>
+              </SingleAttribute>
 
 						<SingleAttribute>
 							<template #attributeName>{{ t('single-event.hour') }}:</template>
