@@ -13,7 +13,7 @@ const props = defineProps<{ id: string }>()
 	<BackgroundFrame>
 		<template #data>
 			<MyCenterElement>
-				<AttendanceList :id="props.id" :edit="true"></AttendanceList>
+				<TraininingAttendanceList :id="props.id" :edit="true"></TraininingAttendanceList>
 			</MyCenterElement>
 		</template>
 	</BackgroundFrame>

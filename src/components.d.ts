@@ -48,6 +48,7 @@ declare module '@vue/runtime-core' {
     StatisticHeader: typeof import('./components/Statistic/StatisticHeader.vue')['default']
     StatisticSortOptions: typeof import('./components/Statistic/StatisticSortOptions.vue')['default']
     StatisticTable: typeof import('./components/Statistic/StatisticTable.vue')['default']
+    TraininingAttendanceList: typeof import('./components/TraininingAttendanceList.vue')['default']
     WelcomeMenu: typeof import('./components/WelcomeMenu.vue')['default']
     YourProfile: typeof import('./components/YourProfile.vue')['default']
   }
