@@ -71,6 +71,7 @@ whenever(parentsData, (data) => {
 
 whenever(teamsData, (data) => {
 	teams.value = data
+	console.log(teams.value)
 	if (!props.playerId && props.teamId != 'all') {
 		teams.value.forEach(element => {
 			if (element._id === props.teamId) {
@@ -141,6 +142,13 @@ const birthdayDateErrorMessage = computed(() => {
 	return t(requiredField(player.value.birthdayDate))
 })
 
+const birthdayDateMessage = computed(() => {
+	if (player.value.team) 
+		if (new Date(player.value.birthdayDate).getFullYear() > player.value.team.startYear)
+			return t('error-messages.birthday-date-message')
+	return ''
+})
+
 const nationalityErrorMessage = computed(() => {
 	if (!validateNationality(player.value.nationality)) {
 		return false
@@ -166,7 +174,6 @@ const teamErrorMessage = computed(() => {
 
 <template>
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
-
 	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
 		<SingleInput>
 			<template #inputName>{{ t('single-player.first-name') }}:</template>
@@ -208,7 +215,10 @@ const teamErrorMessage = computed(() => {
 				</DatePicker>
 			</template>
 			<template v-if="birthdayDateErrorMessage" #errorMessage>
-				{{ birthdayDateErrorMessage }}
+				{{ birthdayDateErrorMessage }} 
+			</template>
+			<template v-if="birthdayDateMessage && !birthdayDateErrorMessage" #errorMessage>
+				{{ birthdayDateMessage }} 
 			</template>
 		</SingleInput>
 
@@ -288,10 +298,10 @@ const teamErrorMessage = computed(() => {
 
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
 			<SingleButton @click="onSubmit()">
-				<template v-slot:buttonName>{{ t('button.save') }}</template>
+				<template #buttonName>{{ t('button.save') }}</template>
 			</SingleButton>
 			<SingleButton @click="router.go(-1)">
-				<template v-slot:buttonName>{{ t('button.cancel') }}</template>
+				<template #buttonName>{{ t('button.cancel') }}</template>
 			</SingleButton>
 		</div>
 	</div>

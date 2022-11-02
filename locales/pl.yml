@@ -164,6 +164,8 @@ error-messages:
   unknow-error: Wystąpił błąd przy łączeniu z bazą danych. Spróbuj ponownie za chwilę lub napisz do nas creaassistanthelpgmailcom
   went-wrong: Coś poszło nie tak... Spróbuj ponownie za chwilę!
   no-data: Brak danych w bazie danych
+  no-players-in-team: W bazie danych nie istnieją zawodnicy z tej drużyny
+  red-cards-message: 2 żółte kartki zwykle oznaczają czerwoną kartkę
 other:
   confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono

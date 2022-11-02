@@ -26,9 +26,8 @@ const {
 
 whenever(tournamentData, (data) => {
 	tournament.value = data
-	// tournament.value.startDate = new Date(tournament.value.startDate) as unknown as Date
-	// tournament.value.endDate = new Date(tournament.value.endDate) as unknown as Date
 	playerUrl.value = `/api/players/team/${data.team._id}`
+	refechTournamentStatistic()
 })
 
 const {
@@ -37,7 +36,7 @@ const {
 	isFinished: isTournamentStatisticFinished,
 	error: tournamentStatisticError,
 	execute: refechTournamentStatistic
-} = useFetch(`/api/tournamentStatistic/${props.id}`, { initialData: [] }).json<TournamentStatistic[]>()
+} = useFetch(`/api/tournamentStatistic/${props.id}`, { initialData: [], immediate: false }).json<TournamentStatistic[]>()
 
 const {
 	data: players,

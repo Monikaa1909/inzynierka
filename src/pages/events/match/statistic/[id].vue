@@ -28,6 +28,7 @@ whenever(matchData, (data) => {
 	match.value = data
 	match.value.date = new Date(match.value.date) as unknown as Date
 	playerUrl.value = `/api/players/team/${data.team._id}`
+	refechMatchStatistic()
 })
 
 const {
@@ -36,7 +37,7 @@ const {
 	isFinished: isMatchStatisticFinished,
 	error: matchStatisticError,
 	execute: refechMatchStatistic
-} = useFetch(`/api/matchStatistic/${props.id}`, { initialData: [] }).json<MatchStatistic[]>()
+} = useFetch(`/api/matchStatistic/${props.id}`, { initialData: [], immediate:false }).json<MatchStatistic[]>()
 
 const {
 	data: players,

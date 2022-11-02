@@ -222,10 +222,15 @@ const onSubmit = async () => {
 									<SingleStatistic>
 										<template #name>{{ t('match-statistic.red-cards') }}</template>
 										<template #data v-if="statistic.attendance">
-											<select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.redCards">
-												<option :value="0">0</option>
-												<option :value="1">1</option>
-											</select>
+											<div class="w-full flex flex-col">
+												<select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.redCards">
+													<option :value="0">0</option>
+													<option :value="1">1</option>
+												</select>
+												<p class="text-xs text-red flex text-center" v-if="statistic.yellowCards === 2">
+													{{ t('error-messages.red-cards-message') }}
+												</p>
+											</div>
 										</template>
 									</SingleStatistic>
 

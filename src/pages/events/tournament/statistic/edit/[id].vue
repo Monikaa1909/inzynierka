@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { validateName } from '~/validatesFunctions'
+import { validateName, requiredField } from '~/validatesFunctions'
 
 import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
 import { Tournament } from 'backend/database/schemas/Tournament'
@@ -76,7 +76,7 @@ for (let i = 0; i < 120; i++) {
 const onSubmit = async () => {
 	if (nameErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
-			return
+		return
 	} else {
 		const { execute: updateTournament, error: updateError } = useFetch(`/api/tournament/${tournament.value._id}`, { immediate: false }).post(tournament)
 		await updateTournament()
@@ -113,7 +113,9 @@ const onSubmit = async () => {
 }
 
 const nameErrorMessage = computed(() => {
-	if (!validateName(tournament.value.tournamentName)) {
+	if (requiredField(tournament.value.tournamentName))
+		return false
+	else if (!validateName(tournament.value.tournamentName)) {
 		return false
 	}
 	return t(validateName(tournament.value.tournamentName))
@@ -208,10 +210,15 @@ const nameErrorMessage = computed(() => {
 									<SingleStatistic>
 										<template #name>{{ t('match-statistic.red-cards') }}</template>
 										<template #data v-if="statistic.attendance">
-											<select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.redCards">
-												<option :value="0">0</option>
-												<option :value="1">1</option>
-											</select>
+											<div class="w-full flex flex-col">
+												<select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.redCards">
+													<option :value="0">0</option>
+													<option :value="1">1</option>
+												</select>
+												<p class="text-xs text-red flex text-center" v-if="statistic.yellowCards === 2">
+													{{ t('error-messages.red-cards-message') }}
+												</p>
+											</div>
 										</template>
 									</SingleStatistic>
 

@@ -166,6 +166,8 @@ error-messages:
   went-wrong: Something went wrong... Try again later!
   no-data: There is no data in data base
   no-players-in-team: There is no players in that team in data base
+  red-cards-message: 2 yellow cards usually mean red card
+  birthday-date-message: Player's birthday date is greater than the team's starting year
 other:
   confirming-deleting: Are you sure you want to delete
 not-found: Not found
