@@ -135,7 +135,7 @@ const goEditAttendanceList = (eventId: any) => {
 
 			<LoadingCircle v-if="isFetching"></LoadingCircle>
 
-			<ErrorMessageInfo v-else-if="!error && isFinished && players?.length === 0">
+			<ErrorMessageInfo v-else-if="!error && isFinished && players?.length === 0 && attendanceList.length === 0">
 				{{ t('error-messages.no-players-in-team') }}
 			</ErrorMessageInfo>
 
