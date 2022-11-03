@@ -39,7 +39,7 @@ const getMinutes = (date: Date) => {
 }
 
 const goEditEvent = (eventId: any) => {
-	return router.push(`/events/edit/tournament/${eventId}`)
+	return router.push(`/events/tournament/edit/${eventId}`)
 }
 
 const showTournamentStatistic = (eventId: any) => {

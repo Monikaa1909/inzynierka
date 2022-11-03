@@ -38,7 +38,7 @@ const getMinutes = (date: Date) => {
 }
 
 const goEditEvent = (eventId: any) => {
-	return router.push(`/events/edit/training/${eventId}`)
+	return router.push(`/events/training/edit/${eventId}`)
 }
 
 const showAttendanceList = (eventId: any) => {

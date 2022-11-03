@@ -257,7 +257,7 @@ const activeAll = computed(() => {
 })
 
 const goEditEvent = (eventId: string, eventType: string) => {
-  return router.push(`/events/edit/${eventType.toLowerCase()}/${eventId}`)
+  return router.push(`/events/${eventType.toLowerCase()}/edit/${eventId}`)
 }
 
 const goAddEvent = () => {
