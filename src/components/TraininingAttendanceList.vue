@@ -21,7 +21,7 @@ const {
 	isFinished: isAttendanceListFinished,
 	error: attendanceListError,
 	execute: refechAttendanceList
-} = useFetch(`/api/attendanceList/${props.id}`, { initialData: [] }).json<AttendanceList[]>()
+} = useFetch(`/api/attendanceList/training/${props.id}`, { initialData: [] }).json<AttendanceList[]>()
 
 const {
 	data: trainingData,
@@ -61,7 +61,6 @@ whenever(players, (data) => {
 				alert(t('error-messages.unknow-error'))
 				return
 			}
-			
 		})
 		refechAttendanceList()
 	}

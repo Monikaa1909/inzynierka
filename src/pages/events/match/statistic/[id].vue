@@ -68,9 +68,9 @@ whenever(players, (data) => {
 				alert(t('error-messages.unknow-error'))
 				return
 			}
-			refechMatchStatistic()
 		})
 	}
+	refechMatchStatistic()
 })
 
 const isFinished = computed(() => {
