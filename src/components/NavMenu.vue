@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useLogto } from '@logto/vue'
 
+const router = useRouter()
+
 const { signOut } = useLogto()
 const { t, availableLocales, locale } = useI18n()
 
@@ -10,18 +12,10 @@ const toggleLocales = () => {
   isHidden.value = true
 }
 
-
-const router = useRouter()
-
 const isHidden = ref(true)
 
 const settingsMenu = () => {
   isHidden.value = !isHidden.value
-}
-
-const goStart = () => {
-  isHidden.value = true
-  return router.push('/start')
 }
 
 const goTeams = () => {
@@ -68,48 +62,57 @@ const logout = async () => {
 
 <template>
   <div class="flex flex-col md:(flex-row justify-between)">
-    <button @click="goStart" class="flex flex-row flex-shrink-0 self-center">
+
+    <router-link to="/start" @click="isHidden = true" class="flex flex-row flex-shrink-0 self-center">
       <img src="../assets/logo.png " class="px-2 py-2 h-80px self-center" />
       <img src="../assets/name.png" class="px-2 h-60px self-center" />
-    </button>
+    </router-link>
+
     <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
+
       <SingleButton @click="goTeams">
-        <template v-slot:icon>
+        <template #icon>
           <img src="../assets/team-icon.png" class="h-24px mr-2" />
         </template>
-        <template v-slot:buttonName>{{ t('button.teams') }}</template>
+        <template #buttonName>{{ t('button.teams') }}</template>
       </SingleButton>
+
       <SingleButton @click="goPlayers">
-        <template v-slot:icon>
+        <template #icon>
           <img src="../assets/player-icon.png" class="h-24px mr-2" />
         </template>
-        <template v-slot:buttonName>{{ t('button.players') }}</template>
+        <template #buttonName>{{ t('button.players') }}</template>
       </SingleButton>
+      
       <SingleButton @click="goCalendar">
-        <template v-slot:icon>
+        <template #icon>
           <img src="../assets/calendar-icon.png" class="h-24px mr-2" />
         </template>
-        <template v-slot:buttonName>{{ t('button.calendar') }}</template>
+        <template #buttonName>{{ t('button.calendar') }}</template>
       </SingleButton>
+
       <SingleButton @click="goTrainers">
-        <template v-slot:icon>
+        <template #icon>
           <img src="../assets/trainer-icon.png" class="h-24px mr-2" />
         </template>
-        <template v-slot:buttonName>{{ t('button.trainers') }}</template>
+        <template #buttonName>{{ t('button.trainers') }}</template>
       </SingleButton>
+
       <SingleButton @click="goParents">
-        <template v-slot:icon>
+        <template #icon>
           <img src="../assets/parent-icon.png" class="h-24px mr-2" />
         </template>
-        <template v-slot:buttonName>{{ t('button.parents') }}</template>
+        <template #buttonName>{{ t('button.parents') }}</template>
       </SingleButton>
+
       <SingleButton @click="goObjects">
-        <template v-slot:icon>
+        <template #icon>
           <img src="../assets/object-icon.png" class="h-24px mr-2" />
         </template>
-        <template v-slot:buttonName>{{ t('button.objects') }}</template>
+        <template #buttonName>{{ t('button.objects') }}</template>
       </SingleButton>
     </div>
+
     <div class="flex flex-row self-center flex-shrink-0">
       <div class="px-2 py-0.5 self-center justify-items-center flex flex-col">
         <p class="px-2 justify-items-center text-lg font-medium color-white">Jan Kowalski</p>
