@@ -61,8 +61,9 @@ whenever(players, (data) => {
 				alert(t('error-messages.unknow-error'))
 				return
 			}
-			refechAttendanceList()
+			
 		})
+		refechAttendanceList()
 	}
 })
 
@@ -119,7 +120,7 @@ const goEditAttendanceList = (eventId: any) => {
 
 		<template #attributes>
 
-			<LoadingCircle v-if="isFetching"></LoadingCircle>
+			<LoadingCircle v-if="isFetching "></LoadingCircle>
 
 			<ErrorMessageInfo v-else-if="!error && isFinished && players?.length === 0 && attendanceList.length === 0">
 				{{ t('error-messages.no-players-in-team') }}

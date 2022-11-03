@@ -7,8 +7,7 @@
     <slot name="name"></slot>
   </div>
   <div class="self-center justify-self-center font-medium col-span-1 text-xs md:()">
-    <slot name="data">
-    </slot>
+    <slot name="data"></slot>
   </div>
 </template>
 

@@ -157,6 +157,8 @@ match-statistic:
   players: Zawodnicy
   sum: Suma
   average: Średnia
+  including-absent: Wliczając nieobecnych
+  not-including-absent: Nie wliczając nieobecnych
 error-messages:
   required-field: To pole jest wymagane
   valid-name: To pole musi zawierać poprawną formę

@@ -158,6 +158,8 @@ match-statistic:
   players: Players
   sum: Sum
   average: Average
+  including-absent: Including absent
+  not-including-absent: Not including absent
 error-messages:
   required-field: This field is required
   valid-name: This field must be a valid name
