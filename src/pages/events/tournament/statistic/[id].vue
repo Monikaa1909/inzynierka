@@ -36,7 +36,7 @@ const {
 	isFinished: isTournamentStatisticFinished,
 	error: tournamentStatisticError,
 	execute: refechTournamentStatistic
-} = useFetch(`/api/tournamentStatistic/${props.id}`, { initialData: [], immediate: false }).json<TournamentStatistic[]>()
+} = useFetch(`/api/tournamentStatistic/tournament/${props.id}`, { initialData: [], immediate: false }).json<TournamentStatistic[]>()
 
 const {
 	data: players,
@@ -67,8 +67,8 @@ whenever(players, (data) => {
 				alert(t('error-messages.unknow-error'))
 				return
 			}
-			refechTournamentStatistic()
 		})
+		refechTournamentStatistic()
 	}
 })
 
@@ -279,12 +279,14 @@ const updateAverageStatisticWithoutAbsent = () => {
 		averageStatisticWithoutAbsent.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
 	})
 
-	averageStatisticWithoutAbsent.value.attendance /= numberOfAbsent * 0.01
-	averageStatisticWithoutAbsent.value.goalsScored /= numberOfAbsent
-	averageStatisticWithoutAbsent.value.yellowCards /= numberOfAbsent
-	averageStatisticWithoutAbsent.value.redCards /= numberOfAbsent
-	averageStatisticWithoutAbsent.value.minutesPlayed /= numberOfAbsent
-
+	if (numberOfAbsent > 0) {
+		averageStatisticWithoutAbsent.value.attendance /= numberOfAbsent * 0.01
+		averageStatisticWithoutAbsent.value.goalsScored /= numberOfAbsent
+		averageStatisticWithoutAbsent.value.yellowCards /= numberOfAbsent
+		averageStatisticWithoutAbsent.value.redCards /= numberOfAbsent
+		averageStatisticWithoutAbsent.value.minutesPlayed /= numberOfAbsent
+	}
+	
 	averageStatisticWithoutAbsent.value.goalsScored = Number(averageStatisticWithoutAbsent.value.goalsScored.toFixed(2))
 	averageStatisticWithoutAbsent.value.yellowCards = Number(averageStatisticWithoutAbsent.value.yellowCards.toFixed(2))
 	averageStatisticWithoutAbsent.value.redCards = Number(averageStatisticWithoutAbsent.value.redCards.toFixed(2))
@@ -324,8 +326,8 @@ const updateAverageStatisticWithoutAbsent = () => {
 
 							<div class="flex flex-col gap-2">
 								<div class="flex flex-row gap-2 w-full px-2">
-									<p class="font-medium">{{ t('single-event.name')}}: </p>
-									<p>{{tournament.tournamentName}}</p>
+									<p class="font-medium">{{ t('single-event.name') }}: </p>
+									<p>{{ tournament.tournamentName }}</p>
 								</div>
 							</div>
 
@@ -435,45 +437,45 @@ const updateAverageStatisticWithoutAbsent = () => {
 
 								<div v-if="tournamentStatistic.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
-									
+
 									<SingleSummaryStatistic>
 										<template #name></template>
 										<template class="font-medium" #data>
 											<p class="font-medium text-center">{{ t('match-statistic.average') }}</p>
-											<p class="text-center">({{ t('match-statistic.including-absent') }})</p>	
+											<p class="text-center">({{ t('match-statistic.including-absent') }})</p>
 										</template>
 									</SingleSummaryStatistic>
 
 									<SingleSummaryStatistic>
 										<template #name>{{ t('match-statistic.attendance') }}</template>
-										<template #data>{{averageStatisticWithAbsent.attendance}}%</template>
+										<template #data>{{ averageStatisticWithAbsent.attendance }}%</template>
 									</SingleSummaryStatistic>
 
 									<SingleSummaryStatistic>
 										<template #name>{{ t('match-statistic.goals-scored') }}</template>
-										<template #data>{{averageStatisticWithAbsent.goalsScored}}</template>
+										<template #data>{{ averageStatisticWithAbsent.goalsScored }}</template>
 									</SingleSummaryStatistic>
 
 									<SingleSummaryStatistic>
 										<template #name>{{ t('match-statistic.yellow-cards') }}</template>
-										<template #data>{{averageStatisticWithAbsent.yellowCards}}</template>
+										<template #data>{{ averageStatisticWithAbsent.yellowCards }}</template>
 									</SingleSummaryStatistic>
 
 									<SingleSummaryStatistic>
 										<template #name>{{ t('match-statistic.red-cards') }}</template>
-										<template #data>{{averageStatisticWithAbsent.redCards}}</template>
+										<template #data>{{ averageStatisticWithAbsent.redCards }}</template>
 									</SingleSummaryStatistic>
 
 									<SingleSummaryStatistic>
 										<template #name>{{ t('match-statistic.minutes-played') }}</template>
-										<template #data>{{averageStatisticWithAbsent.minutesPlayed}}</template>
+										<template #data>{{ averageStatisticWithAbsent.minutesPlayed }}</template>
 									</SingleSummaryStatistic>
 
 									<SingleSummaryStatistic>
 										<template #name></template>
 										<template #data></template>
 									</SingleSummaryStatistic>
-									
+
 									<div class="self-center justify-self-center col-span-2 block md:(hidden)">
 										<img src="../../../../assets/line-icon.png" class="w-full" />
 									</div>

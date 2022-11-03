@@ -26,6 +26,10 @@ const goEditPlayer = (playerId: any) => {
   return router.push(`/players/edit/${playerId}`)
 }
 
+const goCheckStatistic = () => {
+  return router.push(`/players/statistic/${props.id}`)
+}
+
 const goAddPlayer = () => {
   if (props.id != 'all') {
     return router.push(`/players/add/newPlayer/${props.id}`)
@@ -72,10 +76,10 @@ const confirmDelete = async () => {
 <template>
   <BackgroundFrame>
     <template #nav>
-      <router-link to="/players/statistic" class="flex flex-row gap-2 mr-8 items-center">
+      <button @click="goCheckStatistic()" class="flex flex-row gap-2 mr-8 items-center">
         <img src="../../../assets/statistic-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic') }}</p>
-      </router-link>
+      </button>
       <button @click="goAddPlayer()" class="flex flex-row gap-2 items-center">
         <img src="../../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player') }}</p>

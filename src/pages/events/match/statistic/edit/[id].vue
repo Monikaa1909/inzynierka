@@ -34,7 +34,7 @@ const {
 	isFetching: isMatchStatisticFetching,
 	isFinished: isMatchStatisticFinished,
 	error: matchStatisticError,
-} = useFetch(`/api/matchStatistic/${props.id}`, { initialData: [] }).json<MatchStatistic[]>()
+} = useFetch(`/api/matchStatistic/match/${props.id}`, { initialData: [] }).json<MatchStatistic[]>()
 
 whenever(matchStatisticData, (data) => {
 	matchStatistic.value = data

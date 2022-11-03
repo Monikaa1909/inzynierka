@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
 import { Player } from 'backend/database/schemas/Player'
-import { Match } from 'backend/database/schemas/Match'
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -9,103 +8,72 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const academy = 'AP Jagiellonia Białystok'
+
 const props = defineProps<{ id: string }>()
 
-const matchStatistic = ref([] as MatchStatistic[])
-const playerStatistic = ref({} as MatchStatistic)
-const match = ref(<Match>({}))
-
-const playerUrl = ref(``)
-
-const {
-	data: matchData,
-	isFetching: isMatchFetching,
-	isFinished: isMatchFinished,
-	error: matchError,
-} = useFetch(`/api/match/${props.id}`, { initialData: {} }).json<Match>()
-
-whenever(matchData, (data) => {
-	match.value = data
-	match.value.date = new Date(match.value.date) as unknown as Date
-	playerUrl.value = `/api/players/team/${data.team._id}`
-	refechMatchStatistic()
+const urlMatchStatistic = computed(() => {
+	if (props.id === 'all')
+		return `/api/matchStatistic/academy/${academy}`
+	else
+		return `/api/matchStatistic/team/${props.id}`
 })
 
+const urlPlayers = computed(() => {
+	if (props.id === 'all')
+		return `/api/players//${academy}`
+	else
+		return `/api/players/team/${props.id}`
+})
+
+const playersStatistic = ref([] as MatchStatistic[])
+// const playerStatistic = ref({} as MatchStatistic)
+
 const {
-	data: matchStatisticData,
+	data: matchStatistic,
 	isFetching: isMatchStatisticFetching,
 	isFinished: isMatchStatisticFinished,
 	error: matchStatisticError,
-	execute: refechMatchStatistic
-} = useFetch(`/api/matchStatistic/match/${props.id}`, { initialData: [], immediate: false }).json<MatchStatistic[]>()
+} = useFetch(urlMatchStatistic.value, { initialData: [] }).json<MatchStatistic[]>()
 
 const {
 	data: players,
 	isFetching: isPlayersFetching,
-	error: playersError,
+	isFinished: isPlayersFinished,
+	error: playersStatisticError,
 	execute: refechPlayers
-} = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
+} = useFetch(urlPlayers.value, { initialData: [], immediate: false }).json<Player[]>()
 
-whenever(matchStatisticData, (data) => {
-	matchStatistic.value = data
-	if (matchStatistic.value.length === 0) {
+whenever(matchStatistic, (data) => {
+	if (data.length === 0) {
+		alert('Brak statystyk z meczu w bazie')
+	} if (players.value?.length === 0)
 		refechPlayers()
-		return
-	}
-	updateSummaryStatistic()
-	updateAverageStatisticWithAbsent()
-	updateAverageStatisticWithoutAbsent()
-})
+	else {
 
-whenever(players, (data) => {
-	if (data.length > 0) {
-		data.forEach(async element => {
-			playerStatistic.value.player = element
-			playerStatistic.value.match = match as unknown as Match
-			const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, { immediate: false }).post(playerStatistic)
-			await savePlayerStatistic()
-			if (saveError.value) {
-				alert(t('error-messages.unknow-error'))
-				return
-			}
-			refechMatchStatistic()
-		})
 	}
 })
 
 const isFinished = computed(() => {
-	return isMatchFinished.value && isMatchStatisticFinished.value
+	return isMatchStatisticFinished.value && isPlayersFinished.value
 })
 
 const isFetching = computed(() => {
-	return isMatchFetching.value || isMatchStatisticFetching.value || isPlayersFetching.value
+	return isMatchStatisticFetching.value || isPlayersFetching.value
 })
 
 const error = computed(() => {
-	return matchError.value && matchStatisticError.value && playersError.value
+	return matchStatisticError.value && playersStatisticError.value
 })
 
 const isHidden = ref(true)
-const sortType = ref('all')
 
+const sortType = ref('playersDown')
 function changeSorting(newSortType: any) {
-	sortType.value = newSortType
-}
-
-const goEditMatchStatistic = (eventId: any) => {
-	return router.push(`/events/match/statistic/edit/${eventId}`)
+  sortType.value = newSortType
 }
 
 const sortedStatistic = computed(() => {
-	matchStatistic.value.forEach(element => {
-		if (!element.attendance) {
-			element.goalsScored = 0
-			element.yellowCards = 0
-			element.redCards = 0
-			element.minutesPlayed = 0
-		}
-	})
-
 	switch (sortType.value) {
 		case 'playersUp':
 			console.log('playersUp')
@@ -203,97 +171,6 @@ const sortedStatistic = computed(() => {
 	}
 })
 
-interface Statistic {
-	attendance: number,
-	goalsScored: number,
-	yellowCards: number,
-	redCards: number,
-	minutesPlayed: number,
-}
-
-const summaryStatistic = ref({} as Statistic)
-const averageStatisticWithAbsent = ref({} as Statistic)
-const averageStatisticWithoutAbsent = ref({} as Statistic)
-
-const updateSummaryStatistic = () => {
-	summaryStatistic.value.attendance = 0
-	summaryStatistic.value.goalsScored = 0
-	summaryStatistic.value.yellowCards = 0
-	summaryStatistic.value.redCards = 0
-	summaryStatistic.value.minutesPlayed = 0
-
-	matchStatistic.value.forEach(element => {
-		if (element.attendance)
-			summaryStatistic.value.attendance += 1
-		summaryStatistic.value.goalsScored += element.goalsScored ? element.goalsScored : 0
-		summaryStatistic.value.yellowCards += element.yellowCards ? element.yellowCards : 0
-		summaryStatistic.value.redCards += element.redCards ? element.redCards : 0
-		summaryStatistic.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
-	})
-}
-
-const updateAverageStatisticWithAbsent = () => {
-	averageStatisticWithAbsent.value.attendance = 0
-	averageStatisticWithAbsent.value.goalsScored = 0
-	averageStatisticWithAbsent.value.yellowCards = 0
-	averageStatisticWithAbsent.value.redCards = 0
-	averageStatisticWithAbsent.value.minutesPlayed = 0
-
-	matchStatistic.value.forEach(element => {
-		if (element.attendance)
-			averageStatisticWithAbsent.value.attendance += 1
-		averageStatisticWithAbsent.value.goalsScored += element.goalsScored ? element.goalsScored : 0
-		averageStatisticWithAbsent.value.yellowCards += element.yellowCards ? element.yellowCards : 0
-		averageStatisticWithAbsent.value.redCards += element.redCards ? element.redCards : 0
-		averageStatisticWithAbsent.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
-	})
-
-	averageStatisticWithAbsent.value.attendance /= matchStatistic.value.length * 0.01
-	averageStatisticWithAbsent.value.goalsScored /= matchStatistic.value.length
-	averageStatisticWithAbsent.value.yellowCards /= matchStatistic.value.length
-	averageStatisticWithAbsent.value.redCards /= matchStatistic.value.length
-	averageStatisticWithAbsent.value.minutesPlayed /= matchStatistic.value.length
-
-	averageStatisticWithAbsent.value.goalsScored = Number(averageStatisticWithAbsent.value.goalsScored.toFixed(2))
-	averageStatisticWithAbsent.value.yellowCards = Number(averageStatisticWithAbsent.value.yellowCards.toFixed(2))
-	averageStatisticWithAbsent.value.redCards = Number(averageStatisticWithAbsent.value.redCards.toFixed(2))
-	averageStatisticWithAbsent.value.minutesPlayed = Number(averageStatisticWithAbsent.value.minutesPlayed.toFixed(2))
-}
-
-const updateAverageStatisticWithoutAbsent = () => {
-	averageStatisticWithoutAbsent.value.attendance = 0
-	averageStatisticWithoutAbsent.value.goalsScored = 0
-	averageStatisticWithoutAbsent.value.yellowCards = 0
-	averageStatisticWithoutAbsent.value.redCards = 0
-	averageStatisticWithoutAbsent.value.minutesPlayed = 0
-
-	let numberOfAbsent = 0
-
-	matchStatistic.value.forEach(element => {
-		if (element.attendance) {
-			numberOfAbsent += 1
-			averageStatisticWithoutAbsent.value.attendance += 1
-		}
-		averageStatisticWithoutAbsent.value.goalsScored += element.goalsScored ? element.goalsScored : 0
-		averageStatisticWithoutAbsent.value.yellowCards += element.yellowCards ? element.yellowCards : 0
-		averageStatisticWithoutAbsent.value.redCards += element.redCards ? element.redCards : 0
-		averageStatisticWithoutAbsent.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
-	})
-
-	if (numberOfAbsent > 0) {
-		averageStatisticWithoutAbsent.value.attendance /= numberOfAbsent * 0.01
-		averageStatisticWithoutAbsent.value.goalsScored /= numberOfAbsent
-		averageStatisticWithoutAbsent.value.yellowCards /= numberOfAbsent
-		averageStatisticWithoutAbsent.value.redCards /= numberOfAbsent
-		averageStatisticWithoutAbsent.value.minutesPlayed /= numberOfAbsent
-	}
-
-	averageStatisticWithoutAbsent.value.goalsScored = Number(averageStatisticWithoutAbsent.value.goalsScored.toFixed(2))
-	averageStatisticWithoutAbsent.value.yellowCards = Number(averageStatisticWithoutAbsent.value.yellowCards.toFixed(2))
-	averageStatisticWithoutAbsent.value.redCards = Number(averageStatisticWithoutAbsent.value.redCards.toFixed(2))
-	averageStatisticWithoutAbsent.value.minutesPlayed = Number(averageStatisticWithoutAbsent.value.minutesPlayed.toFixed(2))
-}
-
 </script>
 
 <template>
@@ -304,37 +181,22 @@ const updateAverageStatisticWithoutAbsent = () => {
 
 					<template #nav>
 						<button @click="isHidden = !isHidden">
-							<img src="../../../../assets/filter-icon.png" class="h-24px" />
-						</button>
-						<button @click="goEditMatchStatistic(props.id)">
-							<img src="../../../../assets/edit-icon.png" class="h-24px" />
+							<img src="../../../assets/filter-icon.png" class="h-24px" />
 						</button>
 					</template>
 
 					<template #icon>
-						<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
+						<img src="../../../assets/statistic-icon2.png" class="h-150px" />
 					</template>
 
 					<template #attributes>
-
-						<LoadingCircle v-if="isFetching || !isMatchFinished || !isMatchStatisticFinished"></LoadingCircle>
+						<LoadingCircle v-if="isFetching"></LoadingCircle>
 
 						<div v-else-if="isFinished && !error"
 							class="w-full h-full flex flex-col flex-auto gap-2 place-content-center">
 
 							<StatisticSortOptions :statisticType="'match'" @changeSorting="changeSorting" v-if="!isHidden">
 							</StatisticSortOptions>
-
-							<div class="flex flex-col gap-2">
-								<div class="flex flex-row gap-2 w-full px-2">
-									<p class="font-medium">{{ t('single-event.result') }}: </p>
-									<p>{{ match.goalsScored }}:{{ match.goalsConceded }}</p>
-								</div>
-								<div class="flex flex-row gap-2 w-full px-2">
-									<p class="font-medium">{{ t('single-event.duration') }}: </p>
-									<p>{{ match.duration }} {{ t('single-event.minutes') }}</p>
-								</div>
-							</div>
 
 							<div class="h-full w-full grid gap-2 px-2">
 
@@ -348,7 +210,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									<StatisticHeader> {{ t('match-statistic.remarks') }}</StatisticHeader>
 								</div>
 
-								<div v-if="matchStatistic.length != 0" v-for="statistic in sortedStatistic" v-bind:key="statistic._id"
+								<div v-if="matchStatistic!.length != 0" v-for="statistic in sortedStatistic" v-bind:key="statistic._id"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleStatistic>
@@ -360,9 +222,9 @@ const updateAverageStatisticWithoutAbsent = () => {
 										<template #name>{{ t('match-statistic.attendance') }}</template>
 										<template #data>
 											<div>
-												<img v-if="statistic.attendance" src="../../../../assets/checkbox-checked-icon.png"
+												<img v-if="statistic.attendance" src="../../../assets/checkbox-checked-icon.png"
 													class="h-18px" />
-												<img v-else src="../../../../assets/checkbox-unchecked-icon.png" class="h-18px" />
+												<img v-else src="../../../assets/checkbox-unchecked-icon.png" class="h-18px" />
 											</div>
 										</template>
 									</SingleStatistic>
@@ -393,11 +255,11 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</SingleStatistic>
 
 									<div class="self-center justify-self-center col-span-2 block md:(hidden)">
-										<img src="../../../../assets/line-icon.png" class="w-full" />
+										<img src="../../../assets/line-icon.png" class="w-full" />
 									</div>
 								</div>
 
-								<div v-if="matchStatistic.length != 0"
+								<!-- <div v-if="matchStatistic.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleSummaryStatistic>
@@ -438,9 +300,9 @@ const updateAverageStatisticWithoutAbsent = () => {
 									<div class="self-center justify-self-center col-span-2 block md:(hidden)">
 										<img src="../../../../assets/line-icon.png" class="w-full" />
 									</div>
-								</div>
+								</div> -->
 
-								<div v-if="matchStatistic.length != 0"
+								<!-- <div v-if="matchStatistic.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleSummaryStatistic>
@@ -484,53 +346,9 @@ const updateAverageStatisticWithoutAbsent = () => {
 									<div class="self-center justify-self-center col-span-2 block md:(hidden)">
 										<img src="../../../../assets/line-icon.png" class="w-full" />
 									</div>
-								</div>
+								</div> -->
 
-								<div v-if="matchStatistic.length != 0"
-									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
-
-									<SingleSummaryStatistic>
-										<template #name></template>
-										<template #data>
-											<p class="font-medium text-center">{{ t('match-statistic.average') }}</p>
-											<p class="text-center">({{ t('match-statistic.not-including-absent') }})</p>
-										</template>
-									</SingleSummaryStatistic>
-
-									<SingleSummaryStatistic>
-										<template #name>{{ t('match-statistic.attendance') }}</template>
-										<template #data></template>
-									</SingleSummaryStatistic>
-
-									<SingleSummaryStatistic>
-										<template #name>{{ t('match-statistic.goals-scored') }}</template>
-										<template #data>{{ averageStatisticWithoutAbsent.goalsScored }}</template>
-									</SingleSummaryStatistic>
-
-									<SingleSummaryStatistic>
-										<template #name>{{ t('match-statistic.yellow-cards') }}</template>
-										<template #data>{{ averageStatisticWithoutAbsent.yellowCards }}</template>
-									</SingleSummaryStatistic>
-
-									<SingleSummaryStatistic>
-										<template #name>{{ t('match-statistic.red-cards') }}</template>
-										<template #data>{{ averageStatisticWithoutAbsent.redCards }}</template>
-									</SingleSummaryStatistic>
-
-									<SingleSummaryStatistic>
-										<template #name>{{ t('match-statistic.minutes-played') }}</template>
-										<template #data>{{ averageStatisticWithoutAbsent.minutesPlayed }}</template>
-									</SingleSummaryStatistic>
-
-									<SingleSummaryStatistic>
-										<template #name></template>
-										<template #data></template>
-									</SingleSummaryStatistic>
-
-									<div class="self-center justify-self-center col-span-2 block md:(hidden)">
-										<img src="../../../../assets/line-icon.png" class="w-full" />
-									</div>
-								</div>
+				
 
 								<ErrorMessageInfo v-else>
 									{{ t('error-messages.no-players-in-team') }}

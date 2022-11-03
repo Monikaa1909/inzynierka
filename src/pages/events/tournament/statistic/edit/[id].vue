@@ -37,7 +37,7 @@ const {
 	isFetching: isTournamentStatisticFetching,
 	isFinished: isTournamentStatisticFinished,
 	error: tournamentStatisticError,
-} = useFetch(`/api/tournamentStatistic/${props.id}`, { initialData: [] }).json<TournamentStatistic[]>()
+} = useFetch(`/api/tournamentStatistic/tournament/${props.id}`, { initialData: [] }).json<TournamentStatistic[]>()
 
 whenever(tournamentStatisticData, (data) => {
 	tournamentStatistic.value = data
