@@ -300,12 +300,15 @@ const cancelDeleting = () => {
 const confirmDelete = async () => {
   isDeleting.value = false
   if (deletingEvent.value.type === 'Match') {
+    await useFetch(`/api/matchStatistic/${deletingEvent.value?.id}`).delete()
     await useFetch(`/api/match/${deletingEvent.value?.id}`).delete()
     refechMatches()
   } else if (deletingEvent.value.type === 'Tournament') {
+    await useFetch(`/api/tournamentStatistic/${deletingEvent.value?.id}`).delete()
     await useFetch(`/api/tournament/${deletingEvent.value?.id}`).delete()
     refechTournaments()
   } else if (deletingEvent.value.type === 'Training') {
+    await useFetch(`/api/attendanceList/${deletingEvent.value?.id}`).delete()
     await useFetch(`/api/training/${deletingEvent.value?.id}`).delete()
     refechTrainings()
   }

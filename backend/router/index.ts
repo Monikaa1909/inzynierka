@@ -851,6 +851,16 @@ router.post('/attendanceList/:id', async (req, res) => {
     }
 })
 
+router.delete('/attendanceList/:id', async (req, res) => {
+    try {
+        const attendanceList = await models.AttendanceList.deleteMany({ training: req.params.id })
+        console.log(attendanceList.deletedCount)
+        res.send(attendanceList)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/matchStatistic/match/:id', async (req, res) => {
     try {
         const matchStatistic = await models.MatchStatistic.find({ match: req.params.id })
@@ -952,6 +962,16 @@ router.post('/matchStatistic/:id', async (req, res) => {
                 new: true
             }
         )
+        res.send(matchStatistic)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.delete('/matchStatistic/:id', async (req, res) => {
+    try {
+        const matchStatistic = await models.MatchStatistic.deleteMany({ match: req.params.id })
+        console.log(matchStatistic.deletedCount)
         res.send(matchStatistic)
     } catch (error) {
         res.status(400).send(error)
@@ -1060,6 +1080,16 @@ router.post('/tournamentStatistic/:id', async (req, res) => {
                 new: true
             }
         )
+        res.send(tournamentStatistic)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.delete('/tournamentStatistic/:id', async (req, res) => {
+    try {
+        const tournamentStatistic = await models.TournamentStatistic.deleteMany({ tournament: req.params.id })
+        console.log(tournamentStatistic.deletedCount)
         res.send(tournamentStatistic)
     } catch (error) {
         res.status(400).send(error)

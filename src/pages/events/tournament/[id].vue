@@ -60,6 +60,7 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
 	isDeleting.value = false
+	await useFetch(`/api/tournamentStatistic/${deletingEventId.value}`).delete()
 	await useFetch(`/api/tournament/${deletingEventId.value}`).delete()
 	return router.go(-1)
 }

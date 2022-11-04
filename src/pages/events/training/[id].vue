@@ -59,6 +59,7 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
 	isDeleting.value = false
+	await useFetch(`/api/attendanceList/${deletingEventId.value}`).delete()
 	await useFetch(`/api/training/${deletingEventId.value}`).delete()
 	return router.go(-1)
 }
