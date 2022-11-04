@@ -294,16 +294,13 @@ const goSpecificDay = (day: any) => {
           <div class="w-full h-full flex items-center">
             <LoadingCircle v-if="isFetching"></LoadingCircle>
 
-            <Calendar v-if="isFinished && !error && attributes?.length != 0" 
+            <Calendar v-if="isFinished && !error" 
               is-expanded 
               :attributes="attributes"
               :locale="locale" @dayclick="goSpecificDay"
               >
             </Calendar>
 
-            <ErrorMessageInfo v-else-if="isFinished && attributes?.length === 0">
-              {{ t('error-messages.no-data') }}
-            </ErrorMessageInfo>
             <ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
           </div>
         </div>

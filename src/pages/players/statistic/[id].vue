@@ -302,7 +302,8 @@ const averageStatistic = computed(() => {
 	newAverageStatistic.minutesPlayed = 0
 	newAverageStatistic.events = 0
 
-	if (playersStatistic.value) {
+	if (playersStatistic.value && playersStatistic.value.length > 0) {
+		console.log('playersStatistic.value playersStatistic.value.lenght ' + playersStatistic.value + ' ' + playersStatistic.value.length)
 		playersStatistic.value.forEach(element => {
 			newAverageStatistic.events += element.events
 			newAverageStatistic.attendance += element.attendance
@@ -312,7 +313,8 @@ const averageStatistic = computed(() => {
 			newAverageStatistic.minutesPlayed += element.minutesPlayed
 		})
 
-		newAverageStatistic.attendance /= newAverageStatistic.events * 0.01
+		if (newAverageStatistic.events > 0)
+			newAverageStatistic.attendance /= newAverageStatistic.events * 0.01
 		newAverageStatistic.goalsScored /= playersStatistic.value.length
 		newAverageStatistic.yellowCards /= playersStatistic.value.length
 		newAverageStatistic.redCards /= playersStatistic.value.length
@@ -430,7 +432,7 @@ const summaryStatistic = computed(() => {
 
 									<SingleStatistic>
 										<template #name>{{ t('match-statistic.attendance') }}</template>
-										<template #data>{{ statistic.attendance }}/{{ statistic.events }}</template>
+										<template #data>{{ statistic.attendance}}/{{statistic.events}}</template>
 									</SingleStatistic>
 
 									<SingleStatistic>
@@ -469,7 +471,7 @@ const summaryStatistic = computed(() => {
 
 									<SingleSummaryStatistic>
 										<template #name>{{ t('match-statistic.attendance') }}</template>
-										<template #data>{{ summaryStatistic.attendance }}/ {{ summaryStatistic.events }}</template>
+										<template #data>{{ summaryStatistic.attendance }}/{{ summaryStatistic.events }}</template>
 									</SingleSummaryStatistic>
 
 									<SingleSummaryStatistic>
@@ -493,7 +495,7 @@ const summaryStatistic = computed(() => {
 									</SingleSummaryStatistic>
 
 									<div class="self-center justify-self-center col-span-2 block md:(hidden)">
-										<img src="../../../../assets/line-icon.png" class="w-full" />
+										<img src="../../../assets/line-icon.png" class="w-full" />
 									</div>
 								</div>
 
