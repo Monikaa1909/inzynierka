@@ -156,3 +156,12 @@ export const validateEndDate = (endDate: Date, startDate: Date) => {
 	}
 	return '';
 }
+
+export const validateMedicalExaminations = (date: Date) => {
+	console.log(date)
+	console.log(new Date)
+	if (date < new Date()) {
+		return 'Remember that medical examinations are no longer valid'
+	}
+	return '';
+}

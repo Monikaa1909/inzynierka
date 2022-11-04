@@ -8,8 +8,8 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-// const accountType = ref('Academy')
-const accountType = ref('Parent')
+const accountType = ref('Academy')
+// const accountType = ref('Parent')
 // const accountType = ref('Trainer')
 const id = ref('6365285a6e7338908e404200')
 const academyName = 'AP Jagiellonia Białystok'
@@ -162,9 +162,6 @@ const goEditYourProfile = (userId: any) => {
                 <template #attributeValue>{{ profile.email }}</template>
               </SingleAttribute>
             </div>
-            <ErrorMessageInfo v-else-if="!error">
-              {{ t('error-messages.no-players-in-team') }}
-            </ErrorMessageInfo>
 
           <ErrorMessageInfo v-if="error">
           </ErrorMessageInfo>

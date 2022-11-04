@@ -33,6 +33,8 @@ button:
   check-statistic: CHECK STATISTIC
   yes: Yes
   no: No
+  out-of-date: Out of date
+  up-to-date: Up to date
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -70,6 +72,7 @@ single-player:
   team: Team
   parent: Parent
   remarks: Remarks
+  validity: Validity
   validity-of-medical-examinations: Validity of medical examinations
   validity-of-medical-examinations-short: Medical examinations
 single-parent:

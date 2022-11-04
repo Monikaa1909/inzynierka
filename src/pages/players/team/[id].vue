@@ -41,6 +41,10 @@ function goToPlayer(playerId: any) {
   return router.push(`/players/${playerId}`)
 }
 
+function goCheckMedialExamination() {
+  return router.push(`/players/medicalExamination/${props.id}`)
+}
+
 whenever(url, (data) => {
   refechPlayers()
 })
@@ -76,6 +80,10 @@ const confirmDelete = async () => {
 <template>
   <BackgroundFrame>
     <template #nav>
+      <button @click="goCheckMedialExamination()" class="flex flex-row gap-2 mr-8 items-center">
+        <img src="../../../assets/statistic-icon2.png" class="h-48px flex" />
+        <p class="h-full flex items-center text-base font-bold color-#464646">Medicals</p>
+      </button>
       <button @click="goCheckStatistic()" class="flex flex-row gap-2 mr-8 items-center">
         <img src="../../../assets/statistic-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic') }}</p>
@@ -147,8 +155,8 @@ const confirmDelete = async () => {
             </SingleAttribute>
 
             <SingleAttribute>
-              <template v-slot:attributeName>{{ t('single-player.team') }}:</template>
-              <template v-slot:attributeValue>{{ player.team?.teamName ?? 'Brak' }}</template>
+              <template #attributeName>{{ t('single-player.team') }}:</template>
+              <template #attributeValue>{{ player.team?.teamName ?? 'Brak' }}</template>
             </SingleAttribute>
           </template>
         </MiniWhiteFrame>

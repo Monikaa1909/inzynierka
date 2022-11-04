@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { requiredField, validateFirstName, validateNationality } from '~/validatesFunctions'
+import { requiredField, validateFirstName, validateNationality, validateMedicalExaminations } from '~/validatesFunctions'
 import { DatePicker } from 'v-calendar'
 
 import type { Trainer } from 'backend/database/schemas/Trainer'
@@ -99,7 +99,7 @@ const { execute: updatePlayer, error: updateError } = useFetch(url, { immediate:
 
 const onSubmit = async () => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || birthdayDateErrorMessage.value || nationalityErrorMessage.value
-		|| validityOfMedicalExaminationsErrorMessage.value || teamErrorMessage.value) {
+		|| requiredOfMedicalExaminationsErrorMessage.value || teamErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.playerId) {
@@ -156,11 +156,18 @@ const nationalityErrorMessage = computed(() => {
 	return t(validateNationality(player.value.nationality))
 })
 
-const validityOfMedicalExaminationsErrorMessage = computed(() => {
+const requiredOfMedicalExaminationsErrorMessage = computed(() => {
 	if (!requiredField(player.value.validityOfMedicalExaminations)) {
 		return false
-	}
+	} 
 	return t(requiredField(player.value.validityOfMedicalExaminations))
+})
+
+const validityOfMedicalExaminationsErrorMessage = computed(() => {
+	if (!validateMedicalExaminations(new Date(player.value.validityOfMedicalExaminations))) {
+		return false
+	} 
+	return t(validateMedicalExaminations(new Date(player.value.validityOfMedicalExaminations)))
 })
 
 const teamErrorMessage = computed(() => {
@@ -218,7 +225,7 @@ const teamErrorMessage = computed(() => {
 				{{ birthdayDateErrorMessage }} 
 			</template>
 			<template v-if="birthdayDateMessage && !birthdayDateErrorMessage" #errorMessage>
-				{{ birthdayDateMessage }} 
+				<p class="text-xs color-red">{{ birthdayDateMessage }}</p>
 			</template>
 		</SingleInput>
 
@@ -250,8 +257,11 @@ const teamErrorMessage = computed(() => {
 					</template>
 				</DatePicker>
 			</template>
+			<template v-if="requiredOfMedicalExaminationsErrorMessage" #errorMessage>
+				{{ requiredOfMedicalExaminationsErrorMessage }}
+			</template>
 			<template v-if="validityOfMedicalExaminationsErrorMessage" #errorMessage>
-				{{ validityOfMedicalExaminationsErrorMessage }}
+				<p class="text-xs color-red">{{validityOfMedicalExaminationsErrorMessage}}</p>
 			</template>
 
 		</SingleInput>
