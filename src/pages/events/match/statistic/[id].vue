@@ -11,28 +11,29 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const props = defineProps<{ id: string }>()
 
-const matchStatistic = ref([] as MatchStatistic[])
 const playerStatistic = ref({} as MatchStatistic)
-const match = ref(<Match>({}))
 
 const playerUrl = ref(``)
 
 const {
-	data: matchData,
+	data: match,
 	isFetching: isMatchFetching,
 	isFinished: isMatchFinished,
 	error: matchError,
 } = useFetch(`/api/match/${props.id}`, { initialData: {} }).json<Match>()
 
-whenever(matchData, (data) => {
-	match.value = data
-	match.value.date = new Date(match.value.date) as unknown as Date
-	playerUrl.value = `/api/players/team/${data.team._id}`
-	refechMatchStatistic()
+whenever(isMatchFinished, (data) => {
+	if (data) {
+		if (match.value != null) {
+			match.value.date = new Date(match.value.date) as unknown as Date
+			playerUrl.value = `/api/players/team/${match.value.team._id}`
+			refechMatchStatistic()
+		}
+	}
 })
 
 const {
-	data: matchStatisticData,
+	data: matchStatistic,
 	isFetching: isMatchStatisticFetching,
 	isFinished: isMatchStatisticFinished,
 	error: matchStatisticError,
@@ -42,35 +43,45 @@ const {
 const {
 	data: players,
 	isFetching: isPlayersFetching,
+	isFinished: isPlayersFinished,
 	error: playersError,
 	execute: refechPlayers
 } = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
 
-whenever(matchStatisticData, (data) => {
-	matchStatistic.value = data
-	if (matchStatistic.value.length === 0) {
-		refechPlayers()
-		return
+whenever(isMatchStatisticFinished, (data) => {
+	console.log("isMatchStatisticFinished " + isMatchStatisticFinished.value)
+
+	if (data) {
+		if (matchStatistic.value != null && matchStatistic.value.length === 0) {
+			console.log('brak statystyk, tworzenie')
+			refechPlayers()
+			return
+		}
+
+		updateSummaryStatistic()
+		updateAverageStatisticWithAbsent()
+		updateAverageStatisticWithoutAbsent()
 	}
-	updateSummaryStatistic()
-	updateAverageStatisticWithAbsent()
-	updateAverageStatisticWithoutAbsent()
 })
 
-whenever(players, (data) => {
-	if (data.length > 0) {
-		data.forEach(async element => {
+whenever(isPlayersFinished, (data) => {
+	if (data && players.value != null && players.value.length > 0) {
+		players.value.forEach(async element => {
+
 			playerStatistic.value.player = element
 			playerStatistic.value.match = match as unknown as Match
+
 			const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, { immediate: false }).post(playerStatistic)
 			await savePlayerStatistic()
+
 			if (saveError.value) {
 				alert(t('error-messages.unknow-error'))
 				return
 			}
 		})
+
+		refechMatchStatistic()
 	}
-	refechMatchStatistic()
 })
 
 const isFinished = computed(() => {
@@ -97,110 +108,114 @@ const goEditMatchStatistic = (eventId: any) => {
 }
 
 const sortedStatistic = computed(() => {
-	matchStatistic.value.forEach(element => {
-		if (!element.attendance) {
-			element.goalsScored = 0
-			element.yellowCards = 0
-			element.redCards = 0
-			element.minutesPlayed = 0
+	if (matchStatistic.value != null && matchStatistic.value.length > 0) {
+		matchStatistic?.value.forEach(element => {
+			if (!element.attendance) {
+				element.goalsScored = 0
+				element.yellowCards = 0
+				element.redCards = 0
+				element.minutesPlayed = 0
+			}
+		})
+
+		switch (sortType.value) {
+			case 'playersUp':
+				console.log('playersUp')
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.player.lastName < b.player.lastName) return 1
+					else return -1
+				})
+				return matchStatistic.value
+			case 'playersDown':
+				console.log('playersDown')
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.player.lastName < b.player.lastName) return -1
+					else return 1
+				})
+				return matchStatistic.value
+			case 'attendanceDown':
+
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.attendance > b.attendance) return 1
+					else return -1
+				})
+				return matchStatistic.value
+			case 'attendanceUp':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.attendance > b.attendance) return -1
+					else return 1
+				})
+				return matchStatistic.value
+			case 'goalsScoredDown':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.goalsScored > b.goalsScored) return 1
+					else if (a.goalsScored < b.goalsScored) return -1
+					else if (!a.attendance && b.attendance) return -1
+					else return 1
+				})
+				return matchStatistic.value
+			case 'goalsScoredUp':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.goalsScored > b.goalsScored) return -1
+					else if (a.goalsScored < b.goalsScored) return 1
+					else if (!a.attendance && b.attendance) return 1
+					else return -1
+				})
+				return matchStatistic.value
+			case 'yellowCardsDown':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.yellowCards > b.yellowCards) return 1
+					else if (a.yellowCards < b.yellowCards) return -1
+					else if (!a.attendance && b.attendance) return -1
+					else return 1
+				})
+				return matchStatistic.value
+			case 'yellowCardsUp':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.yellowCards > b.yellowCards) return -1
+					else if (a.yellowCards < b.yellowCards) return 1
+					else if (!a.attendance && b.attendance) return 1
+					else return -1
+				})
+				return matchStatistic.value
+			case 'redCardsDown':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.redCards > b.redCards) return 1
+					else if (a.redCards < b.redCards) return -1
+					else if (!a.attendance && b.attendance) return -1
+					else return 1
+				})
+				return matchStatistic.value
+			case 'redCardsUp':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.redCards > b.redCards) return -1
+					else if (a.redCards < b.redCards) return 1
+					else if (!a.attendance && b.attendance) return 1
+					else return -1
+				})
+				return matchStatistic.value
+			case 'minutesPlayedDown':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.minutesPlayed > b.minutesPlayed) return 1
+					else if (a.minutesPlayed < b.minutesPlayed) return -1
+					else if (!a.attendance && b.attendance) return -1
+					else return 1
+				})
+				return matchStatistic.value
+			case 'minutesPlayedUp':
+				matchStatistic.value.sort(function (a: any, b: any) {
+					if (a.minutesPlayed > b.minutesPlayed) return -1
+					else if (a.minutesPlayed < b.minutesPlayed) return 1
+					else if (!a.attendance && b.attendance) return 1
+					else return -1
+				})
+				return matchStatistic.value
+			default:
+				return matchStatistic.value
 		}
-	})
-
-	switch (sortType.value) {
-		case 'playersUp':
-			console.log('playersUp')
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.player.lastName < b.player.lastName) return 1
-				else return -1
-			})
-			return matchStatistic.value
-		case 'playersDown':
-			console.log('playersDown')
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.player.lastName < b.player.lastName) return -1
-				else return 1
-			})
-			return matchStatistic.value
-		case 'attendanceDown':
-
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.attendance > b.attendance) return 1
-				else return -1
-			})
-			return matchStatistic.value
-		case 'attendanceUp':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.attendance > b.attendance) return -1
-				else return 1
-			})
-			return matchStatistic.value
-		case 'goalsScoredDown':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.goalsScored > b.goalsScored) return 1
-				else if (a.goalsScored < b.goalsScored) return -1
-				else if (!a.attendance && b.attendance) return -1
-				else return 1
-			})
-			return matchStatistic.value
-		case 'goalsScoredUp':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.goalsScored > b.goalsScored) return -1
-				else if (a.goalsScored < b.goalsScored) return 1
-				else if (!a.attendance && b.attendance) return 1
-				else return -1
-			})
-			return matchStatistic.value
-		case 'yellowCardsDown':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.yellowCards > b.yellowCards) return 1
-				else if (a.yellowCards < b.yellowCards) return -1
-				else if (!a.attendance && b.attendance) return -1
-				else return 1
-			})
-			return matchStatistic.value
-		case 'yellowCardsUp':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.yellowCards > b.yellowCards) return -1
-				else if (a.yellowCards < b.yellowCards) return 1
-				else if (!a.attendance && b.attendance) return 1
-				else return -1
-			})
-			return matchStatistic.value
-		case 'redCardsDown':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.redCards > b.redCards) return 1
-				else if (a.redCards < b.redCards) return -1
-				else if (!a.attendance && b.attendance) return -1
-				else return 1
-			})
-			return matchStatistic.value
-		case 'redCardsUp':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.redCards > b.redCards) return -1
-				else if (a.redCards < b.redCards) return 1
-				else if (!a.attendance && b.attendance) return 1
-				else return -1
-			})
-			return matchStatistic.value
-		case 'minutesPlayedDown':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.minutesPlayed > b.minutesPlayed) return 1
-				else if (a.minutesPlayed < b.minutesPlayed) return -1
-				else if (!a.attendance && b.attendance) return -1
-				else return 1
-			})
-			return matchStatistic.value
-		case 'minutesPlayedUp':
-			matchStatistic.value.sort(function (a: any, b: any) {
-				if (a.minutesPlayed > b.minutesPlayed) return -1
-				else if (a.minutesPlayed < b.minutesPlayed) return 1
-				else if (!a.attendance && b.attendance) return 1
-				else return -1
-			})
-			return matchStatistic.value
-		default:
-			return matchStatistic.value
 	}
+
+	else return matchStatistic.value
 })
 
 interface Statistic {
@@ -222,14 +237,16 @@ const updateSummaryStatistic = () => {
 	summaryStatistic.value.redCards = 0
 	summaryStatistic.value.minutesPlayed = 0
 
-	matchStatistic.value.forEach(element => {
-		if (element.attendance)
-			summaryStatistic.value.attendance += 1
-		summaryStatistic.value.goalsScored += element.goalsScored ? element.goalsScored : 0
-		summaryStatistic.value.yellowCards += element.yellowCards ? element.yellowCards : 0
-		summaryStatistic.value.redCards += element.redCards ? element.redCards : 0
-		summaryStatistic.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
-	})
+	if (matchStatistic.value != null && matchStatistic.value.length > 0) {
+		matchStatistic.value.forEach(element => {
+			if (element.attendance)
+				summaryStatistic.value.attendance += 1
+			summaryStatistic.value.goalsScored += element.goalsScored ? element.goalsScored : 0
+			summaryStatistic.value.yellowCards += element.yellowCards ? element.yellowCards : 0
+			summaryStatistic.value.redCards += element.redCards ? element.redCards : 0
+			summaryStatistic.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
+		})
+	}
 }
 
 const updateAverageStatisticWithAbsent = () => {
@@ -239,25 +256,27 @@ const updateAverageStatisticWithAbsent = () => {
 	averageStatisticWithAbsent.value.redCards = 0
 	averageStatisticWithAbsent.value.minutesPlayed = 0
 
-	matchStatistic.value.forEach(element => {
-		if (element.attendance)
-			averageStatisticWithAbsent.value.attendance += 1
-		averageStatisticWithAbsent.value.goalsScored += element.goalsScored ? element.goalsScored : 0
-		averageStatisticWithAbsent.value.yellowCards += element.yellowCards ? element.yellowCards : 0
-		averageStatisticWithAbsent.value.redCards += element.redCards ? element.redCards : 0
-		averageStatisticWithAbsent.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
-	})
+	if (matchStatistic.value != null && matchStatistic.value.length > 0) {
+		matchStatistic.value?.forEach(element => {
+			if (element.attendance)
+				averageStatisticWithAbsent.value.attendance += 1
+			averageStatisticWithAbsent.value.goalsScored += element.goalsScored ? element.goalsScored : 0
+			averageStatisticWithAbsent.value.yellowCards += element.yellowCards ? element.yellowCards : 0
+			averageStatisticWithAbsent.value.redCards += element.redCards ? element.redCards : 0
+			averageStatisticWithAbsent.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
+		})
 
-	averageStatisticWithAbsent.value.attendance /= matchStatistic.value.length * 0.01
-	averageStatisticWithAbsent.value.goalsScored /= matchStatistic.value.length
-	averageStatisticWithAbsent.value.yellowCards /= matchStatistic.value.length
-	averageStatisticWithAbsent.value.redCards /= matchStatistic.value.length
-	averageStatisticWithAbsent.value.minutesPlayed /= matchStatistic.value.length
+		averageStatisticWithAbsent.value.attendance /= matchStatistic.value.length * 0.01
+		averageStatisticWithAbsent.value.goalsScored /= matchStatistic.value.length
+		averageStatisticWithAbsent.value.yellowCards /= matchStatistic.value.length
+		averageStatisticWithAbsent.value.redCards /= matchStatistic.value.length
+		averageStatisticWithAbsent.value.minutesPlayed /= matchStatistic.value.length
 
-	averageStatisticWithAbsent.value.goalsScored = Number(averageStatisticWithAbsent.value.goalsScored.toFixed(2))
-	averageStatisticWithAbsent.value.yellowCards = Number(averageStatisticWithAbsent.value.yellowCards.toFixed(2))
-	averageStatisticWithAbsent.value.redCards = Number(averageStatisticWithAbsent.value.redCards.toFixed(2))
-	averageStatisticWithAbsent.value.minutesPlayed = Number(averageStatisticWithAbsent.value.minutesPlayed.toFixed(2))
+		averageStatisticWithAbsent.value.goalsScored = Number(averageStatisticWithAbsent.value.goalsScored.toFixed(2))
+		averageStatisticWithAbsent.value.yellowCards = Number(averageStatisticWithAbsent.value.yellowCards.toFixed(2))
+		averageStatisticWithAbsent.value.redCards = Number(averageStatisticWithAbsent.value.redCards.toFixed(2))
+		averageStatisticWithAbsent.value.minutesPlayed = Number(averageStatisticWithAbsent.value.minutesPlayed.toFixed(2))
+	}
 }
 
 const updateAverageStatisticWithoutAbsent = () => {
@@ -269,29 +288,31 @@ const updateAverageStatisticWithoutAbsent = () => {
 
 	let numberOfAbsent = 0
 
-	matchStatistic.value.forEach(element => {
-		if (element.attendance) {
-			numberOfAbsent += 1
-			averageStatisticWithoutAbsent.value.attendance += 1
+	if (matchStatistic.value != null && matchStatistic.value.length > 0) {
+		matchStatistic.value.forEach(element => {
+			if (element.attendance) {
+				numberOfAbsent += 1
+				averageStatisticWithoutAbsent.value.attendance += 1
+			}
+			averageStatisticWithoutAbsent.value.goalsScored += element.goalsScored ? element.goalsScored : 0
+			averageStatisticWithoutAbsent.value.yellowCards += element.yellowCards ? element.yellowCards : 0
+			averageStatisticWithoutAbsent.value.redCards += element.redCards ? element.redCards : 0
+			averageStatisticWithoutAbsent.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
+		})
+
+		if (numberOfAbsent > 0) {
+			averageStatisticWithoutAbsent.value.attendance /= numberOfAbsent * 0.01
+			averageStatisticWithoutAbsent.value.goalsScored /= numberOfAbsent
+			averageStatisticWithoutAbsent.value.yellowCards /= numberOfAbsent
+			averageStatisticWithoutAbsent.value.redCards /= numberOfAbsent
+			averageStatisticWithoutAbsent.value.minutesPlayed /= numberOfAbsent
 		}
-		averageStatisticWithoutAbsent.value.goalsScored += element.goalsScored ? element.goalsScored : 0
-		averageStatisticWithoutAbsent.value.yellowCards += element.yellowCards ? element.yellowCards : 0
-		averageStatisticWithoutAbsent.value.redCards += element.redCards ? element.redCards : 0
-		averageStatisticWithoutAbsent.value.minutesPlayed += element.minutesPlayed ? element.minutesPlayed : 0
-	})
 
-	if (numberOfAbsent > 0) {
-		averageStatisticWithoutAbsent.value.attendance /= numberOfAbsent * 0.01
-		averageStatisticWithoutAbsent.value.goalsScored /= numberOfAbsent
-		averageStatisticWithoutAbsent.value.yellowCards /= numberOfAbsent
-		averageStatisticWithoutAbsent.value.redCards /= numberOfAbsent
-		averageStatisticWithoutAbsent.value.minutesPlayed /= numberOfAbsent
+		averageStatisticWithoutAbsent.value.goalsScored = Number(averageStatisticWithoutAbsent.value.goalsScored.toFixed(2))
+		averageStatisticWithoutAbsent.value.yellowCards = Number(averageStatisticWithoutAbsent.value.yellowCards.toFixed(2))
+		averageStatisticWithoutAbsent.value.redCards = Number(averageStatisticWithoutAbsent.value.redCards.toFixed(2))
+		averageStatisticWithoutAbsent.value.minutesPlayed = Number(averageStatisticWithoutAbsent.value.minutesPlayed.toFixed(2))
 	}
-
-	averageStatisticWithoutAbsent.value.goalsScored = Number(averageStatisticWithoutAbsent.value.goalsScored.toFixed(2))
-	averageStatisticWithoutAbsent.value.yellowCards = Number(averageStatisticWithoutAbsent.value.yellowCards.toFixed(2))
-	averageStatisticWithoutAbsent.value.redCards = Number(averageStatisticWithoutAbsent.value.redCards.toFixed(2))
-	averageStatisticWithoutAbsent.value.minutesPlayed = Number(averageStatisticWithoutAbsent.value.minutesPlayed.toFixed(2))
 }
 
 </script>
@@ -328,11 +349,11 @@ const updateAverageStatisticWithoutAbsent = () => {
 							<div class="flex flex-col gap-2">
 								<div class="flex flex-row gap-2 w-full px-2">
 									<p class="font-medium">{{ t('single-event.result') }}: </p>
-									<p>{{ match.goalsScored }}:{{ match.goalsConceded }}</p>
+									<p>{{ match?.goalsScored }}:{{ match?.goalsConceded }}</p>
 								</div>
 								<div class="flex flex-row gap-2 w-full px-2">
 									<p class="font-medium">{{ t('single-event.duration') }}: </p>
-									<p>{{ match.duration }} {{ t('single-event.minutes') }}</p>
+									<p>{{ match?.duration }} {{ t('single-event.minutes') }}</p>
 								</div>
 							</div>
 
@@ -348,7 +369,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									<StatisticHeader> {{ t('match-statistic.remarks') }}</StatisticHeader>
 								</div>
 
-								<div v-if="matchStatistic.length != 0" v-for="statistic in sortedStatistic" v-bind:key="statistic._id"
+								<div v-if="matchStatistic?.length != 0" v-for="statistic in sortedStatistic" v-bind:key="statistic._id"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleStatistic>
@@ -397,7 +418,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</div>
 								</div>
 
-								<div v-if="matchStatistic.length != 0"
+								<div v-if="matchStatistic?.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleSummaryStatistic>
@@ -440,7 +461,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</div>
 								</div>
 
-								<div v-if="matchStatistic.length != 0"
+								<div v-if="matchStatistic?.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleSummaryStatistic>
@@ -486,7 +507,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</div>
 								</div>
 
-								<div v-if="matchStatistic.length != 0"
+								<div v-if="matchStatistic?.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleSummaryStatistic>
