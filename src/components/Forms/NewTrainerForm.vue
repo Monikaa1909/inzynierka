@@ -79,18 +79,18 @@ const onSubmit = async (values: any) => {
 				trainer.value.academy = academyData.value
 				await saveTrainer()
 				if (saveError.value) {
-					alert(t('error-messages.unknow-error'))
+					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 					return
 				}
 			} else {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 					return
 			}
 
 		} else {
 			await updateTrainer()
 			if (updateError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error')  + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		}

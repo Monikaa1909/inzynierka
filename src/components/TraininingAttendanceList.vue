@@ -64,7 +64,7 @@ whenever(isPlayersFinished, (data) => {
 			await savePlayerAttendance()
 			
 			if (saveError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		})
@@ -95,7 +95,7 @@ const onSubmit = async () => {
 
 			await updatePlayerAttendance()
 			if (updateError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		})

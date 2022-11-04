@@ -74,18 +74,18 @@ const onSubmit = async (values: any) => {
 				parent.value.academy = academyData.value
 				await saveParent()
 				if (saveError.value) {
-					alert(t('error-messages.unknow-error'))
+					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 					return
 				}
 			} else {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 					return
 			}
 
 		} else {
 			await updateParent()
 			if (updateError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		}

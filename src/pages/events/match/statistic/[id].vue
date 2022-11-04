@@ -75,7 +75,7 @@ whenever(isPlayersFinished, (data) => {
 			await savePlayerStatistic()
 
 			if (saveError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		})

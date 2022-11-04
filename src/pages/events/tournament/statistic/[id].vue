@@ -76,7 +76,7 @@ whenever(isPlayersFinished, (data) => {
 			const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/tournamentStatistic`, { immediate: false }).post(playerStatistic)
 			await savePlayerStatistic()
 			if (saveError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		})

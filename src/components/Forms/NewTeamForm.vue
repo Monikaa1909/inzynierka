@@ -76,13 +76,13 @@ const onSubmit = async (values: any) => {
 		if (!props.teamId) {
 			await saveTeam()
 			if (saveError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		} else {
 			await updateTeam()
 			if (updateError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		}

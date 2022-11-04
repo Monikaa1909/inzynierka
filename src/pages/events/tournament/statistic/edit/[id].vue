@@ -75,13 +75,13 @@ for (let i = 0; i < 120; i++) {
 
 const onSubmit = async () => {
 	if (nameErrorMessage.value) {
-		alert(t('error-messages.validation-error'))
+		alert(t('error-messages.validation-error') + ' crewAssistantHelp@gmail.com')
 		return
 	} else {
 		const { execute: updateTournament, error: updateError } = useFetch(`/api/tournament/${tournament.value._id}`, { immediate: false }).post(tournament)
 		await updateTournament()
 		if (updateError.value) {
-			alert(t('error-messages.unknow-error'))
+			alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 			return
 		}
 

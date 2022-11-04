@@ -152,7 +152,7 @@ const onSubmit = async () => {
 			}
 			await saveMatch()
 			if (saveMatchError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 			if (props.day) return router.push(`/events/day/${event.value.startDate}`)
@@ -172,7 +172,7 @@ const onSubmit = async () => {
 			}
 			await saveTraining()
 			if (saveTrainingError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 			if (props.day) return router.push(`/events/day/${event.value.startDate}`)
@@ -194,7 +194,7 @@ const onSubmit = async () => {
 			}
 			await saveTournament()
 			if (saveTournamentError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 			if (props.day) return router.push(`/events/day/${event.value.startDate}`)

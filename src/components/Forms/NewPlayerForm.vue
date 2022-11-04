@@ -105,13 +105,13 @@ const onSubmit = async () => {
 		if (!props.playerId) {
 			await savePlayer()
 			if (saveError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		} else {
 			await updatePlayer()
 			if (updateError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		}

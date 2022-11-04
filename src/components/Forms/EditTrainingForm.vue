@@ -79,7 +79,7 @@ const onSubmit = async () => {
       event.value.sportsFacility = event.value.sportsFacility?._id as unknown as SportsFacility
       await updateTraining()
 			if (updateError.value) {
-				alert(t('error-messages.unknow-error'))
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
 		return router.push('/calendar')

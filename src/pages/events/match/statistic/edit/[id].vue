@@ -82,7 +82,7 @@ const onSubmit = async () => {
 	const { execute: updateMatch, error: updateError } = useFetch(`/api/match/${match.value._id}`, { immediate: false }).post(match)
 	await updateMatch()
 	if (updateError.value) {
-		alert(t('error-messages.unknow-error'))
+		alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 		return
 	}
 

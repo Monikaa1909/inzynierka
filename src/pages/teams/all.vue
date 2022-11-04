@@ -22,6 +22,16 @@ const {
   execute: refechTeams
 } = useFetch(`/api/teams/${academy}`, { initialData: [] }).json<Team[]>()
 
+whenever(isFinished, (data) => {
+  if (data) {
+    if (teams.value != null && teams.value.length > 0)
+      teams.value.sort((a, b) => {
+        if (a.startYear > b.startYear) return 1
+        else return -1
+      })
+  }
+})
+
 const isDeleting = ref(false)
 const deletingTeam = ref<Team>()
 
