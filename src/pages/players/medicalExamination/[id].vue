@@ -69,14 +69,14 @@ function goToPlayer(playerId: any) {
           </template>
 
           <template #icon>
-            <img src="../../../assets/statistic-icon2.png" class="h-150px" />
+            <img src="../../../assets/medical-examinations-icon.png" class="h-150px" />
           </template>
 
           <template #attributes>
             <LoadingCircle v-if="isFetching"></LoadingCircle>
 
             <div v-if="!isHidden"
-              class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
+              class="w-full flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
               <button @click="medicalsFilter = 'upToDate'" class="p-1 w-full rounded-xl">
                 <p class=" rounded-xl text-xs hover:(bg-#2F4D5E text-white) py-2 text-center"
                   :class="[medicalsFilter === 'upToDate' ? 'bg-#2F4D5E text-white' : 'text-gray-700']">

@@ -31,6 +31,7 @@ button:
   add-trainer: ADD NEW TRAINER
   add-parent: ADD NEW PARENT
   check-statistic: CHECK STATISTIC
+  check-medical-examination: CHECK MEDICAL EXAMINATIONS
   yes: Yes
   no: No
   out-of-date: Out of date
@@ -173,6 +174,16 @@ error-messages:
   no-players-in-team: There is no players in that team in data base
   red-cards-message: 2 yellow cards usually mean red card
   birthday-date-message: Player's birthday date is greater than the team's starting year
+  valid-postal-code: This field must be a valid postal code
+  valid-number: This field must be a valid number
+  valid-phone-number: This field must be a valid phone number
+  valid-city: This field must be a valid city name (numbers and special characters are not allowed)
+  year: This field must be a valid number
+  start-year: The lower year must be smaller than higher year
+  end-year: The higher year must be bigger than lower year
+  start-date: Start date must be smaller than end date
+  end-date: End date must be higher than start date
+  no-valid-examinations: Remember that medical examinations are no longer valid
 other:
   confirming-deleting: Are you sure you want to delete
 not-found: Not found

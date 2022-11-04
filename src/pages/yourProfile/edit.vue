@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { validateFirstName, validateEmail, validatePhoneNumber, requiredField, validateNationality, validateName } from '~/validatesFunctions'
+import { DatePicker } from 'v-calendar'
 
 import type { Academy } from 'backend/database/schemas/Academy'
 import type { Trainer } from 'backend/database/schemas/Trainer'

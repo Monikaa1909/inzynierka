@@ -31,6 +31,7 @@ button:
   add-trainer: DODAJ NOWEGO TRENERA
   add-parent: DODAJ NOWEGO RODZICA
   check-statistic: SPRAWDŹ STATYSTYKI
+  check-medical-examination: SPRAWDŹ BADANIA LEKARSKIE
   yes: Tak
   no: Nie
   out-of-date: Nieaktualne
@@ -171,6 +172,17 @@ error-messages:
   no-data: Brak danych w bazie danych
   no-players-in-team: W bazie danych nie istnieją zawodnicy z tej drużyny
   red-cards-message: 2 żółte kartki zwykle oznaczają czerwoną kartkę
+  birthday-date-message: Rok urodzenia zawodnika jest większy od dolnego rocznika drużyny
+  valid-postal-code: To pole musi zawierać poprawny kod pocztowy
+  valid-number: To pole musi zawierać poprawny numer
+  valid-phone-number: To pole musi zawierać poprawny numer telefonu
+  valid-city: To pole musi zawierać poprawną nazwę miasta (cyfry i znaki specjalne nie są dozwolone)
+  year: To pole musi zawierać poprawną liczbę
+  start-year: Dolny rocznik musi być mniejszy od górnego rocznika
+  end-year: Górny rocznik musi być większy od dolnego rocznika
+  start-date: Data rozpoczęcia musi być wcześniejsza niż data zakończenia
+  end-date: Data zakończenia musi być późniejsza niż data rozpoczęcia
+  no-valid-examinations: Pamiętaj, że badania lekarskie nie są już aktualne
 other:
   confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono
