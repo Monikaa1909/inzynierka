@@ -31,6 +31,15 @@ router.get('/academy/:name', async (req, res) => {
     }
 })
 
+router.get('/academies/:id', async (req, res) => {
+    try {
+        const academy = await models.Academy.findById(req.params.id)
+        res.send(academy)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/players/:academy', async (req, res) => {
     try {
         console.log(req.params.academy)

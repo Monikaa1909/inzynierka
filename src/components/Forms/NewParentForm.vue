@@ -181,10 +181,10 @@ const emailErrorMessage = computed(() => {
 
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
 			<SingleButton @click="onSubmit">
-				<template v-slot:buttonName>{{ t('button.save') }}</template>
+				<template #buttonName>{{ t('button.save') }}</template>
 			</SingleButton>
 			<SingleButton @click="router.go(-1)">
-				<template v-slot:buttonName>{{ t('button.cancel') }}</template>
+				<template #buttonName>{{ t('button.cancel') }}</template>
 			</SingleButton>
 		</div>
 	</div>
