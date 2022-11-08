@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose'
+import { Academy } from './Academy'
 import { Parent } from './Parent'
 import { Team } from './Team'
 
@@ -10,11 +11,16 @@ export interface Player {
   nationality: string
   remarks?: string
   validityOfMedicalExaminations: string
-  team: Team
+  team?: Team
   parent?: Parent
+  academy: Academy
 }
 
 export default new Schema({
+  academy: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'Missing informations - each player must belong to the academy']
+  },
   firstName: {
     type: String,
     required: [true, 'Missing informations - firstname is required']
@@ -42,7 +48,7 @@ export default new Schema({
   team: {
     type: Schema.Types.ObjectId,
     ref: "Team",
-    required: [true, 'Missing informations - each player must belong to the team']
+    required: false
   },
   parent: {
     type: Schema.Types.ObjectId,

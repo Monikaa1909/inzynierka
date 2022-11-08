@@ -63,7 +63,8 @@ export const seedDatabase = async () => {
         teamName: 'Żak',
         trainer: trainer1,
         startYear: 2014,
-        endYear: 2016
+        endYear: 2016,
+        academy: academy1
     });
     team1.save(function (err) {
         if (err) return console.log(err.message);
@@ -73,7 +74,8 @@ export const seedDatabase = async () => {
         teamName: 'Orlik 1',
         trainer: trainer2,
         startYear: 2012,
-        endYear: 2014
+        endYear: 2014,
+        academy: academy1
     });
     team2.save(function (err) {
         if (err) return console.log(err.message);
@@ -83,7 +85,8 @@ export const seedDatabase = async () => {
         teamName: 'Orlik 2',
         trainer: trainer3,
         startYear: 2012,
-        endYear: 2014
+        endYear: 2014,
+        academy: academy1
     });
     team3.save(function (err) {
         if (err) return console.log(err.message);
@@ -93,7 +96,8 @@ export const seedDatabase = async () => {
         teamName: 'Młodzik',
         trainer: trainer4,
         startYear: 2010,
-        endYear: 2012
+        endYear: 2012,
+        academy: academy1
     });
     team4.save(function (err) {
         if (err) return console.log(err.message);
@@ -103,7 +107,8 @@ export const seedDatabase = async () => {
         teamName: 'Trampkarz',
         trainer: trainer4,
         startYear: 2008,
-        endYear: 2010
+        endYear: 2010,
+        academy: academy1
     });
     team5.save(function (err) {
         if (err) return console.log(err.message);
@@ -113,7 +118,8 @@ export const seedDatabase = async () => {
         teamName: 'Junior młodszy',
         trainer: trainer1,
         startYear: 2006,
-        endYear: 2008
+        endYear: 2008,
+        academy: academy1
     });
     team6.save(function (err) {
         if (err) return console.log(err.message);
@@ -123,7 +129,8 @@ export const seedDatabase = async () => {
         teamName: 'Junior starszy',
         trainer: trainer3,
         startYear: 2004,
-        endYear: 2005
+        endYear: 2005,
+        academy: academy1
     });
     team7.save(function (err) {
         if (err) return console.log(err.message);
@@ -179,7 +186,8 @@ export const seedDatabase = async () => {
         nationality: 'Polska',
         parent: parent1,
         team: team1,
-        validityOfMedicalExaminations: '2023-02-19'
+        validityOfMedicalExaminations: '2023-02-19',
+        academy: academy1
     });
     player1.save(function (err) {
         if (err) return console.log(err.message);
@@ -192,7 +200,8 @@ export const seedDatabase = async () => {
         nationality: 'Polska',
         parent: parent2,
         team: team1,
-        validityOfMedicalExaminations: '2022-12-09'
+        validityOfMedicalExaminations: '2022-12-09',
+        academy: academy1
     });
     player2.save(function (err) {
         if (err) return console.log(err.message);
@@ -205,7 +214,8 @@ export const seedDatabase = async () => {
         nationality: 'Polska',
         parent: parent3,
         team: team1,
-        validityOfMedicalExaminations: '2022-12-09'
+        validityOfMedicalExaminations: '2022-12-09',
+        academy: academy1
     });
     player3.save(function (err) {
         if (err) return console.log(err.message);
@@ -218,7 +228,8 @@ export const seedDatabase = async () => {
         nationality: 'Polska',
         team: team1,
         parent: parent4,
-        validityOfMedicalExaminations: '2022-12-09'
+        validityOfMedicalExaminations: '2022-12-09',
+        academy: academy1
     });
     player4.save(function (err) {
         if (err) return console.log(err.message);
@@ -231,7 +242,8 @@ export const seedDatabase = async () => {
         nationality: 'Polska',
         parent: parent1,
         team: team4,
-        validityOfMedicalExaminations: '2022-12-09'
+        validityOfMedicalExaminations: '2022-12-09',
+        academy: academy1
     });
     player5.save(function (err) {
         if (err) return console.log(err.message);
@@ -336,17 +348,17 @@ export const seedDatabase = async () => {
     });
 
     // MATCHESSTATISTIC ----------------------------------------------------------------------------
-    // const matchStatistic1 = new models.MatchStatistic({
-    //     player: player1,
-    //     match: match1,
-    //     goalsScored: 1,
-    //     yellowCards: 1,
-    //     minutesPlayed: 67,
-    //     attendance: true
-    // });
-    // matchStatistic1.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
+    const matchStatistic1 = new models.MatchStatistic({
+        player: player1,
+        match: match1,
+        goalsScored: 1,
+        yellowCards: 1,
+        minutesPlayed: 67,
+        attendance: true
+    });
+    matchStatistic1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
     // const matchStatistic2 = new models.MatchStatistic({
     //     player: player2,
     //     match: match1,

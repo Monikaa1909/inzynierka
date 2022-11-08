@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose'
+import { Academy } from './Academy'
 import { Trainer } from './Trainer'
 
 export interface Team {
@@ -6,10 +7,15 @@ export interface Team {
   teamName: string
   startYear: Number
   endYear: Number
-  trainer: Trainer
+  trainer?: Trainer
+  academy: Academy
 }
 
 export default new Schema({
+  academy: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'Missing informations - each team must belong to the academy']
+  },
   teamName: {
     type: String,
     required: [true, 'Missing informations - each team must have a name']
@@ -25,6 +31,6 @@ export default new Schema({
   trainer: {
     type: Schema.Types.ObjectId,
     ref: "Trainer",
-    required: [true, 'Missing informations - each team must belong to the trainer']
+    required: false
   }
 })
