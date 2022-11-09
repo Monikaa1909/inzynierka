@@ -172,6 +172,7 @@ error-messages:
   went-wrong: Something went wrong... Try again later!
   no-data: There is no data in data base
   no-players-in-team: There is no players in that team in data base
+  no-statistics: There are no statistic for that event yet
   red-cards-message: 2 yellow cards usually mean red card
   birthday-date-message: Player's birthday date is greater than the team's starting year
   valid-postal-code: This field must be a valid postal code

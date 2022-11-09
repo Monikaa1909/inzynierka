@@ -171,6 +171,7 @@ error-messages:
   went-wrong: Coś poszło nie tak... Spróbuj ponownie za chwilę!
   no-data: Brak danych w bazie danych
   no-players-in-team: W bazie danych nie istnieją zawodnicy z tej drużyny
+  no-statistics: Nie ma jeszcze statystyk dla tego wydarzenia
   red-cards-message: 2 żółte kartki zwykle oznaczają czerwoną kartkę
   birthday-date-message: Rok urodzenia zawodnika jest większy od dolnego rocznika drużyny
   valid-postal-code: To pole musi zawierać poprawny kod pocztowy

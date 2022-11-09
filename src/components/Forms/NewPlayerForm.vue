@@ -34,8 +34,9 @@ if (!props.playerId) {
 		nationality: '',
 		validityOfMedicalExaminations: '',
 		remarks: '',
-		team: undefined!,
-		parent: undefined
+		team: undefined,
+		parent: undefined,
+		academy: undefined!
 	}
 }
 
@@ -64,6 +65,13 @@ const {
 	isFinished: isParentsFinished,
 } = useFetch(`/api/parents/${academy}`, { initialData: [] }).json<Parent[]>()
 
+const {
+	data: academyData,
+	isFetching: isAcademyFetching,
+	isFinished: isAcademyFinished,
+	error: academyError,
+} = useFetch(`/api/academy/${academy}`, { initialData: {} }).json<Academy>()
+
 whenever(parentsData, (data) => {
 	parents.value = data
 	parents.value.map(element => element.academy = element.academy._id as unknown as Academy)
@@ -79,19 +87,19 @@ whenever(teamsData, (data) => {
 			}
 		});
 	}
-	teams.value.map(element => element.trainer = element.trainer._id as unknown as Trainer)
+	teams.value.map(element => element.trainer = element.trainer?._id as unknown as Trainer)
 })
 
 const isFinished = computed(() => {
-	return isPlayerFinished.value && isTeamsFinished.value && isParentsFinished.value
+	return isPlayerFinished.value && isTeamsFinished.value && isParentsFinished.value && isAcademyFinished.value
 })
 
 const isFetching = computed(() => {
-	return isPlayersFetching.value && isTeamsFetching.value && isParentsFetching.value
+	return isPlayersFetching.value && isTeamsFetching.value && isParentsFetching.value && isAcademyFetching.value
 })
 
 const error = computed(() => {
-	return playerError.value && teamsError.value && parentsError.value
+	return playerError.value && teamsError.value && parentsError.value && academyError.value
 })
 
 const { execute: savePlayer, error: saveError } = useFetch(url, { immediate: false }).post(player)
@@ -99,14 +107,17 @@ const { execute: updatePlayer, error: updateError } = useFetch(url, { immediate:
 
 const onSubmit = async () => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || birthdayDateErrorMessage.value || nationalityErrorMessage.value
-		|| requiredOfMedicalExaminationsErrorMessage.value || teamErrorMessage.value) {
+		|| requiredOfMedicalExaminationsErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.playerId) {
-			await savePlayer()
-			if (saveError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
+			if (academyData.value) {
+				player.value.academy = academyData.value
+				await savePlayer()
+				if (saveError.value) {
+					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+					return
+				}
 			}
 		} else {
 			await updatePlayer()
@@ -115,7 +126,7 @@ const onSubmit = async () => {
 				return
 			}
 		}
-		
+
 		if (props.teamId) return router.push(`/players/team/${props.teamId}`)
 		else return router.push('/players/team/all')
 	}
@@ -143,7 +154,7 @@ const birthdayDateErrorMessage = computed(() => {
 })
 
 const birthdayDateMessage = computed(() => {
-	if (player.value.team) 
+	if (player.value.team)
 		if (new Date(player.value.birthdayDate).getFullYear() > player.value.team.startYear)
 			return t('error-messages.birthday-date-message')
 	return ''
@@ -159,22 +170,15 @@ const nationalityErrorMessage = computed(() => {
 const requiredOfMedicalExaminationsErrorMessage = computed(() => {
 	if (!requiredField(player.value.validityOfMedicalExaminations)) {
 		return false
-	} 
+	}
 	return t(requiredField(player.value.validityOfMedicalExaminations))
 })
 
 const validityOfMedicalExaminationsErrorMessage = computed(() => {
 	if (!validateMedicalExaminations(new Date(player.value.validityOfMedicalExaminations))) {
 		return false
-	} 
-	return t(validateMedicalExaminations(new Date(player.value.validityOfMedicalExaminations)))
-})
-
-const teamErrorMessage = computed(() => {
-	if (!requiredField(player.value.team)) {
-		return false
 	}
-	return t(requiredField(player.value.team))
+	return t(validateMedicalExaminations(new Date(player.value.validityOfMedicalExaminations)))
 })
 
 </script>
@@ -222,7 +226,7 @@ const teamErrorMessage = computed(() => {
 				</DatePicker>
 			</template>
 			<template v-if="birthdayDateErrorMessage" #errorMessage>
-				{{ birthdayDateErrorMessage }} 
+				{{ birthdayDateErrorMessage }}
 			</template>
 			<template v-if="birthdayDateMessage && !birthdayDateErrorMessage" #errorMessage>
 				<p class="text-xs color-red">{{ birthdayDateMessage }}</p>
@@ -261,7 +265,7 @@ const teamErrorMessage = computed(() => {
 				{{ requiredOfMedicalExaminationsErrorMessage }}
 			</template>
 			<template v-if="validityOfMedicalExaminationsErrorMessage" #errorMessage>
-				<p class="text-xs color-red">{{validityOfMedicalExaminationsErrorMessage}}</p>
+				<p class="text-xs color-red">{{ validityOfMedicalExaminationsErrorMessage }}</p>
 			</template>
 
 		</SingleInput>
@@ -276,10 +280,10 @@ const teamErrorMessage = computed(() => {
 
 		<SingleInput v-if="!props.playerId && props.teamId != 'all'">
 			<template #inputName>{{ t('single-player.team') }}:</template>
-			<template #inputValue>{{ player.team.teamName }}</template>
+			<template #inputValue>{{ player.team?.teamName }}</template>
 		</SingleInput>
 
-		<SingleInput v-else >
+		<SingleInput v-else>
 			<template #inputName>{{ t('single-player.team') }}:</template>
 			<template #inputValue>
 				<div class="fles flex-auto w-full flex-col">
@@ -288,9 +292,6 @@ const teamErrorMessage = computed(() => {
 						</option>
 					</select>
 				</div>
-			</template>
-			<template v-if="teamErrorMessage" #errorMessage>
-				{{ teamErrorMessage }}
 			</template>
 		</SingleInput>
 

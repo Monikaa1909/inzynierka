@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
-// import { Player } from 'backend/database/schemas/Player'
+import { Player } from 'backend/database/schemas/Player'
 import { Match } from 'backend/database/schemas/Match'
 
 const { t, availableLocales, locale } = useI18n()
@@ -11,9 +11,10 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const props = defineProps<{ id: string }>()
 
-// const playerStatistic = ref({} as MatchStatistic)
+const playerStatistic = ref({} as MatchStatistic)
 const playerUrl = ref(``)
 const isMatchStatistic = ref(false)
+const messageInfo = ref('error-messages.no-statistics')
 
 const {
 	data: match,
@@ -40,58 +41,79 @@ const {
 	execute: refechMatchStatistic
 } = useFetch(`/api/matchStatistic/match/${props.id}`, { initialData: [], immediate: false }).json<MatchStatistic[]>()
 
-// const {
-// 	data: players,
-// 	isFetching: isPlayersFetching,
-// 	isFinished: isPlayersFinished,
-// 	error: playersError,
-// 	execute: refechPlayers
-// } = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
+const {
+	data: players,
+	isFetching: isPlayersFetching,
+	error: playersError,
+	execute: refechPlayers
+} = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
 
-whenever(isMatchStatisticFinished, (data) => {
-	console.log("isMatchStatisticFinished " + isMatchStatisticFinished.value)
-
-	if (data) {
-		if (matchStatistic.value === null || matchStatistic.value.length === 0) {
-			console.log('brak statystyk, tworzenie')
-			isMatchStatistic.value = false
-			// refechPlayers()
-			return
-		} else {
-			isMatchStatistic.value = true
-			updateSummaryStatistic()
-			updateAverageStatisticWithAbsent()
-			updateAverageStatisticWithoutAbsent()
-		}
+whenever(matchStatistic, (data) => {
+	if (matchStatistic.value === null || matchStatistic.value.length === 0) {
+		isMatchStatistic.value = false
+		return
+	} else {
+		isMatchStatistic.value = true
+		updateSummaryStatistic()
+		updateAverageStatisticWithAbsent()
+		updateAverageStatisticWithoutAbsent()
+		sortType.value = 'playersDown'
 	}
 })
 
-// whenever(isPlayersFinished, (data) => {
-// 	if (data && players.value != null && players.value.length > 0) {
-// 		players.value.forEach(async element => {
+whenever(players, (data) => {
+	if (players.value != null && players.value.length > 0) {
+		players.value.forEach(async element => {
 
-// 			playerStatistic.value.player = element
-// 			playerStatistic.value.match = match as unknown as Match
+			if (!isMatchStatistic.value) {
+				playerStatistic.value.player = element
+				playerStatistic.value.match = match as unknown as Match
 
-// 			const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, { immediate: false }).post(playerStatistic)
-// 			await savePlayerStatistic()
+				const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, { immediate: false }).post(playerStatistic)
+				await savePlayerStatistic()
 
-// 			if (saveError.value) {
-// 				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-// 				return
-// 			}
-// 		})
+				if (saveError.value) {
+					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+					return
+				}
+			}
 
-// 		refechMatchStatistic()
-// 	}
-// })
+			else {
+				if (!isPlayerHasStatistic(element)) {
+					playerStatistic.value.player = element
+					playerStatistic.value.match = match as unknown as Match
+
+					const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, { immediate: false }).post(playerStatistic)
+					await savePlayerStatistic()
+
+					if (saveError.value) {
+						alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+						return
+					}
+				}
+			}
+		})
+
+		refechMatchStatistic()
+	} else 
+		messageInfo.value = 'error-messages.no-players-in-team'
+})
+
+const isPlayerHasStatistic = (player: Player) => {
+	let isPlayerHas = false
+	matchStatistic.value?.forEach(element => {
+		if (element.player._id === player._id)
+			isPlayerHas = true
+	})
+	return isPlayerHas
+}
 
 const isFinished = computed(() => {
 	return isMatchFinished.value && isMatchStatisticFinished.value
 })
 
 const isFetching = computed(() => {
-	return isMatchFetching.value || isMatchStatisticFetching.value 
+	return isMatchFetching.value || isMatchStatisticFetching.value
 })
 
 const error = computed(() => {
@@ -326,6 +348,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 				<MiniWhiteFrame>
 
 					<template #nav>
+						<button @click="refechPlayers()">Refresh</button>
 						<button @click="isHidden = !isHidden">
 							<img src="../../../../assets/filter-icon.png" class="h-24px" />
 						</button>
@@ -340,9 +363,10 @@ const updateAverageStatisticWithoutAbsent = () => {
 
 					<template #attributes>
 
-						<LoadingCircle v-if="isFetching || !isMatchFinished || !isMatchStatisticFinished"></LoadingCircle>
+						<LoadingCircle v-if="isFetching || isPlayersFetching || !isMatchFinished || !isMatchStatisticFinished">
+						</LoadingCircle>
 
-						<div v-else-if="isFinished && !error"
+						<div v-else-if="isFinished && !error && !playersError"
 							class="w-full h-full flex flex-col flex-auto gap-2 place-content-center">
 
 							<StatisticSortOptions :statisticType="'match'" @changeSorting="changeSorting" v-if="!isHidden">
@@ -371,8 +395,8 @@ const updateAverageStatisticWithoutAbsent = () => {
 									<StatisticHeader> {{ t('match-statistic.remarks') }}</StatisticHeader>
 								</div>
 
-								<div v-if="isMatchStatistic && matchStatistic?.length != 0" v-for="statistic in sortedStatistic" v-bind:key="statistic._id"
-									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
+								<div v-if="isMatchStatistic && matchStatistic?.length != 0" v-for="statistic in sortedStatistic"
+									v-bind:key="statistic._id" class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleStatistic>
 										<template #name>{{ t('match-statistic.player') }}</template>
@@ -555,9 +579,11 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</div>
 								</div>
 
+								<ErrorMessageInfo v-else-if="!isMatchStatistic">
+									{{t(messageInfo)}}
+								</ErrorMessageInfo>
 								<ErrorMessageInfo v-else>
-									No statistic 
-									<!-- {{ t('error-messages.no-players-in-team') }} -->
+									{{ t('error-messages.no-players-in-team') }}
 								</ErrorMessageInfo>
 							</div>
 
