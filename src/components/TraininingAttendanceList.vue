@@ -13,6 +13,15 @@ const props = defineProps<{ id: string, edit?: boolean }>()
 const attendanceList = ref([] as Omit<AttendanceList[], '_id'>)
 const playerAttendance = ref({} as AttendanceList)
 const playerUrl = ref(``)
+const isAttendanceList = ref(false)
+const messageInfo = ref('error-messages.no-statistics')
+
+const {
+	data: training,
+	isFetching: isTrainingFetching,
+	isFinished: isTrainingFinished,
+	error: trainingError,
+} = useFetch(`/api/training/${props.id}`, { initialData: {} }).json<Training>()
 
 const {
 	data: attendanceListData,
@@ -20,57 +29,78 @@ const {
 	isFinished: isAttendanceListFinished,
 	error: attendanceListError,
 	execute: refechAttendanceList
-} = useFetch(`/api/attendanceList/training/${props.id}`, { initialData: [] }).json<AttendanceList[]>()
-
-const {
-	data: training,
-	isFetching: isTrainingFetching,
-	isFinished: isTrainingFinished,
-	error: trainingListError,
-	execute: refechTraining
-} = useFetch(`/api/training/${props.id}`, { initialData: {}, immediate: false }).json<Training>()
+} = useFetch(`/api/attendanceList/training/${props.id}`, { initialData: [], immediate: false }).json<AttendanceList[]>()
 
 const {
 	data: players,
 	isFetching: isPlayersFetching,
-	isFinished: isPlayersFinished,
 	error: playersError,
 	execute: refechPlayers
 } = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
 
-whenever(attendanceListData, (data) => {
-	attendanceList.value = data
-	if (attendanceList.value != null && attendanceList.value.length === 0) {
-		console.log('brak listy, tworzenie ')
-		refechTraining()
-	}
-})
-
 whenever(isTrainingFinished, (data) => {
 	if (data && training.value != null) {
 		playerUrl.value = `/api/players/team/${training.value.team._id}`
-		refechPlayers()
-	}
-})
-
-whenever(isPlayersFinished, (data) => {
-	if (data && players.value != null && players.value.length > 0) {
-		players.value.forEach(async element => {
-
-			playerAttendance.value.player = element
-			playerAttendance.value.training = training as unknown as Training
-
-			const { execute: savePlayerAttendance, error: saveError } = useFetch(`/api/attendanceList`, { immediate: false }).post(playerAttendance)
-			await savePlayerAttendance()
-			
-			if (saveError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
-			}
-		})
 		refechAttendanceList()
 	}
 })
+
+whenever(attendanceListData, (data) => {
+	attendanceList.value = data
+	if (attendanceList.value != null && attendanceList.value.length === 0) {
+		isAttendanceList.value = false
+		return
+	} else {
+		isAttendanceList.value = true
+	}
+})
+
+whenever(players, (data) => {
+	if (players.value != null && players.value.length > 0) {
+		players.value.forEach(async element => {
+
+			if (!isAttendanceList.value) {
+				playerAttendance.value.player = element
+				playerAttendance.value.training = training as unknown as Training
+
+				const { execute: savePlayerAttendance, error: saveError } = useFetch(`/api/attendanceList`, { immediate: false }).post(playerAttendance)
+				await savePlayerAttendance()
+
+				if (saveError.value) {
+					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+					return
+				}
+			}
+
+			else {
+				if (!isPlayerHasStatistic(element)) {
+					playerAttendance.value.player = element
+					playerAttendance.value.training = training as unknown as Training
+
+					const { execute: savePlayerAttendance, error: saveError } = useFetch(`/api/attendanceList`, { immediate: false }).post(playerAttendance)
+					await savePlayerAttendance()
+
+					if (saveError.value) {
+						alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+						return
+					}
+				}
+			}
+		})
+
+		refechAttendanceList()
+	} else
+		messageInfo.value = 'error-messages.no-players-in-team'
+})
+
+const isPlayerHasStatistic = (player: Player) => {
+	let isPlayerHas = false
+	attendanceList.value?.forEach(element => {
+		if (element.player._id === player._id)
+			isPlayerHas = true
+	})
+	return isPlayerHas
+}
 
 const isFinished = computed(() => {
 	return isAttendanceListFinished.value
@@ -81,7 +111,7 @@ const isFetching = computed(() => {
 })
 
 const error = computed(() => {
-	return attendanceListError.value && trainingListError.value && playersError.value
+	return attendanceListError.value && trainingError.value && playersError.value
 })
 
 const onSubmit = async () => {
@@ -114,6 +144,7 @@ const goEditAttendanceList = (eventId: any) => {
 	<MiniWhiteFrame>
 
 		<template #nav v-if="!props.edit">
+			<button @click="refechPlayers()">Refresh</button>
 			<button @click="goEditAttendanceList(props.id)">
 				<img src="../assets/edit-icon.png" class="h-24px" />
 			</button>
@@ -127,12 +158,8 @@ const goEditAttendanceList = (eventId: any) => {
 
 			<LoadingCircle v-if="isFetching"></LoadingCircle>
 
-			<ErrorMessageInfo v-else-if="!error && isFinished && players?.length === 0 && attendanceList.length === 0">
-				{{ t('error-messages.no-players-in-team') }}
-			</ErrorMessageInfo>
-
-			<div v-else-if="isFinished && !error" v-for="playerAttendance in attendanceList" v-bind:key="playerAttendance._id"
-				class="w-full  flex flex-row gap-4 place-content-between">
+			<div v-else-if="isFinished && !error && isAttendanceList" v-for="playerAttendance in attendanceList"
+				v-bind:key="playerAttendance._id" class="w-full  flex flex-row gap-4 place-content-between">
 				<div class="w-auto flex flex-row gap-2">
 					<button v-if="props.edit" @click="playerAttendance.attendance = !playerAttendance.attendance">
 						<img v-if="playerAttendance.attendance" src="../assets/checkbox-checked-icon.png" class="h-18px" />
@@ -152,7 +179,12 @@ const goEditAttendanceList = (eventId: any) => {
 				</div>
 			</div>
 
-			<ErrorMessageInfo v-else></ErrorMessageInfo>
+			<ErrorMessageInfo v-else-if="!isAttendanceList">
+				{{ t(messageInfo) }}
+			</ErrorMessageInfo>
+			<ErrorMessageInfo v-else>
+				{{ t('error-messages.no-players-in-team') }}
+			</ErrorMessageInfo>
 
 		</template>
 

@@ -27,6 +27,7 @@ whenever(isMatchFinished, (data) => {
 	if (data) {
 		if (match.value != null) {
 			match.value.date = new Date(match.value.date) as unknown as Date
+			
 			playerUrl.value = `/api/players/team/${match.value.team._id}`
 			refechMatchStatistic()
 		}
@@ -113,11 +114,11 @@ const isFinished = computed(() => {
 })
 
 const isFetching = computed(() => {
-	return isMatchFetching.value || isMatchStatisticFetching.value
+	return isMatchFetching.value || isMatchStatisticFetching.value|| isPlayersFetching.value
 })
 
 const error = computed(() => {
-	return matchError.value && matchStatisticError.value
+	return matchError.value && matchStatisticError.value && playersError.value
 })
 
 const isHidden = ref(true)
@@ -363,10 +364,10 @@ const updateAverageStatisticWithoutAbsent = () => {
 
 					<template #attributes>
 
-						<LoadingCircle v-if="isFetching || isPlayersFetching || !isMatchFinished || !isMatchStatisticFinished">
+						<LoadingCircle v-if="isFetching || !isMatchFinished || !isMatchStatisticFinished">
 						</LoadingCircle>
 
-						<div v-else-if="isFinished && !error && !playersError"
+						<div v-else-if="isFinished && !error"
 							class="w-full h-full flex flex-col flex-auto gap-2 place-content-center">
 
 							<StatisticSortOptions :statisticType="'match'" @changeSorting="changeSorting" v-if="!isHidden">

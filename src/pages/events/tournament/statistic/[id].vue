@@ -12,8 +12,9 @@ locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 const props = defineProps<{ id: string }>()
 
 const playerStatistic = ref({} as TournamentStatistic)
-
 const playerUrl = ref(``)
+const isTournamentStatistic = ref(false)
+const messageInfo = ref('error-messages.no-statistics')
 
 const {
 	data: tournament,
@@ -45,44 +46,67 @@ const {
 const {
 	data: players,
 	isFetching: isPlayersFetching,
-	isFinished: isPlayersFinished,
 	error: playersError,
 	execute: refechPlayers
 } = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
 
-whenever(isTournamentStatisticFinished, (data) => {
-	console.log("isTournamentStatisticFinished " + isTournamentStatisticFinished.value)
-
-	if (data) {
-		if (tournamentStatistic.value != null && tournamentStatistic.value.length === 0) {
-			console.log('brak statystyk, tworzenie')
-			refechPlayers()
-			return
-		}
-
+whenever(tournamentStatistic, (data) => {
+	if (tournamentStatistic.value === null || tournamentStatistic.value.length === 0) {
+		isTournamentStatistic.value = false
+		return
+	} else {
+		isTournamentStatistic.value = true
 		updateSummaryStatistic()
 		updateAverageStatisticWithAbsent()
 		updateAverageStatisticWithoutAbsent()
+		sortType.value = 'playersDown'
 	}
 })
 
-whenever(isPlayersFinished, (data) => {
-	if (data && players.value != null && players.value.length > 0) {
+whenever(players, (data) => {
+	console.log(players.value?.length)
+	if (players.value != null && players.value.length > 0) {
 		players.value.forEach(async element => {
+			if (!isTournamentStatistic.value) {
+				playerStatistic.value.player = element
+				playerStatistic.value.tournament = tournament as unknown as Tournament
+				console.log('dodaje statystyke')
+				const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/tournamentStatistic`, { immediate: false }).post(playerStatistic)
+				await savePlayerStatistic()
+				if (saveError.value) {
+					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+					return
+				}
+			}
 
-			playerStatistic.value.player = element
-			playerStatistic.value.tournament = tournament as unknown as Tournament
+			else {
+				if (!isPlayerHasStatistic(element)) {
+					playerStatistic.value.player = element
+					playerStatistic.value.tournament = tournament as unknown as Tournament
 
-			const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/tournamentStatistic`, { immediate: false }).post(playerStatistic)
-			await savePlayerStatistic()
-			if (saveError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
+					const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/tournamentStatistic`, { immediate: false }).post(playerStatistic)
+					await savePlayerStatistic()
+					if (saveError.value) {
+						alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+						return
+					}
+				}
 			}
 		})
+		console.log('odswiezam staytystyki')
 		refechTournamentStatistic()
-	}
+	} else
+		messageInfo.value = 'error-messages.no-players-in-team'
 })
+
+const isPlayerHasStatistic = (player: Player) => {
+	let isPlayerHas = false
+	tournamentStatistic.value?.forEach(element => {
+		if (element.player._id === player._id)
+			isPlayerHas = true
+	})
+	return isPlayerHas
+}
 
 const isFinished = computed(() => {
 	return isTournamentFinished.value && isTournamentStatisticFinished.value
@@ -323,6 +347,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 				<MiniWhiteFrame>
 
 					<template #nav>
+						<button @click="refechPlayers()">Refresh</button>
 						<button @click="isHidden = !isHidden">
 							<img src="../../../../assets/filter-icon.png" class="h-24px" />
 						</button>
@@ -364,7 +389,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									<StatisticHeader> {{ t('match-statistic.remarks') }}</StatisticHeader>
 								</div>
 
-								<div v-if="tournamentStatistic?.length != 0" v-for="statistic in sortedStatistic"
+								<div v-if="isTournamentStatistic && tournamentStatistic?.length != 0" v-for="statistic in sortedStatistic"
 									v-bind:key="statistic._id" class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleStatistic>
@@ -413,7 +438,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</div>
 								</div>
 
-								<div v-if="tournamentStatistic?.length != 0"
+								<div v-if="isTournamentStatistic && tournamentStatistic?.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleSummaryStatistic>
@@ -456,7 +481,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</div>
 								</div>
 
-								<div v-if="tournamentStatistic?.length != 0"
+								<div v-if="isTournamentStatistic && tournamentStatistic?.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleSummaryStatistic>
@@ -502,7 +527,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</div>
 								</div>
 
-								<div v-if="tournamentStatistic?.length != 0"
+								<div v-if="isTournamentStatistic && tournamentStatistic?.length != 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-7 gap-0)">
 
 									<SingleSummaryStatistic>
@@ -548,6 +573,9 @@ const updateAverageStatisticWithoutAbsent = () => {
 									</div>
 								</div>
 
+								<ErrorMessageInfo v-else-if="!isTournamentStatistic">
+									{{t(messageInfo)}}
+								</ErrorMessageInfo>
 								<ErrorMessageInfo v-else>
 									{{ t('error-messages.no-players-in-team') }}
 								</ErrorMessageInfo>
