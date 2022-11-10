@@ -2,7 +2,7 @@
 import { validateFirstName, validateEmail, validatePhoneNumber } from '~/validatesFunctions'
 
 import type { Academy } from 'backend/database/schemas/Academy'
-import type { Parent } from 'backend/database/schemas/Parent'
+import type { Parent } from 'backend/database/schemas/Parent.user'
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()

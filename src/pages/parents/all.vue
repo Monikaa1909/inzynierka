@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Parent } from 'backend/database/schemas/Parent';
+import type { Parent } from 'backend/database/schemas/Parent.user';
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()

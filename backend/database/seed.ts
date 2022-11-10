@@ -19,7 +19,10 @@ export const seedDatabase = async () => {
         lastName: 'Pikulski',
         birthdayDate: '1975-02-19',
         nationality: 'Polska',
-        academy: academy1
+        academy: academy1,
+        login: 'pikul123',
+        password: 'pikula',
+        email: 'pikul123@gmail.com',
     });
     trainer1.save(function (err) {
         if (err) return console.log(err.message);
@@ -30,7 +33,10 @@ export const seedDatabase = async () => {
         lastName: 'Agrest',
         birthdayDate: '1978-01-29',
         nationality: 'Polska',
-        academy: academy1
+        academy: academy1,
+        login: 'wojciech1',
+        password: 'wojtech',
+        email: 'wojciech1@gmail.com',
     });
     trainer2.save(function (err) {
         if (err) return console.log(err.message);
@@ -41,7 +47,10 @@ export const seedDatabase = async () => {
         lastName: 'Sokólski',
         birthdayDate: '1989-12-11',
         nationality: 'Polska',
-        academy: academy1
+        academy: academy1,
+        password: 'sokol2',
+        login: 'sokol22',
+        email: 'sokol22@gmail.com',
     });
     trainer3.save(function (err) {
         if (err) return console.log(err.message);
@@ -52,7 +61,10 @@ export const seedDatabase = async () => {
         lastName: 'Zajączkowski',
         birthdayDate: '1998-01-20',
         nationality: 'Polska',
-        academy: academy1
+        academy: academy1,
+        login: 'piotrz',
+        email: 'piotrz@gmail.com',
+        password: 'piotrz'
     });
     trainer4.save(function (err) {
         if (err) return console.log(err.message);
@@ -142,7 +154,10 @@ export const seedDatabase = async () => {
         lastName: 'Kowalski',
         email: 'kowalj123@gmail.com',
         phoneNumber: '125 653 444',
-        academy: academy1
+        academy: academy1, 
+        login: 'kowalj123',
+        password: 'kowalj123'
+    
     });
     parent1.save(function (err) {
         if (err) return console.log(err.message);
@@ -153,7 +168,9 @@ export const seedDatabase = async () => {
         lastName: 'Kapustka',
         email: 'kapucha123@gmail.com',
         phoneNumber: '125 653 444',
-        academy: academy1
+        academy: academy1,
+        login: 'kapucha123',
+        password: 'kapucha123'
     });
     parent2.save(function (err) {
         if (err) return console.log(err.message);
@@ -162,7 +179,10 @@ export const seedDatabase = async () => {
     const parent3 = new models.Parent({
         firstName: 'Antoni',
         lastName: 'Wierzba',
-        academy: academy1
+        academy: academy1,
+        login: 'awierczba3',
+        email: 'awierczba3@gmail.com',
+        password: 'awierczba3'
     });
     parent3.save(function (err) {
         if (err) return console.log(err.message);
@@ -171,8 +191,10 @@ export const seedDatabase = async () => {
     const parent4 = new models.Parent({
         firstName: 'Mariusz',
         lastName: 'Gruszka',
-        email: 'mGruszka@gmail.com',
-        academy: academy1
+        email: 'mgruszka@gmail.com',
+        academy: academy1,
+        login: 'mgruszka',
+        password: 'mgruszka'
     });
     parent4.save(function (err) {
         if (err) return console.log(err.message);

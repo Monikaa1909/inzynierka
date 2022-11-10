@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose'
 import { Academy } from './Academy'
-import { Parent } from './Parent'
+import { Parent } from './Parent.user'
 import { Team } from './Team'
 
 export interface Player {

@@ -6,16 +6,21 @@ import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
 import { AttendanceList } from 'backend/database/schemas/AttendanceList'
 import { Tournament } from 'backend/database/schemas/Tournament'
 import { Training } from 'backend/database/schemas/Training'
-import { Trainer } from 'backend/database/schemas/Trainer'
+import { Trainer } from 'backend/database/schemas/Trainer.user'
 import { Player } from 'backend/database/schemas/Player'
-import { Parent } from 'backend/database/schemas/Parent'
+import { Parent } from 'backend/database/schemas/Parent.user'
 import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
 
 import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
 
+import useAuthRoutes from './auth'
+
 const router = express.Router()
+
+useAuthRoutes(router)
+
 export default router
 
 router.post('/db:seed', async (req, res) => {
@@ -214,7 +219,6 @@ router.delete('/parent/:id', async (req, res) => {
 
 router.get('/trainers/:academy', async (req, res) => {
     try {
-        console.log(req.params.academy)
         const trainer = await models.Trainer.find()
             .sort({ lastName: 1, firstName: 1 })
             .populate({

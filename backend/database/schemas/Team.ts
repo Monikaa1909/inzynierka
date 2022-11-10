@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose'
 import { Academy } from './Academy'
-import { Trainer } from './Trainer'
+import { Trainer } from './Trainer.user'
 
 export interface Team {
   _id: string

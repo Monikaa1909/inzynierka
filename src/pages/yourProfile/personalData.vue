@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Academy } from 'backend/database/schemas/Academy'
-import type { Trainer } from 'backend/database/schemas/Trainer'
-import type { Parent } from 'backend/database/schemas/Parent'
+import type { Trainer } from 'backend/database/schemas/Trainer.user'
+import type { Parent } from 'backend/database/schemas/Parent.user'
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()

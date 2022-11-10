@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Trainer } from 'backend/database/schemas/Trainer';
+import type { Trainer } from 'backend/database/schemas/Trainer.user';
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()

@@ -2,10 +2,10 @@
 import { requiredField, validateFirstName, validateNationality, validateMedicalExaminations } from '~/validatesFunctions'
 import { DatePicker } from 'v-calendar'
 
-import type { Trainer } from 'backend/database/schemas/Trainer'
+import type { Trainer } from 'backend/database/schemas/Trainer.user'
 import type { Academy } from 'backend/database/schemas/Academy'
 import type { Player } from 'backend/database/schemas/Player'
-import type { Parent } from 'backend/database/schemas/Parent'
+import type { Parent } from 'backend/database/schemas/Parent.user'
 import type { Team } from 'backend/database/schemas/Team'
 
 const { t, availableLocales, locale } = useI18n()

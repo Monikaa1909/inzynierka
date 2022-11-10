@@ -2,7 +2,7 @@
 import { validateStartYear, validateEndYear, validateName } from '~/validatesFunctions'
 
 import type { Academy } from 'backend/database/schemas/Academy'
-import type { Trainer } from 'backend/database/schemas/Trainer'
+import type { Trainer } from 'backend/database/schemas/Trainer.user'
 import type { Team } from 'backend/database/schemas/Team'
 
 const { t, availableLocales, locale } = useI18n()

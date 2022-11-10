@@ -5,11 +5,18 @@ import router from './router'
 
 const app = express()
 
+if (import.meta.hot) {
+  import.meta.hot.decline()
+}
+
 mongoose.connect('mongodb://localhost:27017/db').then(async () => {
   await mongoose.connection.db.dropDatabase()
   seedDatabase()
   console.log('Connected to database')
 }).catch(console.error)
+
+// TODO: Logowanie do SMTP od nodemailer
+// https://nodemailer.com/about/
 
 app.use(express.json())
 app.use("/api", router)

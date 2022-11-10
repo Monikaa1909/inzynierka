@@ -3,8 +3,8 @@ import { validateFirstName, validateEmail, validatePhoneNumber, requiredField, v
 import { DatePicker } from 'v-calendar'
 
 import type { Academy } from 'backend/database/schemas/Academy'
-import type { Trainer } from 'backend/database/schemas/Trainer'
-import type { Parent } from 'backend/database/schemas/Parent'
+import type { Trainer } from 'backend/database/schemas/Trainer.user'
+import type { Parent } from 'backend/database/schemas/Parent.user'
 
 import 'v-calendar/dist/style.css';
 const { t, availableLocales, locale } = useI18n()
