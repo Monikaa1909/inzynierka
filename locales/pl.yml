@@ -75,6 +75,8 @@ single-player:
   validity: Ważność
   validity-of-medical-examinations: Ważność badań lekarskich
   validity-of-medical-examinations-short: Badania lekarskie
+  no-team: Brak drużyny
+  no-parent: Brak rodzica
 single-parent:
   first-name: Imię
   last-name: Nazwisko

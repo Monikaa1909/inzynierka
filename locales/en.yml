@@ -76,6 +76,8 @@ single-player:
   validity: Validity
   validity-of-medical-examinations: Validity of medical examinations
   validity-of-medical-examinations-short: Medical examinations
+  no-team: No team
+  no-parent: No parent
 single-parent:
   first-name: First name
   last-name: Last name

@@ -38,7 +38,13 @@ if (!props.playerId) {
 		parent: undefined,
 		academy: undefined!
 	}
-}
+} 
+// else {
+// 	if (player.value.team === null) 
+// 		player.value.team = undefined
+// 	if (player.value.parent === null) 
+// 		player.value.parent = undefined
+// }
 
 const {
 	data: playerData,
@@ -79,15 +85,17 @@ whenever(parentsData, (data) => {
 
 whenever(teamsData, (data) => {
 	teams.value = data
-	console.log(teams.value)
+
 	if (!props.playerId && props.teamId != 'all') {
 		teams.value.forEach(element => {
 			if (element._id === props.teamId) {
 				player.value.team = element
 			}
-		});
+		})
 	}
+
 	teams.value.map(element => element.trainer = element.trainer?._id as unknown as Trainer)
+	teams.value.map(element => element.academy = element.academy._id as unknown as Academy)
 })
 
 const isFinished = computed(() => {
@@ -290,6 +298,7 @@ const validityOfMedicalExaminationsErrorMessage = computed(() => {
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.team">
 						<option v-for="team in teams" :value="team">{{ team.teamName }}
 						</option>
+						<option :value="null">{{t('single-player.no-team')}}</option>
 					</select>
 				</div>
 			</template>
@@ -302,6 +311,7 @@ const validityOfMedicalExaminationsErrorMessage = computed(() => {
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.parent">
 						<option v-for="parent in parents" :value="parent">{{ parent.lastName }} {{ parent.firstName }}
 						</option>
+						<option :value="null">{{t('single-player.no-parent')}}</option>
 					</select>
 				</div>
 			</template>

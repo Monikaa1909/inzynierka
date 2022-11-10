@@ -226,7 +226,6 @@ export const seedDatabase = async () => {
         lastName: 'Gruszka',
         birthdayDate: '2010-01-19',
         nationality: 'Polska',
-        team: team1,
         parent: parent4,
         validityOfMedicalExaminations: '2022-12-09',
         academy: academy1

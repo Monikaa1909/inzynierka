@@ -49,18 +49,14 @@ router.get('/players/:academy', async (req, res) => {
             .populate({
                 path: 'team',
                 model: 'Team',
-                populate: {
-                    path: 'trainer',
-                    model: 'Trainer',
-                    populate: {
-                        path: 'academy',
-                        model: 'Academy',
-                        match: { academyName: req.params.academy }
-                    }
-                }
+            })
+            .populate({
+                path: 'academy',
+                model: 'Academy',
+                match: { academyName: req.params.academy }
             }) as Player[]
 
-        res.send(players.filter(item => item.team.trainer.academy != null))
+        res.send(players.filter(item => item.academy != null))
     } catch (error) {
         res.status(400).send(error)
     }
@@ -371,14 +367,14 @@ router.get('/teams/:academy', async (req, res) => {
             .populate({
                 path: 'trainer',
                 model: 'Trainer',
-                populate: {
-                    path: 'academy',
-                    model: 'Academy',
-                    match: { academyName: req.params.academy }
-                }
+            })
+            .populate({
+                path: 'academy',
+                model: 'Academy',
+                match: { academyName: req.params.academy }
             }) as Team[]
 
-        res.send(teams.filter(item => item.trainer.academy != null))
+        res.send(teams.filter(item => item.academy != null))
     } catch (error) {
         res.status(400).send(error)
     }
@@ -449,17 +445,13 @@ router.get('/matches/:academy', async (req, res) => {
                 path: 'team',
                 model: 'Team',
                 populate: {
-                    path: 'trainer',
-                    model: 'Trainer',
-                    populate: {
-                        path: 'academy',
-                        model: 'Academy',
-                        match: { name: req.params.academy }
-                    }
+                    path: 'academy',
+                    model: 'Academy',
+                    match: { name: req.params.academy }
                 }
             }) as Match[]
 
-        res.send(matches.filter(item => item.team.trainer.academy != null))
+        res.send(matches.filter(item => item.team.academy != null))
     } catch (error) {
         res.status(400).send(error)
     }
@@ -558,16 +550,12 @@ router.get('/trainings/:academy', async (req, res) => {
                 path: 'team',
                 model: 'Team',
                 populate: {
-                    path: 'trainer',
-                    model: 'Trainer',
-                    populate: {
-                        path: 'academy',
-                        model: 'Academy',
-                        match: { name: req.params.academy }
-                    }
+                    path: 'academy',
+                    model: 'Academy',
+                    match: { name: req.params.academy }
                 }
             }) as Training[]
-        res.send(trainings.filter(item => item.team.trainer.academy != null))
+        res.send(trainings.filter(item => item.team.academy != null))
     } catch (error) {
         res.status(400).send(error)
     }
@@ -661,16 +649,12 @@ router.get('/tournaments/:academy', async (req, res) => {
                 path: 'team',
                 model: 'Team',
                 populate: {
-                    path: 'trainer',
-                    model: 'Trainer',
-                    populate: {
-                        path: 'academy',
-                        model: 'Academy',
-                        match: { name: req.params.academy }
-                    }
+                    path: 'academy',
+                    model: 'Academy',
+                    match: { name: req.params.academy }
                 }
             }) as Tournament[]
-        res.send(tournaments.filter(item => item.team.trainer.academy != null))
+        res.send(tournaments.filter(item => item.team.academy != null))
     } catch (error) {
         res.status(400).send(error)
     }
@@ -775,19 +759,19 @@ router.get('/attendanceList/training/:id', async (req, res) => {
 router.get('/attendanceList/team/:id', async (req, res) => {
     try {
         const attendanceList = await models.AttendanceList.find()
-        .populate({
-            path: 'player',
-            model: 'Player'
-        })
-        .populate({
-            path: 'training',
-            model: 'Training',
-            populate: {
-                path: 'team',
-                model: 'Team',
-                match: { _id: req.params.id }
-            }
-        }) as AttendanceList[]
+            .populate({
+                path: 'player',
+                model: 'Player'
+            })
+            .populate({
+                path: 'training',
+                model: 'Training',
+                populate: {
+                    path: 'team',
+                    model: 'Team',
+                    match: { _id: req.params.id }
+                }
+            }) as AttendanceList[]
 
         res.send(attendanceList.filter(item => item.training != null))
     } catch (error) {
@@ -810,17 +794,13 @@ router.get('/attendanceList/academy/:academy', async (req, res) => {
                     path: 'team',
                     model: 'Team',
                     populate: {
-                        path: 'trainer',
-                        model: 'Trainer',
-                        populate: {
-                            path: 'academy',
-                            model: 'Academy',
-                            match: { academyName: req.params.academy }
-                        }
+                        path: 'academy',
+                        model: 'Academy',
+                        match: { academyName: req.params.academy }
                     }
                 }
             }) as AttendanceList[]
-        res.send(attendanceList.filter(item => item.training.team.trainer.academy != null))
+        res.send(attendanceList.filter(item => item.training.team.academy != null))
     } catch (error) {
         console.log(error)
         res.status(400).send(error)
@@ -888,19 +868,19 @@ router.get('/matchStatistic/match/:id', async (req, res) => {
 router.get('/matchStatistic/team/:id', async (req, res) => {
     try {
         const matchStatistic = await models.MatchStatistic.find()
-        .populate({
-            path: 'player',
-            model: 'Player'
-        })
-        .populate({
-            path: 'match',
-            model: 'Match',
-            populate: {
-                path: 'team',
-                model: 'Team',
-                match: { _id: req.params.id }
-            }
-        }) as MatchStatistic[]
+            .populate({
+                path: 'player',
+                model: 'Player'
+            })
+            .populate({
+                path: 'match',
+                model: 'Match',
+                populate: {
+                    path: 'team',
+                    model: 'Team',
+                    match: { _id: req.params.id }
+                }
+            }) as MatchStatistic[]
 
         res.send(matchStatistic.filter(item => item.match != null))
     } catch (error) {
@@ -923,17 +903,13 @@ router.get('/matchStatistic/academy/:academy', async (req, res) => {
                     path: 'team',
                     model: 'Team',
                     populate: {
-                        path: 'trainer',
-                        model: 'Trainer',
-                        populate: {
-                            path: 'academy',
-                            model: 'Academy',
-                            match: { academyName: req.params.academy }
-                        }
+                        path: 'academy',
+                        model: 'Academy',
+                        match: { academyName: req.params.academy }
                     }
                 }
             }) as MatchStatistic[]
-        res.send(matchStatistic.filter(item => item.match.team.trainer.academy != null))
+        res.send(matchStatistic.filter(item => item.match.team.academy != null))
     } catch (error) {
         console.log(error)
         res.status(400).send(error)
@@ -1005,19 +981,19 @@ router.get('/tournamentStatistic/tournament/:id', async (req, res) => {
 router.get('/tournamentStatistic/team/:id', async (req, res) => {
     try {
         const tournamentStatistic = await models.TournamentStatistic.find()
-        .populate({
-            path: 'player',
-            model: 'Player'
-        })
-        .populate({
-            path: 'tournament',
-            model: 'Tournament',
-            populate: {
-                path: 'team',
-                model: 'Team',
-                match: { _id: req.params.id }
-            }
-        }) as TournamentStatistic[]
+            .populate({
+                path: 'player',
+                model: 'Player'
+            })
+            .populate({
+                path: 'tournament',
+                model: 'Tournament',
+                populate: {
+                    path: 'team',
+                    model: 'Team',
+                    match: { _id: req.params.id }
+                }
+            }) as TournamentStatistic[]
 
         res.send(tournamentStatistic.filter(item => item.tournament != null))
     } catch (error) {
@@ -1040,17 +1016,13 @@ router.get('/tournamentStatistic/academy/:academy', async (req, res) => {
                     path: 'team',
                     model: 'Team',
                     populate: {
-                        path: 'trainer',
-                        model: 'Trainer',
-                        populate: {
-                            path: 'academy',
-                            model: 'Academy',
-                            match: { academyName: req.params.academy }
-                        }
+                        path: 'academy',
+                        model: 'Academy',
+                        match: { academyName: req.params.academy }
                     }
                 }
             }) as TournamentStatistic[]
-        res.send(tournamentStatistic.filter(item => item.tournament.team.trainer.academy != null))
+        res.send(tournamentStatistic.filter(item => item.tournament.team.academy != null))
     } catch (error) {
         console.log(error)
         res.status(400).send(error)
