@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/db').then(async () => {
   console.log('Connected to database')
 }).catch(console.error)
 
-// TODO: Logowanie do SMTP od nodemailer
+// TODO [$636d3f0d12b235068dccbffa]: Logowanie do SMTP od nodemailer
 // https://nodemailer.com/about/
 
 app.use(express.json())
