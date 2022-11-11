@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { Parent } from 'backend/database/schemas/Parent.user';
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload } = useJwt(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
-const academy = 'AP Jagiellonia Białystok'
 
 const goEditParent = (parentId: any) => {
   return router.push(`/parents/edit/${parentId}`)
@@ -23,7 +25,7 @@ const {
   isFinished,
   error,
   execute: refechParents
-} = useFetch(`/api/parents/${academy}`, { initialData: [] }).json<Parent[]>()
+} = useFetch(`/api/parents/academy/${payload.value.academy}`, { initialData: [] }).json<Parent[]>()
 
 const isDeleting = ref(false)
 const deletingParent = ref<Parent>()

@@ -1,6 +1,7 @@
 import { InferSchemaType, Schema } from 'mongoose'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { Academy } from './Academy'
 
 const JWT_SECRET = 'kotek,piesek8osmiornica'
 
@@ -15,6 +16,7 @@ const schema = new Schema({
   },
   academy: {
     type: Schema.Types.ObjectId,
+    ref: "Academy",
     required: [true, 'Missing informations - each trainer must belong to the academy']
   },
   email: {
@@ -62,11 +64,12 @@ schema.methods.validatePassword = async function (candidatePassword: string) {
 schema.methods.createToken = function () {
   return jwt.sign({
     id: this._id,
+    academy: this.academy._id,
     type: this.__t,
     login: this.login
   }, JWT_SECRET)
 }
 
-export type User = InferSchemaType<typeof schema>
+export type User = Omit<InferSchemaType<typeof schema>, 'academy'> & {academy: Academy}
 
 export default schema 

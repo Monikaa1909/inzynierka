@@ -16,6 +16,6 @@ const schema = new Schema({
   },
 })
 
-export type Parent = InferSchemaType<typeof schema> & User
+export type Parent = InferSchemaType<typeof schema> & User & {_id: string}
 
 export default schema

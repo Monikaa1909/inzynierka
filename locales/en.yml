@@ -59,13 +59,14 @@ login:
   password: Password
 account:
   trainer: Trainer
-  academy: Academy
+  academy: Academy manager
   parent: Parent
 single-team:
   name: Name
   years: Years
   trainer: Trainer
   remarks: Remarks
+  no-trainer: No trainer
 single-player:
   first-name: First name
   last-name: Last name

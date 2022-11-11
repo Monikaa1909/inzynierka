@@ -8,6 +8,6 @@ const schema = new Schema({
   }
 })
 
-export type Academy = InferSchemaType<typeof schema>
+export type Academy = InferSchemaType<typeof schema> & {_id: string}
 
 export default schema

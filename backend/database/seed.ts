@@ -13,6 +13,21 @@ export const seedDatabase = async () => {
         if (err) return console.log(err.message);
     });
 
+    // ACADEMIES MANAGERS ---------------------------------------------------------------------------------
+    const academyManager1 = new models.AcademyManager({ 
+        firstName: 'Monika',
+        lastName: 'Słowikowska',
+        birthdayDate: '200-09-10',
+        nationality: 'Polska',
+        academy: academy1,
+        login: 'monikaa1909',
+        password: 'coolhaslo',
+        email: 'monikaa1909@gmail.com',
+    })
+    academyManager1.save(function (err) {
+        if (err) return console.log(err.message)
+    })
+
     // TRAINERS -----------------------------------------------------------------------------
     const trainer1 = new models.Trainer({
         firstName: 'Jerzy',

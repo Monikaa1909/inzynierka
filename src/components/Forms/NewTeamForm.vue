@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { validateStartYear, validateEndYear, validateName } from '~/validatesFunctions'
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 import type { Academy } from 'backend/database/schemas/Academy'
 import type { Trainer } from 'backend/database/schemas/Trainer.user'
@@ -10,7 +11,8 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const academy = 'AP Jagiellonia Białystok'
+const token = useStorage('user:token', '')
+const { payload } = useJwt(() => token.value ?? '')
 
 const props = defineProps<{ teamId?: string }>()
 
@@ -27,7 +29,8 @@ if (!props.teamId) {
 		teamName: '',
 		startYear: undefined!,
 		endYear: undefined!,
-		trainer: undefined!,
+		trainer: undefined,
+		academy: undefined!
 	}
 }
 
@@ -47,7 +50,14 @@ const {
 	isFetching: isTrainersFetching,
 	isFinished: isTrainersFinished,
 	error: trainersError,
-} = useFetch(`/api/trainers/${academy}`, { initialData: [] }).json<Trainer[]>()
+} = useFetch(`/api/trainers/academy/${payload.value.academy}`, { initialData: [] }).json<Trainer[]>()
+
+const {
+	data: academyData,
+	isFetching: isAcademyFetching,
+	isFinished: isAcademyFinished,
+	error: academyError,
+} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
 
 whenever(trainersData, (data) => {
 	trainers.value = data
@@ -55,29 +65,33 @@ whenever(trainersData, (data) => {
 })
 
 const isFinished = computed(() => {
-	return isTeamFinished.value && isTrainersFinished.value
+	return isTeamFinished.value && isTrainersFinished.value && isAcademyFinished.value
 })
 
 const isFetching = computed(() => {
-	return isTeamFetching.value && isTrainersFetching.value
+	return isTeamFetching.value && isTrainersFetching.value && isAcademyFetching.value
 })
 
 const error = computed(() => {
-	return teamError.value && trainersError.value
+	return teamError.value && trainersError.value && academyError
 })
 
 const { execute: saveTeam, error: saveError } = useFetch(url, { immediate: false }).post(team)
 const { execute: updateTeam, error: updateError } = useFetch(url, { immediate: false }).post(team)
 
-const onSubmit = async (values: any) => { 
-	if (teamNameErrorMessage.value || startYearErrorMessage.value || endYearErrorMessage.value || trainerErrorMessage.value) {
+const onSubmit = async (values: any) => {
+	if (teamNameErrorMessage.value || startYearErrorMessage.value || endYearErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.teamId) {
-			await saveTeam()
-			if (saveError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
+			if (academyData.value) {
+				team.value.academy = academyData.value
+				if (team.value.trainer === undefined)
+				await saveTeam()
+				if (saveError.value) {
+					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+					return
+				}
 			}
 		} else {
 			await updateTeam()
@@ -89,13 +103,6 @@ const onSubmit = async (values: any) => {
 		return router.push('/teams/all')
 	}
 }
-
-const trainerErrorMessage = computed(() => {
-	if (!team.value.trainer)
-		return 'The team must have a selected trainer'
-	else
-		return ''
-})
 
 const teamNameErrorMessage = computed(() => {
 	if (!validateName(team.value.teamName)) {
@@ -123,12 +130,12 @@ const endYearErrorMessage = computed(() => {
 <template>
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
 	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
-		
+
 		<SingleInput>
 			<template #inputName>{{ t('single-team.name') }}:</template>
 			<template #inputValue>
 				<input v-model="team.teamName" name="name" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
 			<template #errorMessage v-if="teamNameErrorMessage">
 				{{ teamNameErrorMessage }}
@@ -140,15 +147,15 @@ const endYearErrorMessage = computed(() => {
 			<template #inputValue>
 				<div class="flex w-full flex-row items-center gap-2">
 					<input v-model="team.startYear" name="startYear" type="input"
-						class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+						class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 					<p>-</p>
 					<input v-model="team.endYear" name="endYear" type="input"
-						class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+						class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 				</div>
 			</template>
 			<template #errorMessage v-if="startYearErrorMessage || endYearErrorMessage">
 				<p v-if="startYearErrorMessage">{{ startYearErrorMessage }}</p>
-				<p v-if="endYearErrorMessage">{{ endYearErrorMessage}}</p>
+				<p v-if="endYearErrorMessage">{{ endYearErrorMessage }}</p>
 			</template>
 		</SingleInput>
 
@@ -160,14 +167,11 @@ const endYearErrorMessage = computed(() => {
 						<option v-for="trainer in trainers" :value="trainer">{{ trainer.firstName }} {{ trainer.lastName
 						}}
 						</option>
+						<option :value="null">{{ t('single-team.no-trainer') }}</option>
 					</select>
 				</div>
 			</template>
-			<template #errorMessage>
-				{{ trainerErrorMessage }}
-			</template>
 		</SingleInput>
-		
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
 			<SingleButton @click="onSubmit">
 				<template #buttonName>{{ t('button.save') }}</template>

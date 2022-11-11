@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Trainer } from 'backend/database/schemas/Trainer.user';
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -7,7 +8,8 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const academy = 'AP Jagiellonia Białystok'
+const token = useStorage('user:token', '')
+const { payload } = useJwt(() => token.value ?? '')
 
 const goEditTrainer = (trainerId: any) => {
   return router.push(`/trainers/edit/${trainerId}`)
@@ -23,7 +25,7 @@ const {
   isFinished,
   error,
   execute: refechTrainers
-} = useFetch(`/api/trainers/${academy}`, { initialData: [] }).json<Trainer[]>()
+} = useFetch(`/api/trainers/academy/${payload.value.academy}`, { initialData: [] }).json<Trainer[]>()
 
 const isDeleting = ref(false)
 const deletingTrainer = ref<Trainer>()

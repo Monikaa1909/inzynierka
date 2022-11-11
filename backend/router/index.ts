@@ -2,7 +2,9 @@ import express from 'express'
 import { seedDatabase } from '../database/seed'
 import models from '../database/models'
 
+import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
 import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
+import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 import { AttendanceList } from 'backend/database/schemas/AttendanceList'
 import { Tournament } from 'backend/database/schemas/Tournament'
 import { Training } from 'backend/database/schemas/Training'
@@ -12,10 +14,9 @@ import { Parent } from 'backend/database/schemas/Parent.user'
 import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
 
-import { SportsFacility } from 'backend/database/schemas/SportsFacility'
-import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
-
+import { useJwt } from '@vueuse/integrations/useJwt'
 import useAuthRoutes from './auth'
+import { eachQuarterOfInterval } from 'date-fns'
 
 const router = express.Router()
 
@@ -27,16 +28,25 @@ router.post('/db:seed', async (req, res) => {
     return seedDatabase()
 })
 
-router.get('/academy/:name', async (req, res) => {
+router.get('/managers', async (req, res) => {
     try {
-        const academy = await models.Academy.findOne({ academyName: req.params.name })
-        res.send(academy)
+        const academyManager = await models.AcademyManager.find()
+        res.send(academyManager)
     } catch (error) {
         res.status(400).send(error)
     }
 })
 
-router.get('/academies/:id', async (req, res) => {
+router.get('/manager/:id', async (req, res) => {
+    try {
+        const academyManager = await models.AcademyManager.findById(req.params.id)
+        res.send(academyManager)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/academy/:id', async (req, res) => {
     try {
         const academy = await models.Academy.findById(req.params.id)
         res.send(academy)
@@ -45,23 +55,23 @@ router.get('/academies/:id', async (req, res) => {
     }
 })
 
-router.get('/players/:academy', async (req, res) => {
+router.get('/players/academy/:id', async (req, res) => {
     try {
-        console.log(req.params.academy)
         const players = await models.Player.find()
-            .sort({ lastName: 1, firstName: 1 })
-            .populate('parent')
-            .populate({
-                path: 'team',
-                model: 'Team',
-            })
-            .populate({
-                path: 'academy',
-                model: 'Academy',
-                match: { academyName: req.params.academy }
-            }) as Player[]
+        .sort({ lastName: 1, firstName: 1 })
+        .populate('parent')
+        .populate({
+            path: 'team',
+            model: 'Team',
+        })
+        .populate({
+            path: 'academy',
+            model: 'Academy',
+            match: { _id: req.params.id }
+        }) as Player[]
 
-        res.send(players.filter(item => item.academy != null))
+    res.send(players.filter(item => item.academy != null))
+        
     } catch (error) {
         res.status(400).send(error)
     }
@@ -146,16 +156,18 @@ router.delete('/player/:id', async (req, res) => {
     }
 })
 
-router.get('/parents/:academy', async (req, res) => {
+router.get('/parents/academy/:id', async (req, res) => {
     try {
         const parents = await models.Parent.find()
-            .sort({ lastName: 1, firstName: 1 })
-            .populate({
-                path: 'academy',
-                model: 'Academy',
-                match: { academyName: req.params.academy }
-            }) as Parent[]
-        res.send(parents.filter(item => item.academy != null))
+        .sort({ lastName: 1, firstName: 1 })
+        .populate({
+            path: 'academy',
+            model: 'Academy',
+            match: { _id: req.params.id }
+        }) as Parent[]
+
+    res.send(parents.filter(item => item.academy != null))
+
     } catch (error) {
         res.status(400).send(error)
     }
@@ -217,14 +229,14 @@ router.delete('/parent/:id', async (req, res) => {
     }
 })
 
-router.get('/trainers/:academy', async (req, res) => {
+router.get('/trainers/academy/:id', async (req, res) => {
     try {
         const trainer = await models.Trainer.find()
             .sort({ lastName: 1, firstName: 1 })
             .populate({
                 path: 'academy',
                 model: 'Academy',
-                match: { academyName: req.params.academy }
+                match: { id: req.params.id }
             }) as Trainer[]
 
         res.send(trainer.filter(item => item.academy != null))
@@ -291,20 +303,21 @@ router.delete('/trainer/:id', async (req, res) => {
     }
 })
 
-router.get('/sportsfacilities/:academy', async (req, res) => {
+router.get('/sportsfacilities/academy/:id', async (req, res) => {
     try {
         const sportsFacilities = await models.SportsFacility.find()
             .sort({ name: 1 })
             .populate({
                 path: 'academy',
                 model: 'Academy',
-                match: { academyName: req.params.academy }
+                match: { id: req.params.id }
             }) as SportsFacility[]
 
         res.send(sportsFacilities.filter(item => item.academy != null))
     } catch (error) {
         res.status(400).send(error)
     }
+    
 })
 
 router.get('/sportsFacility/:id', async (req, res) => {
@@ -363,9 +376,8 @@ router.delete('/sportsFacility/:id', async (req, res) => {
     }
 })
 
-router.get('/teams/:academy', async (req, res) => {
+router.get('/teams/academy/:id', async (req, res) => {
     try {
-        console.log(req.params.academy)
         const teams = await models.Team.find()
             .sort({ teamName: 1 })
             .populate({
@@ -375,10 +387,10 @@ router.get('/teams/:academy', async (req, res) => {
             .populate({
                 path: 'academy',
                 model: 'Academy',
-                match: { academyName: req.params.academy }
+                match: { _id: req.params.id }
             }) as Team[]
 
-        res.send(teams.filter(item => item.academy != null))
+            res.send(teams.filter(item => item.academy != null))
     } catch (error) {
         res.status(400).send(error)
     }

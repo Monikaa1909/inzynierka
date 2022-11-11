@@ -1,14 +1,29 @@
 <script setup lang="ts">
+import { AcademyManager } from 'backend/database/schemas/AcademyManager.user';
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 const router = useRouter()
 const token = useStorage('user:token', '')
 const { t, availableLocales, locale } = useI18n()
+
+const { payload } = useJwt(() => token.value ?? '')
 
 const toggleLocales = () => {
   const locales = availableLocales
   locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
   isHidden.value = true
 }
+
+const {
+  data: manager,
+  isFinished,
+  isFetching,
+  error
+} = useFetch(`/api/manager/${payload.value.id}`, { initialData: {} }).json<AcademyManager>()
+
+whenever(manager, (data) => {
+
+})
 
 const isHidden = ref(true)
 
@@ -69,28 +84,28 @@ const logout = async () => {
 
     <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
 
-      <SingleButton @click="goTeams">
+      <SingleButton v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goTeams">
         <template #icon>
           <img src="../assets/team-icon.png" class="h-24px mr-2" />
         </template>
         <template #buttonName>{{ t('button.teams') }}</template>
       </SingleButton>
 
-      <SingleButton @click="goPlayers">
+      <SingleButton v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goPlayers">
         <template #icon>
           <img src="../assets/player-icon.png" class="h-24px mr-2" />
         </template>
         <template #buttonName>{{ t('button.players') }}</template>
       </SingleButton>
       
-      <SingleButton @click="goCalendar">
+      <SingleButton v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goCalendar">
         <template #icon>
           <img src="../assets/calendar-icon.png" class="h-24px mr-2" />
         </template>
         <template #buttonName>{{ t('button.calendar') }}</template>
       </SingleButton>
 
-      <SingleButton @click="goTrainers">
+      <SingleButton v-if="payload.type === 'AcademyManager'" @click="goTrainers">
         <template #icon>
           <img src="../assets/trainer-icon.png" class="h-24px mr-2" />
         </template>
@@ -114,11 +129,16 @@ const logout = async () => {
 
     <div class="flex flex-row self-center flex-shrink-0">
       <div class="px-2 py-0.5 self-center justify-items-center flex flex-col">
-        <p class="px-2 justify-items-center text-lg font-medium color-white">Jan Kowalski</p>
+        <p class="px-2 justify-items-center text-lg font-medium color-white">{{manager?.firstName}} {{manager?.lastName}}</p>
         <div class="flex flex-row">
           <p
+            v-if="payload.type === 'Trainer'"
             class="px-2 justify-items-center text-base font-medium color-#32B3A3"
           >{{ t('account.trainer') }}</p>
+          <p
+            v-else-if="payload.type === 'AcademyManager'"
+            class="px-2 justify-items-center text-base font-medium color-#32B3A3"
+          >{{ t('account.academy') }}</p>
           <button @click="settingsMenu">
             <img src="../assets/settings-icon.png" class="px-2 py-0.5 h-24px" />
           </button>

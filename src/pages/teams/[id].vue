@@ -83,7 +83,7 @@ const confirmDelete = async () => {
 
             <SingleAttribute>
               <template #attributeName>{{ t('single-team.trainer') }}:</template>
-              <template #attributeValue>{{ team.trainer.firstName }} {{ team.trainer.lastName }}</template>
+              <template #attributeValue>{{ team.trainer?.firstName }} {{ team.trainer?.lastName }}</template>
             </SingleAttribute>
           </template>
 

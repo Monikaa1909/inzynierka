@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { requiredField, validateFirstName, validateNationality, validateMedicalExaminations } from '~/validatesFunctions'
+import { useJwt } from '@vueuse/integrations/useJwt'
 import { DatePicker } from 'v-calendar'
 
 import type { Trainer } from 'backend/database/schemas/Trainer.user'
+import type { Parent } from 'backend/database/schemas/Parent.user'
 import type { Academy } from 'backend/database/schemas/Academy'
 import type { Player } from 'backend/database/schemas/Player'
-import type { Parent } from 'backend/database/schemas/Parent.user'
 import type { Team } from 'backend/database/schemas/Team'
+
+const token = useStorage('user:token', '')
+const { payload } = useJwt(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
-const academy = 'AP Jagiellonia Białystok'
 
 const props = defineProps<{ playerId?: string, teamId?: string }>()
 
@@ -39,12 +41,6 @@ if (!props.playerId) {
 		academy: undefined!
 	}
 } 
-// else {
-// 	if (player.value.team === null) 
-// 		player.value.team = undefined
-// 	if (player.value.parent === null) 
-// 		player.value.parent = undefined
-// }
 
 const {
 	data: playerData,
@@ -62,25 +58,25 @@ const {
 	isFetching: isTeamsFetching,
 	isFinished: isTeamsFinished,
 	error: teamsError,
-} = useFetch(`/api/teams/${academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
 
 const {
 	data: parentsData,
 	isFetching: isParentsFetching,
 	error: parentsError,
 	isFinished: isParentsFinished,
-} = useFetch(`/api/parents/${academy}`, { initialData: [] }).json<Parent[]>()
+} = useFetch(`/api/parents/academy/${payload.value.academy}`, { initialData: [] }).json<Parent[]>()
 
 const {
 	data: academyData,
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
 
 whenever(parentsData, (data) => {
 	parents.value = data
-	parents.value.map(element => element.academy = element.academy._id as unknown as Academy)
+	parents.value.map(element => element.academy = element.academy?._id as unknown as Academy)
 })
 
 whenever(teamsData, (data) => {
@@ -163,7 +159,7 @@ const birthdayDateErrorMessage = computed(() => {
 
 const birthdayDateMessage = computed(() => {
 	if (player.value.team)
-		if (new Date(player.value.birthdayDate).getFullYear() > player.value.team.startYear)
+		if (player.value.team && (new Date(player.value.birthdayDate).getFullYear() > player.value.team.startYear))
 			return t('error-messages.birthday-date-message')
 	return ''
 })

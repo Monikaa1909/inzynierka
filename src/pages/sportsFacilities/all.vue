@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { SportsFacility } from 'backend/database/schemas/SportsFacility';
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 const { t } = useI18n()
 const router = useRouter()
 
-const academy = 'AP Jagiellonia Białystok'
+const token = useStorage('user:token', '')
+const { payload } = useJwt(() => token.value ?? '')
 
 const goEditObject = (sportsFacilityId: any) => {
   return router.push(`/sportsFacilities/edit/${sportsFacilityId}`)
@@ -20,7 +22,7 @@ const {
   isFinished,
   error,
   execute: refechSportsFacilities
-} = useFetch(`/api/sportsFacilities/${academy}`, { initialData: [] }).json<SportsFacility[]>()
+} = useFetch(`/api/sportsFacilities/academy/${payload.value.academy}`, { initialData: [] }).json<SportsFacility[]>()
 
 const isDeleting = ref(false)
 const deletingSportsFacility = ref<SportsFacility>()

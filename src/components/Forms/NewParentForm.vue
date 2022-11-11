@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { validateFirstName, validateEmail, validatePhoneNumber } from '~/validatesFunctions'
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 import type { Academy } from 'backend/database/schemas/Academy'
 import type { Parent } from 'backend/database/schemas/Parent.user'
@@ -9,7 +10,8 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const academy = 'AP Jagiellonia Białystok'
+const token = useStorage('user:token', '')
+const { payload } = useJwt(() => token.value ?? '')
 
 const props = defineProps<{ parentId?: string }>()
 
@@ -47,7 +49,7 @@ const {
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
 
 const isFinished = computed(() => {
 	console.log(academyData.value)

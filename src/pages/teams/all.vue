@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { Team } from 'backend/database/schemas/Team'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload } = useJwt(() => token.value ?? '')
 
 const router = useRouter()
 const { t } = useI18n()
-
-const academy = 'AP Jagiellonia Białystok'
 
 const goEditTeam = (teamId: any) => {
   return router.push(`/teams/edit/${teamId}`)
@@ -20,7 +22,7 @@ const {
   isFinished,
   error,
   execute: refechTeams
-} = useFetch(`/api/teams/${academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
 
 whenever(isFinished, (data) => {
   if (data) {
@@ -110,7 +112,7 @@ const confirmDelete = async () => {
 
             <SingleAttribute>
               <template #attributeName>{{ t('single-team.trainer') }}:</template>
-              <template #attributeValue>{{ team.trainer.firstName }} {{ team.trainer.lastName }}</template>
+              <template #attributeValue>{{ team.trainer?.firstName }} {{ team.trainer?.lastName }}</template>
             </SingleAttribute>
           </template>
         </MiniWhiteFrame>

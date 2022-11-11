@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Player } from 'backend/database/schemas/Player'
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -7,13 +8,14 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const academy = 'AP Jagiellonia Białystok'
+const token = useStorage('user:token', '')
+const { payload } = useJwt(() => token.value ?? '')
 
 const props = defineProps<{ id: string }>()
 
 const url = computed(() => {
   if (props.id === 'all')
-    return `/api/players/${academy}`
+    return `/api/players/academy/${payload.value.academy}`
   else
     return `/api/players/team/${props.id}`
 })
@@ -162,7 +164,7 @@ const confirmDelete = async () => {
         </MiniWhiteFrame>
       </MyGrid>
 
-      <ErrorMessageInfo v-else-if="!isDeleting && isFinished && players?.length === 0">
+      <ErrorMessageInfo v-else-if="!isDeleting && isFinished && players?.length === 0 && !error">
         {{ t('error-messages.no-data') }}
       </ErrorMessageInfo>
       <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>

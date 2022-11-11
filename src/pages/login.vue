@@ -45,13 +45,13 @@ syncRef(token, data)
 const { payload } = useJwt(() => token.value ?? '')
 
 watchEffect(() => {
-  console.log(payload)
+  console.log('payload ' + payload.value)
+  if (token.value && token.value.length > 2) router.push('/start')
 })
 
 const submit = async () => {
   submitted.value = true
   execute()
-  if (token.value) router.push('/start')
 }
 
 </script>
@@ -62,7 +62,7 @@ const submit = async () => {
       <div class="flex flex-row justify-between gap-4 m-2">
         <p class="flex self-center">{{ t('login.login') }}:</p>
         <div class="flex flex-col">
-          <input v-model="login" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg">
+          <input v-model="login" type="login" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg">
           <p v-if="submitted && loginErrorMessage" class="text-center text-xs">{{loginErrorMessage}}</p>
         </div>
       </div>

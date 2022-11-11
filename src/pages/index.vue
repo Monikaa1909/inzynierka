@@ -6,10 +6,10 @@ const { t } = useI18n()
 
 <template>
   <div class="flex flex-col h-full justify-center p-4">
-    <router-link to="/login" class="bg-#143547 color-#FFFFFF self-center w-300px m-2 p-2 shadow-lg text-center" >
+    <router-link to="/login" class="bg-#143547 p-2 text-#FFFFFF self-center w-300px m-2 shadow-lg text-center hover:bg-#2F4D5E sm:(px-8)" >
       {{ t('login.sign-in') }}
     </router-link>
-    <p class="bg-#143547 color-#FFFFFF w-300px self-center m-2 p-2 shadow-lg text-center">
+    <p class="bg-#143547 p-2 text-#FFFFFF self-center w-300px m-2 shadow-lg text-center hover:bg-#2F4D5E sm:(px-8)">
       {{ t('login.register') }}
     </p>
   </div>

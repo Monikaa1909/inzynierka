@@ -22,6 +22,23 @@ export default (router: Router) => {
     }
   })
 
+  router.post('/auth/register/manager', async (req, res) => {
+    try {
+      const password = crypto.randomBytes(16).toString('hex')
+
+      const trainer: Trainer = await models.Trainer.create({
+        ...req.body,
+        password
+      })
+
+      console.log(password)
+
+      res.send(trainer)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
   router.post('/auth/login', async (req, res) => {
     try {
       if (!req.body.login || !req.body.password) {
