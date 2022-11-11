@@ -20,7 +20,7 @@ const {
 
 whenever(trainerData, (data) => {
   trainer.value = data
-  trainer.value.birthdayDate = new Date(data.birthdayDate).toLocaleDateString(locale.value)
+  trainer.value.birthdayDate = new Date(data.birthdayDate)
 })
 
 const goEditTrainer = (trainerId: any) => {
@@ -85,7 +85,7 @@ const confirmDelete = async () => {
 
             <SingleAttribute>
               <template #attributeName>{{ t('single-trainer.birthday-date') }}:</template>
-              <template #attributeValue>{{ trainer.birthdayDate }}</template>
+              <template #attributeValue>{{ trainer.birthdayDate.toLocaleDateString(locale) }}</template>
             </SingleAttribute>
 
             <SingleAttribute>
@@ -100,7 +100,7 @@ const confirmDelete = async () => {
 
             <SingleAttribute>
               <template #attributeName>{{ t('single-trainer.email') }}:</template>
-              <template #attributeValue>{{ trainer.email }}</template>
+              <template #attributeValue>{{ trainer.email }} {{trainer.login}} {{trainer.password}}</template>
             </SingleAttribute>
 
             <SingleAttribute>

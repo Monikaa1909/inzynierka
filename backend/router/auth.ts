@@ -29,7 +29,12 @@ export default (router: Router) => {
       }
 
       const user: User | null = await models.User.findOne({ login: req.body.login })
-      if (!user || !await user.validatePassword(req.body.password)) {
+      
+      if (!user) {
+        throw new Error('Invalid login')
+      }
+
+      if (!await user.validatePassword(req.body.password)) {
         throw new Error('Invalid password')
       }
 

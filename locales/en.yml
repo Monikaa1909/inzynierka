@@ -36,6 +36,7 @@ button:
   no: No
   out-of-date: Out of date
   up-to-date: Up to date
+  sign-in: Sign in
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -169,6 +170,7 @@ match-statistic:
 error-messages:
   required-field: This field is required
   valid-name: This field must be a valid name
+  valid-login: This field must be a valid login
   validation-error: The data is incorrectly completed
   unknow-error: There was an error connecting to the database. Please try again in a moment or email us at
   went-wrong: Something went wrong... Try again later!
@@ -187,6 +189,7 @@ error-messages:
   start-date: Start date must be smaller than end date
   end-date: End date must be higher than start date
   no-valid-examinations: Remember that medical examinations are no longer valid
+  invalid-credentials: Invalid login or password
 other:
   confirming-deleting: Are you sure you want to delete
 not-found: Not found

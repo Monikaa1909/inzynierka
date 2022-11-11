@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useLogto } from '@logto/vue'
 
 const router = useRouter()
-
-const { signOut } = useLogto()
+const token = useStorage('user:token', '')
 const { t, availableLocales, locale } = useI18n()
 
 const toggleLocales = () => {
@@ -55,7 +53,8 @@ const goYourProfile = () => {
 
 const logout = async () => {
   isHidden.value = true
-  signOut('/')
+  token.value = null
+  router.push('/')
 }
 
 </script>

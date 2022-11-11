@@ -36,6 +36,7 @@ button:
   no: Nie
   out-of-date: Nieaktualne
   up-to-date: Aktualne
+  sign-in: Zaloguj się
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -168,6 +169,7 @@ match-statistic:
 error-messages:
   required-field: To pole jest wymagane
   valid-name: To pole musi zawierać poprawną formę
+  valid-login: To pole musi zawierać poprawny login
   validation-error: Dane są nieprawidłowo uzupełnione
   unknow-error: Wystąpił błąd przy łączeniu z bazą danych. Spróbuj ponownie za chwilę lub napisz do nas creaassistanthelpgmailcom
   went-wrong: Coś poszło nie tak... Spróbuj ponownie za chwilę!
@@ -186,6 +188,7 @@ error-messages:
   start-date: Data rozpoczęcia musi być wcześniejsza niż data zakończenia
   end-date: Data zakończenia musi być późniejsza niż data rozpoczęcia
   no-valid-examinations: Pamiętaj, że badania lekarskie nie są już aktualne
+  invalid-credentials: Błędny login lub hasło
 other:
   confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono

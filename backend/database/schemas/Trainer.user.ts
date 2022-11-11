@@ -20,6 +20,6 @@ const schema = new Schema({
   },
 })
 
-export type Trainer = InferSchemaType<typeof schema> & User
+export type Trainer = InferSchemaType<typeof schema> & User & {_id: string}
 
 export default schema

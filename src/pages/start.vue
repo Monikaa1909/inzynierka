@@ -1,11 +1,12 @@
-<script setup lang="ts">import { useLogto } from '@logto/vue';
+<script setup lang="ts">
 
-const { isAuthenticated } = useLogto()
+const token = useStorage('user:token', '')
+
 </script>
 
 <template>
   <div>
-    {{ isAuthenticated }}
+    {{token}}
   </div>
 </template>
 

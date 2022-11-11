@@ -19,7 +19,7 @@ const schema = new Schema({
   },
   email: {
     type: String, 
-    // lowercase: true, 
+    lowercase: true, 
     unique: true, 
     required: [true, "Missing informations - each user must have an e-mail"], 
     match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'E-mail is invalid'], 
@@ -54,6 +54,8 @@ schema.pre('save', async function (next) {
 })
 
 schema.methods.validatePassword = async function (candidatePassword: string) {
+
+
   return bcrypt.compare(candidatePassword, this.password)
 }
 

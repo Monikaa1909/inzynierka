@@ -1,3 +1,14 @@
+export const validateLogin: any = (value: string) => {
+	if (!value) {
+		return 'error-messages.required-field';
+	}
+	const regex1 = /^[a-zA-Z0-9]+$/i
+	if (!regex1.test(value)) {
+		return 'error-messages.valid-login';
+	}
+	return '';
+}
+
 export const validateFirstName: any = (value: string) => {
 	if (!value) {
 		return 'error-messages.required-field';
