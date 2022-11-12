@@ -21,6 +21,13 @@ mongoose.connect('mongodb://localhost:27017/db').then(async () => {
 // https://nodemailer.com/about/
 
 export const transporter = nodemailer.createTransport({
+  // host: "smtp.poczta.onet.pl",
+  // port: 465,
+  // secure: true,
+  // auth: {
+  //   user: "crewassistanthelp@op.pl",
+  //   pass: "crewAssistanthelp123", 
+  // }
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
@@ -31,11 +38,9 @@ export const transporter = nodemailer.createTransport({
 })
 
 async function sendEmail() {
-  console.log("Wywołanie funkcji")
-
   let info = await transporter.sendMail({
     from: '"Crew Assistant Help" <crewassistanthelp@gmail.com>', // sender address
-    to: "monikaa1909@gmail.com", // list of receivers
+    to: "crewassistanthelp@op.pl", // list of receivers
     subject: "Hello", // Subject line
     text: "Hello world?", // plain text body
     html: "<b>Hello world?</b>", // html body
@@ -45,7 +50,7 @@ async function sendEmail() {
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info))
 }
 
-sendEmail()
+// sendEmail()
 
 app.use(express.json())
 app.use("/api", router)

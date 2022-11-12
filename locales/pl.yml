@@ -37,6 +37,8 @@ button:
   out-of-date: Nieaktualne
   up-to-date: Aktualne
   sign-in: Zaloguj się
+  register-trainer: Zarejestruj trenera
+  ok: Ok
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -192,6 +194,11 @@ error-messages:
   no-valid-examinations: Pamiętaj, że badania lekarskie nie są już aktualne
   invalid-credentials: Błędny login lub hasło
   register-trainer: Bład przy rejestracji trenera. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
+info:
+  trainer-registered: The trainer has been successfully registered. 
+  login-details: Here are the login details
+  remember-credentials: Be sure to remember these credentials!
+  on-email: Password has been sent to the e-mail address provided
 other:
   confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono

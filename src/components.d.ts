@@ -26,6 +26,7 @@ declare module '@vue/runtime-core' {
     LoadingCircle: typeof import('./components/SingleElements/LoadingCircle.vue')['default']
     MatchAndTournamentStatistic: typeof import('./components/MatchAndTournamentStatistic.vue')['default']
     MatchStatistic: typeof import('./components/MatchStatistic.vue')['default']
+    MessageInfo: typeof import('./components/SingleElements/MessageInfo.vue')['default']
     MiniWhiteFrame: typeof import('./components/Layout/MiniWhiteFrame.vue')['default']
     MyCenterElement: typeof import('./components/Layout/MyCenterElement.vue')['default']
     MyGrid: typeof import('./components/Layout/MyGrid.vue')['default']

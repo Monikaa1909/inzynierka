@@ -37,6 +37,8 @@ button:
   out-of-date: Out of date
   up-to-date: Up to date
   sign-in: Sign in
+  register-trainer: Register trainer
+  ok: Ok
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -193,6 +195,11 @@ error-messages:
   no-valid-examinations: Remember that medical examinations are no longer valid
   invalid-credentials: Invalid login or password
   register-trainer: Error while registering trainer. An account with this email and login probably already exists. Please try again with different details or contact us via email
+info:
+  trainer-registered: The trainer has been successfully registered. 
+  login-details: Here are the login details
+  on-email: Password has been sent to the e-mail address provided
+  remember-credentials: Be sure to remember these credentials!
 other:
   confirming-deleting: Are you sure you want to delete
 not-found: Not found

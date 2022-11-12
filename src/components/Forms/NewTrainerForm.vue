@@ -59,7 +59,6 @@ const {
 } = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
 
 const isFinished = computed(() => {
-	console.log(academyData.value)
 	return isTrainerFinished.value && isAcademyFinished.value
 })
 
@@ -72,48 +71,52 @@ const error = computed(() => {
 })
 
 const newTrainer = computed(() => ({
-  login: trainer.value.login,
-  email: trainer.value.email,
-  academy: academyData.value,
+	login: trainer.value.login,
+	email: trainer.value.email,
+	academy: academyData.value,
 	lastName: trainer.value.lastName,
-  firstName: trainer.value.firstName,
-  nationality: trainer.value.nationality,
-  birthdayDate: trainer.value.birthdayDate,
+	firstName: trainer.value.firstName,
+	nationality: trainer.value.nationality,
+	birthdayDate: trainer.value.birthdayDate,
 	phoneNumber: trainer.value.phoneNumber,
 	remarks: trainer.value.remarks
 }))
+
+const successfullyAdded = ref(false)
 
 const { execute: updateTrainer, error: updateError } = useFetch(url, { immediate: false }).post(trainer)
 const { execute: saveTrainer, error: saveError } = useFetch(`/api/auth/register/trainer`, { immediate: false }).post(newTrainer)
 
 const onSubmit = async (values: any) => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value
-	|| nationalityErrorMessage.value || birthdayDateErrorMessage.value || loginErrorMessage.value) {
+		|| nationalityErrorMessage.value || birthdayDateErrorMessage.value || loginErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.trainerId) {
 			if (academyData.value) {
 				trainer.value.academy = academyData.value._id as unknown as Academy
 				await saveTrainer()
+				successfullyAdded.value = true
 				if (saveError.value) {
 					alert(t('error-messages.register-trainer') + ' crewAssistantHelp@gmail.com')
 					return
 				}
 			} else {
 				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-					return
+				return
 			}
 
 		} else {
 			await updateTrainer()
 			if (updateError.value) {
-				alert(t('error-messages.unknow-error')  + ' crewAssistantHelp@gmail.com')
+				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
+			return router.push('/trainers/all')
 		}
-		return router.push('/trainers/all')
+		// return router.push('/trainers/all')
 	}
- }
+}
 
 const firstNameErrorMessage = computed(() => {
 	if (!validateFirstName(trainer.value.firstName)) {
@@ -163,12 +166,23 @@ const nationalityErrorMessage = computed(() => {
 	}
 	return t(validateNationality(trainer.value.nationality))
 })
+
+const confirmRegisterInfo = async () => {
+	return router.push('/trainers/all')
+}
+
 </script>
 
 <template>
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
-
-	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
+	<MessageInfo @confirmRegisterInfo="confirmRegisterInfo" v-if="successfullyAdded">
+		<div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
+			<p class="text-center">{{ t('info.trainer-registered') }}</p>
+			<p class="font-medium text-center">{{ t('info.on-email') }}:</p>
+			<p class="font-medium text-center">{{ newTrainer.email }}</p>
+		</div>
+	</MessageInfo>
+	<div v-else-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
 
 		<SingleInput>
 			<template #inputName>{{ t('single-trainer.first-name') }}:</template>
@@ -185,7 +199,7 @@ const nationalityErrorMessage = computed(() => {
 			<template #inputName>{{ t('single-trainer.last-name') }}:</template>
 			<template #inputValue>
 				<input v-model="trainer.lastName" name="lastName" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
 			<template #errorMessage v-if="lastNameErrorMessage">
 				{{ lastNameErrorMessage }}
@@ -218,7 +232,7 @@ const nationalityErrorMessage = computed(() => {
 			<template #inputName>{{ t('single-trainer.nationality') }}:</template>
 			<template #inputValue>
 				<input v-model="trainer.nationality" name="nationality" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"  />
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
 			<template #errorMessage v-if="nationalityErrorMessage">
 				{{ nationalityErrorMessage }}
@@ -241,7 +255,7 @@ const nationalityErrorMessage = computed(() => {
 			<template #inputValue>
 				<input v-if="!props.trainerId" v-model="trainer.email" name="email" type="input"
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-				<p v-else>{{trainer.email}}</p>
+				<p v-else>{{ trainer.email }}</p>
 			</template>
 			<template #errorMessage v-if="emailErrorMessage">
 				{{ emailErrorMessage }}
@@ -253,7 +267,7 @@ const nationalityErrorMessage = computed(() => {
 			<template #inputValue>
 				<input v-if="!props.trainerId" v-model="trainer.login" name="email" type="input"
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-				<p v-else>{{trainer.login}}</p>
+				<p v-else>{{ trainer.login }}</p>
 			</template>
 			<template #errorMessage v-if="loginErrorMessage">
 				{{ loginErrorMessage }}
@@ -270,7 +284,7 @@ const nationalityErrorMessage = computed(() => {
 
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
 			<SingleButton @click="onSubmit">
-				<template #buttonName>{{ t('button.save') }}</template>
+				<template #buttonName>{{ t('button.register-trainer') }}</template>
 			</SingleButton>
 			<SingleButton @click="router.go(-1)">
 				<template #buttonName>{{ t('button.cancel') }}</template>
