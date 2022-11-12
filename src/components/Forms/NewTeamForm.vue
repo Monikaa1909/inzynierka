@@ -86,7 +86,7 @@ const onSubmit = async (values: any) => {
 		if (!props.teamId) {
 			if (academyData.value) {
 				team.value.academy = academyData.value
-				if (team.value.trainer === undefined)
+				
 				await saveTeam()
 				if (saveError.value) {
 					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')

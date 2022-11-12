@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import type { Team } from 'backend/database/schemas/Team'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { Team } from 'backend/database/schemas/Team'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const props = defineProps<{ id: string }>()
 
 const router = useRouter()
 const { t } = useI18n()
 
-const props = defineProps<{ id: string }>()
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const {
   data: team,
