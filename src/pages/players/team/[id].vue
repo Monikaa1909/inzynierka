@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import type { Player } from 'backend/database/schemas/Player'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { Player } from 'backend/database/schemas/Player'
 import { useJwt } from '@vueuse/integrations/useJwt'
+
+const props = defineProps<{ id: string }>()
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -9,9 +12,9 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload } = useJwt(() => token.value ?? '')
-
-const props = defineProps<{ id: string }>()
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const url = computed(() => {
   if (props.id === 'all')
@@ -19,6 +22,18 @@ const url = computed(() => {
   else
     return `/api/players/team/${props.id}`
 })
+
+whenever(url, (data) => {
+  refechPlayers()
+})
+
+const {
+  data: players,
+  isFetching,
+  isFinished,
+  error,
+  execute: refechPlayers
+} = useFetch(url, { initialData: [] }).json<Player[]>()
 
 const today = computed(() => {
   return new Date()
@@ -46,18 +61,6 @@ function goToPlayer(playerId: any) {
 function goCheckMedialExamination() {
   return router.push(`/players/medicalExamination/${props.id}`)
 }
-
-whenever(url, (data) => {
-  refechPlayers()
-})
-
-const {
-  data: players,
-  isFetching,
-  isFinished,
-  error,
-  execute: refechPlayers
-} = useFetch(url, { initialData: [] }).json<Player[]>()
 
 const isDeleting = ref(false)
 const deletingPlayer = ref<Player>()

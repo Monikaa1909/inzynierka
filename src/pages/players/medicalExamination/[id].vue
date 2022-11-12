@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { JwtPayload } from 'backend/database/schemas/User'
 import { Player } from 'backend/database/schemas/Player'
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -7,13 +9,16 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const academy = 'AP Jagiellonia Białystok'
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const props = defineProps<{ id: string }>()
 
 const urlPlayers = computed(() => {
   if (props.id === 'all')
-    return `/api/players//${academy}`
+    return `/api/players/academy/${payload.value.academy}`
   else
     return `/api/players/team/${props.id}`
 })

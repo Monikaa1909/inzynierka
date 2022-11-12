@@ -2,7 +2,11 @@
 import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
 import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
 import { AttendanceList } from 'backend/database/schemas/AttendanceList'
+import { JwtPayload } from 'backend/database/schemas/User'
 import { Player } from 'backend/database/schemas/Player'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const props = defineProps<{ id: string }>()
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -10,30 +14,33 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
+
 const academy = 'AP Jagiellonia Białystok'
 const eventsFilter = ref('all')
 
-const props = defineProps<{ id: string }>()
-
 const urlMatchStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/matchStatistic/academy/${academy}`
+		return `/api/matchStatistics/academy/${payload.value.academy}`
 	else
-		return `/api/matchStatistic/team/${props.id}`
+		return `/api/matchStatistics/team/${props.id}`
 })
 
 const urlTournamentStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/tournamentStatistic/academy/${academy}`
+		return `/api/tournamentStatistics/academy/${payload.value.academy}`
 	else
-		return `/api/tournamentStatistic/team/${props.id}`
+		return `/api/tournamentStatistics/team/${props.id}`
 })
 
 const urlTrainingStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/attendanceList/academy/${academy}`
+		return `/api/attendanceLists/academy/${payload.value.academy}`
 	else
-		return `/api/attendanceList/team/${props.id}`
+		return `/api/attendanceLists/team/${props.id}`
 })
 
 const urlPlayers = computed(() => {
@@ -461,7 +468,7 @@ const summaryStatistic = computed(() => {
 									</div>
 								</div>
 
-								<div v-if="playersStatistic!.length > 0"
+								<div v-if="playersStatistic && playersStatistic.length > 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-6 gap-0)">
 
 									<SingleSummaryStatistic>
@@ -499,7 +506,7 @@ const summaryStatistic = computed(() => {
 									</div>
 								</div>
 
-								<div v-if="playersStatistic!.length > 0"
+								<div v-if="playersStatistic && playersStatistic.length > 0"
 									class="h-full w-full grid grid-cols-2 gap-2 md:(grid-cols-6 gap-0)">
 
 									<SingleSummaryStatistic>

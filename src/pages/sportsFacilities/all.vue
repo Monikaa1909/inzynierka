@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { SportsFacility } from 'backend/database/schemas/SportsFacility';
+import { SportsFacility } from 'backend/database/schemas/SportsFacility'
+import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
 const { t } = useI18n()
 const router = useRouter()
 
 const token = useStorage('user:token', '')
-const { payload } = useJwt(() => token.value ?? '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+
+whenever(payloadData, (data) => {
+  payload.value = data as unknown as JwtPayload
+})
 
 const goEditObject = (sportsFacilityId: any) => {
   return router.push(`/sportsFacilities/edit/${sportsFacilityId}`)

@@ -757,7 +757,7 @@ router.delete('/tournament/:id', async (req, res) => {
     }
 })
 
-router.get('/attendanceList/training/:id', async (req, res) => {
+router.get('/attendanceLists/training/:id', async (req, res) => {
     try {
         const attendaceList = await models.AttendanceList.find({ training: req.params.id })
             .populate({
@@ -796,7 +796,7 @@ router.get('/attendanceList/team/:id', async (req, res) => {
     }
 })
 
-router.get('/attendanceList/academy/:academy', async (req, res) => {
+router.get('/attendanceLists/academy/:id', async (req, res) => {
     try {
         const attendanceList = await models.AttendanceList.find()
             .populate({
@@ -812,7 +812,7 @@ router.get('/attendanceList/academy/:academy', async (req, res) => {
                     populate: {
                         path: 'academy',
                         model: 'Academy',
-                        match: { academyName: req.params.academy }
+                        match: { _id: req.params.id }
                     }
                 }
             }) as AttendanceList[]
@@ -881,7 +881,7 @@ router.get('/matchStatistic/match/:id', async (req, res) => {
     }
 })
 
-router.get('/matchStatistic/team/:id', async (req, res) => {
+router.get('/matchStatistics/team/:id', async (req, res) => {
     try {
         const matchStatistic = await models.MatchStatistic.find()
             .populate({
@@ -905,7 +905,7 @@ router.get('/matchStatistic/team/:id', async (req, res) => {
     }
 })
 
-router.get('/matchStatistic/academy/:academy', async (req, res) => {
+router.get('/matchStatistics/academy/:id', async (req, res) => {
     try {
         const matchStatistic = await models.MatchStatistic.find()
             .populate({
@@ -921,7 +921,7 @@ router.get('/matchStatistic/academy/:academy', async (req, res) => {
                     populate: {
                         path: 'academy',
                         model: 'Academy',
-                        match: { academyName: req.params.academy }
+                        match: { _id: req.params.id }
                     }
                 }
             }) as MatchStatistic[]
@@ -994,7 +994,7 @@ router.get('/tournamentStatistic/tournament/:id', async (req, res) => {
     }
 })
 
-router.get('/tournamentStatistic/team/:id', async (req, res) => {
+router.get('/tournamentStatistics/team/:id', async (req, res) => {
     try {
         const tournamentStatistic = await models.TournamentStatistic.find()
             .populate({
@@ -1018,7 +1018,7 @@ router.get('/tournamentStatistic/team/:id', async (req, res) => {
     }
 })
 
-router.get('/tournamentStatistic/academy/:academy', async (req, res) => {
+router.get('/tournamentStatistics/academy/:id', async (req, res) => {
     try {
         const tournamentStatistic = await models.TournamentStatistic.find()
             .populate({
@@ -1034,7 +1034,7 @@ router.get('/tournamentStatistic/academy/:academy', async (req, res) => {
                     populate: {
                         path: 'academy',
                         model: 'Academy',
-                        match: { academyName: req.params.academy }
+                        match: { _id: req.params.id }
                     }
                 }
             }) as TournamentStatistic[]

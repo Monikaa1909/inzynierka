@@ -61,6 +61,13 @@ schema.methods.validatePassword = async function (candidatePassword: string) {
   return bcrypt.compare(candidatePassword, this.password)
 }
 
+export interface JwtPayload {
+  id: string,
+  academy: string,
+  type: string,
+  login: string
+}
+
 schema.methods.createToken = function () {
   return jwt.sign({
     id: this._id,
