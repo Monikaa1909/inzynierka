@@ -96,11 +96,11 @@ const onSubmit = async (values: any) => {
 			if (academyData.value) {
 				trainer.value.academy = academyData.value._id as unknown as Academy
 				await saveTrainer()
-				successfullyAdded.value = true
 				if (saveError.value) {
 					alert(t('error-messages.register-trainer') + ' crewAssistantHelp@gmail.com')
 					return
 				}
+				else successfullyAdded.value = true
 			} else {
 				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
@@ -114,7 +114,6 @@ const onSubmit = async (values: any) => {
 			}
 			return router.push('/trainers/all')
 		}
-		// return router.push('/trainers/all')
 	}
 }
 
@@ -265,7 +264,7 @@ const confirmRegisterInfo = async () => {
 		<SingleInput>
 			<template #inputName>{{ t('single-trainer.login') }}:</template>
 			<template #inputValue>
-				<input v-if="!props.trainerId" v-model="trainer.login" name="email" type="input"
+				<input v-if="!props.trainerId" v-model="trainer.login" name="login" type="input"
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 				<p v-else>{{ trainer.login }}</p>
 			</template>

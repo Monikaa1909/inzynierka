@@ -1,4 +1,5 @@
 import { Trainer } from "backend/database/schemas/Trainer.user"
+import { Parent } from "backend/database/schemas/Parent.user"
 import { User } from "backend/database/schemas/User"
 import { Router } from "express"
 import { models } from "mongoose"
@@ -34,6 +35,23 @@ export default (router: Router) => {
       console.log(password)
 
       res.send(trainer)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
+  router.post('/auth/register/parent', async (req, res) => {
+    try {
+      const password = crypto.randomBytes(16).toString('hex')
+
+      const parent: Parent = await models.Parent.create({
+        ...req.body,
+        password
+      })
+
+      console.log(password)
+
+      res.send(parent)
     } catch (error) {
       res.status(400).send(error)
     }

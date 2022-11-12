@@ -6,10 +6,6 @@ const schema = new Schema({
     type: String,
     match:[/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/, 'The phone number is invalid']
   },
-  academy: {
-    type: Schema.Types.ObjectId,
-    required: [true, 'Missing informations - each parent must belong to the academy']
-  },
   remarks: {
     type: String,
     required: false

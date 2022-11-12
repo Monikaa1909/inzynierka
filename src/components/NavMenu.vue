@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { AcademyManager } from 'backend/database/schemas/AcademyManager.user';
+import { AcademyManager } from 'backend/database/schemas/AcademyManager.user'
+import { Trainer } from 'backend/database/schemas/Trainer.user'
+import { Parent } from 'backend/database/schemas/Parent.user'
+import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
-const router = useRouter()
 const token = useStorage('user:token', '')
-const { t, availableLocales, locale } = useI18n()
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
-const { payload } = useJwt(() => token.value ?? '')
+const router = useRouter()
+const { t, availableLocales, locale } = useI18n()
 
 const toggleLocales = () => {
   const locales = availableLocales
@@ -16,13 +21,41 @@ const toggleLocales = () => {
 
 const {
   data: manager,
-  isFinished,
-  isFetching,
-  error
-} = useFetch(`/api/manager/${payload.value.id}`, { initialData: {} }).json<AcademyManager>()
+  error: managerError,
+  execute: refechManager
+} = useFetch(`/api/manager/${payload.value.id}`, { initialData: {}, immediate: false }).json<AcademyManager>()
+
+const {
+  data: trainer,
+  error: trainerError,
+  execute: refechTrainer
+} = useFetch(`/api/trainer/${payload.value.id}`, { initialData: {}, immediate: false }).json<Trainer>()
+
+const {
+  data: parent,
+  error: parentError,
+  execute: refechParent
+} = useFetch(`/api/parent/${payload.value.id}`, { initialData: {}, immediate: false }).json<Parent>()
+
+const user = ref({} as AcademyManager | Trainer | Parent)
+if (payload.value.type === 'AcademyManager') refechManager()
+else if (payload.value.type === 'Trainer') refechTrainer()
+else if (payload.value.type === 'Parent') refechParent()
 
 whenever(manager, (data) => {
+  user.value = data
+})
 
+whenever(trainer, (data) => {
+  user.value = data
+})
+
+whenever(parent, (data) => {
+  user.value = data
+})
+
+const error = computed(() => {
+  return parentError.value && managerError.value && trainerError.value
 })
 
 const isHidden = ref(true)
@@ -97,7 +130,7 @@ const logout = async () => {
         </template>
         <template #buttonName>{{ t('button.players') }}</template>
       </SingleButton>
-      
+
       <SingleButton v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goCalendar">
         <template #icon>
           <img src="../assets/calendar-icon.png" class="h-24px mr-2" />
@@ -127,53 +160,46 @@ const logout = async () => {
       </SingleButton>
     </div>
 
-    <div class="flex flex-row self-center flex-shrink-0">
+    <div v-if="!error" class="flex flex-row self-center flex-shrink-0">
       <div class="px-2 py-0.5 self-center justify-items-center flex flex-col">
-        <p class="px-2 justify-items-center text-lg font-medium color-white">{{manager?.firstName}} {{manager?.lastName}}</p>
+        <p class="px-2 justify-items-center text-lg font-medium color-white">{{ user?.firstName }} {{ user?.lastName }}
+        </p>
         <div class="flex flex-row">
-          <p
-            v-if="payload.type === 'Trainer'"
-            class="px-2 justify-items-center text-base font-medium color-#32B3A3"
-          >{{ t('account.trainer') }}</p>
-          <p
-            v-else-if="payload.type === 'AcademyManager'"
-            class="px-2 justify-items-center text-base font-medium color-#32B3A3"
-          >{{ t('account.academy') }}</p>
+          <p v-if="payload.type === 'Trainer'" class="px-2 justify-items-center text-base font-medium color-#32B3A3">
+            {{ t('account.trainer') }}
+          </p>
+          <p v-else-if="payload.type === 'AcademyManager'"
+            class="px-2 justify-items-center text-base font-medium color-#32B3A3">
+            {{ t('account.academy') }}
+          </p>
+          <p v-else-if="payload.type === 'Parent'"
+            class="px-2 justify-items-center text-base font-medium color-#32B3A3">
+            {{ t('account.parent') }}
+          </p>
           <button @click="settingsMenu">
             <img src="../assets/settings-icon.png" class="px-2 py-0.5 h-24px" />
           </button>
         </div>
         <div>
-          <div
-            id="dropdownNavbar"
-            :class="[isHidden ? 'hidden' : '']"
-            class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44"
-          >
+          <div id="dropdownNavbar" :class="[isHidden ? 'hidden' : '']"
+            class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44">
             <div>
               <button @click="goYourProfile" class="p-1 w-full">
-                <p
-                  class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left"
-                >{{ t('button.your-profile') }}</p>
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.your-profile') }}
+                </p>
               </button>
               <button @click="toggleLocales" class="p-1 w-full">
-                <p
-                  class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left"
-                >{{ t('button.change-language') }}</p>
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}
+                </p>
               </button>
             </div>
             <button @click="logout" class="p-1 w-full">
-              <p
-                class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left"
-              >{{ t('login.log-out') }}</p>
+              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
             </button>
           </div>
         </div>
       </div>
-      <img
-        src="../assets/default-trainer.jpg"
-        alt="Avatar"
-        class="px-2 py-0.5 h-80px w-auto self-center rounded-1/2"
-      />
+      <img src="../assets/default-trainer.jpg" alt="Avatar" class="px-2 py-0.5 h-80px w-auto self-center rounded-1/2" />
     </div>
   </div>
 </template>

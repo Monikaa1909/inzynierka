@@ -88,6 +88,7 @@ single-parent:
   email: E-mail
   remarks: Uwagi
   academy: Akademia
+  login: Login
 single-object:
   name: Nazwa
   street: Ulica
@@ -195,10 +196,11 @@ error-messages:
   invalid-credentials: Błędny login lub hasło
   register-trainer: Bład przy rejestracji trenera. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
 info:
-  trainer-registered: The trainer has been successfully registered. 
-  login-details: Here are the login details
-  remember-credentials: Be sure to remember these credentials!
-  on-email: Password has been sent to the e-mail address provided
+  trainer-registered: Trener został pomyślnie zarejestrowany. 
+  parent-registered: Rodzic został pomyślnie zarejestrowany. 
+  login-details: Oto dane logowania
+  remember-credentials: Pamiętaj by zapamiętać podane dane logowania!
+  on-email: Hasło zostało wysłane na podany adres e-mail
 other:
   confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono

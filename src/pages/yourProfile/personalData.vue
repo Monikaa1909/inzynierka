@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import type { Academy } from 'backend/database/schemas/Academy'
+import type { AcademyManager } from 'backend/database/schemas/AcademyManager.user'
 import type { Trainer } from 'backend/database/schemas/Trainer.user'
 import type { Parent } from 'backend/database/schemas/Parent.user'
+import type { Academy } from 'backend/database/schemas/Academy'
+import { JwtPayload } from 'backend/database/schemas/User'
+import type { User } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+import SingleAttribute from '~/components/SingleElements/SingleAttribute.vue'
+
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
-const accountType = ref('Academy')
-// const accountType = ref('Parent')
-// const accountType = ref('Trainer')
-const id = ref('6365285a6e7338908e404200')
-const academyName = 'AP Jagiellonia Białystok'
 
 const {
   data: parent,
@@ -20,7 +24,7 @@ const {
   isFetching: isParentFetching,
   error: parentError,
   execute: refechParent
-} = useFetch(`/api/parent/${id.value}`, { initialData: {}, immediate: false }).json<Parent>()
+} = useFetch(`/api/parent/${payload.value.id}`, { initialData: {}, immediate: false }).json<Parent>()
 
 const {
   data: trainer,
@@ -28,75 +32,52 @@ const {
   isFetching: isTrainerFetching,
   error: trainerError,
   execute: refechTrainer
-} = useFetch(`/api/trainer/${id.value}`, { initialData: {}, immediate: false }).json<Trainer>()
+} = useFetch(`/api/trainer/${payload.value.id}`, { initialData: {}, immediate: false }).json<Trainer>()
 
 const {
-  data: academy,
-  isFinished: isAcademyFinished,
-  isFetching: isAcademyFetching,
-  error: academyError,
-  execute: refechAcademy
-} = useFetch(`/api/academy/${academyName}`, { initialData: {}, immediate: false }).json<Academy>()
+  data: manager,
+  isFinished: isManagerFinished,
+  isFetching: isManagerFetching,
+  error: managerError,
+  execute: refechManager
+} = useFetch(`/api/manager/${payload.value.id}`, { initialData: {}, immediate: false }).json<AcademyManager>()
 
-if (accountType.value === 'Trainer')
-  refechTrainer()
-else if (accountType.value === 'Parent')
-  refechParent()
-else refechAcademy()
-
-const profile = ref({
-  id: '',
-  name: '',
-  firstName: '',
-  lastName: '',
-  birthdayDate: new Date(),
-  nationality: '',
-  academy: '',
-  phoneNumber: '',
-  email: '',
+const user = ref({} as User & { 
+  birthdayDate?: Date,
+  nationality?: string,
+  phoneNumber?: string,
+  remarks?: string,
+  academy: Academy,
 })
 
-whenever(isAcademyFinished, (data) => {
-  if (data) {
-    if (academy.value != null) {
-      profile.value.id = academy.value._id
-      profile.value.name = academy.value.academyName
-    }
-  }
+if (payload.value.type === 'AcademyManager') refechManager()
+else if (payload.value.type === 'Trainer') refechTrainer()
+else if (payload.value.type === 'Parent') refechParent()
+
+whenever(manager, (data) => {
+  user.value = data
+  user.value.birthdayDate = new Date(data.birthdayDate)
 })
 
-whenever(isParentFinished, (data) => {
-  if (data) {
-    if (parent.value != null) {
-      profile.value.id = parent.value._id
-      profile.value.firstName = parent.value.firstName
-      profile.value.lastName = parent.value.lastName
-      profile.value.phoneNumber = parent.value.phoneNumber
-      profile.value.email = parent.value.email
-    }
-  }
+whenever(trainer, (data) => {
+  user.value = data
+  user.value.birthdayDate = new Date(data.birthdayDate)
 })
 
-whenever(isTrainerFinished, (data) => {
-  if (data) {
-    if (trainer.value != null) {
-      profile.value.id = trainer.value._id
-      profile.value.firstName = trainer.value.firstName
-      profile.value.lastName = trainer.value.lastName
-      profile.value.birthdayDate = new Date(trainer.value.birthdayDate)
-      profile.value.nationality = trainer.value.nationality
-      profile.value.phoneNumber = trainer.value.phoneNumber
-      profile.value.email = trainer.value.email
-    }
-  }
+whenever(parent, (data) => {
+  user.value = data
 })
 
 const isFetching = computed(() => {
-  return isTrainerFetching.value || isAcademyFetching.value || isParentFetching.value
+  return isTrainerFetching.value || isParentFetching.value || isManagerFetching.value
+})
+
+const isFinished = computed(() => {
+  return isTrainerFinished.value || isParentFinished.value || isManagerFinished.value
 })
 
 const error = computed(() => {
-  return trainerError.value && parentError.value && academyError.value
+  return trainerError.value && parentError.value  && managerError.value
 })
 
 const goEditYourProfile = (userId: any) => {
@@ -118,49 +99,53 @@ const goEditYourProfile = (userId: any) => {
           </template>
 
           <template #icon>
-            <img v-if="accountType != 'Academy'" src="../../assets/player-icon2.png" class="h-150px" />
-            <img v-else src="../../assets/academy-icon.png" class="h-150px" />
+            <img src="../../assets/academy-icon.png" class="h-150px" />
           </template>
 
           <template #attributes>
 
             <LoadingCircle v-if="isFetching"></LoadingCircle>
 
-            <div v-if="!error && ((academy != null && isAcademyFinished) || (trainer != null && isTrainerFinished) || (parent != null && isParentFinished)) " class="w-full h-full flex flex-col flex-auto gap-2 place-content-center">
-              <SingleAttribute v-if="accountType === 'Academy'">
-                <template #attributeName>{{ t('your-profile.name') }}:</template>
-                <template #attributeValue>{{ profile.name }}</template>
-              </SingleAttribute>
-
-              <SingleAttribute v-if="accountType != 'Academy'">
+            <div v-if="!error && isFinished" class="w-full h-full flex flex-col flex-auto gap-2 place-content-center">
+              <SingleAttribute>
                 <template #attributeName>{{ t('your-profile.first-name') }}:</template>
-                <template #attributeValue>{{ profile.firstName }}</template>
+                <template #attributeValue>{{ user.firstName }}</template>
               </SingleAttribute>
 
-              <SingleAttribute v-if="accountType != 'Academy'">
+              <SingleAttribute>
                 <template #attributeName>{{ t('your-profile.last-name') }}:</template>
-                <template #attributeValue>{{ profile.lastName }}</template>
+                <template #attributeValue>{{ user.lastName }}</template>
               </SingleAttribute>
 
-              <SingleAttribute v-if="accountType === 'Trainer'">
-                <template #attributeName>{{ t('your-profile.birthday-date') }}:</template>
-                <template #attributeValue>{{ profile.birthdayDate.toLocaleDateString(locale) }}</template>
-              </SingleAttribute>
+              <SingleAttribute>
+              <template #attributeName>{{ t('single-trainer.birthday-date') }}:</template>
+              <template #attributeValue>{{ user.birthdayDate?.toLocaleDateString(locale) }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute v-if="accountType === 'Trainer'">
-                <template #attributeName>{{ t('your-profile.nationality') }}:</template>
-                <template #attributeValue>{{ profile.nationality }}</template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-trainer.nationality') }}:</template>
+              <template #attributeValue>{{ user.nationality }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute v-if="accountType != 'Academy'">
-                <template #attributeName>{{ t('your-profile.phone-number') }}:</template>
-                <template #attributeValue>{{ profile.phoneNumber }}</template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-trainer.phone-number') }}:</template>
+              <template #attributeValue>{{ user.phoneNumber }}</template>
+            </SingleAttribute>
 
-              <SingleAttribute v-if="accountType != 'Academy'">
-                <template #attributeName>{{ t('your-profile.email') }}:</template>
-                <template #attributeValue>{{ profile.email }}</template>
-              </SingleAttribute>
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-trainer.email') }}:</template>
+              <template #attributeValue>{{ user.email }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-trainer.login') }}:</template>
+              <template #attributeValue>{{ user.login }}</template>
+            </SingleAttribute>
+
+            <SingleAttribute>
+              <template #attributeName>{{ t('single-trainer.remarks') }}:</template>
+              <template #attributeValue>{{ user.remarks }}</template>
+            </SingleAttribute>
             </div>
 
           <ErrorMessageInfo v-if="error">

@@ -1,23 +1,26 @@
 <script setup lang="ts">
-import { validateFirstName, validateEmail, validatePhoneNumber } from '~/validatesFunctions'
+import { validateFirstName, validateEmail, validatePhoneNumber, validateLogin } from '~/validatesFunctions'
+import { Parent } from 'backend/database/schemas/Parent.user'
+import { Academy } from 'backend/database/schemas/Academy'
+import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
-import type { Academy } from 'backend/database/schemas/Academy'
-import type { Parent } from 'backend/database/schemas/Parent.user'
+const props = defineProps<{ parentId?: string }>()
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
+
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload } = useJwt(() => token.value ?? '')
-
-const props = defineProps<{ parentId?: string }>()
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const url = computed(() => props.parentId
 	? `/api/parent/${props.parentId}`
-	: '/api/parent'
+	: '/api/auth/register/parent'
 )
 
 const parent = ref({} as Omit<Parent, '_id'>)
@@ -29,7 +32,8 @@ if (!props.parentId) {
 		remarks: '',
 		academy: undefined!,
 		phoneNumber: '',
-		email: ''
+		email: '',
+		login: '',
 	}
 }
 
@@ -64,21 +68,34 @@ const error = computed(() => {
 	return parentError.value && academyError.value
 })
 
-const { execute: saveParent, error: saveError } = useFetch(url, { immediate: false }).post(parent)
+const newParent = computed(() => ({
+	login: parent.value.login,
+	email: parent.value.email,
+	academy: academyData.value,
+	lastName: parent.value.lastName,
+	firstName: parent.value.firstName,
+	phoneNumber: parent.value.phoneNumber,
+	remarks: parent.value.remarks
+}))
+
+const successfullyAdded = ref(false)
+
+const { execute: saveParent, error: saveError } = useFetch(url, { immediate: false }).post(newParent)
 const { execute: updateParent, error: updateError } = useFetch(url, { immediate: false }).post(parent)
 
 const onSubmit = async (values: any) => {
-	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value) {
+	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value || loginErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.parentId) {
 			if (academyData.value) {
-				parent.value.academy = academyData.value
+				parent.value.academy = academyData.value._id as unknown as Academy
 				await saveParent()
 				if (saveError.value) {
 					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 					return
-				}
+				} 
+				else successfullyAdded.value = true
 			} else {
 				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 					return
@@ -90,8 +107,8 @@ const onSubmit = async (values: any) => {
 				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 				return
 			}
+			return router.push('/parents/all')
 		}
-		return router.push('/parents/all')
 	}
 }
 
@@ -100,6 +117,13 @@ const firstNameErrorMessage = computed(() => {
 		return false
 	}
 	return t(validateFirstName(parent.value.firstName))
+})
+
+const loginErrorMessage = computed(() => {
+	if (!validateLogin(parent.value.login)) {
+		return false
+	}
+	return t(validateLogin(parent.value.login))
 })
 
 const lastNameErrorMessage = computed(() => {
@@ -123,12 +147,24 @@ const emailErrorMessage = computed(() => {
 	return t(validateEmail(parent.value.email))
 })
 
+const confirmRegisterInfo = async () => {
+	return router.push('/parents/all')
+}
+
 </script>
 
 <template>
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
 
-	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
+	<MessageInfo @confirmRegisterInfo="confirmRegisterInfo" v-if="successfullyAdded">
+		<div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
+			<p class="text-center">{{ t('info.parent-registered') }}</p>
+			<p class="font-medium text-center">{{ t('info.on-email') }}:</p>
+			<p class="font-medium text-center">{{ newParent.email }}</p>
+		</div>
+	</MessageInfo>
+
+	<div v-else-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
 		<SingleInput>
 			<template #inputName>{{ t('single-parent.first-name') }}:</template>
 			<template #inputValue>
@@ -170,6 +206,17 @@ const emailErrorMessage = computed(() => {
 			</template>
 			<template #errorMessage v-if="emailErrorMessage">
 				{{ emailErrorMessage }}
+			</template>
+		</SingleInput>
+
+		<SingleInput>
+			<template #inputName>{{ t('single-parent.login') }}:</template>
+			<template #inputValue>
+				<input v-model="parent.login" name="login" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+			</template>
+			<template #errorMessage v-if="loginErrorMessage">
+				{{ loginErrorMessage }}
 			</template>
 		</SingleInput>
 
