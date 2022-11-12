@@ -14,9 +14,7 @@ import { Parent } from 'backend/database/schemas/Parent.user'
 import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
 
-import { useJwt } from '@vueuse/integrations/useJwt'
 import useAuthRoutes from './auth'
-import { eachQuarterOfInterval } from 'date-fns'
 
 const router = express.Router()
 

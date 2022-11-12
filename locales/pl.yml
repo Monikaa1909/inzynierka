@@ -100,6 +100,7 @@ single-trainer:
   nationality: Narodowość
   phone-number: Numer telefonu
   email: E-mail
+  login: Login
   remarks: Uwagi
 single-event:
   type: Typ
@@ -190,6 +191,7 @@ error-messages:
   end-date: Data zakończenia musi być późniejsza niż data rozpoczęcia
   no-valid-examinations: Pamiętaj, że badania lekarskie nie są już aktualne
   invalid-credentials: Błędny login lub hasło
+  register-trainer: Bład przy rejestracji trenera. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
 other:
   confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono

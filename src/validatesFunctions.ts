@@ -76,8 +76,7 @@ export const validatePhoneNumber = (value: any) => {
 
 export const validateEmail = (value: any) => {
 	if (!value) {
-		// return 'error-messages.required-field'
-		return '';
+		return 'error-messages.required-field'
 	}
 	const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 	if (!regex.test(value)) {

@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { validateFirstName, validateEmail, validatePhoneNumber, validateNationality, requiredField } from '~/validatesFunctions'
-
-import type { Academy } from 'backend/database/schemas/Academy'
-import type{ Trainer } from 'backend/database/schemas/Trainer.user'
+import { validateFirstName, validateEmail, validatePhoneNumber, validateNationality, requiredField, validateLogin } from '~/validatesFunctions'
+import { Trainer } from 'backend/database/schemas/Trainer.user'
+import { Academy } from 'backend/database/schemas/Academy'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
 import { DatePicker } from 'v-calendar'
+
+const props = defineProps<{ trainerId?: string }>()
+
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -11,13 +19,9 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const academy = 'AP Jagiellonia Białystok'
-
-const props = defineProps<{ trainerId?: string }>()
-
 const url = computed(() => props.trainerId
 	? `/api/trainer/${props.trainerId}`
-	: '/api/trainer'
+	: 'api/auth/register/trainer'
 )
 
 const trainer = ref({} as Omit<Trainer, '_id'>)
@@ -26,12 +30,13 @@ if (!props.trainerId) {
 	trainer.value = {
 		firstName: '',
 		lastName: '',
-		birthdayDate: '',
+		birthdayDate: new Date(),
 		nationality: '',
 		remarks: '',
 		academy: undefined!,
 		phoneNumber: '',
-		email: ''
+		email: '',
+		login: '',
 	}
 }
 
@@ -51,7 +56,7 @@ const {
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
 
 const isFinished = computed(() => {
 	console.log(academyData.value)
@@ -66,20 +71,32 @@ const error = computed(() => {
 	return trainerError.value && academyError.value
 })
 
-const { execute: saveTrainer, error: saveError } = useFetch(url, { immediate: false }).post(trainer)
+const newTrainer = computed(() => ({
+  login: trainer.value.login,
+  email: trainer.value.email,
+  academy: academyData.value,
+	lastName: trainer.value.lastName,
+  firstName: trainer.value.firstName,
+  nationality: trainer.value.nationality,
+  birthdayDate: trainer.value.birthdayDate,
+	phoneNumber: trainer.value.phoneNumber,
+	remarks: trainer.value.remarks
+}))
+
 const { execute: updateTrainer, error: updateError } = useFetch(url, { immediate: false }).post(trainer)
+const { execute: saveTrainer, error: saveError } = useFetch(`/api/auth/register/trainer`, { immediate: false }).post(newTrainer)
 
 const onSubmit = async (values: any) => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value
-	|| nationalityErrorMessage.value || birthdayDateErrorMessage.value) {
+	|| nationalityErrorMessage.value || birthdayDateErrorMessage.value || loginErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.trainerId) {
 			if (academyData.value) {
-				trainer.value.academy = academyData.value
+				trainer.value.academy = academyData.value._id as unknown as Academy
 				await saveTrainer()
 				if (saveError.value) {
-					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+					alert(t('error-messages.register-trainer') + ' crewAssistantHelp@gmail.com')
 					return
 				}
 			} else {
@@ -124,6 +141,13 @@ const emailErrorMessage = computed(() => {
 		return false
 	}
 	return t(validateEmail(trainer.value.email))
+})
+
+const loginErrorMessage = computed(() => {
+	if (!validateLogin(trainer.value.login)) {
+		return false
+	}
+	return t(validateLogin(trainer.value.login))
 })
 
 const birthdayDateErrorMessage = computed(() => {
@@ -191,7 +215,7 @@ const nationalityErrorMessage = computed(() => {
 		</SingleInput>
 
 		<SingleInput>
-			<template #inputName>{{ t('single-trainer.nationality') }}::</template>
+			<template #inputName>{{ t('single-trainer.nationality') }}:</template>
 			<template #inputValue>
 				<input v-model="trainer.nationality" name="nationality" type="input"
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"  />
@@ -215,11 +239,24 @@ const nationalityErrorMessage = computed(() => {
 		<SingleInput>
 			<template #inputName>{{ t('single-trainer.email') }}:</template>
 			<template #inputValue>
-				<input v-model="trainer.email" name="email" type="input"
+				<input v-if="!props.trainerId" v-model="trainer.email" name="email" type="input"
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+				<p v-else>{{trainer.email}}</p>
 			</template>
 			<template #errorMessage v-if="emailErrorMessage">
 				{{ emailErrorMessage }}
+			</template>
+		</SingleInput>
+
+		<SingleInput>
+			<template #inputName>{{ t('single-trainer.login') }}:</template>
+			<template #inputValue>
+				<input v-if="!props.trainerId" v-model="trainer.login" name="email" type="input"
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+				<p v-else>{{trainer.login}}</p>
+			</template>
+			<template #errorMessage v-if="loginErrorMessage">
+				{{ loginErrorMessage }}
 			</template>
 		</SingleInput>
 
