@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Tournament } from 'backend/database/schemas/Tournament'
-import { Training } from 'backend/database/schemas/Training';
+import { Training } from 'backend/database/schemas/Training'
 import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
 
-import { Calendar } from 'v-calendar';
-import 'v-calendar/dist/style.css';
+import { Calendar } from 'v-calendar'
+import 'v-calendar/dist/style.css'
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()

@@ -4,7 +4,7 @@ import { Trainer } from 'backend/database/schemas/Trainer.user'
 import { Academy } from 'backend/database/schemas/Academy'
 import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
-import { DatePicker } from 'v-calendar'
+import 'v-calendar/dist/style.css'
 
 const props = defineProps<{ trainerId?: string }>()
 

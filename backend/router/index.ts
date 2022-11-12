@@ -44,6 +44,32 @@ router.get('/manager/:id', async (req, res) => {
     }
 })
 
+router.post('/manager/:id', async (req, res) => {
+    try {
+        const manager = await models.AcademyManager.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                birthdayDate: req.body.birthdayDate,
+                nationality: req.body.nationality,
+                remarks: req.body.remarks,
+                academy: req.body.academy,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+            },
+            {
+                new: true
+            }
+        )
+        res.send(manager)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/academy/:id', async (req, res) => {
     try {
         const academy = await models.Academy.findById(req.params.id)
