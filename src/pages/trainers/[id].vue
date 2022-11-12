@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { Trainer } from 'backend/database/schemas/Trainer.user';
+import { Trainer } from 'backend/database/schemas/Trainer.user'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const props = defineProps<{ id: string }>()
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -7,7 +11,10 @@ const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
-const props = defineProps<{ id: string }>()
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const trainer = ref({} as Omit<Trainer, '_id'>)
 
@@ -100,7 +107,7 @@ const confirmDelete = async () => {
 
             <SingleAttribute>
               <template #attributeName>{{ t('single-trainer.email') }}:</template>
-              <template #attributeValue>{{ trainer.email }} {{trainer.login}} {{trainer.password}}</template>
+              <template #attributeValue>{{ trainer.email }}</template>
             </SingleAttribute>
 
             <SingleAttribute>

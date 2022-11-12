@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { Trainer } from 'backend/database/schemas/Trainer.user';
+import { Trainer } from 'backend/database/schemas/Trainer.user'
+import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
 const { t, availableLocales, locale } = useI18n()
@@ -9,7 +10,9 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload } = useJwt(() => token.value ?? '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const goEditTrainer = (trainerId: any) => {
   return router.push(`/trainers/edit/${trainerId}`)
