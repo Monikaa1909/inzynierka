@@ -80,7 +80,7 @@ const newParent = computed(() => ({
 
 const successfullyAdded = ref(false)
 
-const { execute: saveParent, error: saveError } = useFetch(url, { immediate: false }).post(newParent)
+const { execute: saveParent, error: saveError, data: password } = useFetch(url, { immediate: false }).post(newParent)
 const { execute: updateParent, error: updateError } = useFetch(url, { immediate: false }).post(parent)
 
 const onSubmit = async (values: any) => {
@@ -92,7 +92,7 @@ const onSubmit = async (values: any) => {
 				parent.value.academy = academyData.value._id as unknown as Academy
 				await saveParent()
 				if (saveError.value) {
-					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+					alert(t('error-messages.register-parent') + ' crewAssistantHelp@gmail.com')
 					return
 				} 
 				else successfullyAdded.value = true
@@ -158,9 +158,25 @@ const confirmRegisterInfo = async () => {
 
 	<MessageInfo @confirmRegisterInfo="confirmRegisterInfo" v-if="successfullyAdded">
 		<div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
-			<p class="text-center">{{ t('info.parent-registered') }}</p>
+			
+			<!-- wersja z wysłaniem hasła na maila: -->
+			<!-- <p class="text-center">{{ t('info.parent-registered') }}</p>
 			<p class="font-medium text-center">{{ t('info.on-email') }}:</p>
-			<p class="font-medium text-center">{{ newParent.email }}</p>
+			<p class="font-medium text-center">{{ newParent.email }}</p> -->
+
+			<!-- wersja z wyświetleniem danych do logowania: -->
+			<p class="text-center">{{ t('info.parent-registered') }}</p>
+			<p class="text-center">{{ t('info.login-details') }}:</p>
+			<div class="w-full flex flex-row gap-4 place-content-center">
+				<p >{{ t('login.login') }}:</p>
+				<p class="font-medium">{{parent.login}}</p>
+			</div>
+			<div class="w-full flex flex-row gap-2 place-content-center">
+				<p >{{ t('login.password') }}:</p>
+				<p class="font-medium">{{password}}</p>
+			</div>
+			<p class="font-bold text-center">{{ t('info.remember-credentials') }}</p>
+
 		</div>
 	</MessageInfo>
 
@@ -230,7 +246,8 @@ const confirmRegisterInfo = async () => {
 
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
 			<SingleButton @click="onSubmit">
-				<template #buttonName>{{ t('button.save') }}</template>
+				<template #buttonName v-if="!props.parentId">{{ t('button.register-parent') }}</template>
+				<template #buttonName v-else>{{ t('button.save') }}</template>
 			</SingleButton>
 			<SingleButton @click="router.go(-1)">
 				<template #buttonName>{{ t('button.cancel') }}</template>

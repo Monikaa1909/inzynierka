@@ -180,7 +180,14 @@ const confirmRegisterInfo = async () => {
 <template>
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
 	<MessageInfo @confirmRegisterInfo="confirmRegisterInfo" v-if="successfullyAdded">
-		<div class="w-full h-full flex flex-col gap-4 place-content-center place-items-center">
+		<div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
+
+			<!-- wersja z wysłaniem hasła na maila: -->
+			<!-- <p class="text-center">{{ t('info.parent-registered') }}</p>
+			<p class="font-medium text-center">{{ t('info.on-email') }}:</p>
+			<p class="font-medium text-center">{{ newTrainer.email }}</p> -->
+
+			<!-- wersja z wyświetleniem danych do logowania: -->
 			<p class="text-center">{{ t('info.trainer-registered') }}</p>
 			<p class="text-center">{{ t('info.login-details') }}:</p>
 			<div class="w-full flex flex-row gap-4 place-content-center">
@@ -192,6 +199,7 @@ const confirmRegisterInfo = async () => {
 				<p class="font-medium">{{password}}</p>
 			</div>
 			<p class="font-bold text-center">{{ t('info.remember-credentials') }}</p>
+
 		</div>
 	</MessageInfo>
 	<div v-else-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
@@ -296,7 +304,8 @@ const confirmRegisterInfo = async () => {
 
 		<div class="h-full w-full flex flex-row items-center justify-end gap-2 flex-wrap sm:(flex-nowrap)">
 			<SingleButton @click="onSubmit">
-				<template #buttonName>{{ t('button.register-trainer') }}</template>
+				<template #buttonName v-if="!props.trainerId">{{ t('button.register-trainer') }}</template>
+				<template #buttonName v-else>{{ t('button.save') }}</template>
 			</SingleButton>
 			<SingleButton @click="router.go(-1)">
 				<template #buttonName>{{ t('button.cancel') }}</template>

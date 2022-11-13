@@ -51,7 +51,7 @@ export default (router: Router) => {
 
       console.log(password)
 
-      res.send(parent)
+      res.send(password)
     } catch (error) {
       res.status(400).send(error)
     }
