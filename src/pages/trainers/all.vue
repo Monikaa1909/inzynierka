@@ -18,6 +18,10 @@ const goEditTrainer = (trainerId: any) => {
   return router.push(`/trainers/edit/${trainerId}`)
 }
 
+const goEditPassword = (trainerId: any) => {
+  return router.push(`/trainers/edit/password/${trainerId}`)
+}
+
 function goToTrainer(trainerId: any) {
   return router.push(`/trainers/${trainerId}`)
 }
@@ -75,6 +79,9 @@ const confirmDelete = async () => {
           clickable="cursor-pointer" @go-to="goToTrainer(trainer._id)">
          
           <template #nav>
+            <button @click="goEditPassword(trainer._id)">
+              <img src="../../assets/password-icon.png" class="h-24px" />
+            </button>
             <button @click="goEditTrainer(trainer._id)">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>

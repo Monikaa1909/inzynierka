@@ -85,6 +85,14 @@ export const validateEmail = (value: any) => {
 	return '';
 }
 
+export const validatePassword = (value: any) => {
+	if (!value) {
+		return 'error-messages.required-field'
+	}
+	
+	return '';
+}
+
 export const requiredField: any = (value: any) => {
 	if (!value) {
 		return 'error-messages.required-field';

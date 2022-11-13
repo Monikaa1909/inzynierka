@@ -94,11 +94,11 @@ const onSubmit = async (values: any) => {
 				if (saveError.value) {
 					alert(t('error-messages.register-parent') + ' crewAssistantHelp@gmail.com')
 					return
-				} 
+				}
 				else successfullyAdded.value = true
 			} else {
 				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-					return
+				return
 			}
 
 		} else {
@@ -157,27 +157,30 @@ const confirmRegisterInfo = async () => {
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
 
 	<MessageInfo @confirmRegisterInfo="confirmRegisterInfo" v-if="successfullyAdded">
-		<div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
-			
-			<!-- wersja z wysłaniem hasła na maila: -->
-			<!-- <p class="text-center">{{ t('info.parent-registered') }}</p>
+		<template #info>
+			<div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
+
+				<!-- wersja z wysłaniem hasła na maila: -->
+				<!-- <p class="text-center">{{ t('info.parent-registered') }}</p>
 			<p class="font-medium text-center">{{ t('info.on-email') }}:</p>
 			<p class="font-medium text-center">{{ newParent.email }}</p> -->
 
-			<!-- wersja z wyświetleniem danych do logowania: -->
-			<p class="text-center">{{ t('info.parent-registered') }}</p>
-			<p class="text-center">{{ t('info.login-details') }}:</p>
-			<div class="w-full flex flex-row gap-4 place-content-center">
-				<p >{{ t('login.login') }}:</p>
-				<p class="font-medium">{{parent.login}}</p>
-			</div>
-			<div class="w-full flex flex-row gap-2 place-content-center">
-				<p >{{ t('login.password') }}:</p>
-				<p class="font-medium">{{password}}</p>
-			</div>
-			<p class="font-bold text-center">{{ t('info.remember-credentials') }}</p>
+				<!-- wersja z wyświetleniem danych do logowania: -->
+				<p class="text-center">{{ t('info.parent-registered') }}</p>
+				<p class="text-center">{{ t('info.login-details') }}:</p>
+				<div class="w-full flex flex-row gap-4 place-content-center">
+					<p>{{ t('login.login') }}:</p>
+					<p class="font-medium">{{ parent.login }}</p>
+				</div>
+				<div class="w-full flex flex-row gap-2 place-content-center">
+					<p>{{ t('login.password') }}:</p>
+					<p class="font-medium">{{ password }}</p>
+				</div>
+				<p class="font-bold text-center">{{ t('info.remember-credentials') }}</p>
 
-		</div>
+			</div>
+		</template>
+
 	</MessageInfo>
 
 	<div v-else-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">

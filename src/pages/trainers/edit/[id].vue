@@ -9,7 +9,7 @@ const props = defineProps<{ id: string }>()
     <template #data>
       <MyCenterElement>
         <MiniWhiteFrame>
-          <template #:icon>
+          <template #icon>
             <img src="../../../assets/trainer-icon2.png" class="h-150px cursor-pointer" />
           </template>
           <template #attributes>

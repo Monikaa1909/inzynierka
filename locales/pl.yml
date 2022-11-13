@@ -40,6 +40,7 @@ button:
   register-trainer: Zarejestruj trenera
   register-parent: Zarejestruj rodzica
   ok: Ok
+  submit: Zatwierdź
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -197,12 +198,20 @@ error-messages:
   invalid-credentials: Błędny login lub hasło
   register-trainer: Bład przy rejestracji trenera. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
   register-parent: Bład przy rejestracji rodzica. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
+  wrong-password: Błędne hasło
+  diffrent-passwords: Hasła muszą być takie same
+  weak-password: Hasło jest zbyt słabe (używaj dużych i małych liter, cyfr oraz znaków specjalnych)
 info:
   trainer-registered: Trener został pomyślnie zarejestrowany! 
   parent-registered: Rodzic został pomyślnie zarejestrowany! 
   login-details: Oto dane logowania
   remember-credentials: Pamiętaj by zapamiętać podane dane logowania!
   on-email: Hasło zostało wysłane na podany adres e-mail
+  able-password-trainer: Aby móc zmienić hasło trenera
+  enter-your-password: musisz podać swoje hasło
+  enter-new-password: Podaj nowe hasło
+  repeat-new-password: Powtórz nowe hasło
+  password-changed: Hasło zostało pomyślnie zmienione!
 other:
   confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono

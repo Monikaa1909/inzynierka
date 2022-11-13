@@ -34,6 +34,10 @@ const goEditTrainer = (trainerId: any) => {
   return router.push(`/trainers/edit/${trainerId}`)
 }
 
+const goEditPassword = (trainerId: any) => {
+  return router.push(`/trainers/edit/password/${trainerId}`)
+}
+
 const isDeleting = ref(false)
 
 const deleteTrainer = () => {
@@ -67,6 +71,9 @@ const confirmDelete = async () => {
       <MyCenterElement v-if="isFinished && !isDeleting && !error && trainer">
         <MiniWhiteFrame>
           <template #nav>
+            <button @click="goEditPassword(props.id)">
+              <img src="../../assets/password-icon.png" class="h-24px" />
+            </button>
             <button @click="goEditTrainer(props.id)">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
