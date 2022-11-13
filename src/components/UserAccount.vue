@@ -200,7 +200,7 @@ const onSubmit = async () => {
               class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
             <p v-else>{{ user.firstName }}</p>
           </template>
-          <template #errorMessage v-if="firstNameErrorMessage">
+          <template #errorMessage v-if="firstNameErrorMessage && props.edit">
             {{ firstNameErrorMessage }}
           </template>
         </SingleInput>
@@ -212,7 +212,7 @@ const onSubmit = async () => {
               class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
             <p v-else>{{ user.lastName }}</p>
           </template>
-          <template #errorMessage v-if="lastNameErrorMessage">
+          <template #errorMessage v-if="lastNameErrorMessage && props.edit">
             {{ lastNameErrorMessage }}
           </template>
         </SingleInput>
@@ -235,7 +235,7 @@ const onSubmit = async () => {
             </DatePicker>
             <p v-else>{{ user.birthdayDate?.toLocaleDateString(locale) }}</p>
           </template>
-          <template v-if="birthdayDateErrorMessage" #errorMessage>
+          <template v-if="birthdayDateErrorMessage && props.edit" #errorMessage>
             {{ birthdayDateErrorMessage }}
           </template>
         </SingleInput>
@@ -247,7 +247,7 @@ const onSubmit = async () => {
               class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
             <p v-else>{{ user.nationality }}</p>
           </template>
-          <template #errorMessage v-if="nationalityErrorMessage">
+          <template #errorMessage v-if="nationalityErrorMessage && props.edit">
             {{ nationalityErrorMessage }}
           </template>
         </SingleInput>
@@ -259,7 +259,7 @@ const onSubmit = async () => {
               class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
             <p v-else>{{ user.phoneNumber }}</p>
           </template>
-          <template #errorMessage v-if="phoneNumberErrorMessage">
+          <template #errorMessage v-if="phoneNumberErrorMessage && props.edit">
             {{ phoneNumberErrorMessage }}
           </template>
         </SingleInput>
@@ -271,7 +271,7 @@ const onSubmit = async () => {
               class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
             <p v-else>{{ user.email }}</p>
           </template>
-          <template #errorMessage v-if="emailErrorMessage">
+          <template #errorMessage v-if="emailErrorMessage && props.edit">
             {{ emailErrorMessage }}
           </template>
         </SingleInput>
