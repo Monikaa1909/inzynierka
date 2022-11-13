@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { requiredField, validateFirstName, validateNationality, validateMedicalExaminations } from '~/validatesFunctions'
-import { useJwt } from '@vueuse/integrations/useJwt'
-import { DatePicker } from 'v-calendar'
-
 import type { Trainer } from 'backend/database/schemas/Trainer.user'
 import type { Parent } from 'backend/database/schemas/Parent.user'
 import type { Academy } from 'backend/database/schemas/Academy'
 import type { Player } from 'backend/database/schemas/Player'
 import type { Team } from 'backend/database/schemas/Team'
+import { DatePicker } from 'v-calendar'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 const token = useStorage('user:token', '')
-const { payload } = useJwt(() => token.value ?? '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()

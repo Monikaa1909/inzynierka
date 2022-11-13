@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { validateName, validateNumber, validateCity, validatePostalCode } from '~/validatesFunctions'
-
-import type { Academy } from 'backend/database/schemas/Academy'
 import type { SportsFacility } from 'backend/database/schemas/SportsFacility'
+import type { Academy } from 'backend/database/schemas/Academy'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const { t } = useI18n()
 const router = useRouter()
-
-const academy = 'AP Jagiellonia Białystok'
 
 const props = defineProps<{ sportsFacilityId?: string }>()
 
@@ -46,7 +50,7 @@ const {
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
 
 const isFinished = computed(() => {
 	return isSportsFacilityFinished.value && isAcademyFinished.value

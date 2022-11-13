@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { validateStartYear, validateEndYear, validateName } from '~/validatesFunctions'
-import { useJwt } from '@vueuse/integrations/useJwt'
-
 import type { Academy } from 'backend/database/schemas/Academy'
 import type { Trainer } from 'backend/database/schemas/Trainer.user'
 import type { Team } from 'backend/database/schemas/Team'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
-const token = useStorage('user:token', '')
-const { payload } = useJwt(() => token.value ?? '')
 
 const props = defineProps<{ teamId?: string }>()
 
