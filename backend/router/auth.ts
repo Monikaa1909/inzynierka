@@ -17,7 +17,7 @@ export default (router: Router) => {
 
       console.log(password)
 
-      res.send(trainer)
+      res.send(password)
     } catch (error) {
       res.status(400).send(error)
     }

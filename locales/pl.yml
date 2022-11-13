@@ -196,8 +196,8 @@ error-messages:
   invalid-credentials: Błędny login lub hasło
   register-trainer: Bład przy rejestracji trenera. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
 info:
-  trainer-registered: Trener został pomyślnie zarejestrowany. 
-  parent-registered: Rodzic został pomyślnie zarejestrowany. 
+  trainer-registered: Trener został pomyślnie zarejestrowany! 
+  parent-registered: Rodzic został pomyślnie zarejestrowany! 
   login-details: Oto dane logowania
   remember-credentials: Pamiętaj by zapamiętać podane dane logowania!
   on-email: Hasło zostało wysłane na podany adres e-mail

@@ -197,8 +197,8 @@ error-messages:
   invalid-credentials: Invalid login or password
   register-trainer: Error while registering trainer. An account with this email and login probably already exists. Please try again with different details or contact us via email
 info:
-  trainer-registered: The trainer has been successfully registered. 
-  parent-registered: The parent has been successfully registered. 
+  trainer-registered: The trainer has been successfully registered! 
+  parent-registered: The parent has been successfully registered!
   login-details: Here are the login details
   on-email: Password has been sent to the e-mail address provided
   remember-credentials: Be sure to remember these credentials!

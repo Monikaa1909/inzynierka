@@ -4,6 +4,7 @@ import { Trainer } from 'backend/database/schemas/Trainer.user'
 import { Academy } from 'backend/database/schemas/Academy'
 import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
+import { DatePicker } from 'v-calendar'
 import 'v-calendar/dist/style.css'
 
 const props = defineProps<{ trainerId?: string }>()
@@ -85,7 +86,7 @@ const newTrainer = computed(() => ({
 const successfullyAdded = ref(false)
 
 const { execute: updateTrainer, error: updateError } = useFetch(url, { immediate: false }).post(trainer)
-const { execute: saveTrainer, error: saveError } = useFetch(`/api/auth/register/trainer`, { immediate: false }).post(newTrainer)
+const { execute: saveTrainer, error: saveError, data: password } = useFetch(`/api/auth/register/trainer`, { immediate: false }).post(newTrainer)
 
 const onSubmit = async (values: any) => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value
@@ -116,6 +117,10 @@ const onSubmit = async (values: any) => {
 		}
 	}
 }
+
+whenever(password, (data) => {
+	console.log(data)
+})
 
 const firstNameErrorMessage = computed(() => {
 	if (!validateFirstName(trainer.value.firstName)) {
@@ -175,10 +180,18 @@ const confirmRegisterInfo = async () => {
 <template>
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
 	<MessageInfo @confirmRegisterInfo="confirmRegisterInfo" v-if="successfullyAdded">
-		<div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
+		<div class="w-full h-full flex flex-col gap-4 place-content-center place-items-center">
 			<p class="text-center">{{ t('info.trainer-registered') }}</p>
-			<p class="font-medium text-center">{{ t('info.on-email') }}:</p>
-			<p class="font-medium text-center">{{ newTrainer.email }}</p>
+			<p class="text-center">{{ t('info.login-details') }}:</p>
+			<div class="w-full flex flex-row gap-4 place-content-center">
+				<p >{{ t('login.login') }}:</p>
+				<p class="font-medium">{{trainer.login}}</p>
+			</div>
+			<div class="w-full flex flex-row gap-2 place-content-center">
+				<p >{{ t('login.password') }}:</p>
+				<p class="font-medium">{{password}}</p>
+			</div>
+			<p class="font-bold text-center">{{ t('info.remember-credentials') }}</p>
 		</div>
 	</MessageInfo>
 	<div v-else-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
