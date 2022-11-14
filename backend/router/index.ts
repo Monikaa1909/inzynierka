@@ -308,7 +308,7 @@ router.get('/trainers/academy/:id', async (req, res) => {
             .populate({
                 path: 'academy',
                 model: 'Academy',
-                match: { id: req.params.id }
+                match: { _id: req.params.id }
             }) as Trainer[]
 
         res.send(trainer.filter(item => item.academy != null))
@@ -382,7 +382,7 @@ router.get('/sportsfacilities/academy/:id', async (req, res) => {
             .populate({
                 path: 'academy',
                 model: 'Academy',
-                match: { id: req.params.id }
+                match: { _id: req.params.id }
             }) as SportsFacility[]
 
         res.send(sportsFacilities.filter(item => item.academy != null))
@@ -525,7 +525,7 @@ router.delete('/team/:id', async (req, res) => {
     }
 })
 
-router.get('/matches/:academy', async (req, res) => {
+router.get('/matches/academy/:id', async (req, res) => {
     try {
         const matches = await models.Match.find()
             .populate('sportsFacility')
@@ -535,7 +535,7 @@ router.get('/matches/:academy', async (req, res) => {
                 populate: {
                     path: 'academy',
                     model: 'Academy',
-                    match: { name: req.params.academy }
+                    match: { _id: req.params.id }
                 }
             }) as Match[]
 
@@ -627,7 +627,7 @@ router.delete('/match/:id', async (req, res) => {
     }
 })
 
-router.get('/trainings/:academy', async (req, res) => {
+router.get('/trainings/academy/:id', async (req, res) => {
     try {
         const trainings = await models.Training.find()
             .populate({
@@ -640,7 +640,7 @@ router.get('/trainings/:academy', async (req, res) => {
                 populate: {
                     path: 'academy',
                     model: 'Academy',
-                    match: { name: req.params.academy }
+                    match: { _id: req.params.id }
                 }
             }) as Training[]
         res.send(trainings.filter(item => item.team.academy != null))
@@ -726,7 +726,7 @@ router.delete('/training/:id', async (req, res) => {
     }
 })
 
-router.get('/tournaments/:academy', async (req, res) => {
+router.get('/tournaments/academy/:id', async (req, res) => {
     try {
         const tournaments = await models.Tournament.find()
             .populate({
@@ -739,7 +739,7 @@ router.get('/tournaments/:academy', async (req, res) => {
                 populate: {
                     path: 'academy',
                     model: 'Academy',
-                    match: { name: req.params.academy }
+                    match: { _id: req.params.id }
                 }
             }) as Tournament[]
         res.send(tournaments.filter(item => item.team.academy != null))

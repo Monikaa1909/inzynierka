@@ -4,18 +4,22 @@ import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 import { Tournament } from 'backend/database/schemas/Tournament'
 import { Training } from 'backend/database/schemas/Training'
 import { Academy } from 'backend/database/schemas/Academy'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
 import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
-
 import { DatePicker } from 'v-calendar'
+
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
-const academy = 'AP Jagiellonia Białystok'
 
 const props = defineProps<{ day?: string }>()
 
@@ -30,7 +34,7 @@ const {
 	isFetching: isTeamsFetching,
 	isFinished: isTeamsFinished,
 	error: teamsError,
-} = useFetch(`/api/teams/${academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
 const sportsFacilities = ref([] as Omit<SportsFacility[], '_id'>)
 
 const {
@@ -38,7 +42,7 @@ const {
 	isFetching: isSportsFacilitiesFetching,
 	isFinished: isSportsFacilitiesFinished,
 	error: sportsFacilitiesError,
-} = useFetch(`/api/sportsFacilities/${academy}`, { initialData: [] }).json<SportsFacility[]>()
+} = useFetch(`/api/sportsFacilities/academy/${payload.value.academy}`, { initialData: [] }).json<SportsFacility[]>()
 
 whenever(sportsFacilitiesData, (data) => {
 	sportsFacilities.value = data

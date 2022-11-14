@@ -395,36 +395,36 @@ export const seedDatabase = async () => {
     matchStatistic1.save(function (err) {
         if (err) return console.log(err.message);
     });
-    // const matchStatistic2 = new models.MatchStatistic({
-    //     player: player2,
-    //     match: match1,
-    //     goalsScored: 3,
-    //     minutesPlayed: 90,
-    //     attendance: true
-    // });
-    // matchStatistic2.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
-    // const matchStatistic3 = new models.MatchStatistic({
-    //     player: player3,
-    //     match: match1,
-    //     minutesPlayed: 89,
-    //     remarks: 'Doznał kontuzji prawego kolana',
-    //     attendance: true
-    // });
-    // matchStatistic3.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
-    // const matchStatistic4 = new models.MatchStatistic({
-    //     player: player4,
-    //     match: match1,
-    //     goalsScored: 2,
-    //     minutesPlayed: 90,
-    //     attendance: true
-    // });
-    // matchStatistic4.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
+    const matchStatistic2 = new models.MatchStatistic({
+        player: player2,
+        match: match1,
+        goalsScored: 3,
+        minutesPlayed: 90,
+        attendance: true
+    });
+    matchStatistic2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const matchStatistic3 = new models.MatchStatistic({
+        player: player3,
+        match: match1,
+        minutesPlayed: 89,
+        remarks: 'Doznał kontuzji prawego kolana',
+        attendance: true
+    });
+    matchStatistic3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const matchStatistic4 = new models.MatchStatistic({
+        player: player4,
+        match: match1,
+        goalsScored: 2,
+        minutesPlayed: 90,
+        attendance: true
+    });
+    matchStatistic4.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
     // TOURNAMENTS ----------------------------------------------------------------------------
     const tournament1 = new models.Tournament({
@@ -452,46 +452,46 @@ export const seedDatabase = async () => {
     });
 
      // TOURNAMENTSTATISTIC ----------------------------------------------------------------------------
-    //  const tournamentStatistic1 = new models.TournamentStatistic({
-    //     player: player1,
-    //     tournament: tournament1,
-    //     goalsScored: 1,
-    //     yellowCards: 1,
-    //     minutesPlayed: 67,
-    //     attendance: true
-    // });
-    // tournamentStatistic1.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
-    // const tournamentStatistic2 = new models.TournamentStatistic({
-    //     player: player2,
-    //     tournament: tournament1,
-    //     goalsScored: 3,
-    //     minutesPlayed: 90,
-    //     attendance: true
-    // });
-    // tournamentStatistic2.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
-    // const tournamentStatistic3 = new models.TournamentStatistic({
-    //     player: player3,
-    //     tournament: tournament1,
-    //     minutesPlayed: 89,
-    //     remarks: 'Doznał kontuzji prawego kolana',
-    //     attendance: true
-    // });
-    // tournamentStatistic3.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
-    // const tournamentStatistic4 = new models.TournamentStatistic({
-    //     player: player4,
-    //     tournament: tournament1,
-    //     goalsScored: 0,
-    //     minutesPlayed: 0,
-    // });
-    // tournamentStatistic4.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
+     const tournamentStatistic1 = new models.TournamentStatistic({
+        player: player1,
+        tournament: tournament1,
+        goalsScored: 1,
+        yellowCards: 1,
+        minutesPlayed: 67,
+        attendance: true
+    });
+    tournamentStatistic1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const tournamentStatistic2 = new models.TournamentStatistic({
+        player: player2,
+        tournament: tournament1,
+        goalsScored: 3,
+        minutesPlayed: 90,
+        attendance: true
+    });
+    tournamentStatistic2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const tournamentStatistic3 = new models.TournamentStatistic({
+        player: player3,
+        tournament: tournament1,
+        minutesPlayed: 89,
+        remarks: 'Doznał kontuzji prawego kolana',
+        attendance: true
+    });
+    tournamentStatistic3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
+    const tournamentStatistic4 = new models.TournamentStatistic({
+        player: player4,
+        tournament: tournament1,
+        goalsScored: 0,
+        minutesPlayed: 0,
+    });
+    tournamentStatistic4.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
     // TRAININGS ----------------------------------------------------------------------------
     const training1 = new models.Training({
@@ -523,50 +523,50 @@ export const seedDatabase = async () => {
     });
 
     // ATTENDANCE LISTS ----------------------------------------------------------------------------
-    // const attendaceList1 = new models.AttendanceList({
-    //     player: player1,
-    //     training: training1,
-    //     attendance: true,
-    // });
-    // attendaceList1.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
+    const attendaceList1 = new models.AttendanceList({
+        player: player1,
+        training: training1,
+        attendance: true,
+    });
+    attendaceList1.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
-    // const attendaceList2 = new models.AttendanceList({
-    //     player: player2,
-    //     training: training1,
-    //     attendance: true,
-    // });
-    // attendaceList2.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
+    const attendaceList2 = new models.AttendanceList({
+        player: player2,
+        training: training1,
+        attendance: true,
+    });
+    attendaceList2.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
-    // const attendaceList3 = new models.AttendanceList({
-    //     player: player3,
-    //     training: training1,
-    //     attendance: true,
-    // });
-    // attendaceList3.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
+    const attendaceList3 = new models.AttendanceList({
+        player: player3,
+        training: training1,
+        attendance: true,
+    });
+    attendaceList3.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
-    // const attendaceList4 = new models.AttendanceList({
-    //     player: player4,
-    //     training: training1,
-    //     remarks: 'Nieobecność zgłoszona wcześniej',
-    // });
-    // attendaceList4.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
+    const attendaceList4 = new models.AttendanceList({
+        player: player4,
+        training: training1,
+        remarks: 'Nieobecność zgłoszona wcześniej',
+    });
+    attendaceList4.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
-    // const attendaceList5 = new models.AttendanceList({
-    //     player: player5,
-    //     training: training2,
-    //     attendance: true,
-    // });
-    // attendaceList5.save(function (err) {
-    //     if (err) return console.log(err.message);
-    // });
+    const attendaceList5 = new models.AttendanceList({
+        player: player5,
+        training: training2,
+        attendance: true,
+    });
+    attendaceList5.save(function (err) {
+        if (err) return console.log(err.message);
+    });
 
-    // return { ok: true }
+    return { ok: true }
 }

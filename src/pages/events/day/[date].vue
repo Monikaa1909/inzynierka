@@ -3,6 +3,13 @@ import { Tournament } from 'backend/database/schemas/Tournament'
 import { Training } from 'backend/database/schemas/Training'
 import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -14,12 +21,11 @@ const props = defineProps<{ date: string }>()
 
 const selectedDate = new Date(props.date)
 
-const academy = 'AP Jagiellonia Białystok'
 const teamsFilter = ref('all')
 
 const urlMatches = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/matches/${academy}`
+    return `/api/matches/academy/${payload.value.academy}`
   } else {
     return `/api/matches/team/${teamsFilter.value}`
   }
@@ -27,7 +33,7 @@ const urlMatches = computed(() => {
 
 const urlTrainings = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/trainings/${academy}`
+    return `/api/trainings/academy/${payload.value.academy}`
   } else {
     return `/api/trainings/team/${teamsFilter.value}`
   }
@@ -35,7 +41,7 @@ const urlTrainings = computed(() => {
 
 const urlTournaments = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/tournaments/${academy}`
+    return `/api/tournaments/academy/${payload.value.academy}`
   } else {
     return `/api/tournaments/team/${teamsFilter.value}`
   }
@@ -58,7 +64,7 @@ const {
   isFetching: isTeamsFetching,
   isFinished: isTeamsFinished,
   error: teamsError,
-} = useFetch(`/api/teams/${academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
 
 const matches = ref(<Array<Match>>([]))
 const tournaments = ref([] as Omit<Tournament[], '_id'>)

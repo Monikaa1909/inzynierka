@@ -19,7 +19,6 @@ const { payload: payloadData } = useJwt(() => token.value ?? '')
 const payload = ref({} as JwtPayload)
 payload.value = payloadData.value as unknown as JwtPayload
 
-const academy = 'AP Jagiellonia Białystok'
 const eventsFilter = ref('all')
 
 const urlMatchStatistic = computed(() => {
@@ -45,7 +44,7 @@ const urlTrainingStatistic = computed(() => {
 
 const urlPlayers = computed(() => {
 	if (props.id === 'all')
-		return `/api/players//${academy}`
+		return `/api/players/academy/${payload.value.academy}`
 	else
 		return `/api/players/team/${props.id}`
 })
