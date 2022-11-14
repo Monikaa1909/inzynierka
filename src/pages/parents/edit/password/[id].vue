@@ -26,14 +26,14 @@ const newCredentials = computed(() => ({
 }))
 
 const { data: managerData, error: managerError, execute: submitManager } = useFetch(`/api/auth/validate/password/${payload.value.id}`, { immediate: false }).post(credentials).text()
-const { data: trainerData, error: trainerError, execute: submitTrainer } = useFetch(`/api/auth/change/password/${props.id}`, { immediate: false }).post(newCredentials).text()
+const { data: parentData, error: parentError, execute: submitParent } = useFetch(`/api/auth/change/password/${props.id}`, { immediate: false }).post(newCredentials).text()
 
 const error = computed(() => {
-	return managerError.value && trainerError.value
+	return managerError.value && parentError.value
 })
 
 const successfullySubmittedManagerPassword = ref(false)
-const successfullySubmittedTrainerPassword = ref(false)
+const successfullySubmittedParentPassword = ref(false)
 const submittedManagerPassword = ref(false)
 
 whenever(managerData, (data) => {
@@ -43,8 +43,8 @@ whenever(managerData, (data) => {
 
 const firstName = ref('')
 const lastName = ref('')
-whenever(trainerData, (data) => {
-  successfullySubmittedTrainerPassword.value = true
+whenever(parentData, (data) => {
+  successfullySubmittedParentPassword.value = true
   firstName.value = JSON.parse(data).firstName
   lastName.value = JSON.parse(data).lastName
 })
@@ -54,8 +54,8 @@ const submitManagerPassword = async () => {
   submittedManagerPassword.value = true
 }
 
-const submitTrainerPassword = async () => {
-  submitTrainer()
+const submitParentPassword = async () => {
+  submitParent()
 }
 
 const passwordErrorMessage = computed(() => {
@@ -77,10 +77,10 @@ const newPasswordErrorMessage = computed(() => {
         <MiniWhiteFrame>
           <template #attributes>
             
-            <MessageInfo v-if="!error && !successfullySubmittedManagerPassword && !successfullySubmittedTrainerPassword">
+            <MessageInfo v-if="!error && !successfullySubmittedManagerPassword && !successfullySubmittedParentPassword">
               <template #info>
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
-                  <p class="text-center">{{t('info.able-password-trainer')}},</p>
+                  <p class="text-center">{{t('info.able-password-parent')}},</p>
                   <p class="text-center">{{t('info.enter-your-password')}}:</p>
                   <input v-model="password" name="password" type="password"
                     class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
@@ -96,7 +96,7 @@ const newPasswordErrorMessage = computed(() => {
               </template>
             </MessageInfo>
 
-            <MessageInfo v-else-if="!error && successfullySubmittedManagerPassword && !successfullySubmittedTrainerPassword">
+            <MessageInfo v-else-if="!error && successfullySubmittedManagerPassword && !successfullySubmittedParentPassword">
               <template #info>
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
                   <p class="text-center">{{t('info.enter-new-password')}}:</p>
@@ -111,13 +111,13 @@ const newPasswordErrorMessage = computed(() => {
                 </div>
               </template>
               <template #button>
-                <SingleButton @click="submitTrainerPassword">
+                <SingleButton @click="submitParentPassword">
                   <template #buttonName>{{ t('button.submit') }}</template>
                 </SingleButton>
               </template>
             </MessageInfo>
 
-            <MessageInfo v-else-if="!error && successfullySubmittedTrainerPassword">
+            <MessageInfo v-else-if="!error && successfullySubmittedParentPassword">
               <template #info>
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
                   <p class="text-center">{{t('info.password-user')}}:</p>

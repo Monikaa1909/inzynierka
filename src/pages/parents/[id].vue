@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { Parent } from 'backend/database/schemas/Parent.user'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload: payloadData } = useJwt(() => token.value ?? '')
+const payload = ref({} as JwtPayload)
+payload.value = payloadData.value as unknown as JwtPayload
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -18,6 +25,10 @@ const {
 
 const goEditParent = (parentId: any) => {
   return router.push(`/parents/edit/${parentId}`)
+}
+
+const goEditPassword = (parentId: any) => {
+  return router.push(`/parents/edit/password/${parentId}`)
 }
 
 const isDeleting = ref(false)
@@ -53,6 +64,9 @@ const confirmDelete = async () => {
       <MyCenterElement v-if="isFinished && !isDeleting && !error && parent">
         <MiniWhiteFrame>
           <template #nav>
+            <button @click="goEditPassword(props.id)">
+              <img src="../../assets/password-icon.png" class="h-24px" />
+            </button>
             <button @click="goEditParent(parent?._id)">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>

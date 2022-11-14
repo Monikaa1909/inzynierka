@@ -92,6 +92,10 @@ const error = computed(() => {
   return trainerError.value && parentError.value && managerError.value
 })
 
+const goEditPassword = () => {
+  return router.push(`/yourProfile/password`)
+}
+
 const goEditYourProfile = (userId: any) => {
   return router.push(`/yourProfile/edit`)
 }
@@ -140,37 +144,37 @@ const nationalityErrorMessage = computed(() => {
 
 const onSubmit = async () => {
   console.log('onsubmit')
-	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value) {
-		alert(t('error-messages.validation-error'))
-	} else {
+  if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value) {
+    alert(t('error-messages.validation-error'))
+  } else {
     console.log(payload.value.type)
-		if (payload.value.type === "Trainer" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
+    if (payload.value.type === "Trainer" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
       const { execute: updateTrainer, error: updateError } = useFetch(`/api/trainer/${payload.value.id}`, { immediate: false }).post(user)
-			await updateTrainer()
-			if (updateError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
-			}
-			return router.push('/yourProfile/personalData')
-		} else if (payload.value.type === "Parent") {
+      await updateTrainer()
+      if (updateError.value) {
+        alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+        return
+      }
+      return router.push('/yourProfile/personalData')
+    } else if (payload.value.type === "Parent") {
       console.log('update parent')
       const { execute: updateParent, error: updateError } = useFetch(`/api/parent/${payload.value.id}`, { immediate: false }).post(user)
-			await updateParent()
-			if (updateError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
-			}
-			return router.push('/yourProfile/personalData')
-		} else if (payload.value.type === "AcademyManager" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
+      await updateParent()
+      if (updateError.value) {
+        alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+        return
+      }
+      return router.push('/yourProfile/personalData')
+    } else if (payload.value.type === "AcademyManager" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
       const { execute: updateManager, error: updateError } = useFetch(`/api/manager/${payload.value.id}`, { immediate: false }).post(user)
-			await updateManager()
-			if (updateError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
-			}
-			return router.push('/yourProfile/personalData')
-		}
-	}
+      await updateManager()
+      if (updateError.value) {
+        alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+        return
+      }
+      return router.push('/yourProfile/personalData')
+    }
+  }
 }
 </script>
 
@@ -178,7 +182,10 @@ const onSubmit = async () => {
   <MiniWhiteFrame>
 
     <template #nav>
-      <button @click="goEditYourProfile">
+      <button @click="goEditPassword()">
+        <img src="../assets/password-icon.png" class="h-24px" />
+      </button>
+      <button @click="goEditYourProfile" v-if="!props.edit">
         <img src="../assets/edit-icon.png" class="h-24px" />
       </button>
     </template>

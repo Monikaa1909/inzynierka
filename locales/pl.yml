@@ -208,6 +208,7 @@ info:
   remember-credentials: Pamiętaj by zapamiętać podane dane logowania!
   on-email: Hasło zostało wysłane na podany adres e-mail
   able-password-trainer: Aby móc zmienić hasło trenera
+  able-password-parent: Aby móc zmienić hasło rodzica
   enter-your-password: musisz podać swoje hasło
   enter-new-password: Podaj nowe hasło
   repeat-new-password: Powtórz nowe hasło

@@ -209,10 +209,13 @@ info:
   on-email: Password has been sent to the e-mail address provided
   remember-credentials: Be sure to remember these credentials!
   able-password-trainer: To be able to change trainer password
+  able-password-parent: To be able to change parent password
   enter-your-password: please enter your password
   enter-new-password: Enter new password
   repeat-new-password: Repeat new password
   password-changed: Password successfully changed!
+  password-user: Password of user
+  changed-successfully: has been changed successfully!
 other:
   confirming-deleting: Are you sure you want to delete
 not-found: Not found
