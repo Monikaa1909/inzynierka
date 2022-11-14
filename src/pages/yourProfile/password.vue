@@ -11,8 +11,6 @@ payload.value = payloadData.value as unknown as JwtPayload
 const router = useRouter()
 const { t } = useI18n()
 
-const props = defineProps<{ id: string }>()
-
 const password = ref('')
 const newPassword = ref('')
 const newPasswordRepeat = ref('')
@@ -26,10 +24,10 @@ const newCredentials = computed(() => ({
 }))
 
 const { data: managerData, error: managerError, execute: submitManager } = useFetch(`/api/auth/validate/password/${payload.value.id}`, { immediate: false }).post(credentials).text()
-const { data: trainerData, error: trainerError, execute: submitTrainer } = useFetch(`/api/auth/change/password/${props.id}`, { immediate: false }).post(newCredentials).text()
+const { data: yourData, error: yourDataError, execute: submitNewPassword } = useFetch(`/api/auth/change/password/${payload.value.id}`, { immediate: false }).post(newCredentials).text()
 
 const error = computed(() => {
-	return managerError.value && trainerError.value
+	return managerError.value && yourDataError.value
 })
 
 const successfullySubmittedManagerPassword = ref(false)
@@ -41,12 +39,8 @@ whenever(managerData, (data) => {
   else successfullySubmittedManagerPassword.value = false
 })
 
-const firstName = ref('')
-const lastName = ref('')
-whenever(trainerData, (data) => {
+whenever(yourData, (data) => {
   successfullySubmittedTrainerPassword.value = true
-  firstName.value = JSON.parse(data).firstName
-  lastName.value = JSON.parse(data).lastName
 })
 
 const submitManagerPassword = async () => {
@@ -55,7 +49,7 @@ const submitManagerPassword = async () => {
 }
 
 const submitTrainerPassword = async () => {
-  submitTrainer()
+  submitNewPassword()
 }
 
 const passwordErrorMessage = computed(() => {
@@ -80,8 +74,8 @@ const newPasswordErrorMessage = computed(() => {
             <MessageInfo v-if="!error && !successfullySubmittedManagerPassword && !successfullySubmittedTrainerPassword">
               <template #info>
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
-                  <p class="text-center">{{t('info.able-password-trainer')}},</p>
-                  <p class="text-center">{{t('info.enter-your-password')}}:</p>
+                  <p class="text-center">{{t('info.able-password-your')}},</p>
+                  <p class="text-center">{{t('info.enter-your-old-password')}}:</p>
                   <input v-model="password" name="password" type="password"
                     class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
                   <p v-if="passwordErrorMessage" class="text-xs color-red">
@@ -120,9 +114,7 @@ const newPasswordErrorMessage = computed(() => {
             <MessageInfo v-else-if="!error && successfullySubmittedTrainerPassword">
               <template #info>
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
-                  <p class="text-center">{{t('info.password-user')}}:</p>
-                  <p class="text-center font-medium">{{firstName}} {{lastName}}</p>
-                  <p class="text-center">{{t('info.changed-successfully')}}</p>
+                  <p class="text-center">{{t('info.password-changed')}}:</p>
                 </div>
               </template>
               <template #button>

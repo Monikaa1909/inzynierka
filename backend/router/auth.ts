@@ -5,8 +5,10 @@ import { Router } from "express"
 import { models } from "mongoose"
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
+import { AcademyManager } from "backend/database/schemas/AcademyManager.user"
 
 export default (router: Router) => {
+  
   router.post('/auth/register/trainer', async (req, res) => {
     try {
       const password = crypto.randomBytes(16).toString('hex')
@@ -26,17 +28,19 @@ export default (router: Router) => {
 
   router.post('/auth/register/manager', async (req, res) => {
     try {
+      console.log('auth/register/manager')
       const password = crypto.randomBytes(16).toString('hex')
 
-      const trainer: Trainer = await models.Trainer.create({
+      const manager: AcademyManager = await models.AcademyManager.create({
         ...req.body,
         password
       })
 
       console.log(password)
 
-      res.send(trainer)
+      res.send(password)
     } catch (error) {
+      console.log(error)
       res.status(400).send(error)
     }
   })

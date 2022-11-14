@@ -41,6 +41,7 @@ button:
   register-parent: Register parent
   ok: Ok
   submit: Submit
+  next: Next
 intro:
   start: Start using the application!
   aplikacja: Application
@@ -55,6 +56,7 @@ login:
   sign-in: SIGN IN
   log-out: Log out
   register: REGISTER
+  register-academy: REGISTER ACADEMY
   trainer: TRAINER
   academy: ACADEMY
   parent: PARENT
@@ -188,6 +190,8 @@ error-messages:
   birthday-date-message: Player's birthday date is greater than the team's starting year
   valid-postal-code: This field must be a valid postal code
   valid-number: This field must be a valid number
+  valid-email: This field must be a valid email
+  valid-nationality: This field must be a valid nationality
   valid-phone-number: This field must be a valid phone number
   valid-city: This field must be a valid city name (numbers and special characters are not allowed)
   year: This field must be a valid number
@@ -199,6 +203,8 @@ error-messages:
   invalid-credentials: Invalid login or password
   register-trainer: Error while registering trainer. An account with this email and login probably already exists. Please try again with different details or contact us via email
   register-parent: Error while registering parent. An account with this email and login probably already exists. Please try again with different details or contact us via email
+  register-manager: Error while registering academy manager. An account with this email and login probably already exists. Please try again with different details or contact us via email
+  register-academy: Error while registering academy. An accademy of that name probably already exists. Please try again with different details or contact us via email
   wrong-password: Wrong password
   diffrent-passwords: The passwords must be the same
   weak-password: Password is too weak (use uppercase and lowercase letters, numbers and special characters)
@@ -210,6 +216,8 @@ info:
   remember-credentials: Be sure to remember these credentials!
   able-password-trainer: To be able to change trainer password
   able-password-parent: To be able to change parent password
+  able-password-your: To be able to change your password
+  enter-your-old-password: please enter your old password
   enter-your-password: please enter your password
   enter-new-password: Enter new password
   repeat-new-password: Repeat new password

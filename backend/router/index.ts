@@ -26,10 +26,48 @@ router.post('/db:seed', async (req, res) => {
     return seedDatabase()
 })
 
+router.post('/academy', async (req, res) => {
+    try {
+        const academy = new models.Academy({ academyName: req.body.academyName });
+        academy.save(function (err) {
+            if (err) {
+                console.log(err.message)
+                res.status(400).send(err)
+            } 
+            else res.send(academy)
+        })
+        
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/managers', async (req, res) => {
     try {
         const academyManager = await models.AcademyManager.find()
         res.send(academyManager)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/academies', async (req, res) => {
+    try {
+        const academies = await models.Academy.find()
+        res.send(academies)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/managers', async (req, res) => {
+    try {
+        const academies = await models.AcademyManager.find()
+        .populate({
+            path: 'academy',
+            model: 'Academy',
+        })
+        res.send(academies)
     } catch (error) {
         res.status(400).send(error)
     }
@@ -144,6 +182,7 @@ router.post('/player', async (req, res) => {
         res.status(400).send(error)
     }
 })
+
 
 router.post('/player/:id', async (req, res) => {
     try {

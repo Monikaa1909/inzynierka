@@ -57,7 +57,7 @@ export const validateNationality = (value: any) => {
 	const regex3 = /^[\s][.]*/i;
 	const regex4 = /[.]*[\s]$/i;
 	if (regex2.test(value) || !regex1.test(value) || regex3.test(value) || regex4.test(value)) {
-		return 'error-messages.valid-name';
+		return 'error-messages.valid-nationality';
 	}
 	return '';
 }
@@ -80,7 +80,7 @@ export const validateEmail = (value: any) => {
 	}
 	const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 	if (!regex.test(value)) {
-		return 'error-messages.valid-name'
+		return 'error-messages.valid-email'
 	}
 	return '';
 }

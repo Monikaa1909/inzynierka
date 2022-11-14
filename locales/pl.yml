@@ -41,6 +41,7 @@ button:
   register-parent: Zarejestruj rodzica
   ok: Ok
   submit: Zatwierdź
+  next: Dalej
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   description:
@@ -54,6 +55,7 @@ login:
   sign-in: ZALOGUJ SIĘ
   log-out: Wyloguj się
   register: ZAREJESTRUJ SIĘ
+  register-academy: ZAREJESTRUJ AKADEMIĘ
   trainer: TRENER
   academy: AKADEMIA
   parent: RODZIC
@@ -188,6 +190,8 @@ error-messages:
   valid-postal-code: To pole musi zawierać poprawny kod pocztowy
   valid-number: To pole musi zawierać poprawny numer
   valid-phone-number: To pole musi zawierać poprawny numer telefonu
+  valid-email: To pole musi zawierać poprawny e-mail
+  valid-nationality: To pole musi zawierać poprawną nazwę narodowości
   valid-city: To pole musi zawierać poprawną nazwę miasta (cyfry i znaki specjalne nie są dozwolone)
   year: To pole musi zawierać poprawną liczbę
   start-year: Dolny rocznik musi być mniejszy od górnego rocznika
@@ -209,7 +213,9 @@ info:
   on-email: Hasło zostało wysłane na podany adres e-mail
   able-password-trainer: Aby móc zmienić hasło trenera
   able-password-parent: Aby móc zmienić hasło rodzica
+  able-password-your: Aby móc zmienić swoje hasło
   enter-your-password: musisz podać swoje hasło
+  enter-your-old-password: musisz podać swoje aktualne hasło
   enter-new-password: Podaj nowe hasło
   repeat-new-password: Powtórz nowe hasło
   password-changed: Hasło zostało pomyślnie zmienione!

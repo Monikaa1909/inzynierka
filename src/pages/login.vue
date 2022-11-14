@@ -59,7 +59,7 @@ const submit = async () => {
 <template>
   <div class="flex h-full justify-center p-4">
     <div class="flex flex-col self-center justify-between" >
-      <div class="flex flex-row justify-between gap-4 m-2">
+      <div class="flex flex-col justify-between gap-4 m-2 sm:(flex-row)">
         <p class="flex self-center">{{ t('login.login') }}:</p>
         <div class="flex flex-col">
           <input v-model="login" type="login" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg">
@@ -67,7 +67,7 @@ const submit = async () => {
         </div>
       </div>
       
-      <div class="flex flex-row justify-between gap-4 m-2">
+      <div class="flex flex-col justify-between gap-4 m-2 sm:(flex-row)">
         <p class="self-center">{{ t('login.password') }}:</p>
         <div class="flex flex-col">
           <input v-model="password" type="password" class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg">

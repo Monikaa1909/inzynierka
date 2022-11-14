@@ -9,9 +9,9 @@ const { t } = useI18n()
     <router-link to="/login" class="bg-#143547 p-2 text-#FFFFFF self-center w-300px m-2 shadow-lg text-center hover:bg-#2F4D5E sm:(px-8)" >
       {{ t('login.sign-in') }}
     </router-link>
-    <p class="bg-#143547 p-2 text-#FFFFFF self-center w-300px m-2 shadow-lg text-center hover:bg-#2F4D5E sm:(px-8)">
-      {{ t('login.register') }}
-    </p>
+    <router-link to="/register" class="bg-#143547 p-2 text-#FFFFFF self-center w-300px m-2 shadow-lg text-center hover:bg-#2F4D5E sm:(px-8)">
+      {{ t('login.register-academy') }}
+    </router-link>
   </div>
 </template>
 
