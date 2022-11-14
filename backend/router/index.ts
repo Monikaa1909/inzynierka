@@ -42,6 +42,15 @@ router.post('/academy', async (req, res) => {
     }
 })
 
+router.get('/academy/:id', async (req, res) => {
+    try {
+        const academy = await models.Academy.findById(req.params.id)
+        res.send(academy)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.delete('/academy/:id', async (req, res) => {
     try {
         const academy = await models.Academy.findOneAndDelete({ _id: req.params.id })

@@ -4,6 +4,7 @@ import { Trainer } from 'backend/database/schemas/Trainer.user'
 import { Parent } from 'backend/database/schemas/Parent.user'
 import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
+import { Academy } from 'backend/database/schemas/Academy'
 
 const token = useStorage('user:token', '')
 const { payload: payloadData } = useJwt(() => token.value ?? '')
@@ -18,6 +19,12 @@ const toggleLocales = () => {
   locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
   isHidden.value = true
 }
+
+const {
+  data: academy,
+  error: academyError,
+  execute: refechAcademy
+} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
 
 const {
   data: manager,
@@ -44,18 +51,21 @@ else if (payload.value.type === 'Parent') refechParent()
 
 whenever(manager, (data) => {
   user.value = data
+  refechAcademy()
 })
 
 whenever(trainer, (data) => {
   user.value = data
+  refechAcademy()
 })
 
 whenever(parent, (data) => {
   user.value = data
+  refechAcademy()
 })
 
 const error = computed(() => {
-  return parentError.value && managerError.value && trainerError.value
+  return parentError.value && managerError.value && trainerError.value && academyError.value
 })
 
 const isHidden = ref(true)
@@ -180,6 +190,7 @@ const logout = async () => {
             <img src="../assets/settings-icon.png" class="px-2 py-0.5 h-24px" />
           </button>
         </div>
+        <p class="px-2 justify-items-center text-xs color-white">{{ academy?.academyName }}</p>
         <div>
           <div id="dropdownNavbar" :class="[isHidden ? 'hidden' : '']"
             class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44">
@@ -199,7 +210,7 @@ const logout = async () => {
           </div>
         </div>
       </div>
-      <img src="../assets/default-trainer.jpg" alt="Avatar" class="px-2 py-0.5 h-80px w-auto self-center rounded-1/2" />
+      <!-- <img src="../assets/user-icon.png" alt="Avatar" class="px-2 py-0.5 h-75px w-auto self-center" /> -->
     </div>
   </div>
 </template>
