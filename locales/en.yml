@@ -211,6 +211,7 @@ error-messages:
 info:
   trainer-registered: The trainer has been successfully registered! 
   parent-registered: The parent has been successfully registered!
+  manager-registered: Your manager account has been successfully registered!
   login-details: Here are the login details
   on-email: Password has been sent to the e-mail address provided
   remember-credentials: Be sure to remember these credentials!
@@ -224,6 +225,17 @@ info:
   password-changed: Password successfully changed!
   password-user: Password of user
   changed-successfully: has been changed successfully!
+  press-ok: Press Ok i go to login!
+register:
+  welcome: Welcome in Crew Assistant!
+  to-register: To register your academy
+  need-steps: you need to follow a few steps
+  we-help: We will help you with this!
+  to-continue: To continue press
+  next: Next
+  step: Step
+  give-academy: Enter the name of your academy
+  give-your-data: Enter your details as an Academy Manager
 other:
   confirming-deleting: Are you sure you want to delete
 not-found: Not found

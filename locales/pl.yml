@@ -44,6 +44,7 @@ button:
   next: Dalej
 intro:
   start: Rozpocznij korzystanie z aplikacji!
+  aplikacja: Aplikacja
   description:
     first: Aplikacja
     second: wspomagająca
@@ -202,12 +203,15 @@ error-messages:
   invalid-credentials: Błędny login lub hasło
   register-trainer: Bład przy rejestracji trenera. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
   register-parent: Bład przy rejestracji rodzica. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
+  register-manager: Bład przy rejestracji menadżera akademii. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
+  register-academy: Bład przy rejestracji akademii. Akademia o takiej nazwie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
   wrong-password: Błędne hasło
   diffrent-passwords: Hasła muszą być takie same
   weak-password: Hasło jest zbyt słabe (używaj dużych i małych liter, cyfr oraz znaków specjalnych)
 info:
   trainer-registered: Trener został pomyślnie zarejestrowany! 
   parent-registered: Rodzic został pomyślnie zarejestrowany! 
+  manager-registered: Twoje konto menadżera zostało pomyślnie zarejestrowane!
   login-details: Oto dane logowania
   remember-credentials: Pamiętaj by zapamiętać podane dane logowania!
   on-email: Hasło zostało wysłane na podany adres e-mail
@@ -219,6 +223,19 @@ info:
   enter-new-password: Podaj nowe hasło
   repeat-new-password: Powtórz nowe hasło
   password-changed: Hasło zostało pomyślnie zmienione!
+  password-user: Hasło użytkownika
+  changed-successfully: zostało pomyślnie zmienione!
+  press-ok: Kliknij Ok i przejdź do logowania!
+register:
+  welcome: Witaj w Crew Assistant!
+  to-register: Aby zarejestrować swoją akademię
+  need-steps: musisz wykonać kilka kroków
+  we-help: Pomożemy Ci w tym!
+  to-continue: Aby kontynuować, kliknij
+  next: Dalej
+  step: Krok
+  give-academy: Podaj nazwę swojej akademii
+  give-your-data: Podaj swoje dane jako Menadżera Akademii
 other:
   confirming-deleting: Czy na pewno chcesz usunąć
 not-found: Nie znaleziono

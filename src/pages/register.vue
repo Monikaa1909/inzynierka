@@ -5,7 +5,7 @@ import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 import { DatePicker } from 'v-calendar'
 import 'v-calendar/dist/style.css'
-import {Academy} from 'backend/database/schemas/Academy'
+import { Academy } from 'backend/database/schemas/Academy'
 
 const token = useStorage('user:token', '')
 const { payload: payloadData } = useJwt(() => token.value ?? '')
@@ -24,18 +24,18 @@ const academyManager = ref({} as Omit<AcademyManager, '_id'>)
 
 const academyId = ref('')
 const newManager = computed(() => ({
-	login: academyManager.value.login,
-	email: academyManager.value.email,
-	academy: academyManager.value.academy,
-	lastName: academyManager.value.lastName,
-	firstName: academyManager.value.firstName,
-	nationality: academyManager.value.nationality,
-	birthdayDate: academyManager.value.birthdayDate,
-	phoneNumber: academyManager.value.phoneNumber,
+  login: academyManager.value.login,
+  email: academyManager.value.email,
+  academy: academyManager.value.academy,
+  lastName: academyManager.value.lastName,
+  firstName: academyManager.value.firstName,
+  nationality: academyManager.value.nationality,
+  birthdayDate: academyManager.value.birthdayDate,
+  phoneNumber: academyManager.value.phoneNumber,
 }))
 
-const { execute: saveAcademy, isFetching: isAcademyFetching, isFinished:isAcademyFinished, error: saveAcademyError, data: academyData } = useFetch('api/academy', { immediate: false }).post(academy)
-const { execute: saveManager, isFetching: isManagerFetching, isFinished:isManagerFinished, error: saveManagerError, data: passwordData } = useFetch(`/api/auth/register/manager`, { immediate: false }).post(newManager)
+const { execute: saveAcademy, isFetching: isAcademyFetching, isFinished: isAcademyFinished, error: saveAcademyError, data: academyData } = useFetch('api/academy', { immediate: false }).post(academy)
+const { execute: saveManager, isFetching: isManagerFetching, isFinished: isManagerFinished, error: saveManagerError, data: passwordData } = useFetch(`/api/auth/register/manager`, { immediate: false }).post(newManager)
 
 const step = ref(1)
 const next = async () => {
@@ -56,11 +56,11 @@ const next = async () => {
       return
     }
     else {
-      if(!academyAdded.value)
+      if (!academyAdded.value)
         await saveAcademy()
-      else 
+      else
         await saveManager()
-    } 
+    }
   }
 }
 
@@ -70,7 +70,7 @@ const academyAdded = ref(false)
 const newAcademy = ref({} as string)
 whenever(isAcademyFinished, async (data) => {
   if (!saveAcademyError.value) {
-    
+
     newAcademy.value = academyData.value as unknown as string
     academyId.value = JSON.parse(newAcademy.value)._id
     academyManager.value.academy = academyId.value as unknown as Academy
@@ -88,7 +88,7 @@ whenever(isAcademyFinished, async (data) => {
 whenever(isManagerFinished, async (data) => {
   if (saveManagerError.value) {
     alert(t('error-messages.register-manager') + ' crewAssistantHelp@gmail.com')
-  } 
+  }
   else {
     successfullyRegistered.value = true
     step.value += 1
@@ -96,7 +96,7 @@ whenever(isManagerFinished, async (data) => {
 })
 
 const isFetching = computed(() => {
-	return isAcademyFetching.value && isManagerFetching.value
+  return isAcademyFetching.value && isManagerFetching.value
 })
 
 const nameErrorMessage = computed(() => {
@@ -157,6 +157,14 @@ const nationalityErrorMessage = computed(() => {
   return t(validateNationality(academyManager.value.nationality))
 })
 
+const cancel = async () => {
+  if (academyAdded.value && !successfullyRegistered.value) {
+    await useFetch(`/api/academy/${academyId.value}`).delete()
+    console.log('usunięto akademię')
+  }
+  return router.go(-1)
+}
+
 </script>
 
 <template>
@@ -164,21 +172,20 @@ const nationalityErrorMessage = computed(() => {
     <div class="flex flex-col gap-2 self-center justify-between ">
 
       <div v-if="step === 1" class="flex flex-col gap-2 self-center justify-between">
-        <p class="text-center text-xl font-medium mb-2">Witaj w Crew Assistant!</p>
-        <p class="text-center text-xl">Aby zarejestrować swoją akademię,</p>
-        <p class="text-center text-xl mb-2">musisz wykonać kilka kroków.</p>
+        <p class="text-center text-xl font-medium mb-4">{{t('register.welcome')}}</p>
 
-        <p class="text-center text-xl mb-2">Pomożemy Ci w tym!</p>
+        <p class="text-center text-xl">{{t('register.to-register')}},</p>
+        <p class="text-center text-xl mb-4">{{t('register.need-steps')}}.</p>
 
         <div class="flex flex-row flex-wrap gap-2 self-center mb-2">
-          <p class="text-center text-xl ">Aby kontynuować, kliknij </p>
-          <p class="text-center text-xl font-medium">Dalej</p>
+          <p class="text-center text-xl">{{t('register.to-continue')}}</p>
+          <p class="text-center text-xl font-medium">{{t('register.next')}}</p>
         </div>
       </div>
 
       <div v-if="step === 2" class="flex flex-col gap-2 self-center justify-between">
-        <p class="text-center text-xl font-medium mb-2">Krok 1</p>
-        <p class="text-center text-xl">Podaj nazwę swojej akademii:</p>
+        <p class="text-center text-xl font-medium mb-4">{{t('register.step')}} 1.</p>
+        <p class="text-center text-xl">{{t('register.give-academy')}}:</p>
         <input v-model="academy.academyName" name="academyName" type="input"
           class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 
@@ -186,8 +193,8 @@ const nationalityErrorMessage = computed(() => {
       </div>
 
       <div v-if="step === 3" class="flex flex-col gap-2 self-center justify-between">
-        <p class="text-center text-xl font-medium mb-2">Krok 2</p>
-        <p class="text-center text-xl">Podaj swoje dane jako menadżera akademii:</p>
+        <p class="text-center text-xl font-medium mb-4">{{t('register.step')}} 2.</p>
+        <p class="text-center text-xl">{{t('register.give-your-data')}}:</p>
 
         <SingleInput>
           <template #inputName>{{ t('single-trainer.first-name') }}:</template>
@@ -280,8 +287,20 @@ const nationalityErrorMessage = computed(() => {
 
       <div v-if="step === 4" class="flex flex-col gap-2 self-center justify-between">
         <LoadingCircle v-if="isFetching"></LoadingCircle>
-        <div v-else-if="successfullyRegistered" class="flex flex-row flex-wrap gap-2 self-center ">
-          <p >Udało Ci się poprawnie zarejestrować akademie!</p>
+        <div v-else-if="successfullyRegistered" class="flex flex-col gap-2 place-content-center place-items-center">
+          <p class="text-center">{{ t('info.manager-registered') }}</p>
+          <p class="text-center">{{ t('info.login-details') }}:</p>
+          <div class="w-full flex flex-row gap-4 place-content-center mt-4">
+            <p>{{ t('login.login') }}:</p>
+            <p class="font-medium">{{ newManager.login }}</p>
+          </div>
+          <div class="w-full flex flex-row gap-2 place-content-center">
+            <p>{{ t('login.password') }}:</p>
+            <p class="font-medium">{{ passwordData }}</p>
+          </div>
+          <p class="font-bold text-center my-4">{{ t('info.remember-credentials') }}</p>
+
+          <p>{{ t('info.press-ok') }}</p>
         </div>
       </div>
 
@@ -290,19 +309,27 @@ const nationalityErrorMessage = computed(() => {
           <template #buttonName>{{ t('button.back') }}</template>
         </SingleButton>
 
-        <SingleButton v-else @click="step -= 1" class=" flex flex-auto">
+        <SingleButton v-else-if="step < 4" @click="step -= 1" class=" flex flex-auto">
           <template #buttonName>{{ t('button.back') }}</template>
         </SingleButton>
 
-        <SingleButton v-if="step === 4" @click="next" class=" flex flex-auto">
+        <SingleButton v-if="step === 3" @click="next" class=" flex flex-auto">
           <template #buttonName>{{ t('login.register') }}</template>
         </SingleButton>
 
-        <SingleButton v-else @click="next" class=" flex flex-auto">
+        <SingleButton v-else-if="step < 4" @click="next" class=" flex flex-auto">
           <template #buttonName>{{ t('button.next') }}</template>
         </SingleButton>
 
       </div>
+
+      <SingleButton v-if="step < 4" @click="cancel()" class=" flex flex-auto my-4 mx-8">
+        <template #buttonName>{{ t('button.cancel') }}</template>
+      </SingleButton>
+
+      <SingleButton v-else-if="step === 4" @click="router.go(-1)" class=" flex flex-auto m-2">
+        <template #buttonName>{{ t('button.ok') }}</template>
+      </SingleButton>
 
     </div>
   </div>

@@ -42,6 +42,15 @@ router.post('/academy', async (req, res) => {
     }
 })
 
+router.delete('/academy/:id', async (req, res) => {
+    try {
+        const academy = await models.Academy.findOneAndDelete({ _id: req.params.id })
+        res.send(academy)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/managers', async (req, res) => {
     try {
         const academyManager = await models.AcademyManager.find()
