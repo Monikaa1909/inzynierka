@@ -208,6 +208,7 @@ error-messages:
   wrong-password: Błędne hasło
   diffrent-passwords: Hasła muszą być takie same
   weak-password: Hasło jest zbyt słabe (używaj dużych i małych liter, cyfr oraz znaków specjalnych)
+  goals-error: Liczba bramek zdobytych przez twoją drużynę nie zgadza się z sumą bramek zdobytych przez zawodników
 info:
   trainer-registered: Trener został pomyślnie zarejestrowany! 
   parent-registered: Rodzic został pomyślnie zarejestrowany! 

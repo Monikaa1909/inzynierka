@@ -211,11 +211,14 @@ const nameErrorMessage = computed(() => {
 										<template #name>{{ t('match-statistic.red-cards') }}</template>
 										<template #data v-if="statistic.attendance">
 											<div class="w-full flex flex-col">
-												<select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.redCards">
-													<option :value="0">0</option>
-													<option :value="1">1</option>
-												</select>
-												<p class="text-xs text-red flex text-center" v-if="statistic.yellowCards === 2">
+												<div class="flex justify-center">
+													<select class="flex  border-1 border-#143547 text-xs shadow-lg" v-model="statistic.redCards">
+														<option :value="0">0</option>
+														<option :value="1">1</option>
+													</select>
+												</div>
+												<p class="text-xs text-red flex text-center"
+													v-if="statistic.yellowCards === 2 && statistic.redCards != 1">
 													{{ t('error-messages.red-cards-message') }}
 												</p>
 											</div>
