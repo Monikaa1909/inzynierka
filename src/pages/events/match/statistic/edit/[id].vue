@@ -78,6 +78,10 @@ for (let i = 0; i < 120; i++) {
 }
 
 const onSubmit = async () => {
+	if (totalGoals.value != match.value.goalsScored) {
+		alert(t('error-messages.goals-error') + ' (' + totalGoals.value + ')')
+		return
+	}
 
 	const { execute: updateMatch, error: updateError } = useFetch(`/api/match/${match.value._id}`, { immediate: false }).post(match)
 	await updateMatch()
@@ -111,6 +115,18 @@ const onSubmit = async () => {
 	})
 	return router.go(-1)
 }
+
+const totalGoals = computed(() => {
+	let sum = 0
+	matchStatistic.value.forEach(element => {
+		if (element.attendance)
+			sum = Number(sum) + Number(element.goalsScored ? element.goalsScored : 0)
+	})
+
+	if (match.value.goalsScored && sum > match.value.goalsScored) match.value.goalsScored = sum
+
+	return sum
+})
 
 </script>
 

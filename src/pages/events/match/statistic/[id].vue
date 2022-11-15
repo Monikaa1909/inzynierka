@@ -349,7 +349,9 @@ const updateAverageStatisticWithoutAbsent = () => {
 				<MiniWhiteFrame>
 
 					<template #nav>
-						<button @click="refechPlayers()">Refresh</button>
+						<button @click="refechPlayers()">
+							<img src="../../../../assets/refresh-icon.png" class="h-24px" />
+						</button>
 						<button @click="isHidden = !isHidden">
 							<img src="../../../../assets/filter-icon.png" class="h-24px" />
 						</button>

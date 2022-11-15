@@ -121,14 +121,14 @@ const startDateErrorMessage = computed(() => {
 	if (!validateStartDate(event.value.startDate, event.value.endDate)) {
 		return false
 	}
-	return validateStartDate(event.value.startDate, event.value.endDate)
+	return t(validateStartDate(event.value.startDate, event.value.endDate))
 })
 
 const endDateErrorMessage = computed(() => {
 	if (!validateEndDate(event.value.endDate, event.value.startDate)) {
 		return false
 	}
-	return validateEndDate(event.value.endDate, event.value.startDate)
+	return t(validateEndDate(event.value.endDate, event.value.startDate))
 })
 
 const match = ref({} as Omit<Match, '_id'>)
@@ -185,7 +185,7 @@ const onSubmit = async () => {
 
 	} else if (event.value.type === 'Tournament') {
 		if (nameErrorMessage.value || startDateErrorMessage.value || endDateErrorMessage.value || teamErrorMessage.value)
-			alert(t('error-messages.validation-error') + 'tourname')
+			alert(t('error-messages.validation-error'))
 		else {
 			tournament.value = {
 				tournamentName: event.value.tournamentName,

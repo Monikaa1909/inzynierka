@@ -142,7 +142,7 @@ export const validateStartYear = (value: any, endYear: any) => {
 
 export const validateEndYear = (value: any, startYear: any) => {
 	if (!value) {
-		return 'error-messages.required-field';
+		return 'error-messages.required-field'
 	}
 	const regex = /^[1-2]{1}[0-9]{3}/i;
 	if (!regex.test(value)) {
@@ -157,7 +157,7 @@ export const validateEndYear = (value: any, startYear: any) => {
 
 export const validateStartDate = (startDate: Date, endDate: Date) => {
 	if (!startDate) {
-		return 'error-messages.required-field';
+		return 'error-messages.required-field'
 	}
 	if (startDate >= endDate) {
 		return 'error-messages.start-date'
