@@ -123,7 +123,7 @@ const totalGoals = computed(() => {
 			sum = Number(sum) + Number(element.goalsScored ? element.goalsScored : 0)
 	})
 
-	if (match.value.goalsScored && sum > match.value.goalsScored) match.value.goalsScored = sum
+	// if (match.value.goalsScored && sum > match.value.goalsScored) match.value.goalsScored = sum
 
 	return sum
 })
@@ -142,9 +142,9 @@ const totalGoals = computed(() => {
 						</button>
 					</template>
 
-					<template #icon>
+					<!-- <template #icon>
 						<img src="../../../../../assets/statistic-icon2.png" class="h-150px" />
-					</template>
+					</template> -->
 
 					<template #attributes>
 

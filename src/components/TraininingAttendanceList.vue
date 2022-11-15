@@ -29,7 +29,7 @@ const {
 	isFinished: isAttendanceListFinished,
 	error: attendanceListError,
 	execute: refechAttendanceList
-} = useFetch(`/api/attendanceList/training/${props.id}`, { initialData: [], immediate: false }).json<AttendanceList[]>()
+} = useFetch(`/api/attendanceLists/training/${props.id}`, { initialData: [], immediate: false }).json<AttendanceList[]>()
 
 const {
 	data: players,
@@ -144,7 +144,9 @@ const goEditAttendanceList = (eventId: any) => {
 	<MiniWhiteFrame>
 
 		<template #nav v-if="!props.edit">
-			<button @click="refechPlayers()">Refresh</button>
+			<button @click="refechPlayers()">
+				<img src="../assets/refresh-icon.png" class="h-24px" />
+			</button>
 			<button @click="goEditAttendanceList(props.id)">
 				<img src="../assets/edit-icon.png" class="h-24px" />
 			</button>
@@ -159,23 +161,33 @@ const goEditAttendanceList = (eventId: any) => {
 			<LoadingCircle v-if="isFetching"></LoadingCircle>
 
 			<div v-else-if="isFinished && !error && isAttendanceList" v-for="playerAttendance in attendanceList"
-				v-bind:key="playerAttendance._id" class="w-full  flex flex-row gap-4 place-content-between">
-				<div class="w-auto flex flex-row gap-2">
-					<button v-if="props.edit" @click="playerAttendance.attendance = !playerAttendance.attendance">
+				v-bind:key="playerAttendance._id"
+				class="w-full flex flex-col gap-4 place-content-between sm:(flex-row place-content-between)">
+				<div class="w-auto flex flex-col gap-2 justify-center sm:(flex-row)">
+
+					<button v-if="props.edit" @click="playerAttendance.attendance = !playerAttendance.attendance"
+						class="flex w-full justify-center">
 						<img v-if="playerAttendance.attendance" src="../assets/checkbox-checked-icon.png" class="h-18px" />
 						<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-18px" />
 					</button>
-					<div v-else>
+
+					<div v-else class="flex w-full justify-center">
 						<img v-if="playerAttendance.attendance" src="../assets/checkbox-checked-icon.png" class="h-18px" />
 						<img v-else src="../assets/checkbox-unchecked-icon.png" class="h-18px" />
 					</div>
-					<p class="flex items-center">{{ playerAttendance.player.firstName }}</p>
-					<p class="flex items-center">{{ playerAttendance.player.lastName }}</p>
+
+					<p class=" w-full  items-center text-center">{{ playerAttendance.player.firstName }}</p>
+					<p class=" w-full items-center  text-center">{{ playerAttendance.player.lastName }}</p>
 				</div>
+
 				<div class="w-auto flex flex-row gap-2 items-center">
 					<p class=" flex text-sm" v-if="!props.edit && playerAttendance.remarks">({{ playerAttendance.remarks }})</p>
 					<textarea v-else-if="props.edit" v-model="playerAttendance.remarks"
 						class="flex flex-auto w-full text-xs border-1 border-#143547 h-24px shadow-lg"></textarea>
+				</div>
+
+				<div class="self-center justify-self-center col-span-2 block sm:(hidden)">
+					<img src="../assets/line-icon.png" class="w-full" />
 				</div>
 			</div>
 
@@ -192,8 +204,11 @@ const goEditAttendanceList = (eventId: any) => {
 			<SingleButton v-if="props.edit" @click="onSubmit()">
 				<template v-slot:buttonName>{{ t('button.save') }}</template>
 			</SingleButton>
-			<SingleButton @click="router.go(-1)">
+			<SingleButton v-if="props.edit" @click="router.go(-1)">
 				<template v-slot:buttonName>{{ t('button.cancel') }}</template>
+			</SingleButton>
+			<SingleButton v-else @click="router.go(-1)">
+				<template v-slot:buttonName>{{ t('button.back') }}</template>
 			</SingleButton>
 		</template>
 

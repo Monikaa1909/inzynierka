@@ -7,7 +7,7 @@ button:
   set-language: JĘZYK
   change-language: Zmień język
   functions: FUNKCJE
-  contact: KONTAKT
+  contact: O NAS
   teams: DRUŻYNY
   players: ZAWODNICY
   trainers: TRENERZY
@@ -51,7 +51,7 @@ intro:
     third: zarządzanie
     fourth: akademią
     fifth: piłkarską
-  slogan: ZACHĘCAJĄCE HASŁO
+  slogan: RAZEM ZBUDUJEMY TWOJĄ DRUŻYNĘ!
 login:
   sign-in: ZALOGUJ SIĘ
   log-out: Wyloguj się
@@ -238,5 +238,5 @@ register:
   give-academy: Podaj nazwę swojej akademii
   give-your-data: Podaj swoje dane jako Menadżera Akademii
 other:
-  confirming-deleting: Czy na pewno chcesz usunąć
+  confirming-deleting: Czy na pewno chcesz to usunąć
 not-found: Nie znaleziono

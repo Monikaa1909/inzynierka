@@ -7,7 +7,7 @@ button:
   set-language: LANGUAGE
   change-language: Change language
   functions: FUNCTIONS
-  contact: CONTACT
+  contact: ABOUT US
   teams: TEAMS
   players: PLAYERS
   trainers: TRAINERS
@@ -51,7 +51,7 @@ intro:
     third: managment
     fourth: support
     fifth: system
-  slogan: ENCOURAGING SLOGAN
+  slogan: BUILD YOUR TEAM WITH US!
 login:
   sign-in: SIGN IN
   log-out: Log out
@@ -238,5 +238,5 @@ register:
   give-academy: Enter the name of your academy
   give-your-data: Enter your details as an Academy Manager
 other:
-  confirming-deleting: Are you sure you want to delete
+  confirming-deleting: Are you sure you want to delete that
 not-found: Not found

@@ -358,9 +358,9 @@ const updateAverageStatisticWithoutAbsent = () => {
 						</button>
 					</template>
 
-					<template #icon>
+					<!-- <template #icon>
 						<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
-					</template>
+					</template> -->
 
 					<template #attributes>
 
