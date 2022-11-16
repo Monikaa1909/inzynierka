@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
     copy: typeof import('./components/Forms/EditMatchForm copy.vue')['default']
     Counter: typeof import('./components/Counter.vue')['default']
     DeletingMesageDialog: typeof import('./components/SingleElements/DeletingMesageDialog.vue')['default']
+    DeletingMessageDialog: typeof import('./components/SingleElements/DeletingMessageDialog.vue')['default']
     EditMatchForm: typeof import('./components/Forms/EditMatchForm.vue')['default']
     EditTournamentForm: typeof import('./components/Forms/EditTournamentForm.vue')['default']
     EditTrainingForm: typeof import('./components/Forms/EditTrainingForm.vue')['default']

@@ -65,11 +65,11 @@ const confirmDelete = async () => {
     </template>
 
     <template #data>
-      <DeletingMesageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
+      <DeletingMessageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
         <template #deletedItem>
           {{ deletingParent?.firstName }} {{ deletingParent?.lastName }}
         </template>
-      </DeletingMesageDialog>
+      </DeletingMessageDialog>
 
       <LoadingCircle v-else-if="isFetching"></LoadingCircle>
 
