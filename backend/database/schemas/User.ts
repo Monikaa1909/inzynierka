@@ -46,18 +46,13 @@ schema.pre('save', async function (next) {
   if (!user.isModified('password')) return next()
 
   const salt = await bcrypt.genSalt()
-
-  // hash the password along with our new salt
   const hash = await bcrypt.hash(user.password, salt)
   
-  // override the cleartext password with the hashed one
   user.password = hash
   next()
 })
 
 schema.methods.validatePassword = async function (candidatePassword: string) {
-
-
   return bcrypt.compare(candidatePassword, this.password)
 }
 
