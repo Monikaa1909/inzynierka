@@ -209,6 +209,11 @@ error-messages:
   diffrent-passwords: Hasła muszą być takie same
   weak-password: Hasło jest zbyt słabe (używaj dużych i małych liter, cyfr oraz znaków specjalnych)
   goals-error: Liczba bramek zdobytych przez twoją drużynę nie zgadza się z sumą bramek zdobytych przez zawodników
+  password:
+    lowercase: Hasło musi zawierać conajmniej 1 małą literę
+    uppercase: Hasło musi zawierać conajmniej 1 dużą literę
+    numeric: Hasło musi zawierać conajmniej 1 cyfrę
+    lenght: Hasło musi mieć conajmniej 8 znaków
 info:
   trainer-registered: Trener został pomyślnie zarejestrowany! 
   parent-registered: Rodzic został pomyślnie zarejestrowany! 

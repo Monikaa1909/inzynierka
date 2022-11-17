@@ -45,7 +45,7 @@ whenever(matchData, (data) => {
 })
 
 const isFinished = computed(() => {
-	return isSportsFacilitiesFinished.value 
+	return isSportsFacilitiesFinished.value
 })
 
 const isFetching = computed(() => {
@@ -53,7 +53,7 @@ const isFetching = computed(() => {
 })
 
 const error = computed(() => {
-	return sportsFacilitiesError.value && matchError.value 
+	return sportsFacilitiesError.value && matchError.value
 })
 
 const teamErrorMessage = computed(() => {
@@ -84,13 +84,13 @@ const { execute: updateMatch, error: updateError } = useFetch(`/api/match/${prop
 const onSubmit = async () => {
 	if (opponentErrorMessage.value || teamErrorMessage.value || opponentErrorMessage.value || dateErrorMessage.value)
 		alert(t('error-messages.validation-error'))
-    else {
-      event.value.sportsFacility = event.value.sportsFacility?._id as unknown as SportsFacility
-      await updateMatch()
-			if (updateError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
-			}
+	else {
+		event.value.sportsFacility = event.value.sportsFacility?._id as unknown as SportsFacility
+		await updateMatch()
+		if (updateError.value) {
+			alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+			return
+		}
 		return router.push('/calendar')
 	}
 }
@@ -101,7 +101,7 @@ const onSubmit = async () => {
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
 
 	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
- 
+
 		<SingleInput>
 			<template #inputName>{{ t('single-event.type') }}:</template>
 			<template #inputValue>
@@ -129,25 +129,25 @@ const onSubmit = async () => {
 			<template #errorMessage v-if="dateErrorMessage"> {{ dateErrorMessage }}</template>
 		</SingleInput>
 
-    
+
 		<SingleInput>
 			<template #inputName>{{ t('single-event.team') }}:</template>
 			<template #inputValue>
 				<p>{{ team }}</p>
 			</template>
 		</SingleInput>
-    
-    <SingleInput>
-      <template #inputName>{{ t('single-event.opponent') }}:</template>
-      <template #inputValue>
+
+		<SingleInput>
+			<template #inputName>{{ t('single-event.opponent') }}:</template>
+			<template #inputValue>
 				<input v-model="event.opponent" name="opponent" type="input"
 					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
-      <template #errorMessage v-if="opponentErrorMessage"> {{ opponentErrorMessage }} </template>
-    </SingleInput>
+			<template #errorMessage v-if="opponentErrorMessage"> {{ opponentErrorMessage }} </template>
+		</SingleInput>
 
 		<SingleInput>
-			<template #inputName >{{ t('single-event.friendly-match') }}:</template>
+			<template #inputName>{{ t('single-event.friendly-match') }}:</template>
 			<template #inputValue>
 				<button @click="event.friendly = !event.friendly">
 					<img v-if="event.friendly" src="../../assets/checkbox-checked-icon.png" class="h-18px" />
@@ -186,7 +186,7 @@ const onSubmit = async () => {
 			<SingleButton @click="router.go(-1)">
 				<template #buttonName>{{ t('button.cancel') }}</template>
 			</SingleButton>
-		</div> 
+		</div>
 	</div>
 
 	<ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>

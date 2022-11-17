@@ -55,6 +55,10 @@ const submitManagerPassword = async () => {
 }
 
 const submitTrainerPassword = async () => {
+  if (newPasswordErrorMessage) {
+    alert(t('error-messages.validation-error'))
+    return
+  }
   submitTrainer()
 }
 
@@ -63,8 +67,8 @@ const passwordErrorMessage = computed(() => {
 })
 
 const newPasswordErrorMessage = computed(() => {
-  if (newPassword.value != newPasswordRepeat.value) return 'error-messages.diffrent-passwords'
-  else if (validatePassword(newPassword.value)) return validatePassword(newPassword.value)
+  if (validatePassword(newPassword.value)) return validatePassword(newPassword.value)
+  else if (newPassword.value != newPasswordRepeat.value) return 'error-messages.diffrent-passwords'
 	return ''
 })
 
@@ -101,10 +105,10 @@ const newPasswordErrorMessage = computed(() => {
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
                   <p class="text-center">{{t('info.enter-new-password')}}:</p>
                   <input v-model="newPassword" name="password" type="password"
-                    class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+                    class="flex flex-auto w-200px border-1 border-#143547 p-1 shadow-lg" />
                   <p class="text-center">{{t('info.repeat-new-password')}}:</p>
                   <input v-model="newPasswordRepeat" name="password" type="password"
-                    class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
+                    class="flex flex-auto w-200px border-1 border-#143547 p-1 shadow-lg" />
                   <p v-if="newPasswordErrorMessage" class="text-xs color-red">
                     {{t(newPasswordErrorMessage)}}
                   </p>

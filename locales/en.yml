@@ -209,6 +209,11 @@ error-messages:
   diffrent-passwords: The passwords must be the same
   weak-password: Password is too weak (use uppercase and lowercase letters, numbers and special characters)
   goals-error: The number of goals scored by your team does not match the sum of goals scored by the players
+  password:
+    lowercase: Password must contain at least 1 lowercase alphabetical character
+    uppercase: Password must contain at least 1 uppercase alphabetical character
+    numeric: Password must contain at least 1 numeric character
+    lenght: Password must be eight characters or longer
 info:
   trainer-registered: The trainer has been successfully registered! 
   parent-registered: The parent has been successfully registered!

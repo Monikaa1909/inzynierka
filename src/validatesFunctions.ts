@@ -89,6 +89,25 @@ export const validatePassword = (value: any) => {
 	if (!value) {
 		return 'error-messages.required-field'
 	}
+	const regex1 = /^(?=.*[a-z])/
+	const regex2 =/^(?=.*[A-Z])/
+	const regex3 = /^(?=.*[0-9])/
+	const regex4 = /^(?=.{8,})/
+	if (!regex1.test(value)) {
+		return 'error-messages.password.lowercase'
+	}
+
+	if (!regex2.test(value)) {
+		return 'error-messages.password.uppercase'
+	}
+
+	if (!regex3.test(value)) {
+		return 'error-messages.password.numeric'
+	}
+
+	if (!regex4.test(value)) {
+		return 'error-messages.password.lenght'
+	}
 	
 	return '';
 }
