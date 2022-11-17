@@ -297,6 +297,7 @@ const updateAverageStatisticWithAbsent = () => {
 		averageStatisticWithAbsent.value.redCards /= matchStatistic.value.length
 		averageStatisticWithAbsent.value.minutesPlayed /= matchStatistic.value.length
 
+		averageStatisticWithAbsent.value.attendance = Number(averageStatisticWithAbsent.value.attendance.toFixed(2))
 		averageStatisticWithAbsent.value.goalsScored = Number(averageStatisticWithAbsent.value.goalsScored.toFixed(2))
 		averageStatisticWithAbsent.value.yellowCards = Number(averageStatisticWithAbsent.value.yellowCards.toFixed(2))
 		averageStatisticWithAbsent.value.redCards = Number(averageStatisticWithAbsent.value.redCards.toFixed(2))
@@ -388,7 +389,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 
 							<div class="h-full w-full grid gap-2 px-2">
 
-								<div class="h-full w-full grid  invisible md:(visible) grid-cols-7">
+								<div class="h-full w-full grid invisible md:(visible) grid-cols-7">
 									<StatisticHeader> {{ t('match-statistic.player') }} </StatisticHeader>
 									<StatisticHeader> {{ t('match-statistic.attendance') }} </StatisticHeader>
 									<StatisticHeader> {{ t('match-statistic.goals-scored') }} </StatisticHeader>

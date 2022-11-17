@@ -295,6 +295,7 @@ const updateAverageStatisticWithAbsent = () => {
 		averageStatisticWithAbsent.value.redCards /= tournamentStatistic.value.length
 		averageStatisticWithAbsent.value.minutesPlayed /= tournamentStatistic.value.length
 
+		averageStatisticWithAbsent.value.attendance = Number(averageStatisticWithAbsent.value.attendance.toFixed(2))
 		averageStatisticWithAbsent.value.goalsScored = Number(averageStatisticWithAbsent.value.goalsScored.toFixed(2))
 		averageStatisticWithAbsent.value.yellowCards = Number(averageStatisticWithAbsent.value.yellowCards.toFixed(2))
 		averageStatisticWithAbsent.value.redCards = Number(averageStatisticWithAbsent.value.redCards.toFixed(2))

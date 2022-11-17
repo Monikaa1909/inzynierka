@@ -351,7 +351,6 @@ const onSubmit = async () => {
 						<option v-for="sportsFacility in sportsFacilities" :value="sportsFacility">
 							{{ sportsFacility.name }}, {{ sportsFacility.street }} {{ sportsFacility.houseNumber }}
 						</option>
-						<option :value="'newobject'">{{ t('single-event.add-new') }}</option>
 					</select>
 				</div>
 			</template>

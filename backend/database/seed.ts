@@ -228,7 +228,7 @@ export const seedDatabase = async () => {
     });
     player1.save(function (err) {
         if (err) return console.log(err.message);
-    });
+    })
 
     const player2 = new models.Player({
         firstName: 'Henryk',
@@ -284,6 +284,97 @@ export const seedDatabase = async () => {
     player5.save(function (err) {
         if (err) return console.log(err.message);
     });
+
+    const player6 = new models.Player({
+        firstName: 'Ignacy',
+        lastName: 'Marchewka',
+        birthdayDate: '2010-10-29',
+        nationality: 'Polska',
+        team: team1,
+        validityOfMedicalExaminations: '2023-02-11',
+        academy: academy1
+    })
+    player6.save(function (err) {
+        if (err) return console.log(err.message);
+    })
+
+    const player7 = new models.Player({
+        firstName: 'Wiesław',
+        lastName: 'Dobry',
+        birthdayDate: '2010-03-29',
+        nationality: 'Polska',
+        team: team1,
+        validityOfMedicalExaminations: '2024-02-11',
+        academy: academy1
+    })
+    player7.save(function (err) {
+        if (err) return console.log(err.message);
+    })
+
+    const player8 = new models.Player({
+        firstName: 'Piotr',
+        lastName: 'Najlepszy',
+        birthdayDate: '2010-05-12',
+        nationality: 'Polska',
+        team: team1,
+        validityOfMedicalExaminations: '2023-05-11',
+        academy: academy1
+    })
+    player8.save(function (err) {
+        if (err) return console.log(err.message);
+    })
+
+    const player9 = new models.Player({
+        firstName: 'Tomasz',
+        lastName: 'Kanapka',
+        birthdayDate: '2010-10-14',
+        nationality: 'Polska',
+        team: team1,
+        validityOfMedicalExaminations: '2023-02-18',
+        academy: academy1
+    })
+    player9.save(function (err) {
+        if (err) return console.log(err.message);
+    })
+
+    const player10 = new models.Player({
+        firstName: 'Lech',
+        lastName: 'Rudy',
+        birthdayDate: '2010-08-02',
+        nationality: 'Polska',
+        team: team1,
+        validityOfMedicalExaminations: '2023-02-06',
+        academy: academy1
+    })
+    player10.save(function (err) {
+        if (err) return console.log(err.message);
+    })
+
+    const player11 = new models.Player({
+        firstName: 'Wojciech',
+        lastName: 'Nieszczęsny',
+        birthdayDate: '2010-09-09',
+        nationality: 'Polska',
+        team: team1,
+        validityOfMedicalExaminations: '2023-09-09',
+        academy: academy1
+    })
+    player11.save(function (err) {
+        if (err) return console.log(err.message);
+    })
+
+    const player12 = new models.Player({
+        firstName: 'Przemysław',
+        lastName: 'Duży',
+        birthdayDate: '2010-10-29',
+        nationality: 'Polska',
+        team: team1,
+        validityOfMedicalExaminations: '2022-02-11',
+        academy: academy1
+    })
+    player12.save(function (err) {
+        if (err) return console.log(err.message);
+    })
 
     // SPORTSFACILITIES ----------------------------------------------------------------------------
     const sportsFacility1 = new models.SportsFacility({

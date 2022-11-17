@@ -161,7 +161,7 @@ const birthdayDateErrorMessage = computed(() => {
 
 const birthdayDateMessage = computed(() => {
 	if (player.value.team)
-		if (player.value.team && (new Date(player.value.birthdayDate).getFullYear() > player.value.team.startYear))
+		if (player.value.team && (new Date(player.value.birthdayDate).getFullYear() < player.value.team.startYear))
 			return t('error-messages.birthday-date-message')
 	return ''
 })
