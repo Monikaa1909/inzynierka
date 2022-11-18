@@ -51,7 +51,11 @@ intro:
     third: managment
     fourth: support
     fifth: system
-  slogan: BUILD YOUR TEAM WITH US!
+  slogan1: BUILD 
+  slogan2: YOUR
+  slogan3: TEAM
+  slogan4: WITH 
+  slogan5: US!
 login:
   sign-in: SIGN IN
   log-out: Log out

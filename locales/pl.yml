@@ -51,7 +51,11 @@ intro:
     third: zarządzanie
     fourth: akademią
     fifth: piłkarską
-  slogan: RAZEM ZBUDUJEMY TWOJĄ DRUŻYNĘ!
+  slogan1: RAZEM 
+  slogan2: ZBUDUJEMY
+  slogan3: TWOJĄ
+  slogan4: SUPER 
+  slogan5: DRUŻYNĘ!
 login:
   sign-in: ZALOGUJ SIĘ
   log-out: Wyloguj się

@@ -1,20 +1,10 @@
 <template>
-  <div class="h-full flex flex-col sm:(flex-row flex-wrap)">
-    <div class="bg-#143547 flex-auto">
+  <div class="h-full flex w-full flex-col sm:(flex-row flex-wrap)">
+    <div class="bg-#143547 flex-auto sm:( w-3/5)">
       <welcome-menu />
     </div>
-    <div class="bg-balls flex-auto">
+    <div class="bg-balls flex-auto sm:(w-2/5) px-8px sm:(px-40px) md:(px-80px)">
       <router-view />
     </div>
   </div>
 </template>
-<!-- <template>
-  <div class="flex flex-col w-full h-full welcomeBox sm:(flex-row)">
-    <div class="flex-grow-0 flex-shrink basis-auto bg-#143547 flex flex-col">
-      <welcome-menu/>
-    </div>
-    <div class="flex-grow flex-shrink basis-auto bg-balls flex justify-center items-center">
-      <router-view />
-    </div>
-  </div>
-</template> -->
