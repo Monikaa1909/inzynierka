@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { validateLogin, requiredField } from '~/validatesFunctions'
-import { useJwt } from '@vueuse/integrations/useJwt'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -42,11 +41,9 @@ whenever(error, (data) => {
 const token = useStorage('user:token', '')
 syncRef(token, data)
 
-const { payload } = useJwt(() => token.value ?? '')
 
 watchEffect(() => {
-  console.log('payload ' + payload.value)
-  if (token.value && token.value.length > 2) router.push('/start')
+  if (token.value && token.value.length > 2) router.push('/calendar')
 })
 
 const submit = async () => {

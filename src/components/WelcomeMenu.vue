@@ -12,13 +12,19 @@ const toggleLocales = () => {
   <div class="h-full w-full flex flex-col p-2">
     <div class="w-full flex flex-col text-xl justify-around sm:(flex-row flex-wrap)">
 
+      <SingleButton @click="router.push('/')">
+        <template #buttonName>
+          <p class="w-auto truncate">{{ t('button.start') }}</p>
+        </template>
+      </SingleButton>
+
       <SingleButton @click="router.push('/functions')">
         <template #buttonName>
           <p class="w-auto truncate">{{ t('button.functions') }}</p>
         </template>
       </SingleButton>
 
-      <SingleButton>
+      <SingleButton @click="router.push('/aboutUs')">
         <template #buttonName>
           <p class="w-auto truncate">{{ t('button.contact') }}</p>
         </template>
@@ -36,23 +42,16 @@ const toggleLocales = () => {
       
       <img src="../assets/logo.png " class="self-center  flex w-full sm:(w-1/2)">
       
-      <div class="flex flex-col self-center w-auto  px-8 sm:(w-1/2)">
-        <img src="../assets/name.png " class="w-auto  flex self-center">
+      <div class="flex flex-col self-center w-full  px-8 sm:(w-1/2)">
+        <img src="../assets/name.png " class="w-auto flex-auto  flex self-center">
 
-        <div class=" justify-center w-auto self-center sm:(w-full) flex flex-col gap-1 text-#FFFFFF sm:(text-xl) md:(text-2xl)">
-          <p class="truncate">{{ t('intro.description.first') }}</p>
-          <p class="truncate">{{ t('intro.description.second') }}</p>
-          <p class="truncate">{{ t('intro.description.third') }}</p>
-          <p class="truncate">{{ t('intro.description.fourth') }}</p>
-          <p class="truncate">{{ t('intro.description.fifth') }}</p>
+        <div class="flex-auto justify-center w-full self-center sm:(w-full) flex flex-col gap-1 text-#FFFFFF sm:(text-xl) md:(text-2xl)">
+          <p class="truncate text-center sm:(text-left)">{{ t('intro.description.first') }}</p>
+          <p class="truncate text-center sm:(text-left)">{{ t('intro.description.second') }}</p>
+          <p class="truncate text-center sm:(text-left)">{{ t('intro.description.third') }}</p>
+          <p class="truncate text-center sm:(text-left)">{{ t('intro.description.fourth') }}</p>
+          <p class="truncate text-center sm:(text-left)">{{ t('intro.description.fifth') }}</p>
         </div>
-        <!-- <p class="text-3xl text-#FFFFFF ">
-          {{ t('intro.description.first') }} <br>
-          {{ t('intro.description.second') }} <br>
-          {{ t('intro.description.third') }} <br>
-          {{ t('intro.description.fourth') }} <br>
-          {{ t('intro.description.fifth') }}
-        </p> -->
       </div>
     </div>
 

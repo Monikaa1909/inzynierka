@@ -1,4 +1,5 @@
 button:
+  start: START HERE
   about: About
   back: Back
   go: GO
@@ -248,4 +249,23 @@ register:
   give-your-data: Enter your details as an Academy Manager
 other:
   confirming-deleting: Are you sure you want to delete that
+functions:
+  crew-assistant: Crew Assistant
+  let-you: let you
+  function1: register your academy and manage it as a Manager
+  function2: create accounts for Coaches and Parents belonging to your academy
+  function3: add and manage teams
+  function4: create player profiles
+  function5: manage matches, tournaments and training in a specially designed calendar
+  function6: analyze statistics
+  function7: store information about sports facilities used by your academy on a daily basis
+  thanks-to: Thanks to this, 
+  function8: all the necessary data about the academy are in one place
+  function9: academy members have quick and convenient access to information
+  function10: management becomes simple, fast and convenient, 
+  function11: and your academy will develop in no time!
+about-us:
+  pb: The system was created at the Faculty of Computer Science of the Bialystok University of Technology as part of an engineering thesis.
+  questions: If you have any questions, you can contact us via a dedicated email
+  answer: We will try to answer as soon as possible!
 not-found: Not found

@@ -1,4 +1,5 @@
 button:
+  start: ZACZNIJ TUTAJ
   about: O nas
   back: Wróć
   go: WEJDŹ
@@ -248,4 +249,23 @@ register:
   give-your-data: Podaj swoje dane jako Menadżera Akademii
 other:
   confirming-deleting: Czy na pewno chcesz to usunąć
+functions:
+  crew-assistant: Crew Assistant
+  let-you: pozwala Ci
+  function1: zarejestrować Twoją akademię i zarządzać nią jako Menadżer
+  function2: utworzyć konta dla Trenerów i Rodziców należących do Twojej akademii
+  function3: dodawać i zarządzać drużynami
+  function4: tworzyć profile zawodników
+  function5: zarządzać meczami, turniejami oraz treningami w specjalnie zaprojektowanym kalendarzu
+  function6: analizować statystyki
+  function7: przechowywać informacje o obiektach sportowych, z których na codzień korzysta Twoja akademia
+  thanks-to: Dzięki temu
+  function8: wszystkie niezbędne dane dotyczące akademii są w jednym miejscu
+  function9: członkowie akademii mają szybki i wygodny dostęp do informacji
+  function10: zarządzanie staje się proste, szybkie i wygodne, a
+  function11: Twoja akademia rozwinie się błyskawicznie!
+about-us:
+  pb: System powstał na Wydziale Informatyki Politechniki Białostockiej w ramach pracy inżynierskiej.
+  questions: Jeśli masz jakieś pytania, możesz skontaktować się z nami za pomocą dedykowanego e-maila
+  answer: Postaramy się odpowiedzieć najszybciej jak to możliwe!
 not-found: Nie znaleziono

@@ -5,6 +5,7 @@ import { AttendanceList } from 'backend/database/schemas/AttendanceList'
 import { JwtPayload } from 'backend/database/schemas/User'
 import { Player } from 'backend/database/schemas/Player'
 import { useJwt } from '@vueuse/integrations/useJwt'
+import { Team } from 'backend/database/schemas/Team'
 
 const props = defineProps<{ id: string }>()
 
@@ -20,6 +21,7 @@ const payload = ref({} as JwtPayload)
 payload.value = payloadData.value as unknown as JwtPayload
 
 const eventsFilter = ref('all')
+const teamsFilter = ref('all')
 
 const urlMatchStatistic = computed(() => {
 	if (props.id === 'all')
@@ -56,15 +58,24 @@ interface PlayerStatistic {
 	yellowCards: number,
 	redCards: number,
 	minutesPlayed: number,
-	events: number
+	events: number,
+	team: string
 }
+
+const {
+  data: teams,
+  // isFetching: isTeamsFetching,
+  isFinished: isTeamsFinished,
+  // error: teamsError,
+} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
 
 const {
 	data: matchStatistic,
 	isFetching: isMatchStatisticFetching,
 	isFinished: isMatchStatisticFinished,
 	error: matchStatisticError,
-} = useFetch(urlMatchStatistic.value, { initialData: [] }).json<MatchStatistic[]>()
+	execute: refechMatch
+} = useFetch(urlMatchStatistic.value, { initialData: [], immediate: false }).json<MatchStatistic[]>()
 
 const {
 	data: tournamentStatistic,
@@ -89,6 +100,11 @@ const {
 	error: playersStatisticError,
 	execute: refechPlayers
 } = useFetch(urlPlayers.value, { initialData: [], immediate: false }).json<Player[]>()
+
+whenever(isTeamsFinished, (data) => {
+	if (data)
+		refechMatch()
+})
 
 whenever(isMatchStatisticFinished, (data) => {
 	if (data)
@@ -156,8 +172,14 @@ const playersStatistic = computed(() => {
 				})
 			}
 
+			playerStatistic.team = element.team?._id as unknown as string
 			newPlayersStatistic.push(playerStatistic)
 		})
+
+		if (teamsFilter.value != 'all') {
+			
+			return newPlayersStatistic.filter(item => item.team === teamsFilter.value)
+		}
 
 		return newPlayersStatistic
 	}
@@ -360,8 +382,6 @@ const summaryStatistic = computed(() => {
 })
 
 
-
-
 </script>
 
 <template>
@@ -412,6 +432,26 @@ const summaryStatistic = computed(() => {
 								<button @click="eventsFilter = 'all'" class="p-1 w-full rounded-xl">
 									<p class=" rounded-xl text-xs hover:(bg-#2F4D5E text-white) py-2 text-center"
 										:class="[eventsFilter === 'all' ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
+										{{ t('button.all') }}
+									</p>
+								</button>
+							</div>
+							
+							<div v-if="!isHidden"
+								class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
+								
+								<button 
+									v-for="team in teams"
+									@click="teamsFilter = team._id" class="p-1 w-full rounded-xl">
+									<p class=" rounded-xl text-xs hover:(bg-#2F4D5E text-white) py-2 text-center"
+										:class="[teamsFilter === team._id ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
+										{{ team.teamName }}
+									</p>
+								</button>
+
+								<button @click="teamsFilter = 'all'" class="p-1 w-full rounded-xl">
+									<p class=" rounded-xl text-xs hover:(bg-#2F4D5E text-white) py-2 text-center"
+										:class="[teamsFilter === 'all' ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
 										{{ t('button.all') }}
 									</p>
 								</button>

@@ -495,7 +495,7 @@ export const seedDatabase = async () => {
     });
     matchStatistic2.save(function (err) {
         if (err) return console.log(err.message);
-    });
+    })
     const matchStatistic3 = new models.MatchStatistic({
         player: player3,
         match: match1,
@@ -505,9 +505,9 @@ export const seedDatabase = async () => {
     });
     matchStatistic3.save(function (err) {
         if (err) return console.log(err.message);
-    });
+    })
     const matchStatistic4 = new models.MatchStatistic({
-        player: player4,
+        player: player5,
         match: match1,
         goalsScored: 2,
         minutesPlayed: 90,
@@ -515,7 +515,40 @@ export const seedDatabase = async () => {
     });
     matchStatistic4.save(function (err) {
         if (err) return console.log(err.message);
+    })
+    const matchStatistic5 = new models.MatchStatistic({
+        player: player6,
+        match: match1,
+        goalsScored: 1,
+        minutesPlayed: 90,
+        attendance: true
     });
+    matchStatistic5.save(function (err) {
+        if (err) return console.log(err.message);
+    })
+    const matchStatistic6 = new models.MatchStatistic({
+        player: player7,
+        match: match1,
+        goalsScored: 3,
+        yellowCards: 2,
+        redCaers: 1,
+        minutesPlayed: 90,
+        attendance: true
+    });
+    matchStatistic6.save(function (err) {
+        if (err) return console.log(err.message);
+    })
+    const matchStatistic7 = new models.MatchStatistic({
+        player: player8,
+        match: match1,
+        goalsScored: 2,
+        yellowCards: 1,
+        minutesPlayed: 77,
+        attendance: true
+    });
+    matchStatistic7.save(function (err) {
+        if (err) return console.log(err.message);
+    })
 
     // TOURNAMENTS ----------------------------------------------------------------------------
     const tournament1 = new models.Tournament({
