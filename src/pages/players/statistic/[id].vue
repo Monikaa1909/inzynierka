@@ -437,7 +437,7 @@ const summaryStatistic = computed(() => {
 								</button>
 							</div>
 							
-							<div v-if="!isHidden"
+							<div v-if="!isHidden && props.id === 'all'"
 								class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
 								
 								<button 
