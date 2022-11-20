@@ -49,7 +49,7 @@ export const seedDatabase = async () => {
         birthdayDate: '1978-01-29',
         nationality: 'Polska',
         academy: academy1,
-        login: 'wojciech1',
+        login: 'wichnia123',
         password: 'wojtech',
         email: 'wojciech1@gmail.com',
     });

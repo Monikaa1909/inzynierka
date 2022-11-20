@@ -54,8 +54,6 @@ export default (router: Router) => {
         password
       })
 
-      console.log(password)
-
       res.send(password)
     } catch (error) {
       res.status(400).send(error)
@@ -126,8 +124,6 @@ export default (router: Router) => {
         }
       )
       
-      console.log(req.body.newPassword)
-      console.log(user?.password)
       res.send(user)
 
     } catch (error) {

@@ -55,7 +55,8 @@ const submitManagerPassword = async () => {
 }
 
 const submitTrainerPassword = async () => {
-  if (newPasswordErrorMessage) {
+  console.log(newPasswordErrorMessage.value)
+  if (newPasswordErrorMessage.value) {
     alert(t('error-messages.validation-error'))
     return
   }
