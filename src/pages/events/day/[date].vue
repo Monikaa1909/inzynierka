@@ -414,7 +414,7 @@ const confirmDelete = async () => {
             </template>
 
             <template #icon>
-              <img v-if="event.type == 'Match' || event.type == 'Mecz'" src="../../../assets/match-icon2.png"
+              <img v-if="event.type == 'Match' || event.type == 'Mecz'" src="../../../assets/match-icon.png"
                 class="h-150px" />
               <img v-else-if="event.type == 'Tournament'" src="../../../assets/tournament-icon.png" class="h-150px" />
               <img v-else-if="event.type == 'Training'" src="../../../assets/training-icon.png" class="h-150px" />

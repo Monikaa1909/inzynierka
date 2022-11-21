@@ -361,10 +361,6 @@ const updateAverageStatisticWithoutAbsent = () => {
 						</button>
 					</template>
 
-					<!-- <template #icon>
-						<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
-					</template> -->
-
 					<template #attributes>
 
 						<LoadingCircle v-if="isFetching || !isMatchFinished || !isMatchStatisticFinished">
@@ -404,7 +400,10 @@ const updateAverageStatisticWithoutAbsent = () => {
 
 									<SingleStatistic>
 										<template #name>{{ t('match-statistic.player') }}</template>
-										<template #data>{{ statistic.player.lastName }} {{ statistic.player.firstName }}</template>
+										<template #data>
+											<p class="text-center">
+												{{ statistic.player.lastName }} {{ statistic.player.firstName }}
+											</p></template>
 									</SingleStatistic>
 
 									<SingleStatistic>

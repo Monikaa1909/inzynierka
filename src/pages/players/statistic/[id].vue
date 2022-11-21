@@ -397,7 +397,7 @@ const summaryStatistic = computed(() => {
 					</template>
 
 					<template #icon>
-						<img src="../../../assets/statistic-icon2.png" class="h-150px" />
+						<img src="../../../assets/statistic-icon.png" class="h-150px" />
 					</template>
 
 					<template #attributes>

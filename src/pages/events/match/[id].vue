@@ -90,7 +90,7 @@ const confirmDelete = async () => {
 					</template>
 
 					<template #icon>
-						<img src="../../../assets/match-icon2.png" class="h-150px" />
+						<img src="../../../assets/match-icon.png" class="h-150px" />
 					</template>
 
 					<template #attributes>

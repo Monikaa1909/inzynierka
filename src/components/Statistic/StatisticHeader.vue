@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="self-center justify-self-center font-medium text-xs">
+  <div class="self-center justify-self-center font-medium text-xs text-center">
     <slot></slot>
   </div>
 </template>

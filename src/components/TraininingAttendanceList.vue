@@ -58,7 +58,6 @@ whenever(attendanceListData, (data) => {
 whenever(players, (data) => {
 	if (players.value != null && players.value.length > 0) {
 		players.value.forEach(async element => {
-
 			if (!isAttendanceList.value) {
 				playerAttendance.value.player = element
 				playerAttendance.value.training = training as unknown as Training
@@ -73,6 +72,7 @@ whenever(players, (data) => {
 			}
 
 			else {
+				console.log('PLAYER: ' + element.firstName + ' ' + element.lastName)
 				if (!isPlayerHasStatistic(element)) {
 					playerAttendance.value.player = element
 					playerAttendance.value.training = training as unknown as Training
@@ -95,10 +95,12 @@ whenever(players, (data) => {
 
 const isPlayerHasStatistic = (player: Player) => {
 	let isPlayerHas = false
+	// console.log('isplayerhasstatistic?')
 	attendanceList.value?.forEach(element => {
 		if (element.player._id === player._id)
 			isPlayerHas = true
 	})
+	// console.log(isPlayerHas)
 	return isPlayerHas
 }
 
@@ -153,7 +155,7 @@ const goEditAttendanceList = (eventId: any) => {
 		</template>
 
 		<template #icon>
-			<img src="../assets/attendance-list-icon2.png" class="h-150px" />
+			<img src="../assets/attendance-list-icon.png" class="h-150px" />
 		</template>
 
 		<template #attributes>
@@ -163,8 +165,9 @@ const goEditAttendanceList = (eventId: any) => {
 			<div v-else-if="isFinished && !error && isAttendanceList" v-for="playerAttendance in attendanceList"
 				v-bind:key="playerAttendance._id"
 				class="w-full flex flex-col gap-4 place-content-between sm:(flex-row place-content-between)">
-				<div class="w-auto flex flex-col gap-2 justify-center sm:(flex-row)">
 
+				<div class="w-auto flex flex-col gap-2 justify-center sm:(flex-row)">
+					
 					<button v-if="props.edit" @click="playerAttendance.attendance = !playerAttendance.attendance"
 						class="flex w-full justify-center">
 						<img v-if="playerAttendance.attendance" src="../assets/checkbox-checked-icon.png" class="h-18px" />
@@ -191,29 +194,24 @@ const goEditAttendanceList = (eventId: any) => {
 				</div>
 			</div>
 
-			<ErrorMessageInfo v-else-if="!isAttendanceList">
-				{{ t(messageInfo) }}
-			</ErrorMessageInfo>
-			<ErrorMessageInfo v-else>
-				{{ t('error-messages.no-players-in-team') }}
-			</ErrorMessageInfo>
+			<ErrorMessageInfo v-else-if="!isAttendanceList">{{ t(messageInfo) }}</ErrorMessageInfo>
+			<ErrorMessageInfo v-else>{{ t('error-messages.no-players-in-team') }}</ErrorMessageInfo>
 
 		</template>
 
 		<template #footer>
 			<SingleButton v-if="props.edit" @click="onSubmit()">
-				<template v-slot:buttonName>{{ t('button.save') }}</template>
+				<template #buttonName>{{ t('button.save') }}</template>
 			</SingleButton>
 			<SingleButton v-if="props.edit" @click="router.go(-1)">
-				<template v-slot:buttonName>{{ t('button.cancel') }}</template>
+				<template #buttonName>{{ t('button.cancel') }}</template>
 			</SingleButton>
 			<SingleButton v-else @click="router.go(-1)">
-				<template v-slot:buttonName>{{ t('button.back') }}</template>
+				<template #buttonName>{{ t('button.back') }}</template>
 			</SingleButton>
 		</template>
 
 	</MiniWhiteFrame>
-
 </template>
 
 <route lang="yaml">
