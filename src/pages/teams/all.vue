@@ -25,7 +25,22 @@ const {
   isFinished,
   error,
   execute: refechTeams
-} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams`, {
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  },
+}).json<Team[]>()
 
 whenever(isFinished, (data) => {
   if (data) {

@@ -15,10 +15,14 @@ import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
 
 import useAuthRoutes from './auth'
+import useTeamRoutes from './team'
+import usePlayerRoutes from './player'
 
 const router = express.Router()
 
 useAuthRoutes(router)
+useTeamRoutes(router)
+usePlayerRoutes(router)
 
 export default router
 

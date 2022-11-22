@@ -28,6 +28,20 @@ export const seedDatabase = async () => {
         if (err) return console.log(err.message)
     })
 
+    const academyManager2 = new models.AcademyManager({ 
+        firstName: 'Jan',
+        lastName: 'Duda',
+        birthdayDate: '200-09-10',
+        nationality: 'Polska',
+        academy: academy2,
+        login: 'jan123',
+        password: 'jan123',
+        email: 'jan123@gmail.com',
+    })
+    academyManager2.save(function (err) {
+        if (err) return console.log(err.message)
+    })
+
     // TRAINERS -----------------------------------------------------------------------------
     const trainer1 = new models.Trainer({
         firstName: 'Jerzy',
