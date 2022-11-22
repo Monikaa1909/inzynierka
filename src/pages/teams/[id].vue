@@ -40,7 +40,26 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/team/${props.id}`).delete()
+
+  const { error } = await useFetch(`/api/team/${props.id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    },
+  }).delete()
+
+  if (error.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+
   return router.go(-1)
 }
 
@@ -65,10 +84,11 @@ const confirmDelete = async () => {
             <button @click="goTeamsPlayers(team?._id)">
               <img src="../../assets/academy-icon.png" class="h-24px" />
             </button>
-            <button @click="goEditTeam(team?._id)">
+            <button @click="goEditTeam(team?._id)"
+              v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deleteTeam()">
+            <button @click="deleteTeam()" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>

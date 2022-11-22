@@ -16,6 +16,7 @@ import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
 
 export default (router: Router) => {
+
   router.get('/teams', async (req, res) => {
     try {
       if (req.headers.authorization) {
@@ -59,7 +60,7 @@ export default (router: Router) => {
                 match: { _id: payload.value.id }
               })
               .select({ team: 1 }) as Player[]
-              
+
             let teamsId: Array<any> = []
             player.filter(item => (item.parent != null && item.team != null)).forEach(element => {
               teamsId.push(element.team?._id.toString())
@@ -88,4 +89,86 @@ export default (router: Router) => {
       res.status(400).json(error)
     }
   })
+
+  router.get('/team/:id', async (req, res) => {
+    try {
+      const team = await models.Team.findById(req.params.id)
+        .populate({
+          path: 'trainer',
+          model: 'Trainer',
+        })
+      res.send(team)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
+  router.post('/team', async (req, res) => {
+    try {
+      const team = models.Team.create(req.body, function (error: any) {
+        if (error) {
+          res.status(400).send(error)
+        }
+        else res.send(team)
+      })
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
+  router.post('/team/:id', async (req, res) => {
+    try {
+      const team = await models.Team.findOneAndUpdate(
+        {
+          _id: req.params.id
+        },
+        {
+          teamName: req.body.teamName,
+          startYear: req.body.startYear,
+          endYear: req.body.endYear,
+          trainer: req.body.trainer,
+        },
+        {
+          new: true
+        }
+      )
+      res.send(team)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
+  router.delete('/team/:id', async (req, res) => {
+    try {
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
+
+          if (payload.value.type === 'AcademyManager') {
+            const team = await models.Team.findOneAndDelete({ _id: req.params.id })
+            res.send(team)
+          } 
+          else {
+            console.log("You have no rights to delete a team")
+            res.status(400).json({ error: "You have no rights to delete a team" });
+          }
+
+        } else {
+          console.log("Malformed auth header")
+          res.status(400).json({ error: "Malformed auth header" });
+        }
+      } else {
+        console.log("No authorization header")
+        res.status(400).json({ error: "No authorization header" })
+      }
+    } catch (error) {
+      console.log('koniec')
+      res.status(400).send(error)
+    }
+  })
+
 }

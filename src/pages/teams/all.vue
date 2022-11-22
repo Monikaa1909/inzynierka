@@ -70,7 +70,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/team/${deletingTeam.value?._id}`).delete()
+  const { error } = await useFetch(`/api/team/${deletingTeam.value?._id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    },
+  }).delete()
+
+  if (error.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   refechTeams()
 }
 
@@ -80,7 +97,8 @@ const confirmDelete = async () => {
   <BackgroundFrame>
 
     <template #nav>
-      <router-link to="/teams/add/newTeam" class="flex flex-row gap-2 items-center">
+      <router-link v-if="payload.type === 'AcademyManager'" to="/teams/add/newTeam"
+        class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-team') }}</p>
       </router-link>
@@ -101,14 +119,16 @@ const confirmDelete = async () => {
 
         <MiniWhiteFrame v-for="team in teams" v-bind:key="team._id" class="hover:bg-#E3E3E3" clickable="cursor-pointer"
           @go-to="goToTeam(team._id)">
+
           <template #nav>
             <button @click="goTeamsPlayers(team._id)">
               <img src="../../assets/academy-icon.png" class="h-24px" />
             </button>
-            <button @click="goEditTeam(team._id)">
+            <button @click="goEditTeam(team._id)"
+              v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deleteTeam(team)">
+            <button @click="deleteTeam(team)" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>

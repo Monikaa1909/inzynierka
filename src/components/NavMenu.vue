@@ -127,7 +127,7 @@ const logout = async () => {
 
     <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
 
-      <SingleButton v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goTeams">
+      <SingleButton @click="goTeams">
         <template #icon>
           <img src="../assets/team-icon.png" class="h-24px mr-2" />
         </template>
