@@ -32,7 +32,7 @@ const {
   isFinished,
   error,
   execute: refechTrainers
-} = useFetch(`/api/trainers/academy/${payload.value.academy}`, { initialData: [] }).json<Trainer[]>()
+} = useFetch(`/api/trainers/${payload.value.academy}`, { initialData: [] }).json<Trainer[]>()
 
 const isDeleting = ref(false)
 const deletingTrainer = ref<Trainer>()
@@ -48,7 +48,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/trainer/${deletingTrainer.value?._id}`).delete()
+  const { error: deleteError } = await useFetch(`/api/trainer/${deletingTrainer.value?._id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    },
+  }).delete()
+
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   refechTrainers()
 }
 
@@ -57,7 +74,7 @@ const confirmDelete = async () => {
 <template>
   <BackgroundFrame>
 
-    <template #nav>
+    <template #nav v-if="payload.type === 'AcademyManager'">
       <router-link to="/trainers/add/newTrainer" class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">
@@ -82,7 +99,7 @@ const confirmDelete = async () => {
         <MiniWhiteFrame v-for="trainer in trainers" v-bind:key="trainer._id" class="hover:bg-#E3E3E3"
           clickable="cursor-pointer" @go-to="goToTrainer(trainer._id)">
 
-          <template #nav>
+          <template #nav v-if="payload.type === 'AcademyManager'">
             <button @click="goEditPassword(trainer._id)">
               <img src="../../assets/password-icon.png" class="h-24px" />
             </button>

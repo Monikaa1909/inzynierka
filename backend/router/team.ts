@@ -105,12 +105,33 @@ export default (router: Router) => {
 
   router.post('/team', async (req, res) => {
     try {
-      const team = models.Team.create(req.body, function (error: any) {
-        if (error) {
-          res.status(400).send(error)
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
+
+          if (payload.value.type === 'AcademyManager') {
+            const team = models.Team.create(req.body, function (error: any) {
+              if (error) {
+                res.status(400).send(error)
+              }
+              else res.send(team)
+            })
+          } 
+          else {
+            res.status(400).json({ error: "You have no rights to create a team" });
+          }
+
+        } else {
+          console.log("Malformed auth header")
+          res.status(400).json({ error: "Malformed auth header" });
         }
-        else res.send(team)
-      })
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       res.status(400).send(error)
     }
@@ -118,21 +139,65 @@ export default (router: Router) => {
 
   router.post('/team/:id', async (req, res) => {
     try {
-      const team = await models.Team.findOneAndUpdate(
-        {
-          _id: req.params.id
-        },
-        {
-          teamName: req.body.teamName,
-          startYear: req.body.startYear,
-          endYear: req.body.endYear,
-          trainer: req.body.trainer,
-        },
-        {
-          new: true
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
+
+          if (payload.value.type === 'AcademyManager') {
+            const team = await models.Team.findOneAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                teamName: req.body.teamName,
+                startYear: req.body.startYear,
+                endYear: req.body.endYear,
+                trainer: req.body.trainer,
+              },
+              {
+                new: true
+              }
+            )
+            res.send(team)
+          } else if (payload.value.type === 'Trainer') {
+            const potentialTeam = await models.Team.findById(req.params.id)
+
+            if (potentialTeam.trainer._id.toString() === payload.value.id) {
+              const team = await models.Team.findOneAndUpdate(
+                {
+                  _id: req.params.id
+                },
+                {
+                  teamName: req.body.teamName,
+                  startYear: req.body.startYear,
+                  endYear: req.body.endYear,
+                  trainer: req.body.trainer,
+                },
+                {
+                  new: true
+                }
+              )
+              res.send(team)
+            } else {
+              res.status(400).json({ error: "You have no rights to update a team" });
+            }
+           
+          } 
+          else {
+            res.status(400).json({ error: "You have no rights to update a team" });
+          }
+
+        } else {
+          console.log("Malformed auth header")
+          res.status(400).json({ error: "Malformed auth header" });
         }
-      )
-      res.send(team)
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       res.status(400).send(error)
     }
@@ -162,11 +227,9 @@ export default (router: Router) => {
           res.status(400).json({ error: "Malformed auth header" });
         }
       } else {
-        console.log("No authorization header")
         res.status(400).json({ error: "No authorization header" })
       }
     } catch (error) {
-      console.log('koniec')
       res.status(400).send(error)
     }
   })

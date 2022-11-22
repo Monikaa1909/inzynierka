@@ -85,8 +85,39 @@ const newTrainer = computed(() => ({
 
 const successfullyAdded = ref(false)
 
-const { execute: updateTrainer, error: updateError } = useFetch(url, { immediate: false }).post(trainer)
-const { execute: saveTrainer, error: saveError, data: password } = useFetch(`/api/auth/register/trainer`, { immediate: false }).post(newTrainer)
+const { execute: updateTrainer, error: updateError } = useFetch(url, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(trainer)
+
+const { execute: saveTrainer, error: saveError, data: password } = useFetch(`/api/auth/register/trainer`, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(newTrainer)
 
 const onSubmit = async (values: any) => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value

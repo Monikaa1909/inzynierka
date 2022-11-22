@@ -50,7 +50,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/trainer/${props.id}`).delete()
+  const { error: deleteError } = await useFetch(`/api/trainer/${props.id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    },
+  }).delete()
+
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   return router.go(-1)
 }
 
@@ -70,7 +87,7 @@ const confirmDelete = async () => {
 
       <MyCenterElement v-if="isFinished && !isDeleting && !error && trainer">
         <MiniWhiteFrame>
-          <template #nav>
+          <template #nav v-if="payload.type === 'AcademyManager'">
             <button @click="goEditPassword(props.id)">
               <img src="../../assets/password-icon.png" class="h-24px" />
             </button>

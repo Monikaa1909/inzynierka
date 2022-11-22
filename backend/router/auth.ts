@@ -1,5 +1,7 @@
 import { Trainer } from "backend/database/schemas/Trainer.user"
 import { Parent } from "backend/database/schemas/Parent.user"
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
 import { User } from "backend/database/schemas/User"
 import { Router } from "express"
 import { models } from "mongoose"
@@ -8,19 +10,38 @@ import bcrypt from 'bcrypt'
 import { AcademyManager } from "backend/database/schemas/AcademyManager.user"
 
 export default (router: Router) => {
-  
+
   router.post('/auth/register/trainer', async (req, res) => {
     try {
-      const password = crypto.randomBytes(16).toString('hex')
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
 
-      const trainer: Trainer = await models.Trainer.create({
-        ...req.body,
-        password
-      })
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
 
-      console.log(password)
+          if (payload.value.type === 'AcademyManager') {
+            const password = crypto.randomBytes(16).toString('hex')
 
-      res.send(password)
+            const trainer: Trainer = await models.Trainer.create({
+              ...req.body,
+              password
+            })
+
+            res.send(password)
+          }
+          else {
+            res.status(400).json({ error: "You have no rights to register a trainer" });
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" });
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
+
     } catch (error) {
       res.status(400).send(error)
     }
@@ -123,11 +144,55 @@ export default (router: Router) => {
           new: true
         }
       )
-      
+
       res.send(user)
 
     } catch (error) {
       console.error(error)
+      res.status(400).send(error)
+    }
+  })
+
+  router.post('/auth/trainer/password/:id', async (req, res) => {
+    try {
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
+
+          if (payload.value.type === 'AcademyManager') {
+            const salt = await bcrypt.genSalt()
+            const hash = await bcrypt.hash(req.body.newPassword, salt)
+      
+            const user: User | null = await models.User.findByIdAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                password: hash
+              },
+              {
+                new: true
+              }
+            )
+      
+            res.send(user)
+          }
+          else {
+            res.status(400).json({ error: "You have no rights to change trainer password" });
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" });
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
+
+    } catch (error) {
       res.status(400).send(error)
     }
   })

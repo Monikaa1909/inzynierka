@@ -52,7 +52,7 @@ const {
 	isFetching: isTrainersFetching,
 	isFinished: isTrainersFinished,
 	error: trainersError,
-} = useFetch(`/api/trainers/academy/${payload.value.academy}`, { initialData: [] }).json<Trainer[]>()
+} = useFetch(`/api/trainers/${payload.value.academy}`, { initialData: [] }).json<Trainer[]>()
 
 const {
 	data: academyData,
@@ -78,8 +78,39 @@ const error = computed(() => {
 	return teamError.value && trainersError.value && academyError
 })
 
-const { execute: saveTeam, error: saveError } = useFetch(url, { immediate: false }).post(team)
-const { execute: updateTeam, error: updateError } = useFetch(url, { immediate: false }).post(team)
+const { execute: saveTeam, error: saveError } = useFetch(url, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(team)
+
+const { execute: updateTeam, error: updateError } = useFetch(url, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(team)
 
 const onSubmit = async (values: any) => {
 	if (teamNameErrorMessage.value || startYearErrorMessage.value || endYearErrorMessage.value) {
@@ -88,7 +119,7 @@ const onSubmit = async (values: any) => {
 		if (!props.teamId) {
 			if (academyData.value) {
 				team.value.academy = academyData.value
-				
+
 				await saveTeam()
 				if (saveError.value) {
 					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')

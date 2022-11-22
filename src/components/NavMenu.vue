@@ -148,7 +148,7 @@ const logout = async () => {
         <template #buttonName>{{ t('button.calendar') }}</template>
       </SingleButton>
 
-      <SingleButton v-if="payload.type === 'AcademyManager'" @click="goTrainers">
+      <SingleButton @click="goTrainers">
         <template #icon>
           <img src="../assets/trainer-icon.png" class="h-24px mr-2" />
         </template>

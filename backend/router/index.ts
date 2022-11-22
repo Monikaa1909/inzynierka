@@ -17,12 +17,16 @@ import { Team } from 'backend/database/schemas/Team'
 import useAuthRoutes from './auth'
 import useTeamRoutes from './team'
 import usePlayerRoutes from './player'
+import useAcademyRoutes from './academy'
+import useTrainerRoutes from './trainer'
 
 const router = express.Router()
 
 useAuthRoutes(router)
 useTeamRoutes(router)
 usePlayerRoutes(router)
+useAcademyRoutes(router)
+useTrainerRoutes(router)
 
 export default router
 
@@ -30,39 +34,9 @@ router.post('/db:seed', async (req, res) => {
     return seedDatabase()
 })
 
-router.post('/academy', async (req, res) => {
-    try {
-        const academy = new models.Academy({ academyName: req.body.academyName });
-        academy.save(function (err) {
-            if (err) {
-                console.log(err.message)
-                res.status(400).send(err)
-            } 
-            else res.send(academy)
-        })
-        
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
 
-router.get('/academy/:id', async (req, res) => {
-    try {
-        const academy = await models.Academy.findById(req.params.id)
-        res.send(academy)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
 
-router.delete('/academy/:id', async (req, res) => {
-    try {
-        const academy = await models.Academy.findOneAndDelete({ _id: req.params.id })
-        res.send(academy)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
+
 
 router.get('/managers', async (req, res) => {
     try {
@@ -130,14 +104,6 @@ router.post('/manager/:id', async (req, res) => {
     }
 })
 
-router.get('/academy/:id', async (req, res) => {
-    try {
-        const academy = await models.Academy.findById(req.params.id)
-        res.send(academy)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
 
 router.get('/players/academy/:id', async (req, res) => {
     try {
@@ -314,79 +280,11 @@ router.delete('/parent/:id', async (req, res) => {
     }
 })
 
-router.get('/trainers/academy/:id', async (req, res) => {
-    try {
-        const trainer = await models.Trainer.find()
-            .sort({ lastName: 1, firstName: 1 })
-            .populate({
-                path: 'academy',
-                model: 'Academy',
-                match: { _id: req.params.id }
-            }) as Trainer[]
 
-        res.send(trainer.filter(item => item.academy != null))
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
 
-router.get('/trainer/:id', async (req, res) => {
-    try {
-        const trainer = await models.Trainer.findById(req.params.id)
-        res.send(trainer)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
 
-router.post('/trainer', async (req, res) => {
-    try {
-        const trainer = models.Trainer.create(req.body, function (error: any) {
-            if (error) {
-                res.status(400).send(error)
-            }
-            else res.send(trainer)
-        })
-    } catch (error) {
-        console.log(error)
-        res.status(400).send(error)
-    }
-})
 
-router.post('/trainer/:id', async (req, res) => {
-    try {
-        const trainer = await models.Trainer.findOneAndUpdate(
-            {
-                _id: req.params.id
-            },
-            {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                birthdayDate: req.body.birthdayDate,
-                nationality: req.body.nationality,
-                remarks: req.body.remarks,
-                academy: req.body.academy,
-                phoneNumber: req.body.phoneNumber,
-                email: req.body.email,
-            },
-            {
-                new: true
-            }
-        )
-        res.send(trainer)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
 
-router.delete('/trainer/:id', async (req, res) => {
-    try {
-        const trainer = await models.Trainer.findOneAndDelete({ _id: req.params.id })
-        res.send(trainer)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
 
 router.get('/sportsfacilities/academy/:id', async (req, res) => {
     try {

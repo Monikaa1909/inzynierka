@@ -25,7 +25,7 @@ const {
   isFinished,
   error,
   execute: refechTeams
-} = useFetch(`/api/teams`, {
+} = useFetch(`/api/teams`, { initialData: [],
   async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
     if (!myToken)
@@ -70,7 +70,7 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  const { error } = await useFetch(`/api/team/${deletingTeam.value?._id}`, {
+  const { error: deleteError } = await useFetch(`/api/team/${deletingTeam.value?._id}`, {
     async beforeFetch({ url, options, cancel }) {
       const myToken = token.value
       if (!myToken)
@@ -87,7 +87,7 @@ const confirmDelete = async () => {
     },
   }).delete()
 
-  if (error.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   refechTeams()
 }
 

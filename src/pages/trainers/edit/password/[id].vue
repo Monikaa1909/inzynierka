@@ -26,7 +26,22 @@ const newCredentials = computed(() => ({
 }))
 
 const { data: managerData, error: managerError, execute: submitManager } = useFetch(`/api/auth/validate/password/${payload.value.id}`, { immediate: false }).post(credentials).text()
-const { data: trainerData, error: trainerError, execute: submitTrainer } = useFetch(`/api/auth/change/password/${props.id}`, { immediate: false }).post(newCredentials).text()
+const { data: trainerData, error: trainerError, execute: submitTrainer } = useFetch(`/api/auth/trainer/password/${props.id}`, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(newCredentials).text()
 
 const error = computed(() => {
 	return managerError.value && trainerError.value
