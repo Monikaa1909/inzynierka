@@ -247,7 +247,6 @@ export default (router: Router) => {
       } else {
         res.status(400).json({ error: "No authorization header" })
       }
-
     } catch (error) {
       res.status(400).send(error)
     }

@@ -29,7 +29,23 @@ const {
   isFinished,
   error,
   execute: refechSportsFacilities
-} = useFetch(`/api/sportsFacilities/academy/${payload.value.academy}`, { initialData: [] }).json<SportsFacility[]>()
+} = useFetch(`/api/sportsFacilities`, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<SportsFacility[]>()
 
 const isDeleting = ref(false)
 const deletingSportsFacility = ref<SportsFacility>()
@@ -45,7 +61,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/sportsFacility/${deletingSportsFacility.value?._id}`).delete()
+  const { error: deleteError } = await useFetch(`/api/sportsFacility/${deletingSportsFacility.value?._id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    }
+  }).delete()
+
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   refechSportsFacilities()
 }
 </script>
@@ -54,7 +87,10 @@ const confirmDelete = async () => {
   <BackgroundFrame>
 
     <template #nav>
-      <router-link to="/sportsFacilities/add/newSportsFacility" class="flex flex-row gap-2 items-center">
+      <router-link  
+        v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'"
+        to="/sportsFacilities/add/newSportsFacility" 
+        class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-object') }}</p>
       </router-link>
@@ -74,12 +110,12 @@ const confirmDelete = async () => {
         class="lg:(grid-cols-2) md:(grid-cols-2)">
         <MiniWhiteFrame v-for="sportsFacility in sportsFacilities" v-bind:key="sportsFacility._id"
           class="hover:bg-#E3E3E3" clickable="cursor-pointer" @go-to="goToObject(sportsFacility._id)">
-          
+
           <template #nav>
-            <button @click="goEditObject(sportsFacility._id)">
+            <button @click="goEditObject(sportsFacility._id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deleteSportsFacility(sportsFacility)">
+            <button @click="deleteSportsFacility(sportsFacility)" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>
@@ -118,7 +154,7 @@ const confirmDelete = async () => {
       </MyGrid>
 
       <ErrorMessageInfo v-else-if="!isDeleting && isFinished && sportsFacilities?.length === 0">
-        {{t('error-messages.no-data')}}
+        {{ t('error-messages.no-data') }}
       </ErrorMessageInfo>
       <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>

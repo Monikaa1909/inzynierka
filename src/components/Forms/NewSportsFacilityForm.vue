@@ -39,7 +39,23 @@ const {
 	isFetching: isSportsFacilityFetching,
 	isFinished: isSportsFacilityFinished,
 	error: sportsFacilityError,
-} = useFetch(url, { initialData: {} }).json<SportsFacility>()
+} = useFetch(url, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<SportsFacility>()
 
 whenever(sportsFacilityData, (data) => {
 	sportsFacility.value = data
@@ -64,12 +80,44 @@ const error = computed(() => {
 	return sportsFacilityError.value && academyError.value
 })
 
-const { execute: saveSportsFacility, error: saveError } = useFetch(url, { immediate: false }).post(sportsFacility)
-const { execute: updateSportsFacility, error: updateError } = useFetch(url, { immediate: false }).post(sportsFacility)
+const { execute: saveSportsFacility, error: saveError } = useFetch(url, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
 
-const onSubmit = async (values: any) => { 
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(sportsFacility)
+
+const { execute: updateSportsFacility, error: updateError } = useFetch(url, {
+	immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(sportsFacility)
+
+const onSubmit = async (values: any) => {
 	if (nameErrorMessage.value || streetErrorMessage.value || houseNumberErrorMessage.value || postalCodeErrorMessage.value
-	|| cityErrorMessage.value) {
+		|| cityErrorMessage.value) {
 		alert(t('error-messages.validation-error'))
 	} else {
 		if (!props.sportsFacilityId) {
@@ -82,7 +130,7 @@ const onSubmit = async (values: any) => {
 				}
 			} else {
 				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-					return
+				return
 			}
 
 		} else {
@@ -142,7 +190,7 @@ const cityErrorMessage = computed(() => {
 			<template #inputName>{{ t('single-object.name') }}:</template>
 			<template #inputValue>
 				<input v-model="sportsFacility.name" name="objectName" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
 			<template #errorMessage v-if="nameErrorMessage">
 				{{ nameErrorMessage }}
@@ -153,7 +201,7 @@ const cityErrorMessage = computed(() => {
 			<template #inputName>{{ t('single-object.street') }}:</template>
 			<template #inputValue>
 				<input v-model="sportsFacility.street" name="street" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
 			<template #errorMessage v-if="streetErrorMessage">
 				{{ streetErrorMessage }}
@@ -164,7 +212,7 @@ const cityErrorMessage = computed(() => {
 			<template #inputName>{{ t('single-object.number') }}:</template>
 			<template #inputValue>
 				<input v-model="sportsFacility.houseNumber" name="number" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
 			<template #errorMessage v-if="houseNumberErrorMessage">
 				{{ houseNumberErrorMessage }}
@@ -175,7 +223,7 @@ const cityErrorMessage = computed(() => {
 			<template #inputName>{{ t('single-object.postal-code') }}:</template>
 			<template #inputValue>
 				<input v-model="sportsFacility.postalCode" name="postalCode" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
 			<template #errorMessage v-if="postalCodeErrorMessage">
 				{{ postalCodeErrorMessage }}
@@ -186,7 +234,7 @@ const cityErrorMessage = computed(() => {
 			<template #inputName>{{ t('single-object.city') }}:</template>
 			<template #inputValue>
 				<input v-model="sportsFacility.city" name="city" type="input"
-					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg"/>
+					class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
 			</template>
 			<template #errorMessage v-if="cityErrorMessage">
 				{{ cityErrorMessage }}

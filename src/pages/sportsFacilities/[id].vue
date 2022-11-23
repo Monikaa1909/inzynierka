@@ -18,7 +18,23 @@ const {
   isFinished,
   isFetching,
   error
-} = useFetch(`/api/sportsFacility/${props.id}`, { initialData: {} }).json<SportsFacility>()
+} = useFetch(`/api/sportsFacility/${props.id}`, {
+  initialData: {},
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<SportsFacility>()
 
 const goEditObject = (objectId: any) => {
   return router.push(`/sportsFacilities/edit/${objectId}`)
@@ -36,7 +52,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/sportsFacility/${props.id}`).delete()
+  const { error: deleteError } = await useFetch(`/api/sportsFacility/${props.id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    }
+  }).delete()
+
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   return router.go(-1)
 }
 
@@ -55,13 +88,13 @@ const confirmDelete = async () => {
       <LoadingCircle v-else-if="isFetching"></LoadingCircle>
 
       <MyCenterElement v-if="isFinished && !isDeleting && !error && sportsFacility">
-        
+
         <MiniWhiteFrame>
           <template #nav>
-            <button @click="goEditObject(sportsFacility?._id)">
+            <button @click="goEditObject(sportsFacility?._id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deleteSportsFacility()">
+            <button @click="deleteSportsFacility()" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>
