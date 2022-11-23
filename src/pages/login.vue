@@ -32,14 +32,14 @@ whenever(credentials, (data) => {
   errorMessage.value = ''
 })
 
-const { data, error, execute } = useFetch(`/api/auth/login`, { immediate: false }).post(credentials).text()
+const { data: loginData, error, execute } = useFetch(`/api/auth/login`, { immediate: false }).post(credentials).text()
 
 whenever(error, (data) => {
   if (data) errorMessage.value = 'error-messages.invalid-credentials'
 })
 
 const token = useStorage('user:token', '')
-syncRef(token, data)
+syncRef(token, loginData)
 
 
 watchEffect(() => {

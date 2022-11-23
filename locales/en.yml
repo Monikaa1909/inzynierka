@@ -7,6 +7,7 @@ button:
   toggle_dark: Toggle dark mode
   set-language: LANGUAGE
   change-language: Change language
+  delete-academy: Delete academy
   functions: FUNCTIONS
   contact: ABOUT US
   teams: TEAMS
@@ -252,6 +253,8 @@ register:
   give-your-data: Enter your details as an Academy Manager
 other:
   confirming-deleting: Are you sure you want to delete that
+  academy: academy
+  sure: After performing this operation, it will no longer be possible to reverse
 functions:
   crew-assistant: Crew Assistant
   let-you: let you

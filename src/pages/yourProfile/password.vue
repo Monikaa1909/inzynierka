@@ -24,10 +24,26 @@ const newCredentials = computed(() => ({
 }))
 
 const { data: managerData, error: managerError, execute: submitManager } = useFetch(`/api/auth/validate/password/${payload.value.id}`, { immediate: false }).post(credentials).text()
-const { data: yourData, error: yourDataError, execute: submitNewPassword } = useFetch(`/api/auth/change/password/${payload.value.id}`, { immediate: false }).post(newCredentials).text()
+const { data: yourData, error: yourDataError, execute: submitNewPassword } = useFetch(`/api/auth/${(payload.value.type).toLowerCase()}/password/${payload.value.id}`, {
+  immediate: false,
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).post(newCredentials).text()
 
 const error = computed(() => {
-	return managerError.value && yourDataError.value
+  return managerError.value && yourDataError.value
 })
 
 const successfullySubmittedManagerPassword = ref(false)
@@ -40,7 +56,12 @@ whenever(managerData, (data) => {
 })
 
 whenever(yourData, (data) => {
-  successfullySubmittedTrainerPassword.value = true
+  if (data && !JSON.parse(data).error) {
+    successfullySubmittedTrainerPassword.value = true
+  }
+  else {
+    alert(t('error-messages.change-password-error'))
+  }
 })
 
 const submitManagerPassword = async () => {
@@ -53,13 +74,13 @@ const submitTrainerPassword = async () => {
 }
 
 const passwordErrorMessage = computed(() => {
-	return managerData.value
+  return managerData.value
 })
 
 const newPasswordErrorMessage = computed(() => {
   if (newPassword.value != newPasswordRepeat.value) return 'error-messages.diffrent-passwords'
   else if (validatePassword(newPassword.value)) return validatePassword(newPassword.value)
-	return ''
+  return ''
 })
 
 </script>
@@ -70,16 +91,17 @@ const newPasswordErrorMessage = computed(() => {
       <MyCenterElement>
         <MiniWhiteFrame>
           <template #attributes>
-            
-            <MessageInfo v-if="!error && !successfullySubmittedManagerPassword && !successfullySubmittedTrainerPassword">
+
+            <MessageInfo
+              v-if="!error && !successfullySubmittedManagerPassword && !successfullySubmittedTrainerPassword">
               <template #info>
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
-                  <p class="text-center">{{t('info.able-password-your')}},</p>
-                  <p class="text-center">{{t('info.enter-your-old-password')}}:</p>
+                  <p class="text-center">{{ t('info.able-password-your') }},</p>
+                  <p class="text-center">{{ t('info.enter-your-old-password') }}:</p>
                   <input v-model="password" name="password" type="password"
                     class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
                   <p v-if="passwordErrorMessage" class="text-xs color-red">
-                    {{t('error-messages.wrong-password')}}
+                    {{ t('error-messages.wrong-password') }}
                   </p>
                 </div>
               </template>
@@ -90,17 +112,18 @@ const newPasswordErrorMessage = computed(() => {
               </template>
             </MessageInfo>
 
-            <MessageInfo v-else-if="!error && successfullySubmittedManagerPassword && !successfullySubmittedTrainerPassword">
+            <MessageInfo
+              v-else-if="!error && successfullySubmittedManagerPassword && !successfullySubmittedTrainerPassword">
               <template #info>
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
-                  <p class="text-center">{{t('info.enter-new-password')}}:</p>
+                  <p class="text-center">{{ t('info.enter-new-password') }}:</p>
                   <input v-model="newPassword" name="password" type="password"
                     class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
-                  <p class="text-center">{{t('info.repeat-new-password')}}:</p>
+                  <p class="text-center">{{ t('info.repeat-new-password') }}:</p>
                   <input v-model="newPasswordRepeat" name="password" type="password"
                     class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" />
                   <p v-if="newPasswordErrorMessage" class="text-xs color-red">
-                    {{t(newPasswordErrorMessage)}}
+                    {{ t(newPasswordErrorMessage) }}
                   </p>
                 </div>
               </template>
@@ -114,7 +137,7 @@ const newPasswordErrorMessage = computed(() => {
             <MessageInfo v-else-if="!error && successfullySubmittedTrainerPassword">
               <template #info>
                 <div class="w-full h-full flex flex-col gap-2 place-content-center place-items-center">
-                  <p class="text-center">{{t('info.password-changed')}}:</p>
+                  <p class="text-center">{{ t('info.password-changed') }}</p>
                 </div>
               </template>
               <template #button>

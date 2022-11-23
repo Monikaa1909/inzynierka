@@ -207,6 +207,27 @@ export default (router: Router) => {
             )
             res.send(parent)
           }
+
+          else if (payload.value.type === 'Parent' && req.params.id === payload.value.id) {
+            const parent = await models.Parent.findOneAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                remarks: req.body.remarks,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+                academy: req.body.academy,
+              },
+              {
+                new: true
+              }
+            )
+            res.send(parent)
+          }
+
           else {
             res.status(400).json({ error: "Lack of sufficient permissions" });
           }

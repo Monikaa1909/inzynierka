@@ -24,6 +24,7 @@ import useMatchRoutes from './match'
 import useTrainingRoutes from './training'
 import useTournamentRoutes from './tournament'
 import useSportsFacilityRoutes from './sportsFacility'
+import useManagerRoutes from './manager'
 
 const router = express.Router()
 
@@ -40,73 +41,13 @@ useSportsFacilityRoutes(router)
 useTournamentRoutes(router)
 useTrainingRoutes(router)
 useMatchRoutes(router)
+useManagerRoutes(router)
 
 export default router
 
 router.post('/db:seed', async (req, res) => {
     return seedDatabase()
 })
-
-router.get('/managers', async (req, res) => {
-    try {
-        const academyManager = await models.AcademyManager.find()
-        res.send(academyManager)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
-
-router.get('/managers', async (req, res) => {
-    try {
-        const academies = await models.AcademyManager.find()
-        .populate({
-            path: 'academy',
-            model: 'Academy',
-        })
-        res.send(academies)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
-
-router.get('/manager/:id', async (req, res) => {
-    try {
-        const academyManager = await models.AcademyManager.findById(req.params.id)
-        res.send(academyManager)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
-
-router.post('/manager/:id', async (req, res) => {
-    try {
-        const manager = await models.AcademyManager.findOneAndUpdate(
-            {
-                _id: req.params.id
-            },
-            {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                birthdayDate: req.body.birthdayDate,
-                nationality: req.body.nationality,
-                remarks: req.body.remarks,
-                academy: req.body.academy,
-                phoneNumber: req.body.phoneNumber,
-                email: req.body.email,
-            },
-            {
-                new: true
-            }
-        )
-        res.send(manager)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
-
-
-
-
 
 router.get('/matches/academy/:id', async (req, res) => {
     try {

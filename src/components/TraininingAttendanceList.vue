@@ -95,12 +95,10 @@ whenever(players, (data) => {
 
 const isPlayerHasStatistic = (player: Player) => {
 	let isPlayerHas = false
-	// console.log('isplayerhasstatistic?')
 	attendanceList.value?.forEach(element => {
 		if (element.player._id === player._id)
 			isPlayerHas = true
 	})
-	// console.log(isPlayerHas)
 	return isPlayerHas
 }
 

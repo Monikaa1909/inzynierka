@@ -138,6 +138,29 @@ export default (router: Router) => {
             )
             res.send(trainer)
           }
+
+          else if (payload.value.type === 'Trainer' && req.params.id === payload.value.id) {
+            const trainer = await models.Trainer.findOneAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                birthdayDate: req.body.birthdayDate,
+                nationality: req.body.nationality,
+                remarks: req.body.remarks,
+                academy: req.body.academy,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+              },
+              {
+                new: true
+              }
+            )
+            res.send(trainer)
+          }
+
           else {
             res.status(400).json({ error: "Lack of sufficient permissions" });
           }

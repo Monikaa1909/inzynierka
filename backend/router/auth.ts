@@ -57,11 +57,8 @@ export default (router: Router) => {
         password
       })
 
-      console.log(password)
-
       res.send(password)
     } catch (error) {
-      console.log(error)
       res.status(400).send(error)
     }
   })
@@ -119,7 +116,6 @@ export default (router: Router) => {
 
       res.send(await user.createToken())
     } catch (error) {
-      console.error(error)
       res.status(400).send(error)
     }
   })
@@ -143,7 +139,6 @@ export default (router: Router) => {
       }
 
     } catch (error) {
-      console.error(error)
       res.status(400).send(error)
     }
   })
@@ -168,7 +163,6 @@ export default (router: Router) => {
       res.send(user)
 
     } catch (error) {
-      console.error(error)
       res.status(400).send(error)
     }
   })
@@ -201,6 +195,26 @@ export default (router: Router) => {
 
             res.send(user)
           }
+
+          else if (payload.value.type === 'Trainer' && req.params.id === payload.value.id) {
+            const salt = await bcrypt.genSalt()
+            const hash = await bcrypt.hash(req.body.newPassword, salt)
+
+            const user: User | null = await models.User.findByIdAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                password: hash
+              },
+              {
+                new: true
+              }
+            )
+
+            res.send(user)
+          }
+
           else {
             res.status(400).json({ error: "You have no rights to change trainer password" });
           }
@@ -245,6 +259,71 @@ export default (router: Router) => {
 
             res.send(user)
           }
+
+          else if (payload.value.type === 'Parent' && req.params.id === payload.value.id) {
+            const salt = await bcrypt.genSalt()
+            const hash = await bcrypt.hash(req.body.newPassword, salt)
+
+            const user: User | null = await models.User.findByIdAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                password: hash
+              },
+              {
+                new: true
+              }
+            )
+
+            res.send(user)
+          }
+
+          else {
+            res.status(400).json({ error: "You have no rights to change trainer password" });
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" });
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
+
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
+  router.post('/auth/academymanager/password/:id', async (req, res) => {
+    try {
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
+
+          if (payload.value.type === 'AcademyManager') {
+            const salt = await bcrypt.genSalt()
+            const hash = await bcrypt.hash(req.body.newPassword, salt)
+
+            const user: User | null = await models.User.findByIdAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                password: hash
+              },
+              {
+                new: true
+              }
+            )
+
+            res.send(user)
+          }
+
           else {
             res.status(400).json({ error: "You have no rights to change trainer password" });
           }

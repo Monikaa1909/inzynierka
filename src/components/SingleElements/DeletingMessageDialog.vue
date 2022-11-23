@@ -9,6 +9,7 @@ const { t } = useI18n()
         <slot name="deletedItem"></slot>
         <p class="flex">?</p>
       </div>
+      <slot name="added"></slot>
       <div class="w-full flex flex-row gap-4 place-content-center place-items-center">
         <SingleButton @click="$emit('confirmDelete')">
           <template #buttonName>{{ t('button.yes') }}</template>

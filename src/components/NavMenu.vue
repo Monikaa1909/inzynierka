@@ -169,6 +169,11 @@ const goYourProfile = () => {
   return router.push('/yourProfile/personalData')
 }
 
+const deleteAcademy = () => {
+  isHidden.value = true
+  return router.push('/delete')
+}
+
 const logout = async () => {
   isHidden.value = true
   token.value = null
@@ -263,6 +268,10 @@ const logout = async () => {
                 <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}
                 </p>
               </button>
+              <button @click="deleteAcademy()" class="p-1 w-full">
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.delete-academy') }}
+                </p>
+              </button>
             </div>
             <button @click="logout" class="p-1 w-full">
               <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
@@ -270,7 +279,6 @@ const logout = async () => {
           </div>
         </div>
       </div>
-      <!-- <img src="../assets/user-icon.png" alt="Avatar" class="px-2 py-0.5 h-75px w-auto self-center" /> -->
     </div>
   </div>
 </template>

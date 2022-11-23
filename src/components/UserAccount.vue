@@ -12,14 +12,6 @@ import 'v-calendar/dist/style.css'
 
 const props = defineProps<{ edit?: boolean }>()
 
-// const url = computed(() => {
-//   if (payload.value.type === 'AcademyManager') return `/api/manager/${payload.value.id}`
-//   else if (payload.value.type === 'Trainer') return 
-//   else if (payload.value.type === 'Parent') return `/api/parent/${payload.value.id}`
-// })
-
-
-
 const token = useStorage('user:token', '')
 const { payload: payloadData } = useJwt(() => token.value ?? '')
 const payload = ref({} as JwtPayload)
@@ -36,7 +28,23 @@ const {
   isFetching: isParentFetching,
   error: parentError,
   execute: refechParent
-} = useFetch(`/api/parent/${payload.value.id}`, { initialData: {}, immediate: false }).json<Parent>()
+} = useFetch(`/api/parent/${payload.value.id}`, {
+  initialData: {}, immediate: false,
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Parent>()
 
 const {
   data: trainer,
@@ -44,7 +52,23 @@ const {
   isFetching: isTrainerFetching,
   error: trainerError,
   execute: refechTrainer
-} = useFetch(`/api/trainer/${payload.value.id}`, { initialData: {}, immediate: false }).json<Trainer>()
+} = useFetch(`/api/trainer/${payload.value.id}`, {
+  initialData: {}, immediate: false,
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Trainer>()
 
 const {
   data: manager,
@@ -52,7 +76,23 @@ const {
   isFetching: isManagerFetching,
   error: managerError,
   execute: refechManager
-} = useFetch(`/api/manager/${payload.value.id}`, { initialData: {}, immediate: false }).json<AcademyManager>()
+} = useFetch(`/api/manager/${payload.value.id}`, {
+  initialData: {}, immediate: false,
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<AcademyManager>()
 
 const user = ref({} as User & {
   birthdayDate?: Date,
@@ -143,22 +183,57 @@ const nationalityErrorMessage = computed(() => {
 })
 
 const onSubmit = async () => {
-  console.log('onsubmit')
   if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value) {
     alert(t('error-messages.validation-error'))
   } else {
-    console.log(payload.value.type)
+
     if (payload.value.type === "Trainer" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
-      const { execute: updateTrainer, error: updateError } = useFetch(`/api/trainer/${payload.value.id}`, { immediate: false }).post(user)
+      const { execute: updateTrainer, error: updateError } = useFetch(`/api/trainer/${payload.value.id}`, {
+        immediate: false,
+        async beforeFetch({ url, options, cancel }) {
+          const myToken = token.value
+          if (!myToken)
+            cancel()
+
+          options.headers = {
+            ...options.headers,
+            Authorization: `Bearer ${myToken}`,
+          }
+
+          return {
+            options,
+          }
+        }
+      }).post(user)
+
       await updateTrainer()
+      
       if (updateError.value) {
         alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
         return
       }
+
       return router.push('/yourProfile/personalData')
+
     } else if (payload.value.type === "Parent") {
       console.log('update parent')
-      const { execute: updateParent, error: updateError } = useFetch(`/api/parent/${payload.value.id}`, { immediate: false }).post(user)
+      const { execute: updateParent, error: updateError } = useFetch(`/api/parent/${payload.value.id}`, {
+        immediate: false,
+        async beforeFetch({ url, options, cancel }) {
+          const myToken = token.value
+          if (!myToken)
+            cancel()
+
+          options.headers = {
+            ...options.headers,
+            Authorization: `Bearer ${myToken}`,
+          }
+
+          return {
+            options,
+          }
+        }
+      }).post(user)
       await updateParent()
       if (updateError.value) {
         alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
@@ -166,7 +241,23 @@ const onSubmit = async () => {
       }
       return router.push('/yourProfile/personalData')
     } else if (payload.value.type === "AcademyManager" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
-      const { execute: updateManager, error: updateError } = useFetch(`/api/manager/${payload.value.id}`, { immediate: false }).post(user)
+      const { execute: updateManager, error: updateError } = useFetch(`/api/manager/${payload.value.id}`, {
+        immediate: false,
+        async beforeFetch({ url, options, cancel }) {
+          const myToken = token.value
+          if (!myToken)
+            cancel()
+
+          options.headers = {
+            ...options.headers,
+            Authorization: `Bearer ${myToken}`,
+          }
+
+          return {
+            options,
+          }
+        }
+      }).post(user)
       await updateManager()
       if (updateError.value) {
         alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
