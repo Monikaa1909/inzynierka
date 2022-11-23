@@ -41,7 +41,22 @@ const {
 	isFetching: isTeamFetching,
 	isFinished: isTeamFinished,
 	error: teamError,
-} = useFetch(url, { initialData: {} }).json<Team>()
+} = useFetch(url, {
+	initialData: {}, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Team>()
 
 whenever(teamData, (data) => {
 	team.value = data
@@ -52,14 +67,44 @@ const {
 	isFetching: isTrainersFetching,
 	isFinished: isTrainersFinished,
 	error: trainersError,
-} = useFetch(`/api/trainers/${payload.value.academy}`, { initialData: [] }).json<Trainer[]>()
+} = useFetch(`/api/trainers/${payload.value.academy}`, {
+	initialData: [], async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Trainer[]>()
 
 const {
 	data: academyData,
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value.academy}`, {
+	initialData: {}, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Academy>()
 
 whenever(trainersData, (data) => {
 	trainers.value = data

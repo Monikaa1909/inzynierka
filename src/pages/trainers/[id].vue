@@ -23,7 +23,22 @@ const {
   isFinished,
   isFetching,
   error
-} = useFetch(`/api/trainer/${props.id}`, { initialData: {} }).json<Trainer>()
+} = useFetch(`/api/trainer/${props.id}`, {
+  initialData: {}, async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Trainer>()
 
 whenever(trainerData, (data) => {
   trainer.value = data

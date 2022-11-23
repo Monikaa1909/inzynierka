@@ -32,7 +32,22 @@ const {
   isFinished,
   error,
   execute: refechTrainers
-} = useFetch(`/api/trainers/${payload.value.academy}`, { initialData: [] }).json<Trainer[]>()
+} = useFetch(`/api/trainers/${payload.value.academy}`, {
+  initialData: [], async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Trainer[]>()
 
 const isDeleting = ref(false)
 const deletingTrainer = ref<Trainer>()

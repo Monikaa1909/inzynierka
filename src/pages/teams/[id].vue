@@ -18,7 +18,22 @@ const {
   isFinished,
   isFetching,
   error
-} = useFetch(`/api/team/${props.id}`, { initialData: {} }).json<Team>()
+} = useFetch(`/api/team/${props.id}`, {
+  initialData: {}, async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Team>()
 
 const goEditTeam = (teamId: any) => {
   return router.push(`/teams/edit/${teamId}`)

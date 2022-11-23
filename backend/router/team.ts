@@ -1,19 +1,9 @@
 import { JwtPayload } from 'backend/database/schemas/User'
+import { Player } from 'backend/database/schemas/Player'
+import { Team } from 'backend/database/schemas/Team'
 import { useJwt } from '@vueuse/integrations/useJwt'
 import { Router } from "express"
 import { models } from "mongoose"
-
-import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
-import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
-import { SportsFacility } from 'backend/database/schemas/SportsFacility'
-import { AttendanceList } from 'backend/database/schemas/AttendanceList'
-import { Tournament } from 'backend/database/schemas/Tournament'
-import { Training } from 'backend/database/schemas/Training'
-import { Trainer } from 'backend/database/schemas/Trainer.user'
-import { Player } from 'backend/database/schemas/Player'
-import { Parent } from 'backend/database/schemas/Parent.user'
-import { Match } from 'backend/database/schemas/Match'
-import { Team } from 'backend/database/schemas/Team'
 
 export default (router: Router) => {
 
@@ -76,11 +66,11 @@ export default (router: Router) => {
               }) as Team[]
             res.send(teams)
           } else {
-            res.send(null)
+            res.status(400).json({ error: "Lack of sufficient permissions" });
           }
 
         } else {
-          res.status(400).json({ error: "Malformed auth header" });
+          res.status(400).json({ error: "Malformed auth header" })
         }
       } else {
         res.status(400).json({ error: "No authorization header" })
@@ -92,12 +82,33 @@ export default (router: Router) => {
 
   router.get('/team/:id', async (req, res) => {
     try {
-      const team = await models.Team.findById(req.params.id)
-        .populate({
-          path: 'trainer',
-          model: 'Trainer',
-        })
-      res.send(team)
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
+
+          const team = await models.Team.findById(req.params.id)
+            .populate({
+              path: 'trainer',
+              model: 'Trainer',
+            })
+
+          if (payload.value.academy === team.academy._id.toString()) {
+            res.send(team)
+          }
+          else {
+            res.status(400).json({ error: "Lack of sufficient permissions" })
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" })
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       res.status(400).send(error)
     }
@@ -120,9 +131,9 @@ export default (router: Router) => {
               }
               else res.send(team)
             })
-          } 
+          }
           else {
-            res.status(400).json({ error: "You have no rights to create a team" });
+            res.status(400).json({ error: "Lack of sufficient permissions" });
           }
 
         } else {
@@ -183,10 +194,10 @@ export default (router: Router) => {
               )
               res.send(team)
             } else {
-              res.status(400).json({ error: "You have no rights to update a team" });
+              res.status(400).json({ error: "Lack of sufficient permissions" });
             }
-           
-          } 
+
+          }
           else {
             res.status(400).json({ error: "You have no rights to update a team" });
           }
@@ -216,14 +227,12 @@ export default (router: Router) => {
           if (payload.value.type === 'AcademyManager') {
             const team = await models.Team.findOneAndDelete({ _id: req.params.id })
             res.send(team)
-          } 
+          }
           else {
-            console.log("You have no rights to delete a team")
-            res.status(400).json({ error: "You have no rights to delete a team" });
+            res.status(400).json({ error: "Lack of sufficient permissions" });
           }
 
         } else {
-          console.log("Malformed auth header")
           res.status(400).json({ error: "Malformed auth header" });
         }
       } else {
