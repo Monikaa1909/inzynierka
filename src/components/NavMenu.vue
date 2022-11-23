@@ -24,25 +24,85 @@ const {
   data: academy,
   error: academyError,
   execute: refechAcademy
-} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value.academy}`, {
+  initialData: {}, async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Academy>()
 
 const {
   data: manager,
   error: managerError,
   execute: refechManager
-} = useFetch(`/api/manager/${payload.value.id}`, { initialData: {}, immediate: false }).json<AcademyManager>()
+} = useFetch(`/api/manager/${payload.value.id}`, {
+  initialData: {}, immediate: false, async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<AcademyManager>()
 
 const {
   data: trainer,
   error: trainerError,
   execute: refechTrainer
-} = useFetch(`/api/trainer/${payload.value.id}`, { initialData: {}, immediate: false }).json<Trainer>()
+} = useFetch(`/api/trainer/${payload.value.id}`, {
+  initialData: {}, immediate: false, async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Trainer>()
 
 const {
   data: parent,
   error: parentError,
   execute: refechParent
-} = useFetch(`/api/parent/${payload.value.id}`, { initialData: {}, immediate: false }).json<Parent>()
+} = useFetch(`/api/parent/${payload.value.id}`, {
+  initialData: {}, immediate: false, async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Parent>()
 
 const user = ref({} as AcademyManager | Trainer | Parent)
 if (payload.value.type === 'AcademyManager') refechManager()
@@ -134,14 +194,14 @@ const logout = async () => {
         <template #buttonName>{{ t('button.teams') }}</template>
       </SingleButton>
 
-      <SingleButton v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goPlayers">
+      <SingleButton  @click="goPlayers">
         <template #icon>
           <img src="../assets/player-icon.png" class="h-24px mr-2" />
         </template>
         <template #buttonName>{{ t('button.players') }}</template>
       </SingleButton>
 
-      <SingleButton v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goCalendar">
+      <SingleButton  @click="goCalendar">
         <template #icon>
           <img src="../assets/calendar-icon.png" class="h-24px mr-2" />
         </template>
@@ -155,7 +215,7 @@ const logout = async () => {
         <template #buttonName>{{ t('button.trainers') }}</template>
       </SingleButton>
 
-      <SingleButton @click="goParents">
+      <SingleButton v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goParents">
         <template #icon>
           <img src="../assets/parent-icon.png" class="h-24px mr-2" />
         </template>

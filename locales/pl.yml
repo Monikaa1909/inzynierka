@@ -190,6 +190,8 @@ error-messages:
   went-wrong: Coś poszło nie tak... Spróbuj ponownie za chwilę!
   no-data: Brak danych w bazie danych 
   no-players-in-team: W bazie danych nie istnieją zawodnicy z tej drużyny
+  no-players-in-academy: W bazie danych nie istnieją zawodnicy z tej akademii
+  no-players: W bazie danych nie ma zawodników
   no-statistics: Nie ma jeszcze statystyk dla tego wydarzenia
   red-cards-message: 2 żółte kartki zwykle oznaczają czerwoną kartkę
   birthday-date-message: Rok urodzenia zawodnika jest większy od dolnego rocznika drużyny
@@ -206,14 +208,15 @@ error-messages:
   end-date: Data zakończenia musi być późniejsza niż data rozpoczęcia
   no-valid-examinations: Pamiętaj, że badania lekarskie nie są już aktualne
   invalid-credentials: Błędny login lub hasło
-  register-trainer: Bład przy rejestracji trenera. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
-  register-parent: Bład przy rejestracji rodzica. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
+  register-trainer: Bład przy rejestracji trenera. Konto o takim e-mailu i loginie prawdopodobnie już istnieje lub nie masz wystarczających uprawnień. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
+  register-parent: Bład przy rejestracji rodzica. Konto o takim e-mailu i loginie prawdopodobnie już istnieje lub nie masz wystarczających uprawnień. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
   register-manager: Bład przy rejestracji menadżera akademii. Konto o takim e-mailu i loginie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
   register-academy: Bład przy rejestracji akademii. Akademia o takiej nazwie prawdopodobnie już istnieje. Spróbuj ponownie z innymi danymi lub skontaktuj się z nami poprzez e-mail 
   wrong-password: Błędne hasło
   diffrent-passwords: Hasła muszą być takie same
   weak-password: Hasło jest zbyt słabe (używaj dużych i małych liter, cyfr oraz znaków specjalnych)
   goals-error: Liczba bramek zdobytych przez twoją drużynę nie zgadza się z sumą bramek zdobytych przez zawodników
+  change-password-error: Bład przy zmianie hasła. Prawdopodobnie nie masz wystarczających uprawnień. Spróbuj ponownie lub skontaktuj się z nami poprzez e-mail
   password:
     lowercase: Hasło musi zawierać conajmniej 1 małą literę
     uppercase: Hasło musi zawierać conajmniej 1 dużą literę

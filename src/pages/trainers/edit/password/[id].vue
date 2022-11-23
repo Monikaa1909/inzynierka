@@ -27,20 +27,21 @@ const newCredentials = computed(() => ({
 
 const { data: managerData, error: managerError, execute: submitManager } = useFetch(`/api/auth/validate/password/${payload.value.id}`, { immediate: false }).post(credentials).text()
 const { data: trainerData, error: trainerError, execute: submitTrainer } = useFetch(`/api/auth/trainer/password/${props.id}`, {
-	immediate: false, async beforeFetch({ url, options, cancel }) {
-		const myToken = token.value
-		if (!myToken)
-			cancel()
+	immediate: false, 
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
 
-		options.headers = {
-			...options.headers,
-			Authorization: `Bearer ${myToken}`,
-		}
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
 
-		return {
-			options,
-		}
-	}
+    return {
+      options,
+    }
+  }
 }).post(newCredentials).text()
 
 const error = computed(() => {
@@ -58,10 +59,16 @@ whenever(managerData, (data) => {
 
 const firstName = ref('')
 const lastName = ref('')
+
 whenever(trainerData, (data) => {
-  successfullySubmittedTrainerPassword.value = true
-  firstName.value = JSON.parse(data).firstName
-  lastName.value = JSON.parse(data).lastName
+  if (data && !JSON.parse(data).error) {
+    successfullySubmittedTrainerPassword.value = true
+    firstName.value = JSON.parse(data).firstName
+    lastName.value = JSON.parse(data).lastName
+  }
+  else {
+    alert(t('error-messages.change-password-error'))
+  }
 })
 
 const submitManagerPassword = async () => {
@@ -70,11 +77,12 @@ const submitManagerPassword = async () => {
 }
 
 const submitTrainerPassword = async () => {
-  console.log(newPasswordErrorMessage.value)
+  
   if (newPasswordErrorMessage.value) {
     alert(t('error-messages.validation-error'))
     return
   }
+  
   submitTrainer()
 }
 

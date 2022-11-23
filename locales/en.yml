@@ -190,6 +190,8 @@ error-messages:
   went-wrong: Something went wrong... Try again later!
   no-data: There is no data in data base
   no-players-in-team: There is no players in that team in data base
+  no-players-in-academy: There is no players in that academy in data base
+  no-players: There is no players in data base
   no-statistics: There are no statistic for that event yet
   red-cards-message: 2 yellow cards usually mean red card
   birthday-date-message: Player's birthday date is greater than the team's starting year
@@ -206,14 +208,15 @@ error-messages:
   end-date: End date must be higher than start date
   no-valid-examinations: Remember that medical examinations are no longer valid
   invalid-credentials: Invalid login or password
-  register-trainer: Error while registering trainer. An account with this email and login probably already exists. Please try again with different details or contact us via email
-  register-parent: Error while registering parent. An account with this email and login probably already exists. Please try again with different details or contact us via email
+  register-trainer: Error while registering trainer. An account with this email and login probably already exists you do not have sufficient permissions. Please try again with different details or contact us via email
+  register-parent: Error while registering parent. An account with this email and login probably already exists or you do not have sufficient permissions. Please try again with different details or contact us via email
   register-manager: Error while registering academy manager. An account with this email and login probably already exists. Please try again with different details or contact us via email
   register-academy: Error while registering academy. An accademy of that name probably already exists. Please try again with different details or contact us via email
   wrong-password: Wrong password
   diffrent-passwords: The passwords must be the same
   weak-password: Password is too weak (use uppercase and lowercase letters, numbers and special characters)
   goals-error: The number of goals scored by your team does not match the sum of goals scored by the players
+  change-password-error: Error while changing password. You probably do not have sufficient permissions. Please try again with different details or contact us via email
   password:
     lowercase: Password must contain at least 1 lowercase alphabetical character
     uppercase: Password must contain at least 1 uppercase alphabetical character

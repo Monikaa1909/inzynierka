@@ -42,7 +42,22 @@ const {
 	isFetching: isParentFetching,
 	isFinished: isParentFinished,
 	error: parentError,
-} = useFetch(url, { initialData: {} }).json<Parent>()
+} = useFetch(url, {
+	initialData: {}, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Parent>()
 
 whenever(parentData, (data) => {
 	parent.value = data
@@ -53,10 +68,24 @@ const {
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value.academy}`, {
+	initialData: {}, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Academy>()
 
 const isFinished = computed(() => {
-	console.log(academyData.value)
 	return isParentFinished.value && isAcademyFinished.value
 })
 
@@ -80,8 +109,39 @@ const newParent = computed(() => ({
 
 const successfullyAdded = ref(false)
 
-const { execute: saveParent, error: saveError, data: password } = useFetch(url, { immediate: false }).post(newParent)
-const { execute: updateParent, error: updateError } = useFetch(url, { immediate: false }).post(parent)
+const { execute: saveParent, error: saveError, data: password } = useFetch(url, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(newParent)
+
+const { execute: updateParent, error: updateError } = useFetch(url, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(parent)
 
 const onSubmit = async (values: any) => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || phoneNumberErrorMessage.value || emailErrorMessage.value || loginErrorMessage.value) {

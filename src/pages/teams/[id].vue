@@ -74,7 +74,6 @@ const confirmDelete = async () => {
   }).delete()
 
   if (error.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-
   return router.go(-1)
 }
 
@@ -96,7 +95,7 @@ const confirmDelete = async () => {
         <MiniWhiteFrame class="px-8">
 
           <template #nav>
-            <button @click="goTeamsPlayers(team?._id)">
+            <button @click="goTeamsPlayers(team?._id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/academy-icon.png" class="h-24px" />
             </button>
             <button @click="goEditTeam(team?._id)"

@@ -42,14 +42,29 @@ if (!props.playerId) {
 		parent: undefined,
 		academy: undefined!
 	}
-} 
+}
 
 const {
 	data: playerData,
 	isFetching: isPlayersFetching,
 	isFinished: isPlayerFinished,
 	error: playerError,
-} = useFetch(url, { initialData: {} }).json<Player>()
+} = useFetch(url, {
+	initialData: {}, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Player>()
 
 whenever(playerData, (data) => {
 	player.value = data
@@ -60,21 +75,66 @@ const {
 	isFetching: isTeamsFetching,
 	isFinished: isTeamsFinished,
 	error: teamsError,
-} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams`, {
+	initialData: [], async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Team[]>()
 
 const {
 	data: parentsData,
 	isFetching: isParentsFetching,
 	error: parentsError,
 	isFinished: isParentsFinished,
-} = useFetch(`/api/parents/academy/${payload.value.academy}`, { initialData: [] }).json<Parent[]>()
+} = useFetch(`/api/parents`, {
+	initialData: [], async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Parent[]>()
 
 const {
 	data: academyData,
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${payload.value.academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value.academy}`, {
+	initialData: {}, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Academy>()
 
 whenever(parentsData, (data) => {
 	parents.value = data
@@ -108,8 +168,39 @@ const error = computed(() => {
 	return playerError.value && teamsError.value && parentsError.value && academyError.value
 })
 
-const { execute: savePlayer, error: saveError } = useFetch(url, { immediate: false }).post(player)
-const { execute: updatePlayer, error: updateError } = useFetch(url, { immediate: false }).post(player)
+const { execute: savePlayer, error: saveError } = useFetch(url, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(player)
+
+const { execute: updatePlayer, error: updateError } = useFetch(url, {
+	immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).post(player)
 
 const onSubmit = async () => {
 	if (firstNameErrorMessage.value || lastNameErrorMessage.value || birthdayDateErrorMessage.value || nationalityErrorMessage.value
@@ -296,7 +387,7 @@ const validityOfMedicalExaminationsErrorMessage = computed(() => {
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.team">
 						<option v-for="team in teams" :value="team">{{ team.teamName }}
 						</option>
-						<option :value="null">{{t('single-player.no-team')}}</option>
+						<option :value="null">{{ t('single-player.no-team') }}</option>
 					</select>
 				</div>
 			</template>
@@ -309,7 +400,7 @@ const validityOfMedicalExaminationsErrorMessage = computed(() => {
 					<select class="flex flex-auto w-full border-1 border-#143547 p-1 shadow-lg" v-model="player.parent">
 						<option v-for="parent in parents" :value="parent">{{ parent.lastName }} {{ parent.firstName }}
 						</option>
-						<option :value="null">{{t('single-player.no-parent')}}</option>
+						<option :value="null">{{ t('single-player.no-parent') }}</option>
 					</select>
 				</div>
 			</template>

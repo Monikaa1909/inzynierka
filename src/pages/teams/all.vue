@@ -121,7 +121,7 @@ const confirmDelete = async () => {
           @go-to="goToTeam(team._id)">
 
           <template #nav>
-            <button @click="goTeamsPlayers(team._id)">
+            <button @click="goTeamsPlayers(team._id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/academy-icon.png" class="h-24px" />
             </button>
             <button @click="goEditTeam(team._id)"

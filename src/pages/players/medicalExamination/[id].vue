@@ -18,7 +18,7 @@ const props = defineProps<{ id: string }>()
 
 const urlPlayers = computed(() => {
   if (props.id === 'all')
-    return `/api/players/academy/${payload.value.academy}`
+    return `/api/players`
   else
     return `/api/players/team/${props.id}`
 })
@@ -28,7 +28,20 @@ const {
   isFetching,
   isFinished,
   error,
-} = useFetch(urlPlayers.value, { initialData: [] }).json<Player[]>()
+} = useFetch(urlPlayers.value, { initialData: [], async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	} }).json<Player[]>()
 
 const isHidden = ref(true)
 const medicalsFilter = ref('all')
@@ -123,7 +136,7 @@ function goToPlayer(playerId: any) {
                 </div>
 
                 <ErrorMessageInfo v-else>
-                  {{ t('error-messages.no-players-in-team') }}
+                  {{ t('error-messages.no-players') }}
                 </ErrorMessageInfo>
               </div>
 

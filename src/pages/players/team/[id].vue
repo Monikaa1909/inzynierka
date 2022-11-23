@@ -18,7 +18,7 @@ payload.value = payloadData.value as unknown as JwtPayload
 
 const url = computed(() => {
   if (props.id === 'all')
-    return `/api/players/academy/${payload.value.academy}`
+    return `/api/players`
   else
     return `/api/players/team/${props.id}`
 })
@@ -33,7 +33,22 @@ const {
   isFinished,
   error,
   execute: refechPlayers
-} = useFetch(url, { initialData: [] }).json<Player[]>()
+} = useFetch(url, {
+  initialData: [], async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Player[]>()
 
 const today = computed(() => {
   return new Date()
@@ -76,7 +91,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/player/${deletingPlayer.value?._id}`).delete()
+  const { error: deleteError } = await useFetch(`/api/player/${deletingPlayer.value?._id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    }
+  }).delete()
+
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   refechPlayers()
 }
 
@@ -85,15 +117,24 @@ const confirmDelete = async () => {
 <template>
   <BackgroundFrame>
     <template #nav>
-      <button @click="goCheckMedialExamination()" class="flex flex-row gap-2 mr-8 items-center">
+      <button 
+      v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'"
+        @click="goCheckMedialExamination()" 
+        class="flex flex-row gap-2 mr-8 items-center">
         <img src="../../../assets/medical-examinations-icon.png" class="h-48px flex" />
-        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-medical-examination') }}</p>
+        <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-medical-examination')
+        }}</p>
       </button>
-      <button @click="goCheckStatistic()" class="flex flex-row gap-2 mr-8 items-center">
+
+      <button 
+        @click="goCheckStatistic()" class="flex flex-row gap-2 mr-8 items-center">
         <img src="../../../assets/statistic-icon.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic') }}</p>
       </button>
-      <button @click="goAddPlayer()" class="flex flex-row gap-2 items-center">
+
+      <button 
+        v-if="payload.type === 'AcademyManager'"
+        @click="goAddPlayer()" class="flex flex-row gap-2 items-center">
         <img src="../../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-player') }}</p>
       </button>
@@ -115,10 +156,10 @@ const confirmDelete = async () => {
           @go-to="goToPlayer(player._id)">
 
           <template #nav>
-            <button @click="goEditPlayer(player._id)">
+            <button @click="goEditPlayer(player._id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deletePlayer(player)">
+            <button @click="deletePlayer(player)" v-if="payload.type === 'AcademyManager'">
               <img src="../../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>

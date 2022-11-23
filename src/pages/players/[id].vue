@@ -23,7 +23,22 @@ const {
   isFinished,
   isFetching,
   error
-} = useFetch(`/api/player/${props.id}`, { initialData: {} }).json<Player>()
+} = useFetch(`/api/player/${props.id}`, {
+  initialData: {}, async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Player>()
 
 whenever(playerData, (data) => {
   player.value = data
@@ -51,7 +66,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/player/${props.id}`).delete()
+  const { error: deleteError } = await useFetch(`/api/player/${props.id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    }
+  }).delete()
+
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   return router.go(-1)
 }
 
@@ -61,8 +93,7 @@ const confirmDelete = async () => {
   <BackgroundFrame>
     <template #data>
 
-      <DeletingMessageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting"
-        @confirmDelete="confirmDelete">
+      <DeletingMessageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
         <template #deletedItem>
           {{ player.firstName }} {{ player.lastName }}
         </template>
@@ -74,10 +105,10 @@ const confirmDelete = async () => {
 
         <MiniWhiteFrame>
           <template #nav>
-            <button @click="goEditPlayer(props.id)">
+            <button @click="goEditPlayer(props.id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deletePlayer()">
+            <button @click="deletePlayer()" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>

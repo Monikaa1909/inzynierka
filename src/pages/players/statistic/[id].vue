@@ -46,7 +46,7 @@ const urlTrainingStatistic = computed(() => {
 
 const urlPlayers = computed(() => {
 	if (props.id === 'all')
-		return `/api/players/academy/${payload.value.academy}`
+		return `/api/players`
 	else
 		return `/api/players/team/${props.id}`
 })
@@ -63,11 +63,24 @@ interface PlayerStatistic {
 }
 
 const {
-  data: teams,
-  // isFetching: isTeamsFetching,
-  isFinished: isTeamsFinished,
-  // error: teamsError,
-} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
+	data: teams,
+	isFinished: isTeamsFinished,
+} = useFetch(`/api/teams`, {
+	initialData: [], async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Team[]>()
 
 const {
 	data: matchStatistic,
@@ -75,7 +88,22 @@ const {
 	isFinished: isMatchStatisticFinished,
 	error: matchStatisticError,
 	execute: refechMatch
-} = useFetch(urlMatchStatistic.value, { initialData: [], immediate: false }).json<MatchStatistic[]>()
+} = useFetch(urlMatchStatistic.value, {
+	initialData: [], immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<MatchStatistic[]>()
 
 const {
 	data: tournamentStatistic,
@@ -83,7 +111,22 @@ const {
 	isFinished: isTournamentStatisticFinished,
 	error: tournamentStatisticError,
 	execute: refechTournament
-} = useFetch(urlTournamentStatistic.value, { initialData: [], immediate: false }).json<TournamentStatistic[]>()
+} = useFetch(urlTournamentStatistic.value, {
+	initialData: [], immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<TournamentStatistic[]>()
 
 const {
 	data: trainingStatistic,
@@ -91,7 +134,22 @@ const {
 	isFinished: isTrainingStatisticFinished,
 	error: trainingStatisticError,
 	execute: refechTraining
-} = useFetch(urlTrainingStatistic.value, { initialData: [], immediate: false }).json<AttendanceList[]>()
+} = useFetch(urlTrainingStatistic.value, {
+	initialData: [], immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<AttendanceList[]>()
 
 const {
 	data: players,
@@ -99,7 +157,22 @@ const {
 	isFinished: isPlayersFinished,
 	error: playersStatisticError,
 	execute: refechPlayers
-} = useFetch(urlPlayers.value, { initialData: [], immediate: false }).json<Player[]>()
+} = useFetch(urlPlayers.value, {
+	initialData: [], immediate: false, async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Player[]>()
 
 whenever(isTeamsFinished, (data) => {
 	if (data)
@@ -177,7 +250,7 @@ const playersStatistic = computed(() => {
 		})
 
 		if (teamsFilter.value != 'all') {
-			
+
 			return newPlayersStatistic.filter(item => item.team === teamsFilter.value)
 		}
 
@@ -236,7 +309,7 @@ const sortedStatistic = computed(() => {
 			playersStatistic.value?.sort(function (a: any, b: any) {
 				if (b.events === 0) return -1
 				else if (Number((a.attendance / a.events).toFixed(4)) > Number((b.attendance / b.events).toFixed(4))) return -1
-				else if (Number((a.attendance / a.events).toFixed(4)) === Number((b.attendance / b.events).toFixed(4))) 
+				else if (Number((a.attendance / a.events).toFixed(4)) === Number((b.attendance / b.events).toFixed(4)))
 					if (a.attendance > b.attendance) return -1
 					else return 1
 				else return 1
@@ -436,13 +509,11 @@ const summaryStatistic = computed(() => {
 									</p>
 								</button>
 							</div>
-							
+
 							<div v-if="!isHidden && props.id === 'all'"
 								class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row)">
-								
-								<button 
-									v-for="team in teams"
-									@click="teamsFilter = team._id" class="p-1 w-full rounded-xl">
+
+								<button v-for="team in teams" @click="teamsFilter = team._id" class="p-1 w-full rounded-xl">
 									<p class=" rounded-xl text-xs hover:(bg-#2F4D5E text-white) py-2 text-center"
 										:class="[teamsFilter === team._id ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
 										{{ team.teamName }}
@@ -478,7 +549,7 @@ const summaryStatistic = computed(() => {
 
 									<SingleStatistic>
 										<template #name>{{ t('match-statistic.attendance') }}</template>
-										<template #data>{{ statistic.attendance}}/{{statistic.events}}</template>
+										<template #data>{{ statistic.attendance }}/{{ statistic.events }}</template>
 									</SingleStatistic>
 
 									<SingleStatistic>
@@ -591,7 +662,7 @@ const summaryStatistic = computed(() => {
 								</div>
 
 								<ErrorMessageInfo v-else>
-									{{ t('error-messages.no-players-in-team') }}
+									{{ t('error-messages.no-players') }}
 								</ErrorMessageInfo>
 							</div>
 

@@ -21,7 +21,22 @@ const {
   isFinished,
   isFetching,
   error
-} = useFetch(`/api/parent/${props.id}`, { initialData: {} }).json<Parent>()
+} = useFetch(`/api/parent/${props.id}`, {
+  initialData: {}, async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Parent>()
 
 const goEditParent = (parentId: any) => {
   return router.push(`/parents/edit/${parentId}`)
@@ -43,7 +58,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/parent/${props.id}`).delete()
+  const { error: deleteError } = await useFetch(`/api/parent/${props.id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    }
+  }).delete()
+
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   return router.go(-1)
 }
 </script>
@@ -64,13 +96,13 @@ const confirmDelete = async () => {
       <MyCenterElement v-if="isFinished && !isDeleting && !error && parent">
         <MiniWhiteFrame>
           <template #nav>
-            <button @click="goEditPassword(props.id)">
+            <button @click="goEditPassword(props.id)" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/password-icon.png" class="h-24px" />
             </button>
-            <button @click="goEditParent(parent?._id)">
+            <button @click="goEditParent(parent?._id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deleteParent()">
+            <button @click="deleteParent()" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>
@@ -94,7 +126,7 @@ const confirmDelete = async () => {
               <template #attributeName>{{ t('single-parent.phone-number') }}:</template>
               <template #attributeValue>{{ parent?.phoneNumber }}</template>
             </SingleAttribute>
-            
+
             <SingleAttribute>
               <template #attributeName>{{ t('single-parent.email') }}:</template>
               <template #attributeValue>{{ parent?.email }}</template>

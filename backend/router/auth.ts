@@ -68,14 +68,34 @@ export default (router: Router) => {
 
   router.post('/auth/register/parent', async (req, res) => {
     try {
-      const password = crypto.randomBytes(16).toString('hex')
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
 
-      const parent: Parent = await models.Parent.create({
-        ...req.body,
-        password
-      })
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
 
-      res.send(password)
+          if (payload.value.type === 'AcademyManager') {
+            const password = crypto.randomBytes(16).toString('hex')
+
+            const parent: Parent = await models.Parent.create({
+              ...req.body,
+              password
+            })
+
+            res.send(password)
+          }
+          else {
+            res.status(400).json({ error: "You have no rights to register a trainer" });
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" });
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       res.status(400).send(error)
     }
@@ -166,7 +186,7 @@ export default (router: Router) => {
           if (payload.value.type === 'AcademyManager') {
             const salt = await bcrypt.genSalt()
             const hash = await bcrypt.hash(req.body.newPassword, salt)
-      
+
             const user: User | null = await models.User.findByIdAndUpdate(
               {
                 _id: req.params.id
@@ -178,7 +198,51 @@ export default (router: Router) => {
                 new: true
               }
             )
-      
+
+            res.send(user)
+          }
+          else {
+            res.status(400).json({ error: "You have no rights to change trainer password" });
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" });
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
+
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
+  router.post('/auth/parent/password/:id', async (req, res) => {
+    try {
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const { payload: payloadData } = useJwt(() => token ?? '')
+          const payload = ref({} as JwtPayload)
+          payload.value = payloadData.value as unknown as JwtPayload
+
+          if (payload.value.type === 'AcademyManager') {
+            const salt = await bcrypt.genSalt()
+            const hash = await bcrypt.hash(req.body.newPassword, salt)
+
+            const user: User | null = await models.User.findByIdAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                password: hash
+              },
+              {
+                new: true
+              }
+            )
+
             res.send(user)
           }
           else {

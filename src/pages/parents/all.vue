@@ -32,7 +32,22 @@ const {
   isFinished,
   error,
   execute: refechParents
-} = useFetch(`/api/parents/academy/${payload.value.academy}`, { initialData: [] }).json<Parent[]>()
+} = useFetch(`/api/parents`, {
+  initialData: [], async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Parent[]>()
 
 const isDeleting = ref(false)
 const deletingParent = ref<Parent>()
@@ -48,7 +63,24 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
   isDeleting.value = false
-  await useFetch(`/api/parent/${deletingParent.value?._id}`).delete()
+  const { error: deleteError } = await useFetch(`/api/parent/${deletingParent.value?._id}`, {
+    async beforeFetch({ url, options, cancel }) {
+      const myToken = token.value
+      if (!myToken)
+        cancel()
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${myToken}`,
+      }
+
+      return {
+        options,
+      }
+    }
+  }).delete()
+  
+  if (deleteError.value) alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
   refechParents()
 }
 
@@ -57,7 +89,7 @@ const confirmDelete = async () => {
 <template>
   <BackgroundFrame>
 
-    <template #nav>
+    <template #nav v-if="payload.type === 'AcademyManager'">
       <router-link to="/parents/add/newParent" class="flex flex-row gap-2 items-center">
         <img src="../../assets/add-icon2.png" class="h-48px flex" />
         <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-parent') }}</p>
@@ -79,13 +111,13 @@ const confirmDelete = async () => {
           clickable="cursor-pointer" @go-to="goToParent(parent._id)">
 
           <template #nav>
-            <button @click="goEditPassword(parent._id)">
+            <button @click="goEditPassword(parent._id)" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/password-icon.png" class="h-24px" />
             </button>
-            <button @click="goEditParent(parent._id)">
+            <button @click="goEditParent(parent._id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deleteParent(parent)">
+            <button @click="deleteParent(parent)" v-if="payload.type === 'AcademyManager'">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>
