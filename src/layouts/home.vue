@@ -7,9 +7,4 @@
       <router-view />
     </div>
   </div>
-
-  <!-- <main>
-    <nav-menu />
-    <router-view />
-  </main> -->
 </template>

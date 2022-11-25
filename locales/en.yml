@@ -38,7 +38,7 @@ button:
   no: No
   out-of-date: Out of date
   up-to-date: Up to date
-  sign-in: Sign in
+  sign-in: Sign In
   register-trainer: Register trainer
   register-parent: Register parent
   ok: Ok
@@ -255,6 +255,8 @@ other:
   confirming-deleting: Are you sure you want to delete that
   academy: academy
   sure: After performing this operation, it will no longer be possible to reverse
+  not-login: To be able to take full advantage of our application
+  or: or
 functions:
   crew-assistant: Crew Assistant
   let-you: let you

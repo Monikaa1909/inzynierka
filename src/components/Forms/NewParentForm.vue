@@ -14,9 +14,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const url = computed(() => props.parentId
 	? `/api/parent/${props.parentId}`
@@ -68,7 +66,7 @@ const {
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${payload.value.academy}`, {
+} = useFetch(`/api/academy/${payload.value?.academy}`, {
 	initialData: {}, async beforeFetch({ url, options, cancel }) {
 		const myToken = token.value
 		if (!myToken)

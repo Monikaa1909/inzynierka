@@ -23,6 +23,7 @@ declare module '@vue/runtime-core' {
     ErrorMessageInfo: typeof import('./components/SingleElements/ErrorMessageInfo.vue')['default']
     EventStatistic: typeof import('./components/EventStatistic.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
+    GoSignIn: typeof import('./components/GoSignIn.vue')['default']
     LoadingCircle: typeof import('./components/SingleElements/LoadingCircle.vue')['default']
     MatchAndTournamentStatistic: typeof import('./components/MatchAndTournamentStatistic.vue')['default']
     MatchStatistic: typeof import('./components/MatchStatistic.vue')['default']

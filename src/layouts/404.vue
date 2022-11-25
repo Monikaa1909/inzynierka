@@ -1,18 +1,25 @@
-<script setup>
+<script setup lang="ts">
 const router = useRouter()
 const { t } = useI18n()
 </script>
 
 <template>
-  <main p="x4 y10" text="center teal-700 dark:gray-200">
-    <div text-4xl>
-      <div i-carbon-warning inline-block />
+  <div class="flex flex-col h-full  w-full">
+    <div class="bg-balls flex flex-auto justify-center  flex-col gap-4 py-10 px-5 sm:(px-20)">
+      <div class=" flex content-center place-content-center">
+        <img src="../assets/error-icon.png" class="h-64px" />
+      </div>
+      <div class=" flex content-center place-content-center">
+        <router-view />
+      </div>
+
+      <div class=" flex content-center place-content-center">
+        <SingleButton @click="router.back()">
+          <template #buttonName>
+            {{ t('button.back') }}
+          </template>
+        </SingleButton>
+      </div>
     </div>
-    <router-view />
-    <div>
-      <button btn text-sm m="3 t8" @click="router.back()">
-        {{ t('button.back') }}
-      </button>
-    </div>
-  </main>
+  </div>
 </template>

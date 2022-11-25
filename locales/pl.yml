@@ -255,6 +255,8 @@ other:
   confirming-deleting: Czy na pewno chcesz to usunąć
   academy: akademię
   sure: Po wykonaniu tej operacji, nie będzie już możliwości odwrotu
+  not-login: Aby móc w pełni korzystać z naszej aplikacji
+  or: lub
 functions:
   crew-assistant: Crew Assistant
   let-you: pozwala Ci

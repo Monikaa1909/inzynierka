@@ -59,7 +59,7 @@ schema.methods.validatePassword = async function (candidatePassword: string) {
 export interface JwtPayload {
   id: string,
   academy: string,
-  type: string,
+  type: 'AcademyManager' | 'Trainer' | 'Parent',
   login: string
 }
 

@@ -7,9 +7,7 @@ import { useJwt } from '@vueuse/integrations/useJwt'
 import { Academy } from 'backend/database/schemas/Academy'
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const router = useRouter()
 const { t, availableLocales, locale } = useI18n()
@@ -24,7 +22,7 @@ const {
   data: academy,
   error: academyError,
   execute: refechAcademy
-} = useFetch(`/api/academy/${payload.value.academy}`, {
+} = useFetch(`/api/academy/${payload.value?.academy}`, {
   initialData: {}, async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
     if (!myToken)
@@ -45,7 +43,7 @@ const {
   data: manager,
   error: managerError,
   execute: refechManager
-} = useFetch(`/api/manager/${payload.value.id}`, {
+} = useFetch(`/api/manager/${payload.value?.id}`, {
   initialData: {}, immediate: false, async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
     if (!myToken)
@@ -66,7 +64,7 @@ const {
   data: trainer,
   error: trainerError,
   execute: refechTrainer
-} = useFetch(`/api/trainer/${payload.value.id}`, {
+} = useFetch(`/api/trainer/${payload.value?.id}`, {
   initialData: {}, immediate: false, async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
     if (!myToken)
@@ -87,7 +85,7 @@ const {
   data: parent,
   error: parentError,
   execute: refechParent
-} = useFetch(`/api/parent/${payload.value.id}`, {
+} = useFetch(`/api/parent/${payload.value?.id}`, {
   initialData: {}, immediate: false, async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
     if (!myToken)
@@ -105,9 +103,9 @@ const {
 }).json<Parent>()
 
 const user = ref({} as AcademyManager | Trainer | Parent)
-if (payload.value.type === 'AcademyManager') refechManager()
-else if (payload.value.type === 'Trainer') refechTrainer()
-else if (payload.value.type === 'Parent') refechParent()
+if (payload.value?.type === 'AcademyManager') refechManager()
+else if (payload.value?.type === 'Trainer') refechTrainer()
+else if (payload.value?.type === 'Parent') refechParent()
 
 whenever(manager, (data) => {
   user.value = data
@@ -185,12 +183,12 @@ const logout = async () => {
 <template>
   <div class="flex flex-col md:(flex-row justify-between)">
 
-    <router-link to="/start" @click="isHidden = true" class="flex flex-row flex-shrink-0 self-center">
+    <router-link to="/start" @click="isHidden = true" class="flex flex-row flex-wrap flex-shrink-0 self-center">
       <img src="../assets/logo.png " class="px-2 py-2 h-80px self-center" />
       <img src="../assets/name.png" class="px-2 h-60px self-center" />
     </router-link>
 
-    <div class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
+    <div v-if="payload" class="flex-auto justify-around flex flex-col m-2 md:(flex-row flex-wrap)">
 
       <SingleButton @click="goTeams">
         <template #icon>
@@ -199,14 +197,14 @@ const logout = async () => {
         <template #buttonName>{{ t('button.teams') }}</template>
       </SingleButton>
 
-      <SingleButton  @click="goPlayers">
+      <SingleButton @click="goPlayers">
         <template #icon>
           <img src="../assets/player-icon.png" class="h-24px mr-2" />
         </template>
         <template #buttonName>{{ t('button.players') }}</template>
       </SingleButton>
 
-      <SingleButton  @click="goCalendar">
+      <SingleButton @click="goCalendar">
         <template #icon>
           <img src="../assets/calendar-icon.png" class="h-24px mr-2" />
         </template>
@@ -235,10 +233,11 @@ const logout = async () => {
       </SingleButton>
     </div>
 
-    <div v-if="!error" class="flex flex-row self-center flex-shrink-0">
+    <div v-if="!error && payload" class="flex flex-row self-center flex-shrink-0">
       <div class="px-2 py-0.5 self-center justify-items-center flex flex-col">
         <p class="px-2 justify-items-center text-lg font-medium color-white">{{ user?.firstName }} {{ user?.lastName }}
         </p>
+
         <div class="flex flex-row">
           <p v-if="payload.type === 'Trainer'" class="px-2 justify-items-center text-base font-medium color-#32B3A3">
             {{ t('account.trainer') }}
@@ -256,29 +255,56 @@ const logout = async () => {
           </button>
         </div>
         <p class="px-2 justify-items-center text-xs color-white">{{ academy?.academyName }}</p>
+
         <div>
           <div id="dropdownNavbar" :class="[isHidden ? 'hidden' : '']"
-            class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44">
+          class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44">
+          <div>
+            <button @click="goYourProfile" class="p-1 w-full">
+              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.your-profile') }}
+              </p>
+            </button>
+            <button @click="toggleLocales" class="p-1 w-full">
+              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}
+              </p>
+            </button>
+            <button @click="deleteAcademy()" class="p-1 w-full">
+              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.delete-academy') }}
+              </p>
+            </button>
+          </div>
+          <button @click="logout" class="p-1 w-full">
+            <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
+          </button>
+        </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div v-else class="flex flex-row self-center flex-shrink-0">
+      <div class="px-2 py-0.5 self-center justify-items-center flex flex-col">
+
+        <div class="flex flex-row">
+          <button @click="settingsMenu">
+            <img src="../assets/settings-icon.png" class="px-2 py-0.5 h-24px" />
+          </button>
+        </div>
+
+        <div class="place-self-center">
+          <div id="dropdownNavbar" :class="[isHidden ? 'hidden' : '']"
+            class="z-10 border bg-white absolute divide-y divide-gray-100 shadow w-44 place-self-center right-15 md:(right-7)">
             <div>
-              <button @click="goYourProfile" class="p-1 w-full">
-                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.your-profile') }}
-                </p>
-              </button>
               <button @click="toggleLocales" class="p-1 w-full">
                 <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}
                 </p>
               </button>
-              <button @click="deleteAcademy()" class="p-1 w-full">
-                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.delete-academy') }}
-                </p>
-              </button>
             </div>
-            <button @click="logout" class="p-1 w-full">
-              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
-            </button>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>

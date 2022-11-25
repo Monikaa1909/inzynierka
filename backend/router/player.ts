@@ -1,8 +1,67 @@
 import { JwtPayload } from 'backend/database/schemas/User'
 import { Player } from 'backend/database/schemas/Player'
 import { useJwt } from '@vueuse/integrations/useJwt'
-import { Router } from "express"
+import jwtDecode from "jwt-decode"
 import { models } from "mongoose"
+import { Router } from "express"
+
+const getPlayers: Record<JwtPayload['type'], (payload: JwtPayload) => Promise<Player[]>> = {
+	AcademyManager: async (payload) => {
+		const players = await models.Player.find()
+			.sort({ lastName: 1, firstName: 1 })
+			.populate('parent')
+			.populate({
+				path: 'team',
+				model: 'Team',
+			})
+			.populate({
+				path: 'academy',
+				model: 'Academy',
+				match: { _id: payload.academy }
+			}) as Player[]
+
+		return players.filter(item => item.academy != null)
+	},
+	Trainer: async (payload) => {
+		const players = await models.Player.find()
+			.sort({ lastName: 1, firstName: 1 })
+			.populate('parent')
+			.populate({
+				path: 'team',
+				model: 'Team',
+				populate: {
+					path: 'trainer',
+					model: 'Trainer',
+					match: { _id: payload.id }
+				}
+			})
+			.populate({
+				path: 'academy',
+				model: 'Academy'
+			}) as Player[]
+
+		return players.filter(item => item.team?.trainer != null)
+	},
+	Parent: async (payload) => {
+		const players = await models.Player.find()
+			.sort({ lastName: 1, firstName: 1 })
+			.populate({
+				path: 'parent',
+				model: 'Parent',
+				match: { _id: payload.id }
+			})
+			.populate({
+				path: 'team',
+				model: 'Team',
+			})
+			.populate({
+				path: 'academy',
+				model: 'Academy'
+			}) as Player[]
+			
+		return players.filter(item => item.parent != null)
+	},
+}
 
 export default (router: Router) => {
 
@@ -12,72 +71,13 @@ export default (router: Router) => {
 				const token = req.headers.authorization.split(" ")[1]
 
 				if (token) {
-					const { payload: payloadData } = useJwt(() => token ?? '')
-					const payload = ref({} as JwtPayload)
-					payload.value = payloadData.value as unknown as JwtPayload
+					const payload = jwtDecode<JwtPayload>(token ?? '')
+					if (!payload || !(payload.type in getPlayers)) {
+            res.status(400).json({ error: "Lack of sufficient permissions" });
+            return
+          }
 
-					if (payload.value.type === 'AcademyManager') {
-						const players = await models.Player.find()
-							.sort({ lastName: 1, firstName: 1 })
-							.populate('parent')
-							.populate({
-								path: 'team',
-								model: 'Team',
-							})
-							.populate({
-								path: 'academy',
-								model: 'Academy',
-								match: { _id: payload.value.academy }
-							}) as Player[]
-
-						res.send(players.filter(item => item.academy != null))
-
-					}
-
-					else if (payload.value.type === 'Trainer') {
-						const players = await models.Player.find()
-							.sort({ lastName: 1, firstName: 1 })
-							.populate('parent')
-							.populate({
-								path: 'team',
-								model: 'Team',
-								populate: {
-									path: 'trainer',
-									model: 'Trainer',
-									match: { _id: payload.value.id }
-								}
-							})
-							.populate({
-								path: 'academy',
-								model: 'Academy'
-							}) as Player[]
-
-						res.send(players.filter(item => item.team?.trainer != null))
-
-					} else if (payload.value.type === 'Parent') {
-						const players = await models.Player.find()
-							.sort({ lastName: 1, firstName: 1 })
-							.populate({
-								path: 'parent',
-								model: 'Parent',
-								match: { _id: payload.value.id }
-							})
-							.populate({
-								path: 'team',
-								model: 'Team',
-							})
-							.populate({
-								path: 'academy',
-								model: 'Academy'
-							}) as Player[]
-
-						res.send(players.filter(item => item.parent != null))
-
-					}
-
-					else {
-						res.status(400).json({ error: "Lack of sufficient permissions" });
-					}
+          res.send(await getPlayers[payload.type](payload))
 
 				} else {
 					res.status(400).json({ error: "Malformed auth header" })
@@ -97,11 +97,9 @@ export default (router: Router) => {
 				const token = req.headers.authorization.split(" ")[1]
 
 				if (token) {
-					const { payload: payloadData } = useJwt(() => token ?? '')
-					const payload = ref({} as JwtPayload)
-					payload.value = payloadData.value as unknown as JwtPayload
+					const payload = jwtDecode<JwtPayload>(token ?? '')
 
-					if (payload.value.type === 'AcademyManager') {
+					if (payload.type === 'AcademyManager') {
 						const players = await models.Player.find()
 							.sort({ lastName: 1, firstName: 1 })
 							.populate('parent')
@@ -113,13 +111,13 @@ export default (router: Router) => {
 							.populate({
 								path: 'academy',
 								model: 'Academy',
-								match: { _id: payload.value.academy }
+								match: { _id: payload.academy }
 							}) as Player[]
 
 						res.send(players.filter(item => (item.team != null && item.academy != null)))
 					}
 
-					else if (payload.value.type === 'Trainer') {
+					else if (payload.type === 'Trainer') {
 						const players = await models.Player.find()
 							.sort({ lastName: 1, firstName: 1 })
 							.populate('parent')
@@ -130,7 +128,7 @@ export default (router: Router) => {
 								populate: {
 									path: 'trainer',
 									model: 'Trainer',
-									match: { _id: payload.value.id }
+									match: { _id: payload.id }
 								}
 							})
 							.populate({
@@ -162,9 +160,7 @@ export default (router: Router) => {
 				const token = req.headers.authorization.split(" ")[1]
 
 				if (token) {
-					const { payload: payloadData } = useJwt(() => token ?? '')
-					const payload = ref({} as JwtPayload)
-					payload.value = payloadData.value as unknown as JwtPayload
+					const payload = jwtDecode<JwtPayload>(token ?? '')
 
 					const player = await models.Player.findById(req.params.id)
 						.populate({
@@ -184,15 +180,15 @@ export default (router: Router) => {
 							model: 'Academy',
 						})
 
-					if (payload.value.type === 'AcademyManager' && player.academy._id.toString() === payload.value.academy) {
+					if (payload.type === 'AcademyManager' && player.academy._id.toString() === payload.academy) {
 						res.send(player)
 					}
 
-					else if (payload.value.type === 'Trainer' && player.team.trainer._id.toString() === payload.value.id) {
+					else if (payload.type === 'Trainer' && player.team.trainer._id.toString() === payload.id) {
 						res.send(player)
 					}
 
-					else if (payload.value.type === 'Parent' && player.parent._id.toString() === payload.value.id) {
+					else if (payload.type === 'Parent' && player.parent._id.toString() === payload.id) {
 						res.send(player)
 					}
 
@@ -214,12 +210,30 @@ export default (router: Router) => {
 
 	router.post('/player', async (req, res) => {
 		try {
-			const player = models.Player.create(req.body, function (error: any) {
-				if (error) {
-					res.status(400).send(error)
+			if (req.headers.authorization) {
+				const token = req.headers.authorization.split(" ")[1]
+
+				if (token) {
+					const payload = jwtDecode<JwtPayload>(token ?? '')
+
+					if (payload.type === 'AcademyManager' || payload.type === 'Trainer') {
+						const player = models.Player.create(req.body, function (error: any) {
+							if (error) {
+								res.status(400).send(error)
+							}
+							else res.send(player)
+						})
+					}
+					else {
+						res.status(400).json({ error: "Lack of sufficient permissions" });
+					}
+
+				} else {
+					res.status(400).json({ error: "Malformed auth header" });
 				}
-				else res.send(player)
-			})
+			} else {
+				res.status(400).json({ error: "No authorization header" })
+			}
 		} catch (error) {
 			res.status(400).send(error)
 		}
@@ -229,15 +243,13 @@ export default (router: Router) => {
 	router.post('/player/:id', async (req, res) => {
 		try {
 			if (req.headers.authorization) {
-        const token = req.headers.authorization.split(" ")[1]
+				const token = req.headers.authorization.split(" ")[1]
 
-        if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+				if (token) {
+					const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.type === 'AcademyManager' || payload.value.type === 'Trainer') {
-            const player = await models.Player.findOneAndUpdate(
+					if (payload.type === 'AcademyManager' || payload.type === 'Trainer') {
+						const player = await models.Player.findOneAndUpdate(
 							{
 								_id: req.params.id
 							},
@@ -256,17 +268,17 @@ export default (router: Router) => {
 							}
 						)
 						res.send(player)
-          }
-          else {
-            res.status(400).json({ error: "Lack of sufficient permissions" });
-          }
+					}
+					else {
+						res.status(400).json({ error: "Lack of sufficient permissions" });
+					}
 
-        } else {
-          res.status(400).json({ error: "Malformed auth header" });
-        }
-      } else {
-        res.status(400).json({ error: "No authorization header" })
-      }
+				} else {
+					res.status(400).json({ error: "Malformed auth header" });
+				}
+			} else {
+				res.status(400).json({ error: "No authorization header" })
+			}
 		} catch (error) {
 			res.status(400).send(error)
 		}
@@ -279,11 +291,9 @@ export default (router: Router) => {
 				const token = req.headers.authorization.split(" ")[1]
 
 				if (token) {
-					const { payload: payloadData } = useJwt(() => token ?? '')
-					const payload = ref({} as JwtPayload)
-					payload.value = payloadData.value as unknown as JwtPayload
+					const payload = jwtDecode<JwtPayload>(token ?? '')
 
-					if (payload.value.type === 'AcademyManager') {
+					if (payload.type === 'AcademyManager') {
 						const player = await models.Player.findOneAndDelete({ _id: req.params.id })
 						res.send(player)
 					}
