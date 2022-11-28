@@ -10,9 +10,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const props = defineProps<{ id: string }>()
 
@@ -75,7 +73,7 @@ function goToPlayer(playerId: any) {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if="payload">
     <template #data>
       <MyCenterElement>
 
@@ -124,7 +122,7 @@ function goToPlayer(playerId: any) {
                   <StatisticHeader> {{ t('single-player.validity') }} </StatisticHeader>
                 </div>
 
-                <div v-if="players" v-for="player in medicalExaminationValidity" v-bind:key="player._id"
+                <div v-if="players && players.length > 0" v-for="player in medicalExaminationValidity" v-bind:key="player._id"
                   class="h-full w-full grid grid-cols-1 md:(grid-cols-2 )">
 
                   <button @click="goToPlayer(player._id)" class="text-center md:(text-left)">{{ player.lastName }} {{ player.firstName }}</button>
@@ -154,6 +152,8 @@ function goToPlayer(playerId: any) {
       </MyCenterElement>
     </template>
   </BackgroundFrame>
+
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

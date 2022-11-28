@@ -12,9 +12,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const url = computed(() => {
   if (props.id === 'all')
@@ -115,7 +113,7 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if="payload">
     <template #nav>
       <button 
       v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'"
@@ -214,6 +212,8 @@ const confirmDelete = async () => {
       <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>
   </BackgroundFrame>
+
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

@@ -16,30 +16,28 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const eventsFilter = ref('all')
 const teamsFilter = ref('all')
 
 const urlMatchStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/matchStatistics/academy/${payload.value.academy}`
+		return `/api/matchStatistics/academy/${payload.value?.academy}`
 	else
 		return `/api/matchStatistics/team/${props.id}`
 })
 
 const urlTournamentStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/tournamentStatistics/academy/${payload.value.academy}`
+		return `/api/tournamentStatistics/academy/${payload.value?.academy}`
 	else
 		return `/api/tournamentStatistics/team/${props.id}`
 })
 
 const urlTrainingStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/attendanceLists/academy/${payload.value.academy}`
+		return `/api/attendanceLists/academy/${payload.value?.academy}`
 	else
 		return `/api/attendanceLists/team/${props.id}`
 })
@@ -458,7 +456,7 @@ const summaryStatistic = computed(() => {
 </script>
 
 <template>
-	<BackgroundFrame>
+	<BackgroundFrame v-if="payload">
 		<template #data>
 			<MyCenterElement>
 				<MiniWhiteFrame>
@@ -680,6 +678,8 @@ const summaryStatistic = computed(() => {
 			</MyCenterElement>
 		</template>
 	</BackgroundFrame>
+
+	<GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

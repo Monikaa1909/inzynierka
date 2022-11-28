@@ -78,7 +78,7 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <BackgroundFrame v-if = "payload">
+  <BackgroundFrame v-if="payload">
     <template #data>
 
       <DeletingMessageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">

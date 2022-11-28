@@ -12,9 +12,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const player = ref({} as Omit<Player, '_id'>)
 
@@ -90,7 +88,7 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame  v-if="payload">
     <template #data>
 
       <DeletingMessageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
@@ -105,10 +103,10 @@ const confirmDelete = async () => {
 
         <MiniWhiteFrame>
           <template #nav>
-            <button @click="goEditPlayer(props.id)" v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'">
+            <button @click="goEditPlayer(props.id)" v-if="payload?.type === 'AcademyManager' || payload?.type === 'Trainer'">
               <img src="../../assets/edit-icon.png" class="h-24px" />
             </button>
-            <button @click="deletePlayer()" v-if="payload.type === 'AcademyManager'">
+            <button @click="deletePlayer()" v-if="payload?.type === 'AcademyManager'">
               <img src="../../assets/delete-icon.png" class="h-24px" />
             </button>
           </template>
@@ -180,6 +178,8 @@ const confirmDelete = async () => {
       <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>
   </BackgroundFrame>
+
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

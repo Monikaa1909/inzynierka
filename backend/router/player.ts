@@ -1,6 +1,5 @@
 import { JwtPayload } from 'backend/database/schemas/User'
 import { Player } from 'backend/database/schemas/Player'
-import { useJwt } from '@vueuse/integrations/useJwt'
 import jwtDecode from "jwt-decode"
 import { models } from "mongoose"
 import { Router } from "express"

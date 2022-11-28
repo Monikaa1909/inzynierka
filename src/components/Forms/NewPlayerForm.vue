@@ -8,6 +8,7 @@ import type { Team } from 'backend/database/schemas/Team'
 import { DatePicker } from 'v-calendar'
 import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
+import 'v-calendar/dist/style.css'
 
 const token = useStorage('user:token', '')
 const { payload } = useJwt<JwtPayload>(() => token.value ?? '')

@@ -177,9 +177,9 @@ const cancel = async () => {
         <p class="text-center text-xl">{{t('register.to-register')}},</p>
         <p class="text-center text-xl mb-4">{{t('register.need-steps')}}.</p>
 
-        <div class="flex flex-row flex-wrap gap-2 self-center mb-2">
-          <p class="text-center text-xl">{{t('register.to-continue')}}</p>
-          <p class="text-center text-xl font-medium">{{t('register.next')}}</p>
+        <div class="flex flex-row  text-center flex-wrap gap-2 self-center mb-2">
+          <p class="text-center text-xl w-full">{{t('register.to-continue')}}</p>
+          <p class="text-center text-xl font-medium w-full">{{t('register.next')}}</p>
         </div>
       </div>
 
