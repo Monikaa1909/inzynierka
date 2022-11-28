@@ -4,9 +4,7 @@ import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const router = useRouter()
 const { t } = useI18n()
@@ -25,7 +23,7 @@ const newCredentials = computed(() => ({
   newPassword: newPassword.value,
 }))
 
-const { data: managerData, error: managerError, execute: submitManager } = useFetch(`/api/auth/validate/password/${payload.value.id}`, { immediate: false }).post(credentials).text()
+const { data: managerData, error: managerError, execute: submitManager } = useFetch(`/api/auth/validate/password/${payload.value?.id}`, { immediate: false }).post(credentials).text()
 const { data: parentData, error: parentError, execute: submitParent } = useFetch(`/api/auth/parent/password/${props.id}`, {
   immediate: false,
   async beforeFetch({ url, options, cancel }) {
@@ -93,7 +91,7 @@ const newPasswordErrorMessage = computed(() => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if="payload">
     <template #data>
       <MyCenterElement>
         <MiniWhiteFrame>
@@ -160,6 +158,8 @@ const newPasswordErrorMessage = computed(() => {
       </MyCenterElement>
     </template>
   </BackgroundFrame>
+
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

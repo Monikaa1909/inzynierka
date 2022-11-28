@@ -4,9 +4,7 @@ import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -87,7 +85,7 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if = "payload">
 
     <template #nav v-if="payload.type === 'AcademyManager'">
       <router-link to="/parents/add/newParent" class="flex flex-row gap-2 items-center">
@@ -157,6 +155,7 @@ const confirmDelete = async () => {
     </template>
   </BackgroundFrame>
 
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">
