@@ -44,7 +44,23 @@ const {
 	isFetching: isTrainerFetching,
 	isFinished: isTrainerFinished,
 	error: trainerError,
-} = useFetch(url, { initialData: {} }).json<Trainer>()
+} = useFetch(url, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Trainer>()
 
 whenever(trainerData, (data) => {
 	trainer.value = data
@@ -55,7 +71,23 @@ const {
 	isFetching: isAcademyFetching,
 	isFinished: isAcademyFinished,
 	error: academyError,
-} = useFetch(`/api/academy/${payload.value?.academy}`, { initialData: {} }).json<Academy>()
+} = useFetch(`/api/academy/${payload.value?.academy}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Academy>()
 
 const isFinished = computed(() => {
 	return isTrainerFinished.value && isAcademyFinished.value

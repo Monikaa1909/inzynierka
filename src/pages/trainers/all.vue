@@ -10,9 +10,7 @@ const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const goEditTrainer = (trainerId: any) => {
   return router.push(`/trainers/edit/${trainerId}`)
@@ -32,7 +30,7 @@ const {
   isFinished,
   error,
   execute: refechTrainers
-} = useFetch(`/api/trainers/${payload.value.academy}`, {
+} = useFetch(`/api/trainers/${payload.value?.academy}`, {
   initialData: [], async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
     if (!myToken)
@@ -87,7 +85,7 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if = "payload">
 
     <template #nav v-if="payload.type === 'AcademyManager'">
       <router-link to="/trainers/add/newTrainer" class="flex flex-row gap-2 items-center">
@@ -196,6 +194,7 @@ const confirmDelete = async () => {
     </template>
   </BackgroundFrame>
 
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

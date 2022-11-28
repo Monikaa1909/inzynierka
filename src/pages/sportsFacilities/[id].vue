@@ -9,9 +9,7 @@ const { t } = useI18n()
 const router = useRouter()
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const {
   data: sportsFacility,
@@ -76,7 +74,7 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if="payload">
     <template #data>
 
       <DeletingMessageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
@@ -144,6 +142,8 @@ const confirmDelete = async () => {
       </MyCenterElement>
     </template>
   </BackgroundFrame>
+
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

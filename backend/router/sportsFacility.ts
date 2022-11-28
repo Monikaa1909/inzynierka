@@ -1,16 +1,8 @@
-import { JwtPayload } from 'backend/database/schemas/User'
-import { Player } from 'backend/database/schemas/Player'
-import { useJwt } from '@vueuse/integrations/useJwt'
-import { Router } from "express"
-import { models } from "mongoose"
-import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
-import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
 import { SportsFacility } from 'backend/database/schemas/SportsFacility'
-import { AttendanceList } from 'backend/database/schemas/AttendanceList'
-import { Tournament } from 'backend/database/schemas/Tournament'
-import { Training } from 'backend/database/schemas/Training'
-import { Parent } from 'backend/database/schemas/Parent.user'
-import { Match } from 'backend/database/schemas/Match'
+import { JwtPayload } from 'backend/database/schemas/User'
+import jwtDecode from "jwt-decode"
+import { models } from "mongoose"
+import { Router } from "express"
 
 export default (router: Router) => {
 
@@ -20,17 +12,15 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.type === 'AcademyManager' || payload.value.type === 'Trainer' || payload.value.type === 'Parent') {
+          if (payload && payload.type === 'AcademyManager' || payload.type === 'Trainer' || payload.type === 'Parent') {
             const sportsFacilities = await models.SportsFacility.find()
               .sort({ name: 1 })
               .populate({
                 path: 'academy',
                 model: 'Academy',
-                match: { _id: payload.value.academy }
+                match: { _id: payload.academy }
               }) as SportsFacility[]
 
             res.send(sportsFacilities.filter(item => item.academy != null))
@@ -57,12 +47,10 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
           const sportsFacility = await models.SportsFacility.findById(req.params.id)
-          if ((payload.value.type === 'AcademyManager' || payload.value.type === 'Trainer' || payload.value.type === 'Parent') && sportsFacility.academy._id.toString() === payload.value.academy) {
+          if (payload && (payload.type === 'AcademyManager' || payload.type === 'Trainer' || payload.type === 'Parent') && sportsFacility.academy._id.toString() === payload.academy) {
             res.send(sportsFacility)
           }
 
@@ -87,11 +75,9 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.type === 'AcademyManager' || payload.value.type === 'Trainer') {
+          if (payload && payload.type === 'AcademyManager' || payload.type === 'Trainer') {
             const sportsFacility = models.SportsFacility.create(req.body, function (error: any) {
               if (error) {
                 res.status(400).send(error)
@@ -120,11 +106,9 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.type === 'AcademyManager' || payload.value.type === 'Trainer') {
+          if (payload && payload.type === 'AcademyManager' || payload.type === 'Trainer') {
             const sportsFacility = await models.SportsFacility.findOneAndUpdate(
               {
                 _id: req.params.id
@@ -164,11 +148,9 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.type === 'AcademyManager') {
+          if (payload && payload.type === 'AcademyManager') {
             const sportsFacility = await models.SportsFacility.findOneAndDelete({ _id: req.params.id })
             res.send(sportsFacility)
           }

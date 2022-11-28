@@ -13,9 +13,7 @@ import 'v-calendar/dist/style.css'
 const props = defineProps<{ edit?: boolean }>()
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -28,7 +26,7 @@ const {
   isFetching: isParentFetching,
   error: parentError,
   execute: refechParent
-} = useFetch(`/api/parent/${payload.value.id}`, {
+} = useFetch(`/api/parent/${payload.value?.id}`, {
   initialData: {}, immediate: false,
   async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
@@ -52,7 +50,7 @@ const {
   isFetching: isTrainerFetching,
   error: trainerError,
   execute: refechTrainer
-} = useFetch(`/api/trainer/${payload.value.id}`, {
+} = useFetch(`/api/trainer/${payload.value?.id}`, {
   initialData: {}, immediate: false,
   async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
@@ -76,7 +74,7 @@ const {
   isFetching: isManagerFetching,
   error: managerError,
   execute: refechManager
-} = useFetch(`/api/manager/${payload.value.id}`, {
+} = useFetch(`/api/manager/${payload.value?.id}`, {
   initialData: {}, immediate: false,
   async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
@@ -102,9 +100,9 @@ const user = ref({} as User & {
   academy: Academy,
 })
 
-if (payload.value.type === 'AcademyManager') refechManager()
-else if (payload.value.type === 'Trainer') refechTrainer()
-else if (payload.value.type === 'Parent') refechParent()
+if (payload.value?.type === 'AcademyManager') refechManager()
+else if (payload.value?.type === 'Trainer') refechTrainer()
+else if (payload.value?.type === 'Parent') refechParent()
 
 whenever(manager, (data) => {
   user.value = data
@@ -187,8 +185,8 @@ const onSubmit = async () => {
     alert(t('error-messages.validation-error'))
   } else {
 
-    if (payload.value.type === "Trainer" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
-      const { execute: updateTrainer, error: updateError } = useFetch(`/api/trainer/${payload.value.id}`, {
+    if (payload.value?.type === "Trainer" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
+      const { execute: updateTrainer, error: updateError } = useFetch(`/api/trainer/${payload.value?.id}`, {
         immediate: false,
         async beforeFetch({ url, options, cancel }) {
           const myToken = token.value
@@ -215,9 +213,9 @@ const onSubmit = async () => {
 
       return router.push('/yourProfile/personalData')
 
-    } else if (payload.value.type === "Parent") {
+    } else if (payload.value?.type === "Parent") {
       console.log('update parent')
-      const { execute: updateParent, error: updateError } = useFetch(`/api/parent/${payload.value.id}`, {
+      const { execute: updateParent, error: updateError } = useFetch(`/api/parent/${payload.value?.id}`, {
         immediate: false,
         async beforeFetch({ url, options, cancel }) {
           const myToken = token.value
@@ -240,8 +238,8 @@ const onSubmit = async () => {
         return
       }
       return router.push('/yourProfile/personalData')
-    } else if (payload.value.type === "AcademyManager" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
-      const { execute: updateManager, error: updateError } = useFetch(`/api/manager/${payload.value.id}`, {
+    } else if (payload.value?.type === "AcademyManager" && !(nationalityErrorMessage.value || birthdayDateErrorMessage.value)) {
+      const { execute: updateManager, error: updateError } = useFetch(`/api/manager/${payload.value?.id}`, {
         immediate: false,
         async beforeFetch({ url, options, cancel }) {
           const myToken = token.value
@@ -315,7 +313,7 @@ const onSubmit = async () => {
           </template>
         </SingleInput>
 
-        <SingleInput v-if="payload.type != 'Parent'">
+        <SingleInput v-if="payload?.type != 'Parent'">
           <template #inputName>{{ t('single-trainer.birthday-date') }}:</template>
           <template #inputValue>
             <DatePicker v-if="props.edit" v-model="user.birthdayDate" format="yyyy-MM-dd" :clearable="false"
@@ -338,7 +336,7 @@ const onSubmit = async () => {
           </template>
         </SingleInput>
 
-        <SingleInput v-if="payload.type != 'Parent'">
+        <SingleInput v-if="payload?.type != 'Parent'">
           <template #inputName>{{ t('single-trainer.nationality') }}:</template>
           <template #inputValue>
             <input v-if="props.edit" v-model="user.nationality" name="nationality" type="input"

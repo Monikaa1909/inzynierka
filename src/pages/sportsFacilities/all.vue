@@ -4,16 +4,10 @@ import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t } = useI18n()
 const router = useRouter()
-
-whenever(payloadData, (data) => {
-  payload.value = data as unknown as JwtPayload
-})
 
 const goEditObject = (sportsFacilityId: any) => {
   return router.push(`/sportsFacilities/edit/${sportsFacilityId}`)
@@ -84,7 +78,7 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if = "payload">
 
     <template #nav>
       <router-link  
@@ -159,6 +153,8 @@ const confirmDelete = async () => {
       <ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
     </template>
   </BackgroundFrame>
+
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

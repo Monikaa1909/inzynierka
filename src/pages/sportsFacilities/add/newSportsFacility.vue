@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
 
+const token = useStorage('user:token', '')
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 </script>
 
 <template>
-	<BackgroundFrame>
+	<BackgroundFrame v-if="payload">
 		<template #data>
 			<MyCenterElement>
 				<MiniWhiteFrame>
@@ -17,6 +21,8 @@
 			</MyCenterElement>
 		</template>
 	</BackgroundFrame>
+
+	<GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

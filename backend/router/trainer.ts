@@ -1,6 +1,6 @@
 import { Trainer } from 'backend/database/schemas/Trainer.user'
 import { JwtPayload } from 'backend/database/schemas/User'
-import { useJwt } from '@vueuse/integrations/useJwt'
+import jwtDecode from "jwt-decode"
 import { Router } from "express"
 import { models } from "mongoose"
 
@@ -12,11 +12,9 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.academy === req.params.academy) {
+          if (payload && payload.academy === req.params.academy) {
             const trainer = await models.Trainer.find()
               .sort({ lastName: 1, firstName: 1 })
               .populate({
@@ -48,13 +46,11 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
           const trainer = await models.Trainer.findById(req.params.id)
 
-          if (payload.value.academy === trainer.academy._id.toString()) {
+          if (payload && payload.academy === trainer.academy._id.toString()) {
             res.send(trainer)
           }
           else {
@@ -78,11 +74,9 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.type === 'AcademyManager') {
+          if (payload && payload.type === 'AcademyManager') {
             const trainer = models.Trainer.create(req.body, function (error: any) {
               if (error) {
                 res.status(400).send(error)
@@ -113,11 +107,9 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.type === 'AcademyManager') {
+          if (payload && payload.type === 'AcademyManager') {
             const trainer = await models.Trainer.findOneAndUpdate(
               {
                 _id: req.params.id
@@ -139,7 +131,7 @@ export default (router: Router) => {
             res.send(trainer)
           }
 
-          else if (payload.value.type === 'Trainer' && req.params.id === payload.value.id) {
+          else if (payload && payload.type === 'Trainer' && req.params.id === payload.id) {
             const trainer = await models.Trainer.findOneAndUpdate(
               {
                 _id: req.params.id
@@ -184,11 +176,9 @@ export default (router: Router) => {
         const token = req.headers.authorization.split(" ")[1]
 
         if (token) {
-          const { payload: payloadData } = useJwt(() => token ?? '')
-          const payload = ref({} as JwtPayload)
-          payload.value = payloadData.value as unknown as JwtPayload
+          const payload = jwtDecode<JwtPayload>(token ?? '')
 
-          if (payload.value.type === 'AcademyManager') {
+          if (payload && payload.type === 'AcademyManager') {
             const trainer = await models.Trainer.findOneAndDelete({ _id: req.params.id })
             res.send(trainer)
           }
