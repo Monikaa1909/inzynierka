@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { validateName, requiredField } from '~/validatesFunctions'
-
 import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
 import { Tournament } from 'backend/database/schemas/Tournament'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -23,7 +27,23 @@ const {
 	isFetching: isTournamentFetching,
 	isFinished: isTournamentFinished,
 	error: tournamentError,
-} = useFetch(`/api/tournament/${props.id}`, { initialData: {} }).json<Tournament>()
+} = useFetch(`/api/tournament/${props.id}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Tournament>()
 
 whenever(tournamentData, (data) => {
 	tournament.value = data
@@ -37,7 +57,23 @@ const {
 	isFetching: isTournamentStatisticFetching,
 	isFinished: isTournamentStatisticFinished,
 	error: tournamentStatisticError,
-} = useFetch(`/api/tournamentStatistic/tournament/${props.id}`, { initialData: [] }).json<TournamentStatistic[]>()
+} = useFetch(`/api/tournamentStatistics/tournament/${props.id}`, {
+	initialData: [],
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<TournamentStatistic[]>()
 
 whenever(tournamentStatisticData, (data) => {
 	tournamentStatistic.value = data
@@ -78,7 +114,24 @@ const onSubmit = async () => {
 		alert(t('error-messages.validation-error') + ' crewAssistantHelp@gmail.com')
 		return
 	} else {
-		const { execute: updateTournament, error: updateError } = useFetch(`/api/tournament/${tournament.value._id}`, { immediate: false }).post(tournament)
+		const { execute: updateTournament, error: updateError } = useFetch(`/api/tournament/${tournament.value._id}`, {
+			immediate: false,
+			async beforeFetch({ url, options, cancel }) {
+				const myToken = token.value
+				if (!myToken)
+					cancel()
+
+				options.headers = {
+					...options.headers,
+					Authorization: `Bearer ${myToken}`,
+				}
+
+				return {
+					options,
+				}
+			}
+		}).post(tournament)
+
 		await updateTournament()
 		if (updateError.value) {
 			alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
@@ -100,7 +153,23 @@ const onSubmit = async () => {
 				playerStatistic.value.minutesPlayed = 0
 			}
 
-			const { execute: updatePlayerStatistic, error: updateError } = useFetch(`/api/tournamentStatistic/${element._id}`, { immediate: false }).post(playerStatistic)
+			const { execute: updatePlayerStatistic, error: updateError } = useFetch(`/api/tournamentStatistic/${element._id}`, {
+				immediate: false,
+				async beforeFetch({ url, options, cancel }) {
+					const myToken = token.value
+					if (!myToken)
+						cancel()
+
+					options.headers = {
+						...options.headers,
+						Authorization: `Bearer ${myToken}`,
+					}
+
+					return {
+						options,
+					}
+				}
+			}).post(playerStatistic)
 
 			await updatePlayerStatistic()
 			if (updateError.value) {
@@ -124,15 +193,10 @@ const nameErrorMessage = computed(() => {
 </script>
 
 <template>
-	<BackgroundFrame>
+	<BackgroundFrame v-if="payload">
 		<template #data>
 			<MyCenterElement>
 				<MiniWhiteFrame>
-
-					<!-- <template #icon>
-						<img src="../../../../../assets/statistic-icon2.png" class="h-150px" />
-					</template> -->
-
 					<template #attributes>
 
 						<LoadingCircle v-if="isFetching"></LoadingCircle>
@@ -270,6 +334,8 @@ const nameErrorMessage = computed(() => {
 			</MyCenterElement>
 		</template>
 	</BackgroundFrame>
+
+	<GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

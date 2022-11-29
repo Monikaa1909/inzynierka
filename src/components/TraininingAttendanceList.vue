@@ -3,8 +3,11 @@ import { AttendanceList } from 'backend/database/schemas/AttendanceList'
 import { Training } from 'backend/database/schemas/Training'
 import { Player } from 'backend/database/schemas/Player'
 
+const token = useStorage('user:token', '')
+
 const { t, availableLocales, locale } = useI18n()
 const locales = availableLocales
+
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
 const router = useRouter()
 
@@ -21,7 +24,23 @@ const {
 	isFetching: isTrainingFetching,
 	isFinished: isTrainingFinished,
 	error: trainingError,
-} = useFetch(`/api/training/${props.id}`, { initialData: {} }).json<Training>()
+} = useFetch(`/api/training/${props.id}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Training>()
 
 const {
 	data: attendanceListData,
@@ -29,14 +48,46 @@ const {
 	isFinished: isAttendanceListFinished,
 	error: attendanceListError,
 	execute: refechAttendanceList
-} = useFetch(`/api/attendanceLists/training/${props.id}`, { initialData: [], immediate: false }).json<AttendanceList[]>()
+} = useFetch(`/api/attendanceLists/training/${props.id}`, {
+	initialData: [], immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<AttendanceList[]>()
 
 const {
 	data: players,
 	isFetching: isPlayersFetching,
 	error: playersError,
 	execute: refechPlayers
-} = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
+} = useFetch(playerUrl, {
+	initialData: [], immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Player[]>()
 
 whenever(isTrainingFinished, (data) => {
 	if (data && training.value != null) {
@@ -62,22 +113,54 @@ whenever(players, (data) => {
 				playerAttendance.value.player = element
 				playerAttendance.value.training = training as unknown as Training
 
-				const { execute: savePlayerAttendance, error: saveError } = useFetch(`/api/attendanceList`, { immediate: false }).post(playerAttendance)
+				const { execute: savePlayerAttendance, error: saveError } = useFetch(`/api/attendanceList`, {
+					immediate: false,
+					async beforeFetch({ url, options, cancel }) {
+						const myToken = token.value
+						if (!myToken)
+							cancel()
+
+						options.headers = {
+							...options.headers,
+							Authorization: `Bearer ${myToken}`,
+						}
+
+						return {
+							options,
+						}
+					}
+				}).post(playerAttendance)
+
 				await savePlayerAttendance()
 
 				if (saveError.value) {
 					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 					return
-				}
+				} else return router.push(`/events/training/attendanceList/${props.id}`)
 			}
 
 			else {
-				console.log('PLAYER: ' + element.firstName + ' ' + element.lastName)
 				if (!isPlayerHasStatistic(element)) {
 					playerAttendance.value.player = element
 					playerAttendance.value.training = training as unknown as Training
 
-					const { execute: savePlayerAttendance, error: saveError } = useFetch(`/api/attendanceList`, { immediate: false }).post(playerAttendance)
+					const { execute: savePlayerAttendance, error: saveError } = useFetch(`/api/attendanceList`, {
+						immediate: false,
+						async beforeFetch({ url, options, cancel }) {
+							const myToken = token.value
+							if (!myToken)
+								cancel()
+
+							options.headers = {
+								...options.headers,
+								Authorization: `Bearer ${myToken}`,
+							}
+
+							return {
+								options,
+							}
+						}
+					}).post(playerAttendance)
 					await savePlayerAttendance()
 
 					if (saveError.value) {
@@ -121,7 +204,23 @@ const onSubmit = async () => {
 			playerAttendance.value.attendance = element.attendance
 			playerAttendance.value.remarks = element.remarks
 
-			const { execute: updatePlayerAttendance, error: updateError } = useFetch(`/api/attendanceList/${element._id}`, { immediate: false }).post(playerAttendance)
+			const { execute: updatePlayerAttendance, error: updateError } = useFetch(`/api/attendanceList/${element._id}`, {
+				immediate: false,
+				async beforeFetch({ url, options, cancel }) {
+					const myToken = token.value
+					if (!myToken)
+						cancel()
+
+					options.headers = {
+						...options.headers,
+						Authorization: `Bearer ${myToken}`,
+					}
+
+					return {
+						options,
+					}
+				}
+			}).post(playerAttendance)
 
 			await updatePlayerAttendance()
 			if (updateError.value) {
@@ -165,7 +264,7 @@ const goEditAttendanceList = (eventId: any) => {
 				class="w-full flex flex-col gap-4 place-content-between sm:(flex-row place-content-between)">
 
 				<div class="w-auto flex flex-col gap-2 justify-center sm:(flex-row)">
-					
+
 					<button v-if="props.edit" @click="playerAttendance.attendance = !playerAttendance.attendance"
 						class="flex w-full justify-center">
 						<img v-if="playerAttendance.attendance" src="../assets/checkbox-checked-icon.png" class="h-18px" />

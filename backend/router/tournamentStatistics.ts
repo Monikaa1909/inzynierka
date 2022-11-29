@@ -4,40 +4,249 @@ import jwtDecode from "jwt-decode"
 import { models } from "mongoose"
 import { Router } from "express"
 
-export default (router: Router) => {
-  router.get('/tournamentStatistic/tournament/:id', async (req, res) => {
-    try {
-      const tournamentStatistic = await models.TournamentStatistic.find({ tournament: req.params.id })
-        .populate({
-          path: 'player',
-          model: 'Player',
-        }) as TournamentStatistic[]
+const getTournamentStatistics: Record<JwtPayload['type'], (payload: JwtPayload) => Promise<TournamentStatistic[]>> = {
+  AcademyManager: async (payload) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+      })
+      .populate({
+        path: 'tournament',
+        model: 'Tournament',
+        populate: ({
+          path: 'team',
+          model: 'Team',
+          populate: {
+            path: 'academy',
+            model: 'Academy',
+            match: { _id: payload.academy }
+          }
+        })
+      }) as TournamentStatistic[]
 
-      res.send(tournamentStatistic.filter(item => item.tournament != null))
+    return tournamentStatistics.filter(item => item.tournament.team.academy != null)
+  },
+  Trainer: async (payload) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+      })
+      .populate({
+        path: 'tournament',
+        model: 'Tournament',
+        populate: ({
+          path: 'team',
+          model: 'Team',
+          populate: ({
+            path: 'trainer',
+            model: 'Trainer',
+            match: { _id: payload.id },
+            populate: {
+              path: 'academy',
+              model: 'Academy',
+            }
+          })
+        })
+      }) as TournamentStatistic[]
+
+    return tournamentStatistics.filter(item => item.tournament.team.trainer != null)
+  },
+  Parent: async (payload) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+        populate: ({
+          path: 'parent',
+          model: 'Parent',
+          match: { _id: payload.id }
+        })
+      }) as TournamentStatistic[]
+
+    return tournamentStatistics.filter(item => item.player.parent != null)
+  },
+}
+
+const getTournamentStatisticsByTeam: Record<JwtPayload['type'], (payload: JwtPayload, team: String) => Promise<TournamentStatistic[]>> = {
+  AcademyManager: async (payload, team) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+      })
+      .populate({
+        path: 'tournament',
+        model: 'Tournament',
+        populate: ({
+          path: 'team',
+          model: 'Team',
+          match: { _id: team }
+        })
+      }) as TournamentStatistic[]
+    return tournamentStatistics.filter(item => (item.tournament.team != null))
+  },
+  Trainer: async (payload, team) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+      })
+      .populate({
+        path: 'tournament',
+        model: 'Tournament',
+        populate: ({
+          path: 'team',
+          model: 'Team',
+          match: { _id: team },
+          populate: ({
+            path: 'trainer',
+            model: 'Trainer',
+            match: { _id: payload.id },
+          })
+        })
+      }) as TournamentStatistic[]
+
+    return tournamentStatistics.filter(item => (item.tournament.team != null && item.tournament.team.trainer != null))
+  },
+  Parent: async (payload, team) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+        populate: ({
+          path: 'parent',
+          model: 'Parent',
+          match: { _id: payload.id },
+        })
+      })
+      .populate({
+        path: 'tournament',
+        model: 'Tournament',
+        populate: ({
+          path: 'team',
+          model: 'Team',
+          match: { _id: team },
+          populate: ({
+            path: 'academy',
+            model: 'Academy',
+          })
+        })
+      }) as TournamentStatistic[]
+
+    return tournamentStatistics.filter(item => (item.tournament.team != null && item.player.parent != null))
+  },
+}
+
+const getTournamentStatisticsByTournament: Record<JwtPayload['type'], (payload: JwtPayload, tournament: String) => Promise<TournamentStatistic[]>> = {
+  AcademyManager: async (payload, tournament) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+      })
+      .populate({
+        path: 'tournament',
+        model: 'Tournament',
+        match: { _id: tournament }
+      }) as TournamentStatistic[]
+    return tournamentStatistics.filter(item => (item.tournament != null))
+  },
+  Trainer: async (payload, tournament) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+      })
+      .populate({
+        path: 'tournament',
+        model: 'Tournament',
+        match: { _id: tournament },
+        populate: ({
+          path: 'team',
+          model: 'Team',
+          populate: ({
+            path: 'trainer',
+            model: 'Trainer',
+            match: { _id: payload.id },
+          })
+        })
+      }) as TournamentStatistic[]
+
+    return tournamentStatistics.filter(item => (item.tournament != null && item.tournament.team.trainer != null))
+  },
+  Parent: async (payload, tournament) => {
+    const tournamentStatistics = await models.TournamentStatistic.find()
+      .populate({
+        path: 'player',
+        model: 'Player',
+        populate: ({
+          path: 'parent',
+          model: 'Parent',
+          match: { _id: payload.id },
+        })
+      })
+      .populate({
+        path: 'tournament',
+        model: 'Tournament',
+        match: { _id: tournament },
+        populate: ({
+          path: 'team',
+          model: 'Team',
+          populate: ({
+            path: 'academy',
+            model: 'Academy',
+          })
+        })
+      }) as TournamentStatistic[]
+
+    return tournamentStatistics.filter(item => (item.tournament != null && item.player.parent != null))
+  },
+}
+
+export default (router: Router) => {
+  router.get('/tournamentStatistics/tournament/:id', async (req, res) => {
+    try {
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const payload = jwtDecode<JwtPayload>(token ?? '')
+          if (!payload || !(payload.type in getTournamentStatisticsByTournament)) {
+            res.status(400).json({ error: "Lack of sufficient permissions" });
+            return
+          }
+          res.send(await getTournamentStatisticsByTournament[payload.type](payload, req.params.id))
+        } else {
+          res.status(400).json({ error: "Malformed auth header" })
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
-      console.log(error)
       res.status(400).send(error)
     }
   })
 
   router.get('/tournamentStatistics/team/:id', async (req, res) => {
     try {
-      const tournamentStatistic = await models.TournamentStatistic.find()
-        .populate({
-          path: 'player',
-          model: 'Player'
-        })
-        .populate({
-          path: 'tournament',
-          model: 'Tournament',
-          populate: {
-            path: 'team',
-            model: 'Team',
-            match: { _id: req.params.id }
-          }
-        }) as TournamentStatistic[]
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
 
-      res.send(tournamentStatistic.filter(item => item.tournament != null))
+        if (token) {
+          const payload = jwtDecode<JwtPayload>(token ?? '')
+          if (!payload || !(payload.type in getTournamentStatisticsByTeam)) {
+            res.status(400).json({ error: "Lack of sufficient permissions" });
+            return
+          }
+          res.send(await getTournamentStatisticsByTeam[payload.type](payload, req.params.id))
+        } else {
+          res.status(400).json({ error: "Malformed auth header" })
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       console.log(error)
       res.status(400).send(error)
@@ -46,25 +255,22 @@ export default (router: Router) => {
 
   router.get('/tournamentStatistics', async (req, res) => {
     try {
-      const tournamentStatistic = await models.TournamentStatistic.find()
-        .populate({
-          path: 'player',
-          model: 'Player'
-        })
-        .populate({
-          path: 'tournament',
-          model: 'Tournament',
-          populate: {
-            path: 'team',
-            model: 'Team',
-            populate: {
-              path: 'academy',
-              model: 'Academy',
-              // match: { _id: req.params.id }
-            }
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const payload = jwtDecode<JwtPayload>(token ?? '')
+          if (!payload || !(payload.type in getTournamentStatistics)) {
+            res.status(400).json({ error: "Lack of sufficient permissions" });
+            return
           }
-        }) as TournamentStatistic[]
-      res.send(tournamentStatistic.filter(item => item.tournament.team.academy != null))
+          res.send(await getTournamentStatistics[payload.type](payload))
+        } else {
+          res.status(400).json({ error: "Malformed auth header" })
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       console.log(error)
       res.status(400).send(error)
@@ -73,12 +279,30 @@ export default (router: Router) => {
 
   router.post('/tournamentStatistic', async (req, res) => {
     try {
-      const tournamentStatistic = models.TournamentStatistic.create(req.body, function (error: any) {
-        if (error) {
-          res.status(400).send(error)
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const payload = jwtDecode<JwtPayload>(token ?? '')
+
+          if (payload.type === 'AcademyManager' || payload.type === 'Trainer') {
+            const tournamentStatistic = models.TournamentStatistic.create(req.body, function (error: any) {
+              if (error) {
+                res.status(400).send(error)
+              }
+              else res.send(tournamentStatistic)
+            })
+          }
+          else {
+            res.status(400).json({ error: "Lack of sufficient permissions" });
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" });
         }
-        else res.send(tournamentStatistic)
-      })
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       res.status(400).send(error)
     }
@@ -86,24 +310,41 @@ export default (router: Router) => {
 
   router.post('/tournamentStatistic/:id', async (req, res) => {
     try {
-      console.log('tournament st update')
-      const tournamentStatistic = await models.TournamentStatistic.findOneAndUpdate(
-        {
-          _id: req.params.id
-        },
-        {
-          attendance: req.body.attendance,
-          remarks: req.body.remarks,
-          goalsScored: req.body.goalsScored,
-          yellowCards: req.body.yellowCards,
-          redCards: req.body.redCards,
-          minutesPlayed: req.body.minutesPlayed,
-        },
-        {
-          new: true
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const payload = jwtDecode<JwtPayload>(token ?? '')
+
+          if (payload.type === 'AcademyManager' || payload.type === 'Trainer') {
+            const tournamentStatistic = await models.TournamentStatistic.findOneAndUpdate(
+              {
+                _id: req.params.id
+              },
+              {
+                attendance: req.body.attendance,
+                remarks: req.body.remarks,
+                goalsScored: req.body.goalsScored,
+                yellowCards: req.body.yellowCards,
+                redCards: req.body.redCards,
+                minutesPlayed: req.body.minutesPlayed,
+              },
+              {
+                new: true
+              }
+            )
+            res.send(tournamentStatistic)
+          }
+          else {
+            res.status(400).json({ error: "Lack of sufficient permissions" });
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" });
         }
-      )
-      res.send(tournamentStatistic)
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       res.status(400).send(error)
     }
@@ -111,9 +352,26 @@ export default (router: Router) => {
 
   router.delete('/tournamentStatistic/:id', async (req, res) => {
     try {
-      const tournamentStatistic = await models.TournamentStatistic.deleteMany({ tournament: req.params.id })
-      console.log(tournamentStatistic.deletedCount)
-      res.send(tournamentStatistic)
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const payload = jwtDecode<JwtPayload>(token ?? '')
+
+          if (payload.type === 'AcademyManager' || payload.type === 'Trainer') {
+            const tournamentStatistic = await models.TournamentStatistic.deleteMany({ tournament: req.params.id })
+            res.send(tournamentStatistic)
+          }
+          else {
+            res.status(400).json({ error: "Lack of sufficient permissions" });
+          }
+
+        } else {
+          res.status(400).json({ error: "Malformed auth header" });
+        }
+      } else {
+        res.status(400).json({ error: "No authorization header" })
+      }
     } catch (error) {
       res.status(400).send(error)
     }

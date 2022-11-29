@@ -23,21 +23,21 @@ const teamsFilter = ref('all')
 
 const urlMatchStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/matchStatistics/academy/${payload.value?.academy}`
+		return `/api/matchStatistics`
 	else
 		return `/api/matchStatistics/team/${props.id}`
 })
 
 const urlTournamentStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/tournamentStatistics/academy/${payload.value?.academy}`
+		return `/api/tournamentStatistics`
 	else
 		return `/api/tournamentStatistics/team/${props.id}`
 })
 
 const urlTrainingStatistic = computed(() => {
 	if (props.id === 'all')
-		return `/api/attendanceLists/academy/${payload.value?.academy}`
+		return `/api/attendanceLists`
 	else
 		return `/api/attendanceLists/team/${props.id}`
 })
@@ -64,7 +64,8 @@ const {
 	data: teams,
 	isFinished: isTeamsFinished,
 } = useFetch(`/api/teams`, {
-	initialData: [], async beforeFetch({ url, options, cancel }) {
+	initialData: [], 
+	async beforeFetch({ url, options, cancel }) {
 		const myToken = token.value
 		if (!myToken)
 			cancel()
@@ -156,7 +157,8 @@ const {
 	error: playersStatisticError,
 	execute: refechPlayers
 } = useFetch(urlPlayers.value, {
-	initialData: [], immediate: false, async beforeFetch({ url, options, cancel }) {
+	initialData: [], immediate: false, 
+	async beforeFetch({ url, options, cancel }) {
 		const myToken = token.value
 		if (!myToken)
 			cancel()
@@ -278,7 +280,6 @@ function changeSorting(newSortType: any) {
 const sortedStatistic = computed(() => {
 	switch (sortType.value) {
 		case 'playersUp':
-			console.log('playersUp')
 			playersStatistic.value?.sort(function (a: any, b: any) {
 				if (a.player.lastName < b.player.lastName) return 1
 				else return -1
@@ -402,7 +403,6 @@ const averageStatistic = computed(() => {
 	newAverageStatistic.events = 0
 
 	if (playersStatistic.value && playersStatistic.value.length > 0) {
-		console.log('playersStatistic.value playersStatistic.value.lenght ' + playersStatistic.value + ' ' + playersStatistic.value.length)
 		playersStatistic.value.forEach(element => {
 			newAverageStatistic.events += element.events
 			newAverageStatistic.attendance += element.attendance

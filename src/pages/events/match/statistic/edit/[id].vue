@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
+import { JwtPayload } from 'backend/database/schemas/User'
 import { Match } from 'backend/database/schemas/Match'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -21,7 +26,23 @@ const {
 	isFetching: isMatchFetching,
 	isFinished: isMatchFinished,
 	error: matchError,
-} = useFetch(`/api/match/${props.id}`, { initialData: {} }).json<Match>()
+} = useFetch(`/api/match/${props.id}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Match>()
 
 whenever(matchData, (data) => {
 	match.value = data
@@ -34,7 +55,23 @@ const {
 	isFetching: isMatchStatisticFetching,
 	isFinished: isMatchStatisticFinished,
 	error: matchStatisticError,
-} = useFetch(`/api/matchStatistic/match/${props.id}`, { initialData: [] }).json<MatchStatistic[]>()
+} = useFetch(`/api/matchStatistics/match/${props.id}`, {
+	initialData: [],
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<MatchStatistic[]>()
 
 whenever(matchStatisticData, (data) => {
 	matchStatistic.value = data
@@ -78,13 +115,30 @@ for (let i = 0; i < 120; i++) {
 }
 
 const onSubmit = async () => {
-	if (totalGoals.value != match.value.goalsScored) {
+	if (match.value.goalsScored && totalGoals.value > match.value.goalsScored) {
 		alert(t('error-messages.goals-error') + ' (' + totalGoals.value + ')')
 		return
 	}
 
-	const { execute: updateMatch, error: updateError } = useFetch(`/api/match/${match.value._id}`, { immediate: false }).post(match)
+	const { execute: updateMatch, error: updateError } = useFetch(`/api/match/${match.value._id}`, {
+		immediate: false,
+		async beforeFetch({ url, options, cancel }) {
+			const myToken = token.value
+			if (!myToken)
+				cancel()
+
+			options.headers = {
+				...options.headers,
+				Authorization: `Bearer ${myToken}`,
+			}
+
+			return {
+				options,
+			}
+		}
+	}).post(match)
 	await updateMatch()
+
 	if (updateError.value) {
 		alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 		return
@@ -105,7 +159,23 @@ const onSubmit = async () => {
 			playerStatistic.value.minutesPlayed = 0
 		}
 
-		const { execute: updatePlayerStatistic, error: updateError } = useFetch(`/api/matchStatistic/${element._id}`, { immediate: false }).post(playerStatistic)
+		const { execute: updatePlayerStatistic, error: updateError } = useFetch(`/api/matchStatistic/${element._id}`, {
+			immediate: false,
+			async beforeFetch({ url, options, cancel }) {
+				const myToken = token.value
+				if (!myToken)
+					cancel()
+
+				options.headers = {
+					...options.headers,
+					Authorization: `Bearer ${myToken}`,
+				}
+
+				return {
+					options,
+				}
+			}
+		}).post(playerStatistic)
 
 		await updatePlayerStatistic()
 		if (updateError.value) {
@@ -122,16 +192,13 @@ const totalGoals = computed(() => {
 		if (element.attendance)
 			sum = Number(sum) + Number(element.goalsScored ? element.goalsScored : 0)
 	})
-
-	// if (match.value.goalsScored && sum > match.value.goalsScored) match.value.goalsScored = sum
-
 	return sum
 })
 
 </script>
 
 <template>
-	<BackgroundFrame>
+	<BackgroundFrame v-if="payload">
 		<template #data>
 			<MyCenterElement>
 				<MiniWhiteFrame>
@@ -298,6 +365,8 @@ const totalGoals = computed(() => {
 			</MyCenterElement>
 		</template>
 	</BackgroundFrame>
+
+	<GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

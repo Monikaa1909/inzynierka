@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
+import { JwtPayload } from 'backend/database/schemas/User'
 import { Player } from 'backend/database/schemas/Player'
 import { Match } from 'backend/database/schemas/Match'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -21,13 +26,29 @@ const {
 	isFetching: isMatchFetching,
 	isFinished: isMatchFinished,
 	error: matchError,
-} = useFetch(`/api/match/${props.id}`, { initialData: {} }).json<Match>()
+} = useFetch(`/api/match/${props.id}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Match>()
 
 whenever(isMatchFinished, (data) => {
 	if (data) {
 		if (match.value != null) {
 			match.value.date = new Date(match.value.date) as unknown as Date
-			
+
 			playerUrl.value = `/api/players/team/${match.value.team._id}`
 			refechMatchStatistic()
 		}
@@ -40,14 +61,46 @@ const {
 	isFinished: isMatchStatisticFinished,
 	error: matchStatisticError,
 	execute: refechMatchStatistic
-} = useFetch(`/api/matchStatistic/match/${props.id}`, { initialData: [], immediate: false }).json<MatchStatistic[]>()
+} = useFetch(`/api/matchStatistics/match/${props.id}`, {
+	initialData: [], immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<MatchStatistic[]>()
 
 const {
 	data: players,
 	isFetching: isPlayersFetching,
 	error: playersError,
 	execute: refechPlayers
-} = useFetch(playerUrl, { initialData: [], immediate: false }).json<Player[]>()
+} = useFetch(playerUrl, {
+	initialData: [], immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	}
+}).json<Player[]>()
 
 whenever(matchStatistic, (data) => {
 	if (matchStatistic.value === null || matchStatistic.value.length === 0) {
@@ -70,13 +123,30 @@ whenever(players, (data) => {
 				playerStatistic.value.player = element
 				playerStatistic.value.match = match as unknown as Match
 
-				const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, { immediate: false }).post(playerStatistic)
+				const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, {
+					immediate: false,
+					async beforeFetch({ url, options, cancel }) {
+						const myToken = token.value
+						if (!myToken)
+							cancel()
+
+						options.headers = {
+							...options.headers,
+							Authorization: `Bearer ${myToken}`,
+						}
+
+						return {
+							options,
+						}
+					}
+				}).post(playerStatistic)
+
 				await savePlayerStatistic()
 
 				if (saveError.value) {
 					alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 					return
-				}
+				} else return router.push(`/events/match/statistic/${props.id}`)
 			}
 
 			else {
@@ -84,7 +154,23 @@ whenever(players, (data) => {
 					playerStatistic.value.player = element
 					playerStatistic.value.match = match as unknown as Match
 
-					const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, { immediate: false }).post(playerStatistic)
+					const { execute: savePlayerStatistic, error: saveError } = useFetch(`/api/matchStatistic`, {
+						immediate: false,
+						async beforeFetch({ url, options, cancel }) {
+							const myToken = token.value
+							if (!myToken)
+								cancel()
+
+							options.headers = {
+								...options.headers,
+								Authorization: `Bearer ${myToken}`,
+							}
+
+							return {
+								options,
+							}
+						}
+					}).post(playerStatistic)
 					await savePlayerStatistic()
 
 					if (saveError.value) {
@@ -96,7 +182,7 @@ whenever(players, (data) => {
 		})
 
 		refechMatchStatistic()
-	} else 
+	} else
 		messageInfo.value = 'error-messages.no-players-in-team'
 })
 
@@ -114,7 +200,7 @@ const isFinished = computed(() => {
 })
 
 const isFetching = computed(() => {
-	return isMatchFetching.value || isMatchStatisticFetching.value|| isPlayersFetching.value
+	return isMatchFetching.value || isMatchStatisticFetching.value || isPlayersFetching.value
 })
 
 const error = computed(() => {
@@ -145,14 +231,12 @@ const sortedStatistic = computed(() => {
 
 		switch (sortType.value) {
 			case 'playersUp':
-				console.log('playersUp')
 				matchStatistic.value.sort(function (a: any, b: any) {
 					if (a.player.lastName < b.player.lastName) return 1
 					else return -1
 				})
 				return matchStatistic.value
 			case 'playersDown':
-				console.log('playersDown')
 				matchStatistic.value.sort(function (a: any, b: any) {
 					if (a.player.lastName < b.player.lastName) return -1
 					else return 1
@@ -340,11 +424,10 @@ const updateAverageStatisticWithoutAbsent = () => {
 		averageStatisticWithoutAbsent.value.minutesPlayed = Number(averageStatisticWithoutAbsent.value.minutesPlayed.toFixed(2))
 	}
 }
-
 </script>
 
 <template>
-	<BackgroundFrame>
+	<BackgroundFrame v-if="payload">
 		<template #data>
 			<MyCenterElement>
 				<MiniWhiteFrame>
@@ -403,7 +486,8 @@ const updateAverageStatisticWithoutAbsent = () => {
 										<template #data>
 											<p class="text-center">
 												{{ statistic.player.lastName }} {{ statistic.player.firstName }}
-											</p></template>
+											</p>
+										</template>
 									</SingleStatistic>
 
 									<SingleStatistic>
@@ -583,7 +667,7 @@ const updateAverageStatisticWithoutAbsent = () => {
 								</div>
 
 								<ErrorMessageInfo v-else-if="!isMatchStatistic">
-									{{t(messageInfo)}}
+									{{ t(messageInfo) }}
 								</ErrorMessageInfo>
 								<ErrorMessageInfo v-else>
 									{{ t('error-messages.no-players-in-team') }}
@@ -604,6 +688,8 @@ const updateAverageStatisticWithoutAbsent = () => {
 			</MyCenterElement>
 		</template>
 	</BackgroundFrame>
+
+	<GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

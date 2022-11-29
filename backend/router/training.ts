@@ -1,9 +1,9 @@
+import { Training } from 'backend/database/schemas/Training'
 import { JwtPayload } from 'backend/database/schemas/User'
 import { Player } from 'backend/database/schemas/Player'
 import jwtDecode from "jwt-decode"
 import { Router } from "express"
 import { models } from "mongoose"
-import { Training } from 'backend/database/schemas/Training'
 
 const getTrainings: Record<JwtPayload['type'], (payload: JwtPayload) => Promise<Training[]>> = {
   AcademyManager: async (payload) => {
