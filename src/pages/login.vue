@@ -40,8 +40,6 @@ whenever(error, () => {
 
 const token = useStorage('user:token', '')
 
-
-
 watchEffect(() => {
   if (isFinished && !error.value) {
     syncRef(token, loginData)

@@ -4,16 +4,12 @@ import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 import { Tournament } from 'backend/database/schemas/Tournament'
 import { Training } from 'backend/database/schemas/Training'
 import { Academy } from 'backend/database/schemas/Academy'
-import { JwtPayload } from 'backend/database/schemas/User'
-import { useJwt } from '@vueuse/integrations/useJwt'
 import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
 import { DatePicker } from 'v-calendar'
+import 'v-calendar/dist/style.css'
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -34,7 +30,24 @@ const {
 	isFetching: isTeamsFetching,
 	isFinished: isTeamsFinished,
 	error: teamsError,
-} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams`, {
+	initialData: [],
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).json<Team[]>()
+
 const sportsFacilities = ref([] as Omit<SportsFacility[], '_id'>)
 
 const {
@@ -42,7 +55,23 @@ const {
 	isFetching: isSportsFacilitiesFetching,
 	isFinished: isSportsFacilitiesFinished,
 	error: sportsFacilitiesError,
-} = useFetch(`/api/sportsFacilities/academy/${payload.value.academy}`, { initialData: [] }).json<SportsFacility[]>()
+} = useFetch(`/api/sportsFacilities`, {
+	initialData: [],
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).json<SportsFacility[]>()
 
 whenever(sportsFacilitiesData, (data) => {
 	sportsFacilities.value = data
@@ -135,9 +164,60 @@ const match = ref({} as Omit<Match, '_id'>)
 const training = ref({} as Omit<Training, '_id'>)
 const tournament = ref({} as Omit<Tournament, '_id'>)
 
-const { execute: saveMatch, error: saveMatchError } = useFetch(url, { immediate: false }).post(match)
-const { execute: saveTraining, error: saveTrainingError } = useFetch(url, { immediate: false }).post(training)
-const { execute: saveTournament, error: saveTournamentError } = useFetch(url, { immediate: false }).post(tournament)
+const { execute: saveMatch, error: saveMatchError } = useFetch(url, {
+	immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).post(match)
+
+const { execute: saveTraining, error: saveTrainingError } = useFetch(url, {
+	immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).post(training)
+
+const { execute: saveTournament, error: saveTournamentError } = useFetch(url, {
+	immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).post(tournament)
+
 
 const onSubmit = async () => {
 	if (event.value.type === 'Match') {
@@ -162,7 +242,7 @@ const onSubmit = async () => {
 			if (props.day) return router.push(`/events/day/${event.value.startDate}`)
 			else return router.push('/calendar')
 		}
-		
+
 	} else if (event.value.type === 'Training') {
 		if (teamErrorMessage.value || dateErrorMessage.value)
 			alert(t('error-messages.validation-error'))
@@ -351,6 +431,7 @@ const onSubmit = async () => {
 						<option v-for="sportsFacility in sportsFacilities" :value="sportsFacility">
 							{{ sportsFacility.name }}, {{ sportsFacility.street }} {{ sportsFacility.houseNumber }}
 						</option>
+						<option :value="null">{{ t('single-event.no-sports-facility') }}</option>
 					</select>
 				</div>
 			</template>

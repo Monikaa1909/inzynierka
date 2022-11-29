@@ -140,6 +140,7 @@ single-event:
   name: Name
   friendly-match: Friendly match
   friendly-tournament: Friendly tournament
+  no-sports-facility: No sports facility
 your-profile:
   name: Academy name
   first-name: First name

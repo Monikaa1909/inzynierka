@@ -7,9 +7,7 @@ import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -25,7 +23,7 @@ const teamsFilter = ref('all')
 
 const urlMatches = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/matches/academy/${payload.value.academy}`
+    return `/api/matches`
   } else {
     return `/api/matches/team/${teamsFilter.value}`
   }
@@ -33,7 +31,7 @@ const urlMatches = computed(() => {
 
 const urlTrainings = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/trainings/academy/${payload.value.academy}`
+    return `/api/trainings`
   } else {
     return `/api/trainings/team/${teamsFilter.value}`
   }
@@ -41,7 +39,7 @@ const urlTrainings = computed(() => {
 
 const urlTournaments = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/tournaments/academy/${payload.value.academy}`
+    return `/api/tournaments`
   } else {
     return `/api/tournaments/team/${teamsFilter.value}`
   }
@@ -64,7 +62,23 @@ const {
   isFetching: isTeamsFetching,
   isFinished: isTeamsFinished,
   error: teamsError,
-} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams`, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Team[]>()
 
 const matches = ref(<Array<Match>>([]))
 const tournaments = ref([] as Omit<Tournament[], '_id'>)
@@ -76,7 +90,23 @@ const {
   isFinished: isMatchesFinished,
   error: matchesError,
   execute: refechMatches
-} = useFetch(urlMatches, { initialData: [] }).json<Match[]>()
+} = useFetch(urlMatches, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Match[]>()
 
 whenever(matchesData, (data) => {
   matches.value = data
@@ -85,8 +115,8 @@ whenever(matchesData, (data) => {
   matches.value = matches.value.filter(element => {
     return element.date.getFullYear() === selectedDate.getFullYear()
       && element.date.getMonth() === selectedDate.getMonth()
-      && element.date.getDate() === selectedDate.getDate() 
-    })
+      && element.date.getDate() === selectedDate.getDate()
+  })
 })
 
 const {
@@ -95,7 +125,23 @@ const {
   isFinished: isTournamentsFinished,
   error: tournamentsError,
   execute: refechTournaments
-} = useFetch(urlTournaments, { initialData: [] }).json<Tournament[]>()
+} = useFetch(urlTournaments, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Tournament[]>()
 
 whenever(tournamentsData, (data) => {
   tournaments.value = data
@@ -109,7 +155,7 @@ whenever(tournamentsData, (data) => {
     end.setHours(23, 59)
 
     return start <= selectedDate && end >= selectedDate
-    })
+  })
 })
 
 const {
@@ -118,7 +164,23 @@ const {
   isFinished: isTrainingsFinished,
   error: trainingsError,
   execute: refechTrainings
-} = useFetch(urlTrainings, { initialData: [] }).json<Training[]>()
+} = useFetch(urlTrainings, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Training[]>()
 
 whenever(trainingsData, (data) => {
   trainings.value = data
@@ -127,7 +189,7 @@ whenever(trainingsData, (data) => {
   trainings.value = trainings.value.filter(element => {
     return element.date.getFullYear() === selectedDate.getFullYear()
       && element.date.getMonth() === selectedDate.getMonth()
-      && element.date.getDate() === selectedDate.getDate() 
+      && element.date.getDate() === selectedDate.getDate()
   })
 })
 
@@ -153,6 +215,7 @@ const events = computed(() => {
         id: element._id,
         type: 'Match',
         date: element.date,
+        friendly: element.friendly,
         team: element.team.teamName,
         goalsConceded: element.goalsConceded ? element.goalsConceded : 0,
         goalsScored: element.goalsScored ? element.goalsScored : 0,
@@ -208,30 +271,33 @@ const events = computed(() => {
         id: element._id,
         type: 'Tournament',
         tournamentName: element.tournamentName ? element.tournamentName : '-',
-        startDate: element.startDate,
+        date: element.startDate,
         endDate: element.endDate,
         friendly: element.friendly,
         team: element.team.teamName,
         sportsFacility: element.sportsFacility?.name,
         remarks: element.remarks ? element.remarks : '-',
         get hour(): string {
-          if (this.startDate.getHours().toLocaleString(locale.value).length == 2)
-            return this.startDate.getHours().toLocaleString(locale.value)
+          if (this.date.getHours().toLocaleString(locale.value).length == 2)
+            return this.date.getHours().toLocaleString(locale.value)
           else
-            return '0' + this.startDate.getHours().toLocaleString(locale.value)
+            return '0' + this.date.getHours().toLocaleString(locale.value)
         },
         get minutes(): string {
-          if (this.startDate.getMinutes().toLocaleString(locale.value).length == 2)
-            return this.startDate.getMinutes().toLocaleString(locale.value)
+          if (this.date.getMinutes().toLocaleString(locale.value).length == 2)
+            return this.date.getMinutes().toLocaleString(locale.value)
           else
-            return '0' + this.startDate.getMinutes().toLocaleString(locale.value)
+            return '0' + this.date.getMinutes().toLocaleString(locale.value)
         }
       }
       newEvents.push(event)
     })
   }
 
-  return newEvents
+  return newEvents.sort(function (a: any, b: any) {
+    if (a.date > b.date) return 1
+    else return -1
+  })
 })
 
 const isHidden = ref(true)
@@ -306,23 +372,121 @@ const cancelDeleting = () => {
 const confirmDelete = async () => {
   isDeleting.value = false
   if (deletingEvent.value.type === 'Match') {
-    await useFetch(`/api/matchStatistic/${deletingEvent.value?.id}`).delete()
-    await useFetch(`/api/match/${deletingEvent.value?.id}`).delete()
+    await useFetch(`/api/matchStatistic/${deletingEvent.value?.id}`, {
+      async beforeFetch({ url, options, cancel }) {
+        const myToken = token.value
+        if (!myToken)
+          cancel()
+
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${myToken}`,
+        }
+
+        return {
+          options,
+        }
+      }
+    }).delete()
+
+    await useFetch(`/api/match/${deletingEvent.value?.id}`, {
+      async beforeFetch({ url, options, cancel }) {
+        const myToken = token.value
+        if (!myToken)
+          cancel()
+
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${myToken}`,
+        }
+
+        return {
+          options,
+        }
+      }
+    }).delete()
+
     refechMatches()
-  } else if (deletingEvent.value.type === 'Tournament') {
-    await useFetch(`/api/tournamentStatistic/${deletingEvent.value?.id}`).delete()
-    await useFetch(`/api/tournament/${deletingEvent.value?.id}`).delete()
+  }
+
+  else if (deletingEvent.value.type === 'Tournament') {
+    await useFetch(`/api/tournamentStatistic/${deletingEvent.value?.id}`, {
+      async beforeFetch({ url, options, cancel }) {
+        const myToken = token.value
+        if (!myToken)
+          cancel()
+
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${myToken}`,
+        }
+
+        return {
+          options,
+        }
+      }
+    }).delete()
+
+    await useFetch(`/api/tournament/${deletingEvent.value?.id}`, {
+      async beforeFetch({ url, options, cancel }) {
+        const myToken = token.value
+        if (!myToken)
+          cancel()
+
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${myToken}`,
+        }
+
+        return {
+          options,
+        }
+      }
+    }).delete()
+
     refechTournaments()
-  } else if (deletingEvent.value.type === 'Training') {
-    await useFetch(`/api/attendanceList/${deletingEvent.value?.id}`).delete()
-    await useFetch(`/api/training/${deletingEvent.value?.id}`).delete()
+  }
+
+  else if (deletingEvent.value.type === 'Training') {
+    await useFetch(`/api/attendanceList/${deletingEvent.value?.id}`, {
+      async beforeFetch({ url, options, cancel }) {
+        const myToken = token.value
+        if (!myToken)
+          cancel()
+
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${myToken}`,
+        }
+
+        return {
+          options,
+        }
+      }
+    }).delete()
+    await useFetch(`/api/training/${deletingEvent.value?.id}`, {
+      async beforeFetch({ url, options, cancel }) {
+        const myToken = token.value
+        if (!myToken)
+          cancel()
+
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${myToken}`,
+        }
+
+        return {
+          options,
+        }
+      }
+    }).delete()
     refechTrainings()
   }
 }
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if="payload">
     <template #data>
       <div class=" w-full h-full flex flex-col p-4 gap-4">
 
@@ -445,14 +609,14 @@ const confirmDelete = async () => {
 
               <SingleAttribute v-if="event.type !== 'Training' && event.friendly">
                 <template #attributeName v-if="event.type === 'Match'">{{ t('single-event.type-of-match') }}:</template>
-                <template #attributeName v-else-if="event.type === 'Tournament'">{{ t('single-event.type-of-tournament')}}:</template>
+                <template #attributeName v-else-if="event.type === 'Tournament'">{{t('single-event.type-of-tournament')}}:</template>
                 <template #attributeValue> {{ t('single-event.friendly') }} </template>
               </SingleAttribute>
 
               <SingleAttribute v-if="event.type === 'Tournament'">
                 <template #attributeName>{{ t('single-event.start-date') }}:</template>
                 <template #attributeValue>
-                  {{ event.startDate.toLocaleDateString(locale) }} {{ event.hour }}:{{ event.minutes }}
+                  {{ event.date.toLocaleDateString(locale) }} {{ event.hour }}:{{ event.minutes }}
                 </template>
               </SingleAttribute>
 
@@ -500,6 +664,8 @@ const confirmDelete = async () => {
       </div>
     </template>
   </BackgroundFrame>
+
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

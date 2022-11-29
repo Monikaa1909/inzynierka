@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { requiredField, validateName } from '~/validatesFunctions'
 import { SportsFacility } from 'backend/database/schemas/SportsFacility'
+import { requiredField, validateName } from '~/validatesFunctions'
 import { Academy } from 'backend/database/schemas/Academy'
 import { Match } from 'backend/database/schemas/Match'
-
 import { DatePicker } from 'v-calendar'
+import 'v-calendar/dist/style.css'
+
+const token = useStorage('user:token', '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
-const academy = 'AP Jagiellonia Białystok'
 
 const props = defineProps<{ id: string }>()
 
@@ -24,7 +24,23 @@ const {
 	isFetching: isSportsFacilitiesFetching,
 	isFinished: isSportsFacilitiesFinished,
 	error: sportsFacilitiesError,
-} = useFetch(`/api/sportsFacilities/${academy}`, { initialData: [] }).json<SportsFacility[]>()
+} = useFetch(`/api/sportsFacilities`, {
+	initialData: [],
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).json<SportsFacility[]>()
 
 whenever(sportsFacilitiesData, (data) => {
 	sportsFacilities.value = data
@@ -35,7 +51,23 @@ const {
 	data: matchData,
 	isFetching: isMatchFetching,
 	error: matchError,
-} = useFetch(`/api/match/${props.id}`, { initialData: {} }).json<Match>()
+} = useFetch(`/api/match/${props.id}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).json<Match>()
 
 const team = ref('')
 
@@ -79,19 +111,35 @@ const dateErrorMessage = computed(() => {
 	return t(requiredField(event.value.date))
 })
 
-const { execute: updateMatch, error: updateError } = useFetch(`/api/match/${props.id}`, { immediate: false }).post(event)
+const { execute: updateMatch, error: updateError } = useFetch(`/api/match/${props.id}`, {
+	immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).post(event)
 
 const onSubmit = async () => {
 	if (opponentErrorMessage.value || teamErrorMessage.value || opponentErrorMessage.value || dateErrorMessage.value)
 		alert(t('error-messages.validation-error'))
 	else {
-		event.value.sportsFacility = event.value.sportsFacility?._id as unknown as SportsFacility
+		if (event.value.sportsFacility) event.value.sportsFacility = event.value.sportsFacility?._id as unknown as SportsFacility
 		await updateMatch()
 		if (updateError.value) {
 			alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
 			return
 		}
-		return router.push('/calendar')
+		return router.go(-1)
 	}
 }
 
@@ -173,7 +221,7 @@ const onSubmit = async () => {
 						<option v-for="sportsFacility in sportsFacilities" :value="sportsFacility">
 							{{ sportsFacility.name }}, {{ sportsFacility.street }} {{ sportsFacility.houseNumber }}
 						</option>
-						<option :value="'newobject'">{{ t('single-event.add-new') }}</option>
+						<option :value="null">{{ t('single-event.no-sports-facility') }}</option>
 					</select>
 				</div>
 			</template>

@@ -290,7 +290,7 @@ export const seedDatabase = async () => {
         lastName: 'Kowalski',
         birthdayDate: '2010-12-09',
         nationality: 'Polska',
-        parent: parent1,
+        parent: parent2,
         team: team4,
         validityOfMedicalExaminations: '2022-12-09',
         academy: academy1

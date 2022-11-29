@@ -140,6 +140,7 @@ single-event:
   name: Nazwa
   friendly-match: Mecz towarzyski
   friendly-tournament: Turniej towarzyski
+  no-sports-facility: Brak obiektu
 your-profile:
   name: Nazwa akademii
   first-name: Imię

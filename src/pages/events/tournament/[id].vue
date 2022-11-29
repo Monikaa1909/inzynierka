@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { Tournament } from 'backend/database/schemas/Tournament'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -16,7 +21,23 @@ const {
 	isFetching,
 	isFinished,
 	error,
-} = useFetch(`/api/tournament/${props.id}`, { initialData: {} }).json<Tournament>()
+} = useFetch(`/api/tournament/${props.id}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).json<Tournament>()
 
 whenever(tournamentData, (data) => {
 	tournament.value = data
@@ -43,7 +64,7 @@ const goEditEvent = (eventId: any) => {
 }
 
 const showTournamentStatistic = (eventId: any) => {
-  return router.push(`/events/tournament/statistic/${eventId}`)
+	return router.push(`/events/tournament/statistic/${eventId}`)
 }
 
 const isDeleting = ref(false)
@@ -60,14 +81,45 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
 	isDeleting.value = false
-	await useFetch(`/api/tournamentStatistic/${deletingEventId.value}`).delete()
-	await useFetch(`/api/tournament/${deletingEventId.value}`).delete()
+	await useFetch(`/api/tournamentStatistic/${deletingEventId.value}`, {
+		async beforeFetch({ url, options, cancel }) {
+			const myToken = token.value
+			if (!myToken)
+				cancel()
+
+			options.headers = {
+				...options.headers,
+				Authorization: `Bearer ${myToken}`,
+			}
+
+			return {
+				options,
+			}
+		},
+	}).delete()
+
+	await useFetch(`/api/tournament/${deletingEventId.value}`, {
+		async beforeFetch({ url, options, cancel }) {
+			const myToken = token.value
+			if (!myToken)
+				cancel()
+
+			options.headers = {
+				...options.headers,
+				Authorization: `Bearer ${myToken}`,
+			}
+
+			return {
+				options,
+			}
+		},
+	}).delete()
 	return router.go(-1)
 }
 </script>
 
 <template>
-	<BackgroundFrame>
+	<BackgroundFrame v-if="payload">
 		<template #data>
 
 			<DeletingMessageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
@@ -107,7 +159,7 @@ const confirmDelete = async () => {
 						</SingleAttribute>
 
 						<SingleAttribute v-if="tournament.friendly">
-							<template #attributeName>{{ t('single-event.type-of-tournament')}}:</template>
+							<template #attributeName>{{ t('single-event.type-of-tournament') }}:</template>
 							<template #attributeValue>
 								{{ t('single-event.friendly') }}
 							</template>
@@ -122,7 +174,8 @@ const confirmDelete = async () => {
 
 						<SingleAttribute>
 							<template #attributeName>{{ t('single-event.hour') }}:</template>
-							<template #attributeValue>{{ getHour(tournament.startDate) }}:{{ getMinutes(tournament.startDate) }}</template>
+							<template #attributeValue>{{ getHour(tournament.startDate) }}:{{ getMinutes(tournament.startDate)
+							}}</template>
 						</SingleAttribute>
 
 						<SingleAttribute>
@@ -140,12 +193,12 @@ const confirmDelete = async () => {
 							<template #attributeValue>{{ tournament.sportsFacility?.name }}</template>
 						</SingleAttribute>
 
-						<SingleAttribute >
+						<SingleAttribute>
 							<template #attributeName>{{ t('single-event.remarks') }}:</template>
 							<template #attributeValue>{{ tournament.remarks }}</template>
 						</SingleAttribute>
 					</template>
-					
+
 					<template #footer>
 						<SingleButton @click="router.go(-1)">
 							<template #buttonName>{{ t('button.back') }}</template>
@@ -160,6 +213,8 @@ const confirmDelete = async () => {
 			<ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
 		</template>
 	</BackgroundFrame>
+
+	<GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

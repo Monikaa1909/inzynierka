@@ -285,7 +285,6 @@ export default (router: Router) => {
 
 	router.delete('/player/:id', async (req, res) => {
 		try {
-
 			if (req.headers.authorization) {
 				const token = req.headers.authorization.split(" ")[1]
 
@@ -306,7 +305,6 @@ export default (router: Router) => {
 			} else {
 				res.status(400).json({ error: "No authorization header" })
 			}
-
 		} catch (error) {
 			res.status(400).send(error)
 		}

@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { Training } from 'backend/database/schemas/Training'
+import { JwtPayload } from 'backend/database/schemas/User'
+import { useJwt } from '@vueuse/integrations/useJwt'
+
+const token = useStorage('user:token', '')
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -16,7 +21,23 @@ const {
 	isFetching,
 	isFinished,
 	error,
-} = useFetch(`/api/training/${props.id}`, { initialData: {} }).json<Training>()
+} = useFetch(`/api/training/${props.id}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).json<Training>()
 
 whenever(trainingData, (data) => {
 	training.value = data
@@ -42,7 +63,7 @@ const goEditEvent = (eventId: any) => {
 }
 
 const showAttendanceList = (eventId: any) => {
-  return router.push(`/events/training/attendanceList/${eventId}`)
+	return router.push(`/events/training/attendanceList/${eventId}`)
 }
 
 const isDeleting = ref(false)
@@ -59,14 +80,45 @@ const cancelDeleting = () => {
 
 const confirmDelete = async () => {
 	isDeleting.value = false
-	await useFetch(`/api/attendanceList/${deletingEventId.value}`).delete()
-	await useFetch(`/api/training/${deletingEventId.value}`).delete()
+	await useFetch(`/api/attendanceList/${deletingEventId.value}`, {
+		async beforeFetch({ url, options, cancel }) {
+			const myToken = token.value
+			if (!myToken)
+				cancel()
+
+			options.headers = {
+				...options.headers,
+				Authorization: `Bearer ${myToken}`,
+			}
+
+			return {
+				options,
+			}
+		},
+	}).delete()
+
+	await useFetch(`/api/training/${deletingEventId.value}`, {
+		async beforeFetch({ url, options, cancel }) {
+			const myToken = token.value
+			if (!myToken)
+				cancel()
+
+			options.headers = {
+				...options.headers,
+				Authorization: `Bearer ${myToken}`,
+			}
+
+			return {
+				options,
+			}
+		},
+	}).delete()
 	return router.go(-1)
 }
 </script>
 
 <template>
-	<BackgroundFrame>
+	<BackgroundFrame v-if="payload">
 		<template #data>
 
 			<DeletingMessageDialog v-if="isDeleting" @cancelDeleting="cancelDeleting" @confirmDelete="confirmDelete">
@@ -97,7 +149,7 @@ const confirmDelete = async () => {
 							<template #attributeName>{{ t('single-event.type') }}:</template>
 							<template #attributeValue>{{ t('events.lower-case.tournament') }}</template>
 						</SingleAttribute>
-					
+
 						<SingleAttribute>
 							<template #attributeName>{{ t('single-event.date') }}:</template>
 							<template #attributeValue>
@@ -106,9 +158,9 @@ const confirmDelete = async () => {
 						</SingleAttribute>
 
 						<SingleAttribute>
-                <template #attributeName>{{ t('single-event.team') }}:</template>
-                <template #attributeValue>{{ training.team.teamName }}</template>
-              </SingleAttribute>
+							<template #attributeName>{{ t('single-event.team') }}:</template>
+							<template #attributeValue>{{ training.team.teamName }}</template>
+						</SingleAttribute>
 
 						<SingleAttribute>
 							<template #attributeName>{{ t('single-event.hour') }}:</template>
@@ -120,12 +172,12 @@ const confirmDelete = async () => {
 							<template #attributeValue>{{ training.sportsFacility?.name }}</template>
 						</SingleAttribute>
 
-						<SingleAttribute >
+						<SingleAttribute>
 							<template #attributeName>{{ t('single-event.remarks') }}:</template>
 							<template #attributeValue>{{ training.remarks }}</template>
 						</SingleAttribute>
 					</template>
-					
+
 					<template #footer>
 						<SingleButton @click="router.go(-1)">
 							<template #buttonName>{{ t('button.back') }}</template>
@@ -140,6 +192,8 @@ const confirmDelete = async () => {
 			<ErrorMessageInfo v-else-if="!isDeleting && error"></ErrorMessageInfo>
 		</template>
 	</BackgroundFrame>
+
+	<GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

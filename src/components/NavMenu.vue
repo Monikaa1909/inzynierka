@@ -300,6 +300,9 @@ const logout = async () => {
                 <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}
                 </p>
               </button>
+              <button @click="logout" class="p-1 w-full">
+            <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
+          </button>
             </div>
           </div>
         </div>

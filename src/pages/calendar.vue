@@ -2,16 +2,14 @@
 import { Tournament } from 'backend/database/schemas/Tournament'
 import { Training } from 'backend/database/schemas/Training'
 import { JwtPayload } from 'backend/database/schemas/User'
-import { useJwt } from '@vueuse/integrations/useJwt'
 import { Match } from 'backend/database/schemas/Match'
 import { Team } from 'backend/database/schemas/Team'
+import { useJwt } from '@vueuse/integrations/useJwt'
 import { Calendar } from 'v-calendar'
 import 'v-calendar/dist/style.css'
 
 const token = useStorage('user:token', '')
-const { payload: payloadData } = useJwt(() => token.value ?? '')
-const payload = ref({} as JwtPayload)
-payload.value = payloadData.value as unknown as JwtPayload
+const { payload } = useJwt<JwtPayload>(() => token.value ?? '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
@@ -23,7 +21,7 @@ const teamsFilter = ref('all')
 
 const urlMatches = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/matches/academy/${payload.value.academy}`
+    return `/api/matches`
   } else {
     return `/api/matches/team/${teamsFilter.value}`
   }
@@ -31,7 +29,7 @@ const urlMatches = computed(() => {
 
 const urlTrainings = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/trainings/academy/${payload.value.academy}`
+    return `/api/trainings`
   } else {
     return `/api/trainings/team/${teamsFilter.value}`
   }
@@ -39,7 +37,7 @@ const urlTrainings = computed(() => {
 
 const urlTournaments = computed(() => {
   if (teamsFilter.value === 'all') {
-    return `/api/tournaments/academy/${payload.value.academy}`
+    return `/api/tournaments`
   } else {
     return `/api/tournaments/team/${teamsFilter.value}`
   }
@@ -62,7 +60,23 @@ const {
   isFetching: isTeamsFetching,
   isFinished: isTeamsFinished,
   error: teamsError,
-} = useFetch(`/api/teams/academy/${payload.value.academy}`, { initialData: [] }).json<Team[]>()
+} = useFetch(`/api/teams`, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Team[]>()
 
 const matches = ref([] as Omit<Match[], '_id'>)
 const tournaments = ref([] as Omit<Tournament[], '_id'>)
@@ -78,27 +92,45 @@ const {
   isFinished: isMatchesFinished,
   error: matchesError,
   execute: refechMatches
-} = useFetch(urlMatches, { initialData: [] }).json<Match[]>()
+} = useFetch(urlMatches, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Match[]>()
 
 whenever(matchesData, (data) => {
   matchesAttributes.value = []
   matches.value = data
-  matches.value.map(element => element.date = new Date(element.date) as unknown as Date)
-  let i = 0
-  matches.value.forEach(element => {
-    let attribute = {
-      key: 'match' + i++,
-      dates: element.date,
-      popover: {
-        label: computed(() => t('events.match') + (element.opponent ? (' - ' + element.opponent) : ''))
-      },
-      highlight: {
-        color: 'purple',
-        fillMode: 'solid',
-      },
-    }
-    matchesAttributes.value.push(attribute)
-  })
+  if (matches.value.length > 0) {
+    matches.value.map(element => element.date = new Date(element.date) as unknown as Date)
+    let i = 0
+    matches.value.forEach(element => {
+      let attribute = {
+        key: 'match' + i++,
+        dates: element.date,
+        popover: {
+          label: computed(() => t('events.match') + (element.opponent ? (' - ' + element.opponent) : ''))
+        },
+        highlight: {
+          color: 'purple',
+          fillMode: 'solid',
+        },
+      }
+      matchesAttributes.value.push(attribute)
+    })
+  }
 })
 
 const {
@@ -107,19 +139,35 @@ const {
   isFinished: isTournamentsFinished,
   error: tournamentsError,
   execute: refechTournaments
-} = useFetch(urlTournaments, { initialData: [] }).json<Tournament[]>()
+} = useFetch(urlTournaments, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Tournament[]>()
 
 whenever(tournamentsData, (data) => {
   tournamentsAttributes.value = []
   tournaments.value = data
   tournaments.value.map(element => element.startDate = new Date(element.startDate) as unknown as Date)
   tournaments.value.map(element => element.endDate = new Date(element.endDate) as unknown as Date)
-  let i = 0 
+  let i = 0
   tournaments.value.forEach(element => {
     let attribute = {
       key: 'tournament' + i++,
       popover: {
-        label: computed(() => 
+        label: computed(() =>
           (t('events.tournament') + (element.tournamentName ? (' - ' + element.tournamentName) : '')))
       },
       highlight: {
@@ -138,7 +186,23 @@ const {
   isFinished: isTrainingsFinished,
   error: trainingsError,
   execute: refechTrainings
-} = useFetch(urlTrainings, { initialData: [] }).json<Training[]>()
+} = useFetch(urlTrainings, {
+  initialData: [],
+  async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  }
+}).json<Training[]>()
 
 whenever(trainingsData, (data) => {
   trainingsAttributes.value = []
@@ -228,7 +292,7 @@ const goSpecificDay = (day: any) => {
 </script>
 
 <template>
-  <BackgroundFrame>
+  <BackgroundFrame v-if="payload">
     <template #data>
       <MyCenterElement>
         <div class="w-full h-full p-4 flex flex-col gap-8">
@@ -279,17 +343,15 @@ const goSpecificDay = (day: any) => {
 
               <div v-if="isTeamsFinished"
                 class="w-full  flex flex-col bg-white rounded-xl border border-#d9e0e8 justify-center sm:(flex-row flex-wrap)">
-                <button v-for="team in teams" @click="teamsFilter = team._id" 
-                
-                class="p-1 rounded-xl">
+                <button v-for="team in teams" @click="teamsFilter = team._id" class="p-1 rounded-xl">
                   <p class=" rounded-xl px-4 py-2 text-sm hover:bg-#2F4D5E hover:text-white  text-center"
-                  :class="[teamsFilter === team._id ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
+                    :class="[teamsFilter === team._id ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
                     {{ team.teamName }}</p>
                 </button>
                 <button @click="teamsFilter = 'all'" class="p-1 rounded-xl">
                   <p class=" rounded-xl px-4 py-2 text-sm hover:bg-#2F4D5E hover:text-white text-center"
-                  :class="[teamsFilter === 'all' ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
-                    {{ t('button.all')}} </p>
+                    :class="[teamsFilter === 'all' ? 'bg-#2F4D5E text-white' : 'text-gray-700']">
+                    {{ t('button.all') }} </p>
                 </button>
               </div>
             </div>
@@ -299,11 +361,8 @@ const goSpecificDay = (day: any) => {
           <div class="w-full h-full flex items-center">
             <LoadingCircle v-if="isFetching"></LoadingCircle>
 
-            <Calendar v-if="isFinished && !error" 
-              is-expanded 
-              :attributes="attributes"
-              :locale="locale" @dayclick="goSpecificDay"
-              >
+            <Calendar v-if="isFinished && !error" is-expanded :attributes="attributes" :locale="locale"
+              @dayclick="goSpecificDay">
             </Calendar>
 
             <ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
@@ -312,6 +371,8 @@ const goSpecificDay = (day: any) => {
       </MyCenterElement>
     </template>
   </BackgroundFrame>
+
+  <GoSignIn v-else></GoSignIn>
 </template>
 
 <route lang="yaml">

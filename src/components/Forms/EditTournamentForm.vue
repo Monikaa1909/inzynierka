@@ -3,16 +3,16 @@ import { requiredField, validateName, validateStartDate, validateEndDate } from 
 import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 import { Tournament } from 'backend/database/schemas/Tournament'
 import { Academy } from 'backend/database/schemas/Academy'
-
 import { DatePicker } from 'v-calendar'
+import 'v-calendar/dist/style.css'
+
+const token = useStorage('user:token', '')
 
 const { t, availableLocales, locale } = useI18n()
 const router = useRouter()
 
 const locales = availableLocales
 locale.value = locales[(locales.indexOf(locale.value)) % locales.length]
-
-const academy = 'AP Jagiellonia Białystok'
 
 const props = defineProps<{ id: string }>()
 
@@ -24,7 +24,23 @@ const {
 	isFetching: isSportsFacilitiesFetching,
 	isFinished: isSportsFacilitiesFinished,
 	error: sportsFacilitiesError,
-} = useFetch(`/api/sportsFacilities/${academy}`, { initialData: [] }).json<SportsFacility[]>()
+} = useFetch(`/api/sportsFacilities`, {
+	initialData: [],
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).json<SportsFacility[]>()
 
 whenever(sportsFacilitiesData, (data) => {
 	sportsFacilities.value = data
@@ -35,7 +51,23 @@ const {
 	data: tournamentData,
 	isFetching: isTournamentFetching,
 	error: tournamentError,
-} = useFetch(`/api/tournament/${props.id}`, { initialData: {} }).json<Tournament>()
+} = useFetch(`/api/tournament/${props.id}`, {
+	initialData: {},
+	async beforeFetch({ url, options, cancel }) {
+		const myToken = token.value
+		if (!myToken)
+			cancel()
+
+		options.headers = {
+			...options.headers,
+			Authorization: `Bearer ${myToken}`,
+		}
+
+		return {
+			options,
+		}
+	},
+}).json<Tournament>()
 
 const team = ref('')
 
@@ -45,7 +77,7 @@ whenever(tournamentData, (data) => {
 })
 
 const isFinished = computed(() => {
-	return isSportsFacilitiesFinished.value 
+	return isSportsFacilitiesFinished.value
 })
 
 const isFetching = computed(() => {
@@ -53,7 +85,7 @@ const isFetching = computed(() => {
 })
 
 const error = computed(() => {
-	return sportsFacilitiesError.value && tournamentError.value 
+	return sportsFacilitiesError.value && tournamentError.value
 })
 
 const teamErrorMessage = computed(() => {
@@ -86,19 +118,34 @@ const endDateErrorMessage = computed(() => {
 	return validateEndDate(event.value.endDate, event.value.startDate)
 })
 
-const { execute: updateTournament, error: updateError } = useFetch(`/api/tournament/${props.id}`, { immediate: false }).post(event)
+const { execute: updateTournament, error: updateError } = useFetch(`/api/tournament/${props.id}`, { immediate: false,
+	async beforeFetch({ url, options, cancel }) {
+    const myToken = token.value
+    if (!myToken)
+      cancel()
+
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${myToken}`,
+    }
+
+    return {
+      options,
+    }
+  },
+ }).post(event)
 
 const onSubmit = async () => {
 	if (nameErrorMessage.value || teamErrorMessage.value || startDateErrorMessage.value || endDateErrorMessage.value)
 		alert(t('error-messages.validation-error'))
-    else {
-      event.value.sportsFacility = event.value.sportsFacility?._id as unknown as SportsFacility
-      await updateTournament()
-			if (updateError.value) {
-				alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
-				return
-			}
-		return router.push('/calendar')
+	else {
+		if (event.value.sportsFacility) event.value.sportsFacility = event.value.sportsFacility?._id as unknown as SportsFacility
+		await updateTournament()
+		if (updateError.value) {
+			alert(t('error-messages.unknow-error') + ' crewAssistantHelp@gmail.com')
+			return
+		}
+		return router.go(-1)
 	}
 }
 
@@ -108,7 +155,7 @@ const onSubmit = async () => {
 	<LoadingCircle v-if="isFetching"></LoadingCircle>
 
 	<div v-if="isFinished && !error" class="w-full flex flex-col gap-2 place-content-center">
- 
+
 		<SingleInput>
 			<template #inputName>{{ t('single-event.type') }}:</template>
 			<template #inputValue>
@@ -165,7 +212,7 @@ const onSubmit = async () => {
 			<template #errorMessage v-if="endDateErrorMessage"> {{ endDateErrorMessage }}</template>
 		</SingleInput>
 
-    
+
 		<SingleInput>
 			<template #inputName>{{ t('single-event.team') }}:</template>
 			<template #inputValue>
@@ -174,7 +221,7 @@ const onSubmit = async () => {
 		</SingleInput>
 
 		<SingleInput>
-			<template #inputName >{{ t('single-event.friendly-match') }}:</template>
+			<template #inputName>{{ t('single-event.friendly-match') }}:</template>
 			<template #inputValue>
 				<button @click="event.friendly = !event.friendly">
 					<img v-if="event.friendly" src="../../assets/checkbox-checked-icon.png" class="h-18px" />
@@ -200,7 +247,7 @@ const onSubmit = async () => {
 						<option v-for="sportsFacility in sportsFacilities" :value="sportsFacility">
 							{{ sportsFacility.name }}, {{ sportsFacility.street }} {{ sportsFacility.houseNumber }}
 						</option>
-						<option :value="'newobject'">{{ t('single-event.add-new') }}</option>
+						<option :value="null">{{ t('single-event.no-sports-facility') }}</option>
 					</select>
 				</div>
 			</template>
@@ -213,7 +260,7 @@ const onSubmit = async () => {
 			<SingleButton @click="router.go(-1)">
 				<template #buttonName>{{ t('button.cancel') }}</template>
 			</SingleButton>
-		</div> 
+		</div>
 	</div>
 
 	<ErrorMessageInfo v-else-if="error"></ErrorMessageInfo>
