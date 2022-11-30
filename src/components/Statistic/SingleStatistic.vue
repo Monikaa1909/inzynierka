@@ -6,7 +6,7 @@
   <div class="self-center justify-self-center font-medium text-xs text-center block md:(hidden)">
     <slot name="name"></slot>
   </div>
-  <div class="self-center justify-self-center col-span-1 text-xs md:()">
+  <div class="self-center justify-self-center col-span-1 text-center text-xs md:()">
     <slot name="data">
     </slot>
   </div>

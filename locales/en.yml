@@ -44,6 +44,7 @@ button:
   ok: Ok
   submit: Submit
   next: Next
+  go-start: Go to start
 intro:
   start: Start using the application!
   aplikacja: Application

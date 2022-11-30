@@ -439,10 +439,6 @@ const updateAverageStatisticWithoutAbsent = () => {
 						</button>
 					</template>
 
-					<!-- <template #icon>
-						<img src="../../../../assets/statistic-icon2.png" class="h-150px" />
-					</template> -->
-
 					<template #attributes>
 
 						<LoadingCircle v-if="isFetching || !isTournamentFinished || !isTournamentStatisticFinished"></LoadingCircle>

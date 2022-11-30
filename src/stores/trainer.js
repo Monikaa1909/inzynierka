@@ -1,6 +1,6 @@
-export const useTrainer = createGlobalState(
-	() => useStorage('user:trainer', {
-		token: null,
+// export const useTrainer = createGlobalState(
+// 	() => useStorage('user:trainer', {
+// 		token: null,
 
-	}),
-)
+// 	}),
+// )

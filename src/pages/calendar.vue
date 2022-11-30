@@ -160,24 +160,26 @@ const {
 whenever(tournamentsData, (data) => {
   tournamentsAttributes.value = []
   tournaments.value = data
-  tournaments.value.map(element => element.startDate = new Date(element.startDate) as unknown as Date)
-  tournaments.value.map(element => element.endDate = new Date(element.endDate) as unknown as Date)
-  let i = 0
-  tournaments.value.forEach(element => {
-    let attribute = {
-      key: 'tournament' + i++,
-      popover: {
-        label: computed(() =>
-          (t('events.tournament') + (element.tournamentName ? (' - ' + element.tournamentName) : '')))
-      },
-      highlight: {
-        color: 'purple',
-        fillMode: 'light',
-      },
-      dates: { start: element.startDate, end: element.endDate },
-    }
-    tournamentsAttributes.value.push(attribute)
-  });
+  if (tournaments.value.length > 0) {
+    tournaments.value.map(element => element.startDate = new Date(element.startDate) as unknown as Date)
+    tournaments.value.map(element => element.endDate = new Date(element.endDate) as unknown as Date)
+    let i = 0
+    tournaments.value.forEach(element => {
+      let attribute = {
+        key: 'tournament' + i++,
+        popover: {
+          label: computed(() =>
+            (t('events.tournament') + (element.tournamentName ? (' - ' + element.tournamentName) : '')))
+        },
+        highlight: {
+          color: 'purple',
+          fillMode: 'light',
+        },
+        dates: { start: element.startDate, end: element.endDate },
+      }
+      tournamentsAttributes.value.push(attribute)
+    })
+  }
 })
 
 const {
@@ -207,19 +209,21 @@ const {
 whenever(trainingsData, (data) => {
   trainingsAttributes.value = []
   trainings.value = data
-  trainings.value.map(element => element.date = new Date(element.date) as unknown as Date)
-  let i = 0
-  trainings.value.forEach(element => {
-    let attribute = {
-      key: 'training' + i++,
-      dates: element.date,
-      popover: {
-        label: computed(() => (t('events.training') + (element.sportsFacility ? (' - ' + element.sportsFacility.name) : '')))
-      },
-      dot: 'green'
-    }
-    trainingsAttributes.value.push(attribute)
-  })
+  if (trainings.value.length > 0) {
+    trainings.value.map(element => element.date = new Date(element.date) as unknown as Date)
+    let i = 0
+    trainings.value.forEach(element => {
+      let attribute = {
+        key: 'training' + i++,
+        dates: element.date,
+        popover: {
+          label: computed(() => (t('events.training') + (element.sportsFacility ? (' - ' + element.sportsFacility.name) : '')))
+        },
+        dot: 'green'
+      }
+      trainingsAttributes.value.push(attribute)
+    })
+  }
 })
 
 const isFinished = computed(() => {

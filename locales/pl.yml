@@ -44,6 +44,7 @@ button:
   submit: Zatwierdź
   next: Dalej
   delete-academy: Usuń akademię
+  go-start: Strona startowa
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   aplikacja: Aplikacja

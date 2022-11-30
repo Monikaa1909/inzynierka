@@ -101,17 +101,20 @@ export default (router: Router) => {
   router.post('/auth/login', async (req, res) => {
     try {
       if (!req.body.login || !req.body.password) {
-        throw new Error('No credentials')
+        res.status(400).send("error")
+        return
       }
 
       const user: User | null = await models.User.findOne({ login: req.body.login })
 
       if (!user) {
-        throw new Error('Invalid login')
+        res.status(400).send("error")
+        return
       }
 
       if (!await user.validatePassword(req.body.password)) {
-        throw new Error('Invalid password')
+        res.status(400).send("error")
+        return
       }
 
       res.send(await user.createToken())

@@ -28,24 +28,19 @@ const passwordErrorMessage = computed(() => {
 })
 
 const errorMessage = ref('')
-whenever(credentials, (data) => {
-  errorMessage.value = ''
-})
 
-const { data: loginData, isFinished, error, execute } = useFetch(`/api/auth/login`, { immediate: false }).post(credentials).text()
-
-whenever(error, () => {
-  errorMessage.value = 'error-messages.invalid-credentials'
-})
+const { data: loginData, isFinished, execute } = useFetch(`/api/auth/login`, { immediate: false }).post(credentials).text()
 
 const token = useStorage('user:token', '')
 
 watchEffect(() => {
-  if (isFinished && !error.value) {
+  if (loginData.value == "error") {
+    errorMessage.value = 'error-messages.invalid-credentials'
+  }
+  else if (isFinished && loginData.value != "error") {
     syncRef(token, loginData)
     if (token.value) router.push('/calendar')
   }
-  
 })
 
 const submit = async () => {
