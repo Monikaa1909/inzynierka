@@ -45,6 +45,8 @@ button:
   submit: Submit
   next: Next
   go-start: Go to start
+  change-layout: CHANGE LAYOUT
+  sort: SORT
 intro:
   start: Start using the application!
   aplikacja: Application

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { requiredField, validateFirstName, validateNationality, validateMedicalExaminations } from '~/validatesFunctions'
-import type { Trainer } from 'backend/database/schemas/Trainer.user'
 import type { Parent } from 'backend/database/schemas/Parent.user'
 import type { Academy } from 'backend/database/schemas/Academy'
 import type { Player } from 'backend/database/schemas/Player'
@@ -151,7 +150,6 @@ whenever(teamsData, (data) => {
 		})
 	}
 
-	teams.value.map(element => element.trainer = element.trainer?._id as unknown as Trainer)
 	teams.value.map(element => element.academy = element.academy._id as unknown as Academy)
 })
 

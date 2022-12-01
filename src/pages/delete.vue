@@ -57,7 +57,7 @@ const passwordErrorMessage = computed(() => {
 })
 
 const deleteAll = async () => {
-  await useFetch(`/api/academy/${payload.value?.academy}`, {
+  await useFetch(`/api/academy/all/${payload.value?.academy}`, {
     async beforeFetch({ url, options, cancel }) {
       const myToken = token.value
       if (!myToken)

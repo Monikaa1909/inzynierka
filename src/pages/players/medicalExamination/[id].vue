@@ -84,9 +84,7 @@ function goToPlayer(playerId: any) {
             </button>
           </template>
 
-          <template #icon>
-            <img src="../../../assets/medical-examinations-icon.png" class="h-150px" />
-          </template>
+          
 
           <template #attributes>
             <LoadingCircle v-if="isFetching"></LoadingCircle>
@@ -117,7 +115,7 @@ function goToPlayer(playerId: any) {
 
               <div class="h-full w-full grid gap-2 px-2">
 
-                <div class="h-full w-full grid  grid-cols-2">
+                <div class="h-full w-full grid  grid-cols-2 invisible md:(visible)">
                   <StatisticHeader> {{ t('match-statistic.player') }} </StatisticHeader>
                   <StatisticHeader> {{ t('single-player.validity') }} </StatisticHeader>
                 </div>
@@ -130,6 +128,10 @@ function goToPlayer(playerId: any) {
                   </button>
                   <button @click="goToPlayer(player._id)" class="text-center" v-else>{{ new Date(player.validityOfMedicalExaminations).toLocaleDateString(locale) }}
                   </button>
+
+                  <div class="self-center justify-self-center  block md:(hidden)">
+										<img src="../../../assets/line-icon.png" class="w-full" />
+									</div>
                   
                 </div>
 

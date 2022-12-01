@@ -282,7 +282,6 @@ const logout = async () => {
       </div>
     </div>
 
-
     <div v-else class="flex flex-row self-center flex-shrink-0">
       <div class="px-2 py-0.5 self-center justify-items-center flex flex-col">
 

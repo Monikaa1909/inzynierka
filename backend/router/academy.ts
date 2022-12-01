@@ -55,6 +55,39 @@ export default (router: Router) => {
 
           if (payload.type === 'AcademyManager') {
 
+            const deletedAcademy = await models.Academy.findOneAndDelete({ _id: req.params.id })
+            console.log("Usunięto " + deletedAcademy + " akademię")
+
+            res.send("academy")
+          }
+          else {
+            res.status(400).json({ error: "Lack of sufficient permissions" })
+          }
+
+        } else {
+          console.log(1)
+          res.status(400).json({ error: "Malformed auth header" })
+        }
+      } else {
+        console.log(2)
+        res.status(400).json({ error: "No authorization header" })
+      }
+    } catch (error) {
+      console.log(3)
+      res.status(400).send(error)
+    }
+  })
+
+  router.delete('/academy/all/:id', async (req, res) => {
+    try {
+      if (req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (token) {
+          const payload = jwtDecode<JwtPayload>(token ?? '')
+
+          if (payload.type === 'AcademyManager') {
+
             // Wyszukuję wszystkich _id statystyk z turniejów należących do wybranej akademii
             const tournamentStatistics = await models.TournamentStatistic.find()
               .populate({

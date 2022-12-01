@@ -56,8 +56,11 @@ const next = async () => {
       return
     }
     else {
-      if (!academyAdded.value)
+      if (!academyAdded.value) {
         await saveAcademy()
+        console.log("zapisuje akadmeie")
+      }
+        
       else
         await saveManager()
     }
@@ -69,6 +72,7 @@ const academyAdded = ref(false)
 
 const newAcademy = ref({} as string)
 whenever(isAcademyFinished, async (data) => {
+  console.log("academy finished")
   if (!saveAcademyError.value) {
 
     newAcademy.value = academyData.value as unknown as string
@@ -78,6 +82,7 @@ whenever(isAcademyFinished, async (data) => {
     academyAdded.value = true
 
     await saveManager()
+    console.log("zapisuje managera")
   }
   else {
     alert(t('error-messages.register-academy') + ' crewAssistantHelp@gmail.com')
@@ -86,6 +91,7 @@ whenever(isAcademyFinished, async (data) => {
 })
 
 whenever(isManagerFinished, async (data) => {
+  console.log("jestm tu")
   if (saveManagerError.value) {
     alert(t('error-messages.register-manager') + ' crewAssistantHelp@gmail.com')
   }

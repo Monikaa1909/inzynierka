@@ -467,10 +467,6 @@ const summaryStatistic = computed(() => {
 						</button>
 					</template>
 
-					<template #icon>
-						<img src="../../../assets/statistic-icon.png" class="h-150px" />
-					</template>
-
 					<template #attributes>
 						<LoadingCircle v-if="isFetching"></LoadingCircle>
 

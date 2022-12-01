@@ -45,6 +45,8 @@ button:
   next: Dalej
   delete-academy: Usuń akademię
   go-start: Strona startowa
+  change-layout: ZMIEŃ UKŁAD
+  sort: SORTUJ
 intro:
   start: Rozpocznij korzystanie z aplikacji!
   aplikacja: Aplikacja
