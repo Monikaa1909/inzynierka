@@ -257,26 +257,43 @@ const logout = async () => {
         <p class="px-2 justify-items-center text-xs color-white">{{ academy?.academyName }}</p>
 
         <div>
-          <div id="dropdownNavbar" :class="[isHidden ? 'hidden' : '']"
-          class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44">
-          <div>
-            <button @click="goYourProfile" class="p-1 w-full">
-              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.your-profile') }}
-              </p>
-            </button>
-            <button @click="toggleLocales" class="p-1 w-full">
-              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}
-              </p>
-            </button>
-            <button @click="deleteAcademy()" class="p-1 w-full">
-              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.delete-academy') }}
-              </p>
+          <div v-if="payload.type === 'AcademyManager'" id="dropdownNavbar" :class="[isHidden ? 'hidden' : '']"
+            class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44">
+            <div>
+              <button @click="goYourProfile" class="p-1 w-full">
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.your-profile') }}
+                </p>
+              </button>
+              <button @click="toggleLocales" class="p-1 w-full">
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}
+                </p>
+              </button>
+              <button v-if="payload.type === 'AcademyManager'" @click="deleteAcademy()" class="p-1 w-full">
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.delete-academy') }}
+                </p>
+              </button>
+            </div>
+            <button @click="logout" class="p-1 w-full">
+              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
             </button>
           </div>
-          <button @click="logout" class="p-1 w-full">
-            <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
-          </button>
-        </div>
+
+          <div v-else id="dropdownNavbar" :class="[isHidden ? 'hidden' : '']"
+            class="z-10 bg-white absolute divide-y divide-gray-100 shadow w-44  right-15">
+            <div>
+              <button @click="goYourProfile" class="p-1 w-full">
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.your-profile') }}
+                </p>
+              </button>
+              <button @click="toggleLocales" class="p-1 w-full">
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.change-language') }}
+                </p>
+              </button>
+            </div>
+            <button @click="logout" class="p-1 w-full">
+              <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('login.log-out') }}</p>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -300,8 +317,8 @@ const logout = async () => {
                 </p>
               </button>
               <button @click="logout" class="p-1 w-full">
-            <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.go-start') }}</p>
-          </button>
+                <p class="px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 text-left">{{ t('button.go-start') }}</p>
+              </button>
             </div>
           </div>
         </div>

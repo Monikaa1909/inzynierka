@@ -312,7 +312,7 @@ const goSpecificDay = (day: any) => {
                     t('button.hide-filters')
                 }}</p>
               </button>
-              <button @click="goAddEvent" class="flex flex-row gap-2">
+              <button v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goAddEvent" class="flex flex-row gap-2">
                 <img src="../assets/add-icon2.png" class="h-48px" />
                 <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.add-event') }}</p>
               </button>

@@ -189,7 +189,11 @@ const sortedPlayers = computed(() => {
             }}</p>
           </button>
 
-          <button @click="goCheckStatistic()" class="flex flex-row gap-2 mr-8 items-center">
+          <button v-if="payload.type === 'AcademyManager' || payload.type === 'Trainer'" @click="goCheckStatistic()" class="flex flex-row gap-2 mr-8 items-center">
+            <img src="../../../assets/statistic-icon.png" class="h-48px flex" />
+            <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic') }}</p>
+          </button>
+          <button v-else @click="goCheckStatistic()" class="flex flex-row gap-2 items-center">
             <img src="../../../assets/statistic-icon.png" class="h-48px flex" />
             <p class="h-full flex items-center text-base font-bold color-#464646">{{ t('button.check-statistic') }}</p>
           </button>

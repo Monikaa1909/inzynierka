@@ -246,7 +246,7 @@ export const seedDatabase = async () => {
 
 	// player1-10 - team1 (żak)
 	const player1 = new models.Player({
-		firstName: 'Jan',
+		firstName: 'Jerzy',
 		lastName: 'Kowalski',
 		birthdayDate: '2014-12-09',
 		nationality: 'Polska',
