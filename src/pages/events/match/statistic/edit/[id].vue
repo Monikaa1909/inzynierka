@@ -110,7 +110,7 @@ for (let i = 0; i < 50; i++) {
 }
 
 var minutesNumber: number[] = []
-for (let i = 0; i < 120; i++) {
+for (let i = 0; i <= 120; i++) {
 	minutesNumber[i] = i
 }
 
