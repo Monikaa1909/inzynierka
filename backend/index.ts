@@ -3,14 +3,13 @@ import mongoose from 'mongoose'
 import { seedDatabase } from './database/seed'
 import router from './router'
 
-import nodemailer from "nodemailer"
 const app = express()
 
 if (import.meta.hot) {
   import.meta.hot.decline()
 }
 
-mongoose.connect('mongodb://localhost:27017/db').then(async () => {
+mongoose.connect(`mongodb://${process.env.MONGO_HOST ?? 'localhost'}:27017/db`).then(async () => {
   await mongoose.connection.db.dropDatabase()
   seedDatabase()
   console.log('Connected to database')

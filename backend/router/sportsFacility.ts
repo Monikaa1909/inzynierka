@@ -1,7 +1,7 @@
 import { SportsFacility } from 'backend/database/schemas/SportsFacility'
 import { JwtPayload } from 'backend/database/schemas/User'
 import jwtDecode from "jwt-decode"
-import { models } from "mongoose"
+import models from "../database/models"
 import { Router } from "express"
 
 export default (router: Router) => {

@@ -1,7 +1,7 @@
 import { MatchStatistic } from 'backend/database/schemas/MatchStatistic'
 import { JwtPayload } from 'backend/database/schemas/User'
 import jwtDecode from "jwt-decode"
-import { models } from "mongoose"
+import models from "../database/models"
 import { Router } from "express"
 
 const getMatchStatistics: Record<JwtPayload['type'], (payload: JwtPayload) => Promise<MatchStatistic[]>> = {

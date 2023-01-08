@@ -2,7 +2,7 @@ import { Trainer } from 'backend/database/schemas/Trainer.user'
 import { JwtPayload } from 'backend/database/schemas/User'
 import jwtDecode from "jwt-decode"
 import { Router } from "express"
-import { models } from "mongoose"
+import models from "../database/models"
 
 export default (router: Router) => {
 

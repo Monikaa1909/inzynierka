@@ -1,7 +1,7 @@
 import { TournamentStatistic } from 'backend/database/schemas/TournamentStatistic'
 import { JwtPayload } from 'backend/database/schemas/User'
 import jwtDecode from "jwt-decode"
-import { models } from "mongoose"
+import models from "../database/models"
 import { Router } from "express"
 
 const getTournamentStatistics: Record<JwtPayload['type'], (payload: JwtPayload) => Promise<TournamentStatistic[]>> = {

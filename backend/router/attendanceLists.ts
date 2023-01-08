@@ -1,7 +1,7 @@
 import { AttendanceList } from 'backend/database/schemas/AttendanceList'
 import { JwtPayload } from 'backend/database/schemas/User'
 import jwtDecode from "jwt-decode"
-import { models } from "mongoose"
+import models from "../database/models"
 import { Router } from "express"
 
 const getAttendanceLists: Record<JwtPayload['type'], (payload: JwtPayload) => Promise<AttendanceList[]>> = {

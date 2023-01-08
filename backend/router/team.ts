@@ -2,7 +2,7 @@ import { JwtPayload } from 'backend/database/schemas/User'
 import { Player } from 'backend/database/schemas/Player'
 import { Team } from 'backend/database/schemas/Team'
 import jwtDecode from "jwt-decode"
-import { models } from "mongoose"
+import models from "../database/models"
 import { Router } from "express"
 
 const getTeams: Record<JwtPayload['type'], (payload: JwtPayload) => Promise<Team[]>> = {

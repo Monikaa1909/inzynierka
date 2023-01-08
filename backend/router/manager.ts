@@ -1,7 +1,7 @@
 import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 import { Router } from "express"
-import { models } from "mongoose"
+import models from "../database/models"
 
 export default (router: Router) => {
 

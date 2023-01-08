@@ -4,7 +4,7 @@ import { JwtPayload } from 'backend/database/schemas/User'
 import { useJwt } from '@vueuse/integrations/useJwt'
 import { User } from "backend/database/schemas/User"
 import { Router } from "express"
-import { models } from "mongoose"
+import models from "../database/models"
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import { AcademyManager } from "backend/database/schemas/AcademyManager.user"
