@@ -78,8 +78,8 @@ const passwordErrorMessage = computed(() => {
 })
 
 const newPasswordErrorMessage = computed(() => {
-  if (newPassword.value != newPasswordRepeat.value) return 'error-messages.diffrent-passwords'
-  else if (validatePassword(newPassword.value)) return validatePassword(newPassword.value)
+  if (validatePassword(newPassword.value)) return validatePassword(newPassword.value)
+  else if (newPassword.value != newPasswordRepeat.value) return 'error-messages.diffrent-passwords'
   return ''
 })
 

@@ -1,11 +1,8 @@
-<script setup>
-// https://github.com/vueuse/head
-// you can use this to manipulate the document head in any components,
-// they will be rendered correctly in the html results with vite-ssg
+<script setup lang="ts">
 useHead({
   title: 'Crew Assistant',
   meta: [
-    { name: 'description', content: 'Opinionated Vite Starter Template' },
+    { name: 'description', content: 'My template' },
   ],
 })
 </script>

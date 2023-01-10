@@ -21,7 +21,7 @@ export const seedDatabase = async () => {
 		nationality: 'Polska',
 		academy: academy1,
 		login: 'monikaa1909',
-		password: 'coolhaslo',
+		password: 'Coolhaslo1',
 		email: 'monikaa1909@gmail.com',
 	})
 	academyManager1.save(function (err) {
@@ -49,8 +49,8 @@ export const seedDatabase = async () => {
 		birthdayDate: '1975-02-19',
 		nationality: 'Polska',
 		academy: academy1,
-		login: 'pikul123',
-		password: 'pikula',
+		login: 'trainerlogin',
+		password: 'Trainer1',
 		email: 'pikul123@gmail.com',
 	});
 	trainer1.save(function (err) {
@@ -197,8 +197,8 @@ export const seedDatabase = async () => {
 		email: 'kowalj123@gmail.com',
 		phoneNumber: '125 653 444',
 		academy: academy1,
-		login: 'kowalj123',
-		password: 'kowalj123'
+		login: 'parentlogin',
+		password: 'Parent1'
 
 	});
 	parent1.save(function (err) {
