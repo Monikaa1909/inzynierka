@@ -1104,7 +1104,7 @@ export const seedDatabase = async () => {
 		goalsConceded: 3,
 		goalsScored: 4,
 		opponent: 'Legia Warszawa',
-		date: new Date('2022-11-05 10:30:00'),
+		date: new Date('2023-01-07 10:30:00'),
 		sportsFacility: sportsFacility2
 	})
 	match1.save(function (err) {
@@ -1225,7 +1225,7 @@ export const seedDatabase = async () => {
 		goalsConceded: 5,
 		goalsScored: 1,
 		opponent: 'Korona Kielce',
-		date: new Date('2022-11-13 13:00:00'),
+		date: new Date('2023-01-14 13:00:00'),
 		sportsFacility: sportsFacility3
 	})
 	match2.save(function (err) {
@@ -1347,7 +1347,7 @@ export const seedDatabase = async () => {
 		goalsConceded: 5,
 		goalsScored: 4,
 		opponent: 'Lechia Gdańsk',
-		date: new Date('2022-11-20 11:00:00'),
+		date: new Date('2023-01-22 11:00:00'),
 		sportsFacility: sportsFacility3
 	})
 	match3.save(function (err) {
@@ -1469,7 +1469,7 @@ export const seedDatabase = async () => {
 		goalsConceded: 2,
 		goalsScored: 1,
 		opponent: 'Lechia Gdańsk',
-		date: new Date('2022-11-26 13:00:00'),
+		date: new Date('2023-01-25 13:00:00'),
 		sportsFacility: sportsFacility1
 	})
 	match4.save(function (err) {
@@ -1754,11 +1754,111 @@ export const seedDatabase = async () => {
 	})
 	
 
+	const match11 = new models.Match({
+		team: team1,
+		opponent: 'Legia Warszawa',
+		date: new Date('2023-01-04 10:30:00'),
+		sportsFacility: sportsFacility2
+	})
+	match11.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match12 = new models.Match({
+		team: team1,
+		opponent: 'Korona Kielce',
+		date: new Date('2022-11-11 13:00:00'),
+		sportsFacility: sportsFacility3
+	})
+	match12.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match13 = new models.Match({
+		team: team1,
+		opponent: 'Lechia Gdańsk',
+		date: new Date('2022-11-19 11:00:00'),
+		sportsFacility: sportsFacility3
+	})
+	match13.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match14 = new models.Match({
+		team: team4,
+		opponent: 'Lechia Gdańsk',
+		date: new Date('2023-01-14 13:00:00'),
+		sportsFacility: sportsFacility1
+	})
+	match14.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match15 = new models.Match({
+		team: team4,
+		opponent: 'Śląsk Wrocław',
+		date: new Date('2022-11-18 13:00:00'),
+		sportsFacility: sportsFacility1
+	})
+	match15.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match16 = new models.Match({
+		team: team1,
+		opponent: 'Legia Warszawa',
+		date: new Date('2023-02-04 10:30:00'),
+		sportsFacility: sportsFacility2
+	})
+	match16.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match17 = new models.Match({
+		team: team1,
+		opponent: 'Korona Kielce',
+		date: new Date('2023-02-11 13:00:00'),
+		sportsFacility: sportsFacility3
+	})
+	match17.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match18 = new models.Match({
+		team: team1,
+		opponent: 'Lechia Gdańsk',
+		date: new Date('2023-02-19 11:00:00'),
+		sportsFacility: sportsFacility3
+	})
+	match18.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match19 = new models.Match({
+		team: team4,
+		opponent: 'Lechia Gdańsk',
+		date: new Date('2023-02-14 13:00:00'),
+		sportsFacility: sportsFacility1
+	})
+	match19.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const match20 = new models.Match({
+		team: team4,
+		opponent: 'Śląsk Wrocław',
+		date: new Date('2023-02-18 13:00:00'),
+		sportsFacility: sportsFacility1
+	})
+	match20.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
 	// TOURNAMENTS ----------------------------------------------------------------------------
 	const tournament1 = new models.Tournament({
 		tournamentName: 'Towarzyski turniej "KopaninaCup"',
-		startDate: new Date("2022, 11, 13"),
-		endDate: new Date("2022, 11, 15"),
+		startDate: new Date("2023, 01, 13"),
+		endDate: new Date("2023, 01, 15"),
 		sportsFacility: sportsFacility3,
 		friendly: true,
 		team: team1
@@ -1916,11 +2016,59 @@ export const seedDatabase = async () => {
 		if (err) return console.log(err.message);
 	})
 
+	const tournament5 = new models.Tournament({
+		tournamentName: 'Towarzyski turniej "KopaninaCup"',
+		startDate: new Date("2022, 11, 13"),
+		endDate: new Date("2022, 11, 15"),
+		sportsFacility: sportsFacility3,
+		friendly: true,
+		team: team1
+	})
+	tournament5.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const tournament6 = new models.Tournament({
+		tournamentName: 'Turniej o Puchar Burmistrza Goniądza',
+		startDate: new Date('2023-01-25 10:05:00'),
+		endDate: new Date('2023-01-26 19:00:00'),
+		sportsFacility: sportsFacility1,
+		friendly: false,
+		team: team5
+	})
+	tournament6.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const tournament7 = new models.Tournament({
+		tournamentName: 'Turniej LAGA',
+		startDate: new Date("2023, 02, 3"),
+		endDate: new Date("2023, 02, 5"),
+		sportsFacility: sportsFacility3,
+		friendly: true,
+		team: team1
+	})
+	tournament7.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const tournament8 = new models.Tournament({
+		tournamentName: 'Walentynkowy turniej piłki nożnej',
+		startDate: new Date('2023-02-15 10:05:00'),
+		endDate: new Date('2023-02-18 19:00:00'),
+		sportsFacility: sportsFacility1,
+		friendly: false,
+		team: team5
+	})
+	tournament8.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
 	// ----------------------------------------------------------------------------
 	
 	// TRAININGS ----------------------------------------------------------------------------
 	const training1 = new models.Training({
-		date: new Date('2022-11-01 15:30'),
+		date: new Date('2023-01-02 15:30'),
 		sportsFacility: sportsFacility1,
 		team: team1,
 	})
@@ -2021,7 +2169,7 @@ export const seedDatabase = async () => {
 	// -----------------------------------------------------------------
 
 	const training2 = new models.Training({
-		date: new Date('2022-11-10 17:05'),
+		date: new Date('2023-01-10 17:05'),
 		sportsFacility: sportsFacility1,
 		team: team1
 	})
@@ -2205,6 +2353,97 @@ export const seedDatabase = async () => {
 		team: team1
 	})
 	training12.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training13 = new models.Training({
+		date: new Date('2023-01-12 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team1
+	})
+	training13.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training14 = new models.Training({
+		date: new Date('2023-01-24 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team5
+	})
+	training14.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training15 = new models.Training({
+		date: new Date('2023-01-04 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team1
+	})
+	training15.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training16 = new models.Training({
+		date: new Date('2023-01-18 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team1
+	})
+	training16.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+
+	const training17 = new models.Training({
+		date: new Date('2023-02-01 15:30'),
+		sportsFacility: sportsFacility1,
+		team: team1,
+	})
+	training17.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training18 = new models.Training({
+		date: new Date('2023-02-08 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team1
+	})
+	training18.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training19 = new models.Training({
+		date: new Date('2023-02-15 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team1
+	})
+	training19.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training20 = new models.Training({
+		date: new Date('2023-02-22 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team5
+	})
+	training20.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training21 = new models.Training({
+		date: new Date('2023-02-06 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team1
+	})
+	training21.save(function (err) {
+		if (err) return console.log(err.message);
+	})
+
+	const training22 = new models.Training({
+		date: new Date('2023-02-20 17:05'),
+		sportsFacility: sportsFacility1,
+		team: team1
+	})
+	training22.save(function (err) {
 		if (err) return console.log(err.message);
 	})
 
