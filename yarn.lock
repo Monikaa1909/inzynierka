@@ -1207,62 +1207,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@logto/browser@^1.0.0-beta.11":
-  version "1.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@logto/browser/-/browser-1.0.0-beta.11.tgz#8bde54b8fa3893fbd7f880d5b533b37cb5595f86"
-  integrity sha512-Ofdj5UqLzwoW66XGnff+1U6Lix90qI2Q30+TISJz6soCm97oqJdWpY2SRlMAfnvDobsFPqAxyCAz49Cg16h50Q==
-  dependencies:
-    "@logto/client" "^1.0.0-beta.11"
-    "@silverhand/essentials" "^1.2.1"
-    js-base64 "^3.7.2"
 
-"@logto/client@^1.0.0-beta.11":
-  version "1.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@logto/client/-/client-1.0.0-beta.11.tgz#5cd8183758706c19b73cdde5225f1349912985ed"
-  integrity sha512-7Nl+53JPgB0wjMU9zJH6SrOj4OKn0Kl9U1cumt/IHSYuaDyV7TgvR/HaaeSZuZ0JxbMg66Riee87Qx9Tv46k6A==
-  dependencies:
-    "@logto/core-kit" "1.0.0-beta.20"
-    "@logto/js" "^1.0.0-beta.11"
-    "@silverhand/essentials" "^1.2.1"
-    camelcase-keys "^7.0.1"
-    jose "^4.3.8"
-    lodash.get "^4.4.2"
-    lodash.once "^4.1.1"
-
-"@logto/core-kit@1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@logto/core-kit/-/core-kit-1.0.0-beta.20.tgz#f731651a0377d9ece2bed18974a83283f50022e5"
-  integrity sha512-seYvL/aGYRfO4d0FYfKIW/Cu9PnFMRpRM5/oRXwXbcbv+LY1a3TcAX0itrVXeBygIrxiAmWd9DL7CGIWzb48Qg==
-  dependencies:
-    "@logto/language-kit" "^1.0.0-beta.20"
-    color "^4.2.3"
-    nanoid "^3.1.23"
-    zod "^3.18.0"
-
-"@logto/js@^1.0.0-beta.11":
-  version "1.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@logto/js/-/js-1.0.0-beta.11.tgz#2981ae518ccf0723c24c87a8e61980fa35721036"
-  integrity sha512-V0cV+T+DFcpqAAIjfdiEuEYG+ePASR7VbPM1zMLv02S/5zz3pStedbLrksZaSVUOmQvsieEF5d5/kZ8ZshQa0A==
-  dependencies:
-    "@logto/core-kit" "1.0.0-beta.20"
-    "@silverhand/essentials" "^1.2.1"
-    camelcase-keys "^7.0.1"
-    jose "^4.3.8"
-    lodash.get "^4.4.2"
-
-"@logto/language-kit@^1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@logto/language-kit/-/language-kit-1.0.0-beta.20.tgz#01bc57a535df93a6cd37b41a968e66315e589fdb"
-  integrity sha512-nBqWQo2xGAlVcD9O/txpCzRyy7eKXNXBAHm8J1y/u5Fp3BMObMmJv+v4Zk+UhckdFpsnFJF0wYIX45ta2+IipA==
-  dependencies:
-    zod "^3.18.0"
-
-"@logto/vue@^1.0.0-beta.11":
-  version "1.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@logto/vue/-/vue-1.0.0-beta.11.tgz#82e20db1123094ea6fc0feb4afa05b69a109334e"
-  integrity sha512-vF7eePfLmodnkeI8HcTc9yysIJa+Q/s6Ug84vHmD/L0txUubu5a/KH/V0n0JrSyG69LtbbOE6zl8zmY+mlfx7w==
-  dependencies:
-    "@logto/browser" "^1.0.0-beta.11"
 
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"
