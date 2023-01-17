@@ -16,7 +16,7 @@ const credentials = computed(() => ({
   password: password.value,
 }))
 
-const { data: managerData, execute: submitManager } = useFetch(`/api/auth/validate/password/${payload.value?.id}`, {
+const { data: managerData, execute: submitManager, isFinished: isPassswordFinished } = useFetch(`/api/auth/validate/password/${payload.value?.id}`, {
   immediate: false,
   async beforeFetch({ url, options, cancel }) {
     const myToken = token.value
@@ -46,14 +46,21 @@ const confirmDelete = async () => {
 
 const submitManagerPassword = async () => {
   await submitManager()
-  if (managerData.value) {
-    console.log(managerData.value)
-    deleteAll()
-  }
 }
 
-const passwordErrorMessage = computed(() => {
-  return managerData.value
+const passwordErrorMessage = ref(false)
+
+whenever(isPassswordFinished, (data) => {
+  if (data) {
+    if (managerData.value != null){
+      if (managerData.value === 'true') {
+        passwordErrorMessage.value = false
+        deleteAll()
+      } else {
+        passwordErrorMessage.value = true
+      }
+    }
+  }
 })
 
 const deleteAll = async () => {

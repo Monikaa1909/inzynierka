@@ -57,18 +57,6 @@ export default (router: Router) => {
         password
       })
 
-      // const academyManager = new models.AcademyManager({
-      //   firstName: 'Monika',
-      //   lastName: 'Słowikowska',
-      //   birthdayDate: '200-09-10',
-      //   nationality: 'Polska',
-      //   academy: req.body.academy,
-      //   login: 'monikaa1909',
-      //   password: 'coolhaslo',
-      //   email: 'monikaa1909@gmail.com',
-      // })
-      // academyManager.save() 
-
       res.send(password)
     } catch (error) {
       res.status(400).send(error)
@@ -145,12 +133,13 @@ export default (router: Router) => {
         if (!user) {
           res.send(false)
         }
-
+        
         else if (!await user.validatePassword(req.body.password)) {
           res.send(false)
         }
 
-        else res.send(true)
+        else {
+          res.send(true)}
       }
 
     } catch (error) {
